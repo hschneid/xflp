@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.SwapSpec" tests="5" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.01">
+  <properties/>
+  <testcase name="Regular swap - one node" classname="xf.xfvrp.opt.SwapSpec" time="0.001"/>
+  <testcase name="Regular swap - one route" classname="xf.xfvrp.opt.SwapSpec" time="0.0"/>
+  <testcase name="Regular swap - two routes" classname="xf.xfvrp.opt.SwapSpec" time="0.001"/>
+  <testcase name="Swap - at the border" classname="xf.xfvrp.opt.SwapSpec" time="0.001"/>
+  <testcase name="Swap - with exception" classname="xf.xfvrp.opt.SwapSpec" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

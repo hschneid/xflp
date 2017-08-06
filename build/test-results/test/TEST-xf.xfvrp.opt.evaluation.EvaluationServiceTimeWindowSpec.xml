@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" tests="14" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.027">
+  <properties/>
+  <testcase name="Basic Time Windows - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.004"/>
+  <testcase name="Basic Time Windows - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.001"/>
+  <testcase name="With Service Time - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With Service Time - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With Loading at depot - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With Loading at depot - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With UnLoading at depot - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With UnLoading at depot - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.001"/>
+  <testcase name="With Max Waiting Time - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With Max Waiting Time - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.001"/>
+  <testcase name="With Max Driving Time - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.002"/>
+  <testcase name="With Max Driving Time - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.001"/>
+  <testcase name="Multi Time Windows - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.004"/>
+  <testcase name="Multi Time Windows - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServiceTimeWindowSpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

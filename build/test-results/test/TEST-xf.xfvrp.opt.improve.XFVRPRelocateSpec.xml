@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.improve.XFVRPRelocateSpec" tests="4" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.025">
+  <properties/>
+  <testcase name="Search single depot - Find improve" classname="xf.xfvrp.opt.improve.XFVRPRelocateSpec" time="0.009"/>
+  <testcase name="Search single depot - Find No improve" classname="xf.xfvrp.opt.improve.XFVRPRelocateSpec" time="0.001"/>
+  <testcase name="Search multi depot - Find improve" classname="xf.xfvrp.opt.improve.XFVRPRelocateSpec" time="0.011"/>
+  <testcase name="Search multi depot - Find No improve" classname="xf.xfvrp.opt.improve.XFVRPRelocateSpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

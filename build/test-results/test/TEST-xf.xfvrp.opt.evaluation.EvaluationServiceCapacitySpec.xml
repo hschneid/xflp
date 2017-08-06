@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" tests="12" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.096">
+  <properties/>
+  <testcase name="Delivery - 2 capacity, all clear" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.07"/>
+  <testcase name="Delivery - 2 capacity, first fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.002"/>
+  <testcase name="Delivery - 2 capacity, second fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.002"/>
+  <testcase name="Pickup - 2 capacity, all clear" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.003"/>
+  <testcase name="Pickup - 2 capacity, first fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.001"/>
+  <testcase name="Pickup - 2 capacity, second fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.004"/>
+  <testcase name="Pickup/Delivery - all clear" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.003"/>
+  <testcase name="Pickup/Delivery - wrong route order" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.001"/>
+  <testcase name="Replenish - homogenus - all clear" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.004"/>
+  <testcase name="Replenish - homogenus - pickup fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.001"/>
+  <testcase name="Replenish - homogenus - delivery fail" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.002"/>
+  <testcase name="Replenish - hetero - all clear" classname="xf.xfvrp.opt.evaluation.EvaluationServiceCapacitySpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.improve.XFVRP2OptIntraSpec" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.046">
+  <properties/>
+  <testcase name="Search - Find improve" classname="xf.xfvrp.opt.improve.XFVRP2OptIntraSpec" time="0.045"/>
+  <testcase name="Search - Find No improve" classname="xf.xfvrp.opt.improve.XFVRP2OptIntraSpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

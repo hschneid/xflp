@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.PathExchangeSpec" tests="8" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.006">
+  <properties/>
+  <testcase name="Regular path exchange - simple exchange" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <testcase name="Regular path exchange - all same" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.0"/>
+  <testcase name="Regular path exchange - one route" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.0"/>
+  <testcase name="Regular path exchange - two routes after src area" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <testcase name="Regular path exchange - two routes before src area" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <testcase name="Path exchange - at the border" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <testcase name="Path exchange - with exception" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <testcase name="Path exchange - over lapping" classname="xf.xfvrp.opt.PathExchangeSpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.EvaluationServiceSpec" tests="1" skipped="0" failures="1" errors="0" timestamp="2017-07-24T21:01:45" hostname="Cyberlion.fritz.box" time="0.006">
+  <properties/>
+  <testcase name="Simple check" classname="xf.xfvrp.opt.EvaluationServiceSpec" time="0.006">
+    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
+	at xf.xfvrp.opt.evaluation.Context.createNewRoute(Context.java:99)
+	at xf.xfvrp.opt.evaluation.EvaluationService.beginRoute(EvaluationService.java:278)
+	at xf.xfvrp.opt.evaluation.EvaluationService.check(EvaluationService.java:52)
+	at xf.xfvrp.opt.EvaluationServiceSpec.Simple check(EvaluationServiceSpec.groovy:180)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

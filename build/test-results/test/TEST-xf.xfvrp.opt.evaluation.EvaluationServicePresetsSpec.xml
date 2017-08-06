@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" tests="15" skipped="0" failures="0" errors="0" timestamp="2017-08-03T21:39:23" hostname="Cyberlion.fritz.box" time="0.026">
+  <properties/>
+  <testcase name="Block Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.004"/>
+  <testcase name="Block Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.002"/>
+  <testcase name="Block Count Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Block Rank Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.004"/>
+  <testcase name="Block Rank Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Block Pos Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.002"/>
+  <testcase name="Block Pos Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Block Pos Preset - Okay, DEFAULT BLOCK" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.002"/>
+  <testcase name="Block Pos Preset - Not Okay 2" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Depot Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.002"/>
+  <testcase name="Depot Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Vehicle Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Vehicle Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Blacklist Preset - Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <testcase name="Blacklist Preset - Not Okay" classname="xf.xfvrp.opt.evaluation.EvaluationServicePresetsSpec" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

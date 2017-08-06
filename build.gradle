@@ -1,0 +1,40 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin:'groovy'
+apply plugin:'eclipse'
+apply plugin:'application'
+// apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+ 
+repositories {
+    mavenCentral()
+}
+
+mainClassName = 'util.Application'
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+	//compile('org.springframework.boot:spring-boot-starter')
+	//compile('org.springframework.boot:spring-boot-starter-web')
+	compile 'org.codehaus.groovy:groovy-all:2.4.11'
+	
+	compile 'org.slf4j:slf4j-api:1.7.21'
+	compile 'org.apache.commons:commons-compress:1.5'
+	compile 'colt:colt:1.2.0'
+	compile 'com.google.collections:google-collections:1.0'
+	
+	testCompile 'junit:junit:4.12'
+	testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+	//testCompile('org.springframework.boot:spring-boot-starter-test')
+}

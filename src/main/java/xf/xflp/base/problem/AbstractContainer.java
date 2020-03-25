@@ -1,11 +1,11 @@
 package xf.xflp.base.problem;
 
+import util.collection.IndexedArrayList;
+import util.collection.LPListMap;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import util.collection.IndexedArrayList;
-import util.collection.LPListMap;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

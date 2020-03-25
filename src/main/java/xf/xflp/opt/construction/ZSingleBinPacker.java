@@ -1,18 +1,14 @@
 package xf.xflp.opt.construction;
 
+import xf.xflp.base.XFLPModel;
+import xf.xflp.base.problem.*;
+import xf.xflp.opt.XFLPBase;
+import xf.xflp.report.PackageEventType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.HighestLowerLeft;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
-import xf.xflp.base.problem.StrategyIf;
-import xf.xflp.opt.XFLPBase;
-import xf.xflp.report.PackageEventType;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

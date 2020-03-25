@@ -1,10 +1,5 @@
 package xf.xflp;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.XFLPSolution;
@@ -19,6 +14,10 @@ import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.opt.XFLPOptType;
 import xf.xflp.report.LPReport;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider
@@ -43,7 +42,7 @@ import xf.xflp.report.LPReport;
 public class XFLP {
 
 	/* Importer and data warehouse */
-	protected FlexiImporter importer = new FlexiImporter();
+	private FlexiImporter importer = new FlexiImporter();
 
 	/* Optimization type - Chosen by user */
 	private XFLPOptType optType;
@@ -58,7 +57,7 @@ public class XFLP {
 	private StatusManager statusManager = new StatusManager();
 
 	/**
-	 * Calculates the VRP with the before inserted data
+	 * Calculates the Loading Problem with the before inserted data
 	 * by addDepot(), addCustomer(), addMetric() and 
 	 * addVehicle() or the parameters setCapacity() and setMaxRouteDuration()
 	 */
@@ -86,9 +85,6 @@ public class XFLP {
 	 * Transforms the read data into a model, which can be used
 	 * for optimization.
 	 * 
-	 * @param depotList
-	 * @param customerList 
-	 * @param veh Contains parameters for capacity, max route duration and others.
 	 * @return Returns a model, which can be used for optimization procedures.
 	 * @throws IllegalArgumentException
 	 */
@@ -122,12 +118,7 @@ public class XFLP {
 		}
 		
 		// Pre-Sort items for logical order (ascending order location index)
-		Collections.sort(itemList, new Comparator<Item>() {
-			@Override
-			public int compare(Item arg0, Item arg1) {
-				return arg0.loadingLoc - arg1.loadingLoc;
-			}
-		});
+		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
 		
 		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
 	}
@@ -136,9 +127,9 @@ public class XFLP {
 	 * Uses the last planned solution and turns it
 	 * into a report representation.
 	 * 
-	 * All route plan informations can be akquired by this report.
+	 * All loading plan informations can be akquired by this report.
 	 * 
-	 * @return A report data structure with detailed information about the route plan or null if no solution was calculated.
+	 * @return A report data structure with detailed information about the loading plan or null if no solution was calculated.
 	 */
 	public LPReport getReport() {
 		if(lastSolution != null)
@@ -148,24 +139,20 @@ public class XFLP {
 	}
 
 	/**
-	 * Akquire a depot data object to insert data for
-	 * a new depot. The next call of this method will
-	 * finalize the before akquired depot data object. 
+	 * Akquire a item data object to insert data for
+	 * a new item. The next call of this method will
+	 * finalize the before akquired item data object.
 	 * 
-	 * @return Depot data object
+	 * @return Item data object
 	 */
 	public ItemData addItem() {
 		return importer.getItemData();
 	}
 
 	/**
-	 * Akquire a vehicle data object to insert data for
-	 * a new vehicle. The next call of this method will
-	 * finalize the before akquired vehicle data object.
-	 * 
-	 * The call of this method means, that default vehicle
-	 * parameters are not valid any longer. In this case they 
-	 * have to be inserted in such a vehicle data object.
+	 * Akquire a container data object to insert data for
+	 * a new container. The next call of this method will
+	 * finalize the before akquired container data object.
 	 * 
 	 * @return Container data object
 	 */
@@ -174,34 +161,33 @@ public class XFLP {
 	}
 
 	/**
-	 * Clears all added depots.
+	 * Clears all added items.
 	 */
 	public void clearItems() {
 		importer.clearItems();
 	}
 
 	/**
-	 * Removes all inserted vehicles and reset the planning parameters to default.
-	 * (See setCapacity() and setMaxRouteDuration() )
+	 * Removes all inserted containers and reset the planning parameters to default.
 	 */
 	public void clearContainers() {
 		importer.clearContainers();
 	}
 
 	/**
-	 * All parameters are reset to default values (in most cases to false)
+	 * All parameters are reset to default values
 	 */
 	public void clearParameters() {
 		parameter.clear();
 	}
 
 	/**
-	 * With this method a user can place a specifed status monitor object, where
-	 * news from the optimization are communicated.
+	 * With this method an app can insert a specified status monitor object, where
+	 * messages from the optimization are communicated.
 	 * 
 	 * A full transparent information flow is not given, because the loss of speed is huge.
 	 * 
-	 * @param monitor User defined monitor object
+	 * @param monitor defined monitor object
 	 */
 	public void setStatusMonitor(StatusMonitor monitor) {
 		statusManager.addObserver(monitor);

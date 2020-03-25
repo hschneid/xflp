@@ -1,22 +1,16 @@
 package util.instances;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Path;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.*;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Path;
 
 
 public class InstanceBuilder {

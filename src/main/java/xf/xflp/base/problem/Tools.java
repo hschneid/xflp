@@ -1,11 +1,11 @@
 package xf.xflp.base.problem;
 
+import util.collection.IndexedArrayList;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import util.collection.IndexedArrayList;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

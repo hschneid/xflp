@@ -1,9 +1,9 @@
 package xf.xflp.report;
 
+import xf.xflp.base.problem.Container;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import xf.xflp.base.problem.Container;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

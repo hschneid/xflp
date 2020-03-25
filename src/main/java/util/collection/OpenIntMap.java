@@ -1,13 +1,13 @@
 package util.collection;
 
-import java.util.Iterator;
-import java.util.List;
-
 import cern.colt.function.IntProcedure;
 import cern.colt.list.IntArrayList;
 import cern.colt.list.ObjectArrayList;
 import cern.colt.map.AbstractIntObjectMap;
 import cern.colt.map.OpenIntObjectHashMap;
+
+import java.util.Iterator;
+import java.util.List;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

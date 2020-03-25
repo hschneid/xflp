@@ -1,11 +1,11 @@
 package xf.xflp.base.problem;
 
 
-import java.util.Set;
-
 import util.Copyable;
 import util.collection.Indexable;
 import xf.xflp.report.PackageEventType;
+
+import java.util.Set;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

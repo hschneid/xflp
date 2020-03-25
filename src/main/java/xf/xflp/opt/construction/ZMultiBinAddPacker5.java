@@ -1,14 +1,14 @@
 package xf.xflp.opt.construction;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.opt.XFLPBase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 
 /** 

@@ -1,13 +1,13 @@
 package xf.xflp.opt.extract;
 
+import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.Item;
+import xf.xflp.opt.construction.ZMultiBinAddPackerNoSort;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.opt.construction.ZMultiBinAddPackerNoSort;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

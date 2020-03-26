@@ -1,10 +1,10 @@
 package xf.xflp.opt.construction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /** 

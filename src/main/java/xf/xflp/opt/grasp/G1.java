@@ -1,16 +1,11 @@
 package xf.xflp.opt.grasp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
-
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.opt.construction.ZMultiBinAddPackerNoSort;
 import xf.xflp.opt.grasp.BigItemBuilder.BigItemBuilderResult;
+
+import java.util.*;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

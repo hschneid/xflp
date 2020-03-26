@@ -2,7 +2,6 @@ package script;
 
 import util.XFVRPFileUtil;
 import xf.xfvrp.XFVRP;
-import xf.xfvrp.base.Debug;
 import xf.xfvrp.base.monitor.StatusCode;
 import xf.xfvrp.base.monitor.StatusMonitor;
 import xf.xfvrp.opt.XFVRPOptType;

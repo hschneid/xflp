@@ -1,16 +1,9 @@
 package xf.xflp.base.problem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.HashBiMap;
-
 import util.collection.LPListMap;
+
+import java.util.*;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

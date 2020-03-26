@@ -1,11 +1,11 @@
 package xf.xflp.base.problem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import util.Copyable;
 import util.collection.LPListMap;
 import util.collection.SetIndexArrayList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /** 

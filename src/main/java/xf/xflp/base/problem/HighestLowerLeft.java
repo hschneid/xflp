@@ -15,10 +15,6 @@ import java.util.List;
  */
 public class HighestLowerLeft implements StrategyIf {
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.fhg.iml.packer.strategy.StrategyIf#choose(de.fhg.iml.packer.ds.container.Stack, de.fhg.iml.packer.ds.container.Container, java.util.List)
-	 */
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
 		Position bestPos = null;

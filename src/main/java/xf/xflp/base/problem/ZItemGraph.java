@@ -42,7 +42,7 @@ public class ZItemGraph {
 			// Update of lower items with new upper item
 			for (Item lowerItem : lowerItems) {
 				if(upperList.get(lowerItem.index) == null)
-					upperList.set(lowerItem.index, new ArrayList<Item>());
+					upperList.set(lowerItem.index, new ArrayList<>());
 				upperList.get(lowerItem.index).add(newItem);
 			}
 		}

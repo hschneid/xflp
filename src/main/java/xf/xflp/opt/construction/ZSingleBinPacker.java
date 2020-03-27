@@ -21,7 +21,7 @@ import java.util.Map;
  * Item packer for single container with adding and removing items
  * 
  * This packer puts the items in a sequence into one single container.
- * It is able to add and to remove the items with respect ot theit loading type.
+ * It is able to add and to remove the items with respect to their loading type (LOAD, UNLOAD).
  * There is no optimization in container allocation or item sequence.
  * 
  * @author hschneid
@@ -30,12 +30,7 @@ import java.util.Map;
 public class ZSingleBinPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
-	public static boolean VERBOSE_KEYFIGURES = true;
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.psi.efload.packerapi.IntegralPacker#createLoadingPlan(de.psi.efload.packerapi.TourTransport[], de.psi.efload.packerapi.ContainerType[])
-	 */
 	@Override
 	public void execute(XFLPModel model) {
 		Container container = new Container(model.getContainerTypes()[0], 1f);
@@ -43,32 +38,30 @@ public class ZSingleBinPacker extends XFLPBase {
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
 		List<Item> unplannedItemList = new ArrayList<>();
-		//		StrategyIf strategy = new TouchingPerimeter();
+		// StrategyIf strategy = new TouchingPerimeter();
 		StrategyIf strategy = new HighestLowerLeft();
 		//		StrategyIf strategy = new MaxFreeLoadingMeter();
 
-		// �ber alle Items in der sortierten Reihenfolge
+		// For all items with respect to given sort order
 		Item[] items = model.getItems();
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 
 			if(item.loadingType == PackageEventType.LOAD) {
-
-				// F�ge Item zum Container hinzu
 				Position insertPosition = null;
 
-				// Pr�fe die Vertr�glichkeit des Stack mit dem ContainerTyp ab
+				// Check if item is allowed to this container type
 				if(item.allowedContainerSet.contains(container.getContainerType())) {				
-					// Hole die vorhandenen Einf�ge-Positionen
+					// Fetch existing insert positions
 					List<Position> posList = container.getPossibleInsertPositionList(item);
 
 					if(posList.size() != 0) {
-						// Je nach Einf�ge-Strategie
+						// Choose according to select strategy
 						insertPosition = strategy.choose(item, container, posList);
 					}
 				}
 
-				// F�ge Item dem Container hinzu
+				// Add item to container
 				if(insertPosition != null) {						
 					container.add(item, insertPosition);
 					loadedItemMap.put(item.externalIndex, item);

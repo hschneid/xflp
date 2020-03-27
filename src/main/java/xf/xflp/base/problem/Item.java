@@ -151,7 +151,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	 */
 	@Override
 	public String toString() {
-		return "\tItem "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" "+(((isLoading)?1:-1)+" ("+w+","+l+","+h+")");
+		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w+","+l+","+h+") ["+x+", "+y+", "+z+" "+(this.isRotated?"R":"")+"]";
 	}
 	
 	/**

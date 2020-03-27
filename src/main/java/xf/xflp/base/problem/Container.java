@@ -45,15 +45,6 @@ public class Container extends AbstractContainer {
 
 	public boolean WITH_STACK_FENCE = false;
 
-	/**
-	 * 
-	 * @param width
-	 * @param length
-	 * @param height
-	 * @param maxWeight
-	 * @param containerType
-	 * @param lifoImportance
-	 */
 	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance) {
 		super(height, width, length, maxWeight, containerType);
 		this.lifoImportance = lifoImportance;
@@ -61,11 +52,6 @@ public class Container extends AbstractContainer {
 		init();
 	}
 	
-	/**
-	 * 
-	 * @param containerPrototype
-	 * @param lifoImportance
-	 */
 	public Container(Container containerPrototype, float lifoImportance) {
 		this(
 				containerPrototype.getHeight(),
@@ -78,10 +64,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @param pos
-	 * @return
+	 * Adds item to container and update internal data structure
 	 */
 	public int add(Item item, Position pos) {
 		pos = normPosition(item, pos);
@@ -132,8 +115,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
+	 * Remove item from container and update internal data structure
 	 */
 	public void remove(Item item) {
 		// Entferne Objekt
@@ -172,9 +154,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param newItem
-	 * @return
+	 * Returns all possible and valid insert positions for this item.
 	 */
 	public List<Position> getPossibleInsertPositionList(Item newItem) {
 		List<Position> posList = new ArrayList<>();
@@ -269,12 +249,8 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * Checks whether the new item is placed ontop of remaining items. It is tested
-	 * that all 4 corners of the new item have a current item directly below that item. 
-	 * 
-	 * @param pos
-	 * @param item
-	 * @param itemLList
+	 * Checks whether the new item is placed on top of remaining items. It is tested
+	 * that all 4 corners of the new item have at least one current item directly below that item.
 	 */
 	private boolean checkStackingAndSeatOn(Position pos, int w, int l, int stackingGroup) {
 		if(pos.z == 0)
@@ -317,9 +293,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * @param item
-	 * @param pos
-	 * @return
+	 *
 	 */
 	private Position normPosition(Item item, Position pos) {
 		// Rotiere falls notwendig
@@ -335,11 +309,6 @@ public class Container extends AbstractContainer {
 	 * Checks whether there is an item which reaches over two stacks. Stacks are
 	 * settled by the base item on the floor. no item should overlap the borders
 	 * of the base item.
-	 * 
-	 * @param pos
-	 * @param item
-	 * @param itemLList
-	 * @return
 	 */
 	private boolean checkStackBaseFenceing(Position pos, Item item) {
 		if(pos.z == 0)
@@ -358,11 +327,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param pos
-	 * @param item
-	 * @param rotation
-	 * @return
+	 *
 	 */
 	private boolean checkLoadBearing(Position pos, Item item, int rotation) {
 		if(pos.z == 0)
@@ -386,9 +351,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	private List<Position> findCoveredPositions(Item item) {
 		List<Position> coveredPositionList = new ArrayList<>();
@@ -429,12 +392,7 @@ public class Container extends AbstractContainer {
 
 	public float getMaxEmptyArea() {
 		List<Position> posList = new ArrayList<>(activePosList);
-		Collections.sort(posList, new Comparator<Position>() {
-			@Override
-			public int compare(Position o1, Position o2) {
-				return (o1.x - o2.x);
-			}
-		});
+		posList.sort(Comparator.comparingInt(o -> o.x));
 
 		// Obere Absch�tzung der Fl�che
 		float area = 0;
@@ -447,7 +405,7 @@ public class Container extends AbstractContainer {
 		// F�ge die Rest-Fl�che bis zur Wand hinzu
 		// Annahme dass es immer am unteren Ende einen geben muss.
 		Position lastPos = posList.get(posList.size() - 1);
-		area += (this.width - lastPos.x) * (this.length - 0);
+		area += (this.width - lastPos.x) * this.length;
 
 		return area;
 	}
@@ -487,9 +445,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	private List<Position> findProjectableHorizontalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
@@ -502,9 +458,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	private List<Position> findProjectableVerticalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
@@ -518,10 +472,7 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * Sucht inaktive Positionen, die durch das Entfernen des Items
-	 * wieder frei geschaufelt werden k�nnen. 
-	 * 
-	 * @param stack
-	 * @return
+	 * wieder frei geschaufelt werden k�nnen.
 	 */
 	private List<Position> findUncoveringPositions(Item item) {
 		List<Position> list = new ArrayList<>();
@@ -539,9 +490,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	private List<Position> findHorizontalProjectedPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
@@ -559,9 +508,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	private List<Position> findVerticalProjectedPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
@@ -577,9 +524,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param entry
-	 * @param ancestor
+	 *
 	 */
 	private void insertTree(Position entry, Position ancestor) {
 		posAncestorMap.put(entry, ancestor);
@@ -610,8 +555,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param pos
+	 * Removes a position if it is not used as possible insert position anymore.
 	 */
 	private void removePosition(Position pos) {
 		if(pos.type != ROOT) {
@@ -626,9 +570,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param pos
-	 * @return
+	 *
 	 */
 	private void checkPosition(Position pos) {
 		// L�sche aktive unbesetzte Nachfolger-Positionen
@@ -652,9 +594,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @param pos
+	 *
 	 */
 	private void addElement(Item item, Position pos) {
 		item.setPosition(pos);
@@ -681,10 +621,9 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * 
-	 * @param item
 	 */
 	private void removeElement(Item item) {
-		Integer index = new Integer(item.index);
+		Integer index = item.index;
 
 		// Delete from Z-Graph
 		zGraph.remove(item);
@@ -705,8 +644,6 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * 
-	 * @param item
-	 * @return
 	 */
 	private List<Position> findInsertPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
@@ -746,8 +683,6 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * 
-	 * @param pos
-	 * @return
 	 */
 	private Item findNextLeftElement(Position pos) {
 		Item leftItem = null;
@@ -765,8 +700,6 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * 
-	 * @param pos
-	 * @return
 	 */
 	private Item findNextLowerElement(Position pos) {
 		Item lowerItem = null;
@@ -784,12 +717,6 @@ public class Container extends AbstractContainer {
 
 	/**
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
-	 * @param isProjected
-	 * @return
 	 */
 	private Position createPosition(int x, int y, int z, int type, boolean isProjected) {
 		return new Position(maxPosIdx++, x, y, z, type, isProjected);
@@ -867,11 +794,4 @@ public class Container extends AbstractContainer {
 		return lifoImportance;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Item[] getItemList() {
-		return itemList.toArray(new Item[0]);
-	}
 }

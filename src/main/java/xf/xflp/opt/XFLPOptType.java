@@ -10,7 +10,7 @@ import xf.xflp.opt.construction.ZSingleBinPacker;
  * LICENSE file in the root directory of this source tree.
  *
  *
- * This enumeration holds all for the user accessible optimization
+ * This enumeration holds all for the user available optimization
  * methods.
  * 
  * @author hschneid
@@ -21,12 +21,8 @@ public enum XFLPOptType {
 	SINGLE_PACKER_ADD_REMOVE(ZSingleBinPacker.class);
 	
 	private Class<? extends XFLPBase> clazz; 
-	
-	/**
-	 * 
-	 * @param clazz
-	 */
-	private XFLPOptType(Class<? extends XFLPBase> clazz) {
+
+	XFLPOptType(Class<? extends XFLPBase> clazz) {
 		this.clazz = clazz;
 	}
 	

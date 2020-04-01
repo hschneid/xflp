@@ -25,12 +25,9 @@ public class ZItemGraph {
 	private final SetIndexArrayList<List<Item>> upperList = new SetIndexArrayList<>();
 
 	/**
-	 * Adds a new item into Z-Graph. Due to linkage to interal data structure, the effort of adding
-	 * is O(n+m)
-	 * 
-	 * @param newItem
-	 * @param itemList
-	 * @param zMap
+	 * Adds a new item into Z-Graph. Due to linkage to internal data structure,
+	 * the effort of adding is O(n+m)
+	 *
 	 */
 	public void add(Item newItem, List<Item> itemList, LPListMap<Integer, Integer> zMap) {
 		// Lower
@@ -167,9 +164,7 @@ public class ZItemGraph {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @return
+	 *
 	 */
 	public List<?>[] getItemsBelowWithCutArea(Item item) {
 		return new List[] {
@@ -182,7 +177,7 @@ public class ZItemGraph {
 	 * 
 	 * @param item New item
 	 * @param itemList List of all packed items
-	 * @param zList List of all item indeces where zh = item.z
+	 * @param zList List of all item indices where zh = item.z
 	 * @return List of all items below new item
 	 */
 	private List<Item> searchItemsBelow(Item item, List<Item> itemList, List<Integer> zList) {
@@ -231,9 +226,7 @@ public class ZItemGraph {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @param found
+	 *
 	 */
 	private void searchBaseRecursive(Item item, boolean[] found) {
 		if(lowerList.get(item.index) == null)
@@ -248,9 +241,7 @@ public class ZItemGraph {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @param found
+	 *
 	 */
 	private void searchCeilRecursive(Item item, boolean[] found) {
 		if(upperList.get(item.index) == null || upperList.get(item.index).size() == 0)
@@ -276,7 +267,6 @@ public class ZItemGraph {
 		 * 
 		 * @param item
 		 * @param lowerItemList
-		 * @param cutRatioList
 		 */
 		public Entry(Item item, List<Item> lowerItemList) {
 			this.item = item;

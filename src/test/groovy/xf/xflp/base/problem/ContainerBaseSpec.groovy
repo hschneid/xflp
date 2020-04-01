@@ -206,13 +206,13 @@ class ContainerBaseSpec extends Specification {
         con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
         con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0,0,1))
         con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0,0,2))
-        def apList1 = new ArrayList<>(con.getActivePosList())
+        def apList1 = new ArrayList<>(con.activePosList)
         con.remove(i2)
-        def apList2 = new ArrayList<>(con.getActivePosList())
+        def apList2 = new ArrayList<>(con.activePosList)
         con.remove(i1)
-        def apList3 = new ArrayList<>(con.getActivePosList())
+        def apList3 = new ArrayList<>(con.activePosList)
         con.remove(i3)
-        def apList4 = new ArrayList<>(con.getActivePosList())
+        def apList4 = new ArrayList<>(con.activePosList)
 
         then:
         findPos(apList1, 1, 0, 0) != null
@@ -224,7 +224,7 @@ class ContainerBaseSpec extends Specification {
         findPos(apList1, 0, 0, 3) != null
         findPos(apList2, 0, 0, 1) != null
         findPos(apList3, 0, 0, 0) != null
-        con.getActivePosList().size() == 1
+        con.activePosList.size() == 1
         findPos(apList4, 0, 0, 0) != null
     }
 
@@ -239,9 +239,9 @@ class ContainerBaseSpec extends Specification {
         con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
         con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 1, 0, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.getActivePosList(), 1, 1, 0);
-        def pos2 = findPos(con.getInActivePosList(), 1, 1, 0);
-        def pos3 = findPos(con.getCoveredPosList(), 1, 1, 0);
+        def pos1 = findPos(con.activePosList, 1, 1, 0);
+        def pos2 = findPos(con.inactivePosList, 1, 1, 0);
+        def pos3 = findPos(con.coveredPosList, 1, 1, 0);
 
         then:
         pos1 == null
@@ -260,9 +260,9 @@ class ContainerBaseSpec extends Specification {
         con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
         con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 1, 0, 0, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.getActivePosList(), 1, 1, 0);
-        def pos2 = findPos(con.getInActivePosList(), 1, 1, 0);
-        def pos3 = findPos(con.getCoveredPosList(), 1, 1, 0);
+        def pos1 = findPos(con.activePosList, 1, 1, 0);
+        def pos2 = findPos(con.inactivePosList, 1, 1, 0);
+        def pos3 = findPos(con.coveredPosList, 1, 1, 0);
 
         then:
         pos1 == null
@@ -281,9 +281,9 @@ class ContainerBaseSpec extends Specification {
         con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
         con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.getActivePosList(), 1, 0, 1);
-        def pos2 = findPos(con.getInActivePosList(), 1, 0, 1);
-        def pos3 = findPos(con.getCoveredPosList(), 1, 0, 1);
+        def pos1 = findPos(con.activePosList, 1, 0, 1);
+        def pos2 = findPos(con.inactivePosList, 1, 0, 1);
+        def pos3 = findPos(con.coveredPosList, 1, 0, 1);
 
         then:
         pos1 == null
@@ -302,9 +302,9 @@ class ContainerBaseSpec extends Specification {
         con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
         con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.getActivePosList(), 0, 1, 1);
-        def pos2 = findPos(con.getInActivePosList(), 0, 1, 1);
-        def pos3 = findPos(con.getCoveredPosList(), 0, 1, 1);
+        def pos1 = findPos(con.activePosList, 0, 1, 1);
+        def pos2 = findPos(con.inactivePosList, 0, 1, 1);
+        def pos3 = findPos(con.coveredPosList, 0, 1, 1);
 
         then:
         pos1 == null
@@ -520,6 +520,53 @@ class ContainerBaseSpec extends Specification {
         findPos(pList2, 0, 1, 0, false) != null
         findPos(pList3, 1, 0, 0, true) == null
         findPos(pList3, 0, 1, 0, false) != null
+    }
+
+    def "test horizontal projection of insert position"() {
+        def con = getContainer(3, 5,2)
+        def i1 = getItem(2, 1, 1, 1, 100, 0)
+        def i2 = getItem(1, 3, 1, 1, 100, 0)
+        def i3 = getItem(3, 2, 1, 1, 100, 0)
+
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 2, 0, 0))
+        when:
+        def pList = con.getPossibleInsertPositionList(i3)
+        def pos = findPos(pList, 0, 3, 0)
+        then:
+        pos != null
+    }
+
+    def "test vertical projection of insert position"() {
+        def con = getContainer(3, 5,2)
+        def i1 = getItem(1, 2, 1, 1, 100, 0)
+        def i2 = getItem(2, 1, 1, 1, 100, 0)
+        def i3 = getItem(1, 3, 1, 1, 100, 0)
+
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
+        when:
+        def pList = con.getPossibleInsertPositionList(i3)
+        def pos = findPos(pList, 2, 0, 0)
+        then:
+        pos != null
+    }
+
+    def "test vertical projection of insert position at other box"() {
+        def con = getContainer(4, 6,2)
+        def i1 = getItem(3, 2, 1, 1, 100, 0)
+        def i2 = getItem(1, 2, 1, 1, 100, 0)
+        def i3 = getItem(2, 1, 1, 1, 100, 0)
+        def i4 = getItem(2, 3, 1, 1, 100, 0)
+
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
+        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 4, 0))
+        when:
+        def pList = con.getPossibleInsertPositionList(i4)
+        def pos = findPos(pList, 2, 2, 0)
+        then:
+        pos != null
     }
 
     private Container getContainer(int width, int length, int height) {

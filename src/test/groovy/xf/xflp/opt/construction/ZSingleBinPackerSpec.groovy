@@ -1,4 +1,4 @@
-package xf.xflp.opt
+package xf.xflp.opt.construction
 
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
@@ -6,6 +6,7 @@ import xf.xflp.base.XFLPParameter
 import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
 import xf.xflp.opt.construction.ZSingleBinPacker
+import xf.xflp.opt.construction.strategy.HighestLowerLeft
 
 class ZSingleBinPackerSpec extends Specification {
 

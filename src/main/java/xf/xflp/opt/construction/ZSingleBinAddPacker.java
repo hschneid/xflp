@@ -1,6 +1,8 @@
 package xf.xflp.opt.construction;
 
 import xf.xflp.base.problem.*;
+import xf.xflp.opt.construction.strategy.HighestLowerLeft;
+import xf.xflp.opt.construction.strategy.StrategyIf;
 
 import java.util.ArrayList;
 import java.util.HashMap;

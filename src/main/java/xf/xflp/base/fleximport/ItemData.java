@@ -41,9 +41,9 @@ public abstract class ItemData implements Serializable {
 	protected float weight = 0;
 	protected float stackingWeightLimit = Float.MAX_VALUE;
 	
-	protected String stackingGroup = "default_stackinggroup";
-	protected String allowedStackingGroups = new String();
-	protected String allowedContainerSet = new String();
+	protected String stackingGroup = "default_stacking_group";
+	protected String allowedStackingGroups = "default_stacking_group";
+	protected String allowedContainerSet = "default_container_type";
 	
 	protected String loadingLocation = "";
 	protected String unloadingLocation = "";
@@ -63,8 +63,8 @@ public abstract class ItemData implements Serializable {
 	 * @param shipmentID the shipmentID to set
 	 * @return
 	 */
-	public final ItemData setShipmentID(String orderID) {
-		this.shipmentID = orderID;
+	public final ItemData setShipmentID(String shipmentID) {
+		this.shipmentID = shipmentID;
 		return this;
 	}
 
@@ -126,8 +126,8 @@ public abstract class ItemData implements Serializable {
 	 * @param allowedStackingGroups the allowedStackingGroups to set
 	 * @return
 	 */
-	public final ItemData setAllowedStackingGroups(String allowedStackingGropus) {
-		this.allowedStackingGroups = allowedStackingGropus;
+	public final ItemData setAllowedStackingGroups(String allowedStackingGroups) {
+		this.allowedStackingGroups = allowedStackingGroups;
 		return this;
 	}
 

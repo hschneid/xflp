@@ -3,6 +3,9 @@ package xf.xflp.opt.construction;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.*;
 import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.construction.strategy.HighestLowerLeft;
+import xf.xflp.opt.construction.strategy.StrategyIf;
+import xf.xflp.opt.construction.strategy.TouchingPerimeter;
 import xf.xflp.report.PackageEventType;
 
 import java.util.ArrayList;
@@ -31,6 +34,12 @@ public class ZSingleBinPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
+	private StrategyIf strategy;
+
+	public ZSingleBinPacker() {
+		this.strategy = new HighestLowerLeft();
+	}
+
 	@Override
 	public void execute(XFLPModel model) {
 		Container container = new Container(model.getContainerTypes()[0], 1f);
@@ -39,7 +48,7 @@ public class ZSingleBinPacker extends XFLPBase {
 
 		List<Item> unplannedItemList = new ArrayList<>();
 		// StrategyIf strategy = new TouchingPerimeter();
-		StrategyIf strategy = new HighestLowerLeft();
+		// StrategyIf strategy = new HighestLowerLeft();
 		//		StrategyIf strategy = new MaxFreeLoadingMeter();
 
 		// For all items with respect to given sort order
@@ -84,4 +93,9 @@ public class ZSingleBinPacker extends XFLPBase {
 		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
+
+	public void setStrategy(StrategyIf strategy) {
+		this.strategy = strategy;
+	}
+
 }

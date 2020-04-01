@@ -279,6 +279,23 @@ class ContainerStackingSpec extends Specification {
         findPos(pList, 0, 0, 1, false) == null
     }
 
+    def "check overlapping items"() {
+        def con = getContainer(3,3,2)
+        con.WITH_STACK_FENCE = true
+        def i1 = getItem(2, 2, 1, 1, 111,0)
+        def i2 = getItem(3, 1, 1, 1, 111,0 )
+        def i3 = getItem(2, 1, 1, 1, 111,0 )
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        when:
+        def pList2 = con.getPossibleInsertPositionList(i2)
+        def pos2 = findPos(pList2, 0, 0, 1)
+        def pList3 = con.getPossibleInsertPositionList(i3)
+        def pos3 = findPos(pList3, 0, 0, 1)
+        then:
+        pos2 == null
+        pos3 != null
+    }
+
     private Container getContainer(int width, int length, int height) {
         return new Container(width, length, height, 999999999, 0, 0);
     }

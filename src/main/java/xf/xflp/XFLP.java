@@ -58,8 +58,7 @@ public class XFLP {
 
 	/**
 	 * Calculates the Loading Problem with the before inserted data
-	 * by addDepot(), addCustomer(), addMetric() and 
-	 * addVehicle() or the parameters setCapacity() and setMaxRouteDuration()
+	 * by addContainer() and addItem()
 	 */
 	public void executeLoadPlanning() {
 		statusManager.fireMessage(StatusCode.RUNNING, "XFLP started");
@@ -91,7 +90,7 @@ public class XFLP {
 	private XFLPModel init() throws IllegalArgumentException {
 		statusManager.fireMessage(StatusCode.RUNNING, "Initialisation");
 
-		// Pr�fung auf Eingabeparameter
+		// Check input data
 		if(importer.getItemList().size() == 0) {
 			statusManager.fireMessage(StatusCode.ABORT, "No items are given.");
 			throw new IllegalArgumentException("No items are given.");
@@ -191,5 +190,18 @@ public class XFLP {
 	 */
 	public void setStatusMonitor(StatusMonitor monitor) {
 		statusManager.addObserver(monitor);
+	}
+
+	/**
+	 * Specify the type of optimization
+	 *
+	 * Examples:
+	 *  - Single Bin Packer
+	 *  - Multi Bin Packer
+	 *
+	 * @param optType - Enum of available optimization types
+	 */
+	public void setTypeOfOptimization(XFLPOptType optType) {
+		this.optType = optType;
 	}
 }

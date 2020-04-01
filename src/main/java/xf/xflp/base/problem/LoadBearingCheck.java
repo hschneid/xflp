@@ -1,5 +1,7 @@
 package xf.xflp.base.problem;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,9 +22,14 @@ public class LoadBearingCheck {
 	private float[] freeLoadBearing;
 	private float[] openWeight;
 
+
 	/**
-	 * 
-	 * @return
+	 * Checks the bearing capacity of all items in the given graph.
+	 *
+	 * The graphs orders the items according to the level in the stack.
+	 * Multiple items can be stacked on top of multiple items.
+	 * The weight of all ceiling items must be lower then the bearing capacity of the item.
+	 * If a item is placed on multiple items, the weight is splitted proportional of covered area.
 	 */
 	public boolean checkLoadBearing(List<Item> ceilingItems, ZItemGraph graph) {
 		freeLoadBearing = new float[graph.size()];
@@ -30,7 +37,7 @@ public class LoadBearingCheck {
 		Arrays.fill(freeLoadBearing, -1);
 		Arrays.fill(openWeight, -1);
 
-		// F�r alle ceiling items
+		// For all ceiling items
 		for (Item ceilingItem : ceilingItems) {
 			freeLoadBearing[ceilingItem.index] = ceilingItem.stackingWeightLimit;
 			openWeight[ceilingItem.index] = ceilingItem.weight;
@@ -66,6 +73,26 @@ public class LoadBearingCheck {
 		List<?>[] lowerItemData = graph.getItemsBelowWithCutArea(item);
 		List<Item> lowerItems = (List<Item>) lowerItemData[0];
 		List<Float> cutArea = (List<Float>) lowerItemData[1];
+		boolean isValid = checkLoadBearingOfItem(item, ow, lowerItems, cutArea);
+		if(!isValid)
+			return false;
+
+		// Call this method for all item below of current item
+		for (int i = 0; i < lowerItems.size(); i++) {
+			Item lowerItem = lowerItems.get(i);
+
+			// Check lower items if current item is not on floor (recursively)
+			if(lowerItem.z > 0 && !checkLoadBearingRecurive(lowerItem, graph))
+				return false;
+		}
+
+		return true;
+	}
+
+	/*
+	 * Checks the load bearing capacity for a certain item
+	 */
+	private boolean checkLoadBearingOfItem(Item item, float ow, List<Item> lowerItems, List<Float> cutArea) {
 		for (int i = 0; i < lowerItems.size(); i++) {
 			Item lowerItem = lowerItems.get(i);
 
@@ -89,15 +116,6 @@ public class LoadBearingCheck {
 
 			// Check the bearing restriction
 			if(freeLoadBearing[lowerItem.index] < 0)
-				return false;
-		}
-
-		// Call this method for all item below of current item
-		for (int i = 0; i < lowerItems.size(); i++) {
-			Item lowerItem = lowerItems.get(i);
-
-			// Verfahre rekursiv mit darunterliegenden Items, wenn sie nicht auf dem Boden stehen 
-			if(lowerItem.z > 0 && !checkLoadBearingRecurive(lowerItem, graph))
 				return false;
 		}
 

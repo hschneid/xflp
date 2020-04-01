@@ -165,17 +165,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 			rotate();
 		this.isLoading = false;
 	}
-	
-	/**
-	 * 
-	 */
-	public void resetWithoutRotate() {
-		clearPosition();
-		this.index = -1;
-		this.containerIndex = -1;
-		this.isLoading = false;
-	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see util.collection.Indexable#getIdx()

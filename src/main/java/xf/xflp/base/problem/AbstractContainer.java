@@ -199,8 +199,8 @@ public abstract class AbstractContainer implements Iterable<Item> {
 					value += w * l;
 
 			List<Integer> zItemList = new ArrayList<>(); 
-			list = yMap.get(pos.z); if(list != null) zItemList.addAll(list);
-			list = yMap.get(zh); if(list != null) zItemList.addAll(list);
+			list = zMap.get(pos.z); if(list != null) zItemList.addAll(list);
+			list = zMap.get(zh); if(list != null) zItemList.addAll(list);
 
 			// Pr�fe alle Items, die pos.x ber�hren
 			for (int j = zItemList.size() - 1; j >= 0; j--) {

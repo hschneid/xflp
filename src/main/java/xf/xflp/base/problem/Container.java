@@ -54,9 +54,9 @@ public class Container extends AbstractContainer {
 	
 	public Container(Container containerPrototype, float lifoImportance) {
 		this(
-				containerPrototype.getHeight(),
 				containerPrototype.getWidth(),
 				containerPrototype.getLength(),
+				containerPrototype.getHeight(),
 				containerPrototype.getMaxWeight(),
 				containerPrototype.getContainerType(),
 				lifoImportance
@@ -293,10 +293,10 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 *
+	 * The given position will be normed to an unrotated position.
 	 */
 	private Position normPosition(Item item, Position pos) {
-		// Rotiere falls notwendig
+		// Rotate if necessary
 		if(pos instanceof RotatedPosition) {
 			RotatedPosition rPos = (RotatedPosition)pos;
 			item.rotate();
@@ -309,6 +309,9 @@ public class Container extends AbstractContainer {
 	 * Checks whether there is an item which reaches over two stacks. Stacks are
 	 * settled by the base item on the floor. no item should overlap the borders
 	 * of the base item.
+	 *
+	 * Use the simple function to get all items, which are below the new item.
+	 * If number of lower items is bigger than 1 then it is overlapping.
 	 */
 	private boolean checkStackBaseFenceing(Position pos, Item item) {
 		if(pos.z == 0)
@@ -385,7 +388,7 @@ public class Container extends AbstractContainer {
 	public float getLoadedWeight() {
 		float sum = 0;
 		for (Item item : this.itemList)
-			sum += item.weight;
+			sum += (item != null) ? item.weight : 0;
 
 		return sum;
 	}
@@ -471,8 +474,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * Sucht inaktive Positionen, die durch das Entfernen des Items
-	 * wieder frei geschaufelt werden k�nnen.
+	 * Search inactive positions, which got uncovered through removal of an item.
 	 */
 	private List<Position> findUncoveringPositions(Item item) {
 		List<Position> list = new ArrayList<>();
@@ -497,9 +499,6 @@ public class Container extends AbstractContainer {
 		for (Position pos : activePosList) {
 			if(pos.type == EXTENDED_H) {
 				Item s = positionItemMap.get(pos);
-				if(s == null)
-					System.out.println();
-
 				if(pos.z == item.z && pos.x <= item.xw && s.x > item.x && pos.y >= item.y && pos.y <= item.yl)
 					posList.add(pos);
 			}
@@ -573,7 +572,7 @@ public class Container extends AbstractContainer {
 	 *
 	 */
 	private void checkPosition(Position pos) {
-		// L�sche aktive unbesetzte Nachfolger-Positionen
+		// Removes active unused follower-positions
 		checkTreeAndRemove2(pos);
 
 		Position ancestor = posAncestorMap.get(pos);
@@ -615,7 +614,7 @@ public class Container extends AbstractContainer {
 		// Insert into Z-Graph
 		zGraph.add(item, itemList, zMap);
 
-		// Die nun besetzte Position wird inaktiv
+		// Active position gets inactive by adding item
 		switchActive2Inactive(pos);
 	}
 
@@ -648,7 +647,7 @@ public class Container extends AbstractContainer {
 	private List<Position> findInsertPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
 
-		// 2 triviale Positionen
+		// 2 simple positions
 		Position verticalPosition = null, horizontalPosition = null;
 		if(item.yl < this.length) {
 			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC, false);
@@ -660,7 +659,7 @@ public class Container extends AbstractContainer {
 		}
 
 		if(item.z == 0) {
-			// 2 projezierte Positionen
+			// 2 projected positions
 			if(item.x > 0 && verticalPosition != null) {
 				Item leftElement = findNextLeftElement(verticalPosition);
 				int leftPos = (leftElement != null) ? leftElement.xw : 0;
@@ -674,7 +673,7 @@ public class Container extends AbstractContainer {
 			}
 		}
 
-		// 1 H�hen-Position (�bergabe des Boden-Items)
+		// 1 ceiling position
 		if(item.z + item.h < this.height)
 			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC, false));
 
@@ -749,46 +748,20 @@ public class Container extends AbstractContainer {
 		itemPositionMap.clear();
 		maxPosIdx = 0;
 		zGraph.clear();
+		history.clear();
 
 		init();
 	}
 	
 	/**
 	 * 
-	 * @return
 	 */
 	public List<Item> getHistory() {
 		return history;
 	}
 
 	/**
-	 * Only for Unit Tests
 	 * 
-	 * @return
-	 */
-	public List<Position> getActivePosList() {
-		return activePosList;
-	}
-	/**
-	 * Only for Unit Tests
-	 * 
-	 * @return
-	 */
-	public List<Position> getInActivePosList() {
-		return inactivePosList;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Position> getCoveredPosList() {
-		return coveredPosList;
-	}
-
-	/**
-	 * 
-	 * @return
 	 */
 	public float getLifoImportance() {
 		return lifoImportance;

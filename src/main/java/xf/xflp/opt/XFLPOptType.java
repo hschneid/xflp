@@ -1,6 +1,7 @@
 package xf.xflp.opt;
 
 import xf.xflp.opt.construction.ZSingleBinPacker;
+import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider
@@ -18,7 +19,8 @@ import xf.xflp.opt.construction.ZSingleBinPacker;
  */
 public enum XFLPOptType {
 	
-	SINGLE_PACKER_ADD_REMOVE(ZSingleBinPacker.class);
+	SINGLE_PACKER_ADD_REMOVE(ZSingleBinPacker.class),
+	SINGLE_SWAP_PACKER(SingleBinOptimizedPacker.class);
 	
 	private Class<? extends XFLPBase> clazz; 
 

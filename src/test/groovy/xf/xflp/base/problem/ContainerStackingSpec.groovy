@@ -84,6 +84,37 @@ class ContainerStackingSpec extends Specification {
         found3 == null
     }
 
+    def "placing one item over two stacks - stacking groups not fitting"() {
+        Container con = getContainer(2,2,2)
+        def i1 = getItem(1, 1, 1, 1, 111, 1)
+        def i2 = getItem(1, 1, 1, 1, 111, 2)
+        def i3 = getItem(2, 1, 1, 1, 111, 1)
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1,0,0))
+
+        when:
+        def pList3 = con.getPossibleInsertPositionList(i3)
+
+        then:
+        findPos(pList3, 0,0, 1) == null
+    }
+
+    def "placing one item over two stacks - stacking groups are fitting"() {
+        Container con = getContainer(2,2,2)
+        def i1 = getItem(1, 1, 1, 1, 111, 2)
+        def i2 = getItem(1, 1, 1, 1, 111, 2)
+        def i3 = getItem(2, 1, 1, 1, 111, 2)
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1,0,0))
+
+        when:
+        def pList3 = con.getPossibleInsertPositionList(i3)
+
+        then:
+        findPos(pList3, 0,0, 1) != null
+    }
+
+
     def "do not add to a double stack (too heavy/bearing capacity)"() {
         def con = getContainer(2,2,3);
         def i1 = getItem(1, 1, 1, 1, 1, 0);

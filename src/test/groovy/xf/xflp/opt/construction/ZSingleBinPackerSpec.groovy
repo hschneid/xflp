@@ -29,7 +29,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
@@ -47,7 +47,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.findAll {i -> i.x == -1 || i.y == -1 || i.z == -1}.size() == 1
     }
 
@@ -65,7 +65,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
@@ -86,7 +86,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} != null
     }
 
@@ -107,7 +107,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
@@ -130,7 +130,7 @@ class ZSingleBinPackerSpec extends Specification {
         when:
         service.execute(model)
         then:
-        model.containers.size() == 1
+        model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 

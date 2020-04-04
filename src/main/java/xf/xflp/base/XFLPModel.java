@@ -22,7 +22,7 @@ import xf.xflp.base.problem.Item;
  */
 public class XFLPModel {
 
-	protected final Item[] items;
+	protected Item[] items;
 
 	/* Only one object per container type, solution will copy these objects */
 	protected final Container[] containerTypes;
@@ -36,12 +36,6 @@ public class XFLPModel {
 	/**
 	 * Initialize an optimization model object with the given input data. It contains the general
 	 * parameter for all optimization procedures. It holds no solution information.
-	 *
-	 * @param nodeArr
-	 * @param metric Metric that will be used to evaluate solutions
-	 * @param optMetric Metric that will be used for optimization processes
-	 * @param vehicle
-	 * @param parameter
 	 */
 	public XFLPModel(Item[] items, Container[] containerTypes, XFLPParameter parameter) {
 		this.items = items;
@@ -99,5 +93,9 @@ public class XFLPModel {
 	 */
 	public final void setUnplannedItems(Item[] unplannedItems) {
 		this.unplannedItems = unplannedItems;
+	}
+
+	public void setItems(Item[] items) {
+		this.items = items;
 	}
 }

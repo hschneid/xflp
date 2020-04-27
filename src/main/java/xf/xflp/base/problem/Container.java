@@ -25,31 +25,36 @@ public class Container extends AbstractContainer {
 	private List<Position> inactivePosList = new ArrayList<>();
 	private List<Position> coveredPosList = new ArrayList<>();
 
-	/* Beziehungsgraph der Positionen zu den hieraus entstandenen Positionen */
+	/* Relation graph between position - Father position -> [child positions] */
 	private LPListMap<Position, Position> posFollowerMap = new LPListMap<>();
 	private Map<Position, Position> posAncestorMap = new HashMap<>();
 
-	/* Beziehungsgraph in der Z-Achse: dr�ber und drunter*/
+	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
 
-	/* Verkn�pft das Item mit den daraus entstehenden Positionen */
+	/* Position -> Item */
 	private Map<Position, Item> positionItemMap = new HashMap<>();
-	/* Verkn�pft ein Item mit seiner gesetzten Position */
+	/* Item -> Position */
 	private HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
 
-	/* Historie der Einf�gungen und L�schungen auf diesem Container f�r Auswertung */
+	/* History of loaded items - is relevant for creating the solution report */
 	private List<Item> history = new ArrayList<>();
 	
 	private int maxPosIdx = 0;
 	private final float lifoImportance;
 
-	public boolean WITH_STACK_FENCE = false;
+	private GroundContactRule groundContactRule;
 
-	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance) {
+	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance, GroundContactRule groundContactRule) {
 		super(height, width, length, maxWeight, containerType);
 		this.lifoImportance = lifoImportance;
+		this.groundContactRule = groundContactRule;
 
 		init();
+	}
+
+	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance) {
+		this(width, length, height, maxWeight, containerType, lifoImportance, GroundContactRule.FREE);
 	}
 	
 	public Container(Container containerPrototype, float lifoImportance) {
@@ -161,27 +166,28 @@ public class Container extends AbstractContainer {
 
 		int itemW = newItem.w, itemL = newItem.l, itemH = newItem.h;
 
-		int orientationType = (newItem.spinable && itemW != itemL) ? 2 : 1;
 		int nbrOfItems = itemList.size();
 		int nbrOfActivePositions = activePosList.size();
 
-		// Pr�fe maximales Zuladungsgewicht
-		if(this.weight + newItem.weight > maxWeight)
+		// Check weight capacity of container
+		if(this.weight + newItem.weight > maxWeight) {
 			return posList;
+		}
 
-		// F�r jeden Orientierungsmodus
-		for (int rotation = 0; rotation < orientationType; rotation++) {
+		// For every rotation state
+		RotationType rotationType = (newItem.spinable && itemW != itemL) ? RotationType.SPINNABLE : RotationType.FIX;
+		for (int rotation = 0; rotation <= rotationType.getRotationType(); rotation++) {
 			if(rotation > 0) {
 				itemW = newItem.l;
 				itemL = newItem.w;
 			}
 
 			OUTER:
-				// F�r jede aktive Einf�geposition
+				// For every active position
 				for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
 					Position pos = activePosList.get(k);
 
-					// Pr�fe �berlappung mit Frachtraumw�nden
+					// Check overlapping with walls
 					if((pos.x + itemW) > width)
 						continue;
 					if((pos.z + itemH) > height)
@@ -189,8 +195,9 @@ public class Container extends AbstractContainer {
 					if(!ignoreMaxLength && (pos.y + itemL) > length)
 						continue;
 
-					// Pr�fe �berlappung der Position mit dem neuen Item
-					// gegen�ber vorhandenen Items
+					/*
+					 * Check Overlapping of items for insert position
+					 */
 					for (int j = nbrOfItems - 1; j >= 0; j--) {
 						Item item = itemList.get(j);
 						if(item == null) 
@@ -223,24 +230,26 @@ public class Container extends AbstractContainer {
 						// Sonst passt die Position
 						// => Ergo mache nix
 					}
-					// Stapelbegrenzung auf Basiselement (z = 0)
-					if(WITH_STACK_FENCE && !checkStackBaseFenceing(pos, newItem))
+
+					/*
+					 * Stack restrictions
+					 */
+					// Check ground contact restriction
+					// New item must not hang in the air and maybe cover multiple items
+					if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
 						continue;
 
-					// Pr�fe Stapelfaktor
-
-					// Pr�fe Stapelgruppe & Auflagefl�che
-					// Das darunterliegende Objekt muss die Stapelgruppe des neuen Objektes
-					// akzeptieren und (x und xw, sowie y und yl sind nicht in der Luft)
-					if(!checkStackingAndSeatOn(pos, itemW, itemL, newItem.stackingGroup))
+					// Check stacking group and weight bearing capacity
+					// All lower items must have the same stacking group
+					if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
 						continue;
 
-					// Pr�fe Auflast
+					// Check bearing capacity
+					// All lower items can bear the additional weight
 					if(!checkLoadBearing(pos, newItem, rotation)) 
 						continue;
 
-					// Wenn alle Items passen, nur dann
-					// darf die Position akzeptiert werden.
+					// Create RotatedPosition if this item is rotated
 					posList.add((rotation == 0) ? pos : new RotatedPosition(pos));
 				}
 		}
@@ -252,7 +261,7 @@ public class Container extends AbstractContainer {
 	 * Checks whether the new item is placed on top of remaining items. It is tested
 	 * that all 4 corners of the new item have at least one current item directly below that item.
 	 */
-	private boolean checkStackingAndSeatOn(Position pos, int w, int l, int stackingGroup) {
+	private boolean checkStackingGroupAndBearing(Position pos, int w, int l, int stackingGroup) {
 		if(pos.z == 0)
 			return true;
 
@@ -313,7 +322,7 @@ public class Container extends AbstractContainer {
 	 * Use the simple function to get all items, which are below the new item.
 	 * If number of lower items is bigger than 1 then it is overlapping.
 	 */
-	private boolean checkStackBaseFenceing(Position pos, Item item) {
+	private boolean checkGroundContact(Position pos, Item item) {
 		if(pos.z == 0)
 			return true;
 

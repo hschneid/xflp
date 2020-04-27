@@ -34,7 +34,7 @@ public class XFLPSolution {
 	 * @return
 	 */
 	public LPReport getReport() {
-		LPReport rep = new LPReport(model);
+		LPReport rep = new LPReport();
 		
 		// Add packed containers to report
 		for (Container con : model.getContainers()) {

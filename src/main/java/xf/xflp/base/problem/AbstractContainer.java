@@ -25,8 +25,7 @@ public abstract class AbstractContainer implements Iterable<Item> {
 	protected static final int BASIC = 1;
 	protected static final int EXTENDED = 2;
 
-	/* Idx of the container. There are no two containers, with
-	 * the same externalIndex. */
+	/* Idx of the container. There are no two containers, with same index. */
 	protected int index = -1;
 
 	protected final int width, height, length;
@@ -44,11 +43,6 @@ public abstract class AbstractContainer implements Iterable<Item> {
 	protected boolean ignoreMaxLength = false;
 
 
-	/**
-	 * 
-	 * @param h
-	 * @param width
-	 */
 	public AbstractContainer(int height, int width, int length, float maxWeight, int containerType) {
 		this.width = width;
 		this.height = height;
@@ -89,7 +83,7 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		return itemList.get(index);
 	}
 
-	public float getTouchingPerimeter(Item item, Position pos, int itemTouchValue, boolean withWall, boolean withFloor) {
+	public float getTouchingPerimeter(Item item, Position pos, int itemTouchValue, boolean considerWalls, boolean considerBaseFloor) {
 		int value = 0;
 		int w = item.w;
 		int l = item.l;
@@ -108,15 +102,13 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		// x-Achse
 		{
 			if(pos.x == 0)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withWall)
+				// If walls must be considers, full side area is added
+				if(considerWalls)
 					value += h * l;
 
 			if(xw == width)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withWall)
+				// If walls must be considers, full side area is added
+				if(considerWalls)
 					value += h * l;
 
 			List<Integer> xItemList = new ArrayList<>();
@@ -124,19 +116,19 @@ public abstract class AbstractContainer implements Iterable<Item> {
 			list = xMap.get(xw); if(list != null) xItemList.addAll(list);
 
 			if(xItemList.size() > 0) {
-				// Pr�fe alle Items, die pos.x ber�hren
+				// Check all items, which touches pos.x
 				for (int j = xItemList.size() - 1; j >= 0; j--) {
 					int index = xItemList.get(j);
 					Item i = itemList.get(index);
 
 					if(i.xw == pos.x || i.x == xw) {
-						// Pr�fe L�nge und H�he
+						// Check length and height
 						if(i.y > yl || i.yl < pos.y)
 							continue;
 						if(i.z > zh || i.zh < pos.z)
 							continue;
 
-						// Es liegt eine Ber�hrung vor, also berechne die Schnittfl�che
+						// If items touch themselves, calculate the cutting plane
 						int yLength = Math.min(yl, i.yl) - Math.max(i.y, pos.y);
 						int zLength = Math.min(zh, i.zh) - Math.max(i.z, pos.z);
 						value += yLength * zLength * itemTouchValue;
@@ -148,14 +140,12 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		// Y-Achse
 		{
 			if(pos.y == 0)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withWall)
+				// If walls must be considers, full side area is added
+				if(considerWalls)
 					value += h * w;
 			if(yl == length)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withWall)
+				// If walls must be considers, full side area is added
+				if(considerWalls)
 					value += h * w;
 			
 			List<Integer> yItemList = new ArrayList<>(); 
@@ -163,19 +153,19 @@ public abstract class AbstractContainer implements Iterable<Item> {
 			list = yMap.get(yl); if(list != null) yItemList.addAll(list);
 
 			if(yItemList.size() > 0) {
-				// Pr�fe alle Items, die pos.x ber�hren
+				// Check all items, which touches pos.y
 				for (int j = yItemList.size() - 1; j >= 0; j--) {
 					int index = yItemList.get(j);
 					Item i = itemList.get(index);
 
 					if(i.yl == pos.y || i.y == yl) {
-						// Pr�fe Breite und H�he
+						// Check width and height
 						if(i.x > xw || i.xw < pos.x)
 							continue;
 						if(i.z > zh || i.zh < pos.z)
 							continue;
 
-						// Es liegt eine Ber�hrung vor, also berechne die Schnittfl�che
+						// If items touch themselves, calculate the cutting plane
 						int xLength = Math.min(xw, i.xw) - Math.max(i.x, pos.x);
 						int zLength = Math.min(zh, i.zh) - Math.max(i.z, pos.z);
 						value += xLength * zLength * itemTouchValue;
@@ -187,34 +177,32 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		// Z-Achse
 		{
 			if(pos.z == 0)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withFloor)
+				// If walls must be considers, full side area is added
+				if(considerBaseFloor)
 					value += w * l;
 
 			if(zh == height)
-				// Wenn die Wand mitber�cksichtigt werden soll, dann geht die komplette
-				// Seitenfl�che mit ein
-				if(withWall)
+				// If walls must be considers, full side area is added
+				if(considerWalls)
 					value += w * l;
 
 			List<Integer> zItemList = new ArrayList<>(); 
 			list = zMap.get(pos.z); if(list != null) zItemList.addAll(list);
 			list = zMap.get(zh); if(list != null) zItemList.addAll(list);
 
-			// Pr�fe alle Items, die pos.x ber�hren
+			// Check all items, which touches pos.z
 			for (int j = zItemList.size() - 1; j >= 0; j--) {
 				int index = zItemList.get(j);
 				Item i = itemList.get(index);
 
 				if(i.zh == pos.z || i.z == zh) {
-					// Pr�fe L�nge und H�he
+					// Check length and width
 					if(i.y > yl || i.yl < pos.y)
 						continue;
 					if(i.x > xw || i.xw < pos.x)
 						continue;
 
-					// Es liegt eine Ber�hrung vor, also berechne die Schnittfl�che
+					// If items touch themselves, calculate the cutting plane
 					int yLength = Math.min(yl, i.yl) - Math.max(i.y, pos.y);
 					int xLength = Math.min(xw, i.xw) - Math.max(i.x, pos.x);
 					value += yLength * xLength * itemTouchValue;
@@ -223,13 +211,6 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		}
 
 		return value;
-	}
-	
-	public int getUsedLoadingMeter() {
-		int maxY = 0;
-		for (int y : yMap.keySet())
-			maxY = Math.max(maxY, y);
-		return maxY;
 	}
 
 	@Override

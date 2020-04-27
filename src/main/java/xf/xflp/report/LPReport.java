@@ -18,28 +18,14 @@ import java.util.*;
  */
 public class LPReport implements Iterable<ContainerReport> {
 
-	private final XFLPModel model;
-	
 	private LPReportSummary summary = new LPReportSummary();
 	private List<ContainerReport> reportList = new ArrayList<>();
 	private List<LPPackageEvent> unplannedPackageList = new ArrayList<>();
-	private Set<Container> containerSet = new HashSet<>();
-	
+
 	/**
-	 * A LPReport is the structral representation of a route planning solution.
-	 * 
-	 * @param model The used data model for gaining this solution.
+	 * A LPReport is the structral representation of a load planning solution
 	 */
-	public LPReport(XFLPModel model) {
-		this.model = model;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public Set<Container> getContainers() {
-		return containerSet;
+	public LPReport() {
 	}
 	
 	/* Add-Functions */
@@ -52,7 +38,6 @@ public class LPReport implements Iterable<ContainerReport> {
 		if(containerRep.getSummary().getNbrOfLoadedPackages() + containerRep.getSummary().getNbrOfUnLoadedPackages() > 0) {
 			summary.add(containerRep);
 			reportList.add(containerRep);
-			containerSet.add(containerRep.getContainer());
 		}
 	}
 	
@@ -92,14 +77,6 @@ public class LPReport implements Iterable<ContainerReport> {
 	}
 	
 	/**
-	 * Returns the used planning model for obtaining this solution report.
-	 * @return
-	 */
-	public XFLPModel getModel() {
-		return model;
-	}
-	
-	/**
 	 * Import the route reports of another report object into this report.
 	 * 
 	 * @param rep Another report object
@@ -107,6 +84,9 @@ public class LPReport implements Iterable<ContainerReport> {
 	public void importReport(LPReport rep) {
 		for (ContainerReport tRep : rep.getContainerReports())
 			add(tRep);
+		for (LPPackageEvent event : rep.getUnplannedPackages()) {
+			addUnplannedPackages(event);
+		}
 	}
 
 	/*

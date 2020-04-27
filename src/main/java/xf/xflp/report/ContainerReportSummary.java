@@ -20,8 +20,6 @@ import xf.xflp.base.problem.Container;
  */
 public class ContainerReportSummary {
 
-	private final Container container;
-	
 	private int nbrOfLoadedPackages = 0;
 	private int nbrOfUnLoadedPackages = 0;
 	private float maxUsedVolume = 0;
@@ -33,7 +31,6 @@ public class ContainerReportSummary {
 	 * @param con
 	 */
 	public ContainerReportSummary(Container con) {
-		this.container = con;
 		maxVolume = con.getMaxVolume();
 	}
 	
@@ -42,19 +39,14 @@ public class ContainerReportSummary {
 	 * @param e
 	 */
 	public void add(LPPackageEvent e) {
-		if(e.getType() == PackageEventType.LOAD)
+		if(e.getType() == PackageEventType.LOAD) {
 			nbrOfLoadedPackages++;
-		else if(e.getType() == PackageEventType.UNLOAD)
+			// Only loaded items increase the max loaded volume/weight values
+			maxUsedVolume += e.getUsedVolumeInContainer();
+			maxUsedWeight = Math.max(maxUsedWeight, e.getUsedWeightInContainer());
+		} else if(e.getType() == PackageEventType.UNLOAD) {
 			nbrOfUnLoadedPackages++;
-		maxUsedVolume += e.getUsedVolumeInContainer();
-		maxUsedWeight = Math.max(maxUsedWeight, e.getUsedWeightInContainer());
-	}
-
-	/**
-	 * @return the vehicle
-	 */
-	public final Container getVehicle() {
-		return container;
+		}
 	}
 
 	/**
@@ -98,6 +90,6 @@ public class ContainerReportSummary {
 	 * @return
 	 */
 	public float getUtilization() {
-		return maxUsedVolume/maxVolume;
+		return (maxVolume > 0) ? maxUsedVolume / maxVolume : 0;
 	}
 }

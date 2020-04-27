@@ -91,6 +91,6 @@ public class LPReportSummary {
 	 * @return
 	 */
 	public float getUtilization() {
-		return utilizationSum / nbrOfUsedVehicles;
+		return (nbrOfUsedVehicles > 0) ? utilizationSum / nbrOfUsedVehicles : 0;
 	}
 }

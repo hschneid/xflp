@@ -17,8 +17,10 @@ import java.util.List;
  *
  * LPReport of a route by a list of events
  * 
- * Each route report has a allocated container, which contains
- * the parameters.
+ * The container report represents the data content of
+ * a load planning solution for this specific container.
+ *
+ * It contains the package events: loading of an item and unloading.
  * 
  * @author hschneid
  *
@@ -28,11 +30,9 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 	private final ContainerReportSummary summary;
 	private final Container container;
 	private List<LPPackageEvent> packageEventList = new ArrayList<>();
-
 	
 	/**
-	 * 
-	 * @param con
+	 *
 	 */
 	public ContainerReport(Container con) {
 		this.container = con;
@@ -40,8 +40,7 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 	}
 	
 	/**
-	 * 
-	 * @param e
+	 *
 	 */
 	public void add(LPPackageEvent e) {
 		summary.add(e);

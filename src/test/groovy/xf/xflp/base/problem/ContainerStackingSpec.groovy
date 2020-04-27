@@ -312,7 +312,7 @@ class ContainerStackingSpec extends Specification {
 
     def "check overlapping items"() {
         def con = getContainer(3,3,2)
-        con.WITH_STACK_FENCE = true
+        con.groundContactRule = GroundContactRule.COVERED
         def i1 = getItem(2, 2, 1, 1, 111,0)
         def i2 = getItem(3, 1, 1, 1, 111,0 )
         def i3 = getItem(2, 1, 1, 1, 111,0 )

@@ -136,6 +136,24 @@ public class XFLP {
 	}
 
 	/**
+	 * Returns true, if the last calculated solution contains
+	 * unplanned items.
+	 *
+	 * This function can used testing the result for validity,
+	 * instead of report generation, which is costly.
+	 *
+	 * @return
+	 *         true, if there are unplanned items
+	 *         false, if all items could be planned into container.
+	 */
+	public boolean hasUnplannedItems() {
+		if(lastSolution != null && lastSolution.getModel() != null) {
+			return lastSolution.getModel().getUnplannedItems().length != 0;
+		}
+		return false;
+	}
+
+	/**
 	 * Akquire a item data object to insert data for
 	 * a new item. The next call of this method will
 	 * finalize the before akquired item data object.

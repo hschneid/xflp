@@ -82,4 +82,8 @@ public class XFLPSolution {
 		
 		return rep;
 	}
+
+	public XFLPModel getModel() {
+		return model;
+	}
 }

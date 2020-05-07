@@ -8,13 +8,15 @@ class ContainerReportTest extends Specification {
     def "Create an empty report"() {
         def con = getContainer(2,2,3)
         con.setIndex(99)
+        def containerTypeName = "C1"
+
         when:
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport(containerTypeName, con)
         def sum = rep.getSummary()
         then:
         rep.getPackageEvents().size() == 0
         rep.getContainer() == con
-        rep.getContainerId() == 99
+        rep.getContainerTypeName() == containerTypeName
         sum != null
         sum.getUtilization() == 0
         sum.getMaxUsedVolume() == 0
@@ -26,7 +28,7 @@ class ContainerReportTest extends Specification {
 
     def "Add a package event - load"() {
         def con = getContainer(2,2,3)
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport('C1', con)
 
         def e = new LPPackageEvent()
         e.setId("BLUB");
@@ -60,7 +62,7 @@ class ContainerReportTest extends Specification {
 
     def "Add a package event - load then unload"() {
         def con = getContainer(2,2,3)
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport('C1', con)
 
         def eLoad = new LPPackageEvent()
         eLoad.setId("BLUB");
@@ -112,7 +114,7 @@ class ContainerReportTest extends Specification {
 
     def "Add a package event - only unload (virtual)"() {
         def con = getContainer(2,2,3)
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport('C1', con)
 
         def ee = new LPPackageEvent()
         ee.setId("BLUB");
@@ -146,7 +148,7 @@ class ContainerReportTest extends Specification {
 
     def "Add a package event - multiple loads"() {
         def con = getContainer(2,2,3)
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport('C1', con)
 
         def e1 = new LPPackageEvent()
         e1.setId("BLUB");

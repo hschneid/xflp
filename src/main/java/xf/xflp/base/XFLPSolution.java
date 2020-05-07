@@ -1,5 +1,6 @@
 package xf.xflp.base;
 
+import xf.xflp.base.fleximport.DataManager;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.report.ContainerReport;
@@ -20,13 +21,15 @@ import xf.xflp.report.LPReport;
 public class XFLPSolution {
 
 	private final XFLPModel model;
-	
+	private final DataManager dataManager;
+
 	/**
 	 * 
 	 * @param model
 	 */
-	public XFLPSolution(XFLPModel model) {
+	public XFLPSolution(XFLPModel model, DataManager dataManager) {
 		this.model = model;
+		this.dataManager = dataManager;
 	}
 	
 	/**
@@ -38,11 +41,12 @@ public class XFLPSolution {
 		
 		// Add packed containers to report
 		for (Container con : model.getContainers()) {
-			ContainerReport cRep = new ContainerReport(con);
+			String containerTypeName = dataManager.getContainerTypeName(con.getIndex());
+			ContainerReport cRep = new ContainerReport(containerTypeName, con);
 			
 			for (Item item : con.getHistory()) {
 				LPPackageEvent e = new LPPackageEvent();
-				e.setId(item.externalIndex+"");
+				e.setId(dataManager.getItemId(item.externalIndex));
 				e.setX(item.x);
 				e.setY(item.y);
 				e.setZ(item.z);

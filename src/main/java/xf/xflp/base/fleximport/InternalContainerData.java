@@ -11,6 +11,7 @@ import xf.xflp.base.problem.Container;
  *
  **/
 public class InternalContainerData extends ContainerData {
+
 	private static final long serialVersionUID = -3429254830973943702L;
 
 	/**
@@ -44,13 +45,8 @@ public class InternalContainerData extends ContainerData {
 		return containerType;
 	}
 
-	/**
-	 * 
-	 * @param manager
-	 * @return
-	 */
 	public Container create(DataManager manager) {
-		Container c = new Container(
+		return new Container(
 				width,
 				length,
 				height,
@@ -58,7 +54,5 @@ public class InternalContainerData extends ContainerData {
 				manager.getContainerTypeIdx(containerType),
 				1 //lifoImportance
 		);
-
-		return c;
 	}
 }

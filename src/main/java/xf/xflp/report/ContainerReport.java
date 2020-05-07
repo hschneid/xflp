@@ -28,13 +28,15 @@ import java.util.List;
 public class ContainerReport implements Iterable<LPPackageEvent> {
 
 	private final ContainerReportSummary summary;
+	private final String containerTypeName;
 	private final Container container;
 	private List<LPPackageEvent> packageEventList = new ArrayList<>();
 	
 	/**
 	 *
 	 */
-	public ContainerReport(Container con) {
+	public ContainerReport(String containerTypeName, Container con) {
+		this.containerTypeName = containerTypeName;
 		this.container = con;
 		this.summary = new ContainerReportSummary(con);
 	}
@@ -46,37 +48,21 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 		summary.add(e);
 		packageEventList.add(e);
 	}
-		
-	/**
-	 * 
-	 * @return
-	 */
+
+	public Container getContainer() {
+		return container;
+	}
+
 	public ContainerReportSummary getSummary() {
 		return summary;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Container getContainer() {
-		return container;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
 	public List<LPPackageEvent> getPackageEvents() {
 		return packageEventList;
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getContainerId() {
-		return container.getIndex();
+
+	public String getContainerTypeName() {
+		return containerTypeName;
 	}
 
 	/*

@@ -15,7 +15,7 @@ public class StringReportWriter {
 		sb.append(">>> "+r.getSummary().getNbrOfUsedVehicles()+" ("+r.getSummary().getUtilization()*100f+"%)\n");
 		
 		for (ContainerReport cr : r.getContainerReports()) {
-			sb.append("--- "+cr.getContainerId()+"("+(cr.getSummary().getMaxUsedVolume()/cr.getSummary().getMaxVolume())*100f+"%)\n");
+			sb.append("--- "+cr.getContainerTypeName()+"("+(cr.getSummary().getMaxUsedVolume()/cr.getSummary().getMaxVolume())*100f+"%)\n");
 			for (LPPackageEvent e : cr.getPackageEvents()) {
 				sb.append(e.getId()+" ");
 				sb.append(e.getType().toString()+" ");

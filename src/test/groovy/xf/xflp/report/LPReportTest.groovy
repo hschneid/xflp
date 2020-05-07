@@ -1,7 +1,6 @@
 package xf.xflp.report
 
 import spock.lang.Specification
-import xf.xflp.base.XFLPModel
 import xf.xflp.base.problem.Container
 
 class LPReportTest extends Specification {
@@ -101,7 +100,7 @@ class LPReportTest extends Specification {
 
     private ContainerReport getContainerReport() {
         def con = getContainer(2,2,3)
-        def rep = new ContainerReport(con)
+        def rep = new ContainerReport('C1', con)
 
         def e1 = new LPPackageEvent()
         e1.setId("BLUB");

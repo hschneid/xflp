@@ -71,11 +71,9 @@ public class XFLP {
 		
 		// Optimize the model
 		optType.createInstance().execute(model);
-		
-//		new XFLPDraw(optContainers);
-		
+
 		// Build solution object
-		lastSolution = new XFLPSolution(model);
+		lastSolution = new XFLPSolution(model, importer.getDataManager());
 
 		statusManager.fireMessage(StatusCode.FINISHED, "XFLP finished sucessfully.");
 	}

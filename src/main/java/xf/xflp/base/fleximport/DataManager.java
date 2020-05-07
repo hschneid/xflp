@@ -27,6 +27,7 @@ public class DataManager implements Serializable {
 	private int maxContainerTypeID = 0;
 	
 	private Map<String, Integer> itemMap = new HashMap<>();
+	private Map<Integer, String> itemIdMap = new HashMap<>();
 	private Map<String, Integer> shipmentMap = new HashMap<>();
 	private Map<String, Integer> locationMap = new HashMap<>();
 	private Map<String, Integer> stackingGroupMap = new HashMap<>();
@@ -58,8 +59,11 @@ public class DataManager implements Serializable {
 	 * @param itemID
 	 */
 	public void addItem(String itemID) {
-		if(!itemMap.containsKey(itemID))
-			itemMap.put(itemID, maxItemID++);
+		if(!itemMap.containsKey(itemID)) {
+			itemMap.put(itemID, maxItemID);
+			itemIdMap.put(maxItemID, itemID);
+			maxItemID++;
+		}
 	}
 
 	/**
@@ -132,6 +136,10 @@ public class DataManager implements Serializable {
 		return itemMap.get(itemID);
 	}
 
+	public String getItemId(int itemIdx) {
+		return itemIdMap.get(itemIdx);
+	}
+
 	/**
 	 * 
 	 * @param shipmentID
@@ -167,7 +175,17 @@ public class DataManager implements Serializable {
 	public int getContainerTypeIdx(String containerType) {
 		return containerTypeMap.get(containerType.trim().toLowerCase());
 	}
-	
+
+	public String getContainerTypeName(int index) {
+		for (Map.Entry<String, Integer> entry : containerTypeMap.entrySet()) {
+			if(entry.getValue() == index)
+				return entry.getKey();
+		}
+
+		return "not found";
+	}
+
+
 	/**
 	 * 
 	 * @param allowedContainerSet
@@ -214,5 +232,4 @@ public class DataManager implements Serializable {
 		stackingGroupMap.clear();
 		containerTypeMap.clear();
 	}
-
 }

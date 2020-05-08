@@ -2,19 +2,20 @@ package xf.xflp.base.problem;
 
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
+import xf.xflp.base.fleximport.ContainerData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @author hschneid
  *
  */
@@ -96,9 +97,9 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		int xw = pos.x + w;
 		int yl = pos.y + l;
 		int zh = pos.z + h;
-		
+
 		List<Integer> list = null;
-		
+
 		// x-Achse
 		{
 			if(pos.x == 0)
@@ -147,8 +148,8 @@ public abstract class AbstractContainer implements Iterable<Item> {
 				// If walls must be considers, full side area is added
 				if(considerWalls)
 					value += h * w;
-			
-			List<Integer> yItemList = new ArrayList<>(); 
+
+			List<Integer> yItemList = new ArrayList<>();
 			list = yMap.get(pos.y); if(list != null) yItemList.addAll(list);
 			list = yMap.get(yl); if(list != null) yItemList.addAll(list);
 
@@ -173,7 +174,7 @@ public abstract class AbstractContainer implements Iterable<Item> {
 				}
 			}
 		}
-		
+
 		// Z-Achse
 		{
 			if(pos.z == 0)
@@ -186,7 +187,7 @@ public abstract class AbstractContainer implements Iterable<Item> {
 				if(considerWalls)
 					value += w * l;
 
-			List<Integer> zItemList = new ArrayList<>(); 
+			List<Integer> zItemList = new ArrayList<>();
 			list = zMap.get(pos.z); if(list != null) zItemList.addAll(list);
 			list = zMap.get(zh); if(list != null) zItemList.addAll(list);
 
@@ -219,17 +220,17 @@ public abstract class AbstractContainer implements Iterable<Item> {
 	}
 
 	public void setIgnoreMaxLength() {
-		this.ignoreMaxLength  = true;		
+		this.ignoreMaxLength  = true;
 	}
 
 	public int getNbrOfLoadedThings() {
 		return itemList.length();
 	}
-	
+
 	public int getContainerType() {
 		return containerType;
 	}
-	
+
 	public void clear() {
 		weight = 0;
 		itemList.clear();
@@ -237,5 +238,13 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		xMap.clear();
 		yMap.clear();
 		zMap.clear();
+	}
+
+	public boolean isItemAllowed(Item item) {
+		return
+				// If item can be loaded on any container
+				(item.allowedContainerSet.size() == 1 && item.allowedContainerSet.contains(ContainerData.DEFAULT_CONTAINER_TYPE))
+						// or only on specific ones
+						|| item.allowedContainerSet.contains(containerType);
 	}
 }

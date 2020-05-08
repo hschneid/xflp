@@ -47,9 +47,6 @@ public class ZSingleBinPacker extends XFLPBase {
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
 		List<Item> unplannedItemList = new ArrayList<>();
-		// StrategyIf strategy = new TouchingPerimeter();
-		// StrategyIf strategy = new HighestLowerLeft();
-		//		StrategyIf strategy = new MaxFreeLoadingMeter();
 
 		// For all items with respect to given sort order
 		Item[] items = model.getItems();
@@ -62,7 +59,7 @@ public class ZSingleBinPacker extends XFLPBase {
 				Position insertPosition = null;
 
 				// Check if item is allowed to this container type
-				if(item.allowedContainerSet.contains(container.getContainerType())) {				
+				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
 					List<Position> posList = container.getPossibleInsertPositionList(item);
 

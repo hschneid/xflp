@@ -13,8 +13,10 @@ import java.io.Serializable;
  * @author hschneid
  *
  */
-public abstract class ContainerData implements Serializable{
+public abstract class ContainerData implements Serializable {
 	private static final long serialVersionUID = -5241212560474818458L;
+
+	public static final int DEFAULT_CONTAINER_TYPE = 0;
 	
 	protected int width = Integer.MAX_VALUE;
 	protected int length = Integer.MAX_VALUE;

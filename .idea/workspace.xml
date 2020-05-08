@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6caf6d75-33d5-42ec-a092-6c91586f0605" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/XFLPSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/XFLPSolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ContainerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ContainerData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/ZSingleBinPacker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/ZSingleBinPacker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,13 +129,51 @@
       <recent name="xf.xflp.base.problem" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.xflp [build]">
+  <component name="RunManager" selected="Gradle.Tests in 'xflp.test'">
     <configuration name="Tests in 'xflp.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" value="--tests *" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="XFLPSpec.Simple test - all fits" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;xf.xflp.XFLPSpec.Simple test - all fits&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="XFLPSpec.test with container type - should work" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;xf.xflp.XFLPSpec.test with container type - should work&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -165,33 +206,6 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="xflp [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="All in xflp.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="xflp.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ContainerBaseSpec.find and add third item in container" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="xflp.test" />
       <extension name="coverage">
@@ -210,11 +224,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.xflp [build]" />
         <item itemvalue="Gradle.Tests in 'xflp.test'" />
+        <item itemvalue="Gradle.XFLPSpec.test with container type - should work" />
+        <item itemvalue="Gradle.XFLPSpec.Simple test - all fits" />
+        <item itemvalue="Gradle.xflp [build]" />
         <item itemvalue="JUnit.ContainerBaseSpec.find and add third item in container" />
-        <item itemvalue="Gradle.xflp [test]" />
-        <item itemvalue="JUnit.All in xflp.test" />
       </list>
     </recent_temporary>
   </component>
@@ -235,7 +249,7 @@
       <workItem from="1587976004991" duration="88000" />
       <workItem from="1588002096722" duration="3234000" />
       <workItem from="1588145300304" duration="1920000" />
-      <workItem from="1588884450866" duration="378000" />
+      <workItem from="1588884450866" duration="2222000" />
     </task>
     <task id="LOCAL-00001" summary="general updates of project&#10;added groovy tests (they are better ;-) )">
       <created>1585172166580</created>
@@ -286,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588884521289</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added fast check function for unplanned items">
+      <created>1588884877206</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588884877206</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,41 +321,62 @@
     <MESSAGE value="Added local search routines to single bin optimizer&#10;Added some more tests&#10;Corrected idea project structure" />
     <MESSAGE value="Fixed translations and naming of parameters&#10;Added some enums instead of class variable" />
     <MESSAGE value="Fixed bugs of ids in LP report" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs of ids in LP report" />
+    <MESSAGE value="Added fast check function for unplanned items" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added fast check function for unplanned items" />
   </component>
   <component name="WindowStateProjectService">
     <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588884621008">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588884621008" />
-    <state x="567" y="67" key="CommitChangelistDialog2" timestamp="1588884519988">
+    <state x="567" y="67" key="CommitChangelistDialog2" timestamp="1588884876076">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="567" y="67" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1588884519988" />
+    <state x="567" y="67" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1588884876076" />
     <state x="184" y="86" key="DiffContextDialog" timestamp="1588884484738">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588884484738" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1588069891488">
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1588970640402">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588069891488" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1588069891488">
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640402" />
+    <state width="1877" height="347" key="GridCell.Tab.0.center" timestamp="1588970640402">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588069891488" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1588069891488">
+    <state width="1877" height="347" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640402" />
+    <state width="1877" height="347" key="GridCell.Tab.0.left" timestamp="1588970640402">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588069891488" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1588069891488">
+    <state width="1877" height="347" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640402" />
+    <state width="1877" height="347" key="GridCell.Tab.0.right" timestamp="1588970640402">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588069891488" />
+    <state width="1877" height="347" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640402" />
+    <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1588970640403">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="347" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640403" />
+    <state width="1877" height="347" key="GridCell.Tab.1.center" timestamp="1588970640403">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="347" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640403" />
+    <state width="1877" height="347" key="GridCell.Tab.1.left" timestamp="1588970640403">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="347" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640403" />
+    <state width="1877" height="347" key="GridCell.Tab.1.right" timestamp="1588970640403">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588970640403" />
     <state x="737" y="222" key="RollbackChangesDialog" timestamp="1588002179899">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="737" y="222" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588002179899" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1588884886370">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1588884886370" />
     <state x="803" y="277" key="refactoring.ChangeSignatureDialog" timestamp="1588002877604">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

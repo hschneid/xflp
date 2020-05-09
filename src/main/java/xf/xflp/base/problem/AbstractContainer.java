@@ -29,10 +29,10 @@ public abstract class AbstractContainer implements Iterable<Item> {
 	/* Idx of the container. There are no two containers, with same index. */
 	protected int index = -1;
 
-	protected final int width, height, length;
-	protected final float maxWeight;
+	protected int width, height, length;
+	protected float maxWeight;
 	protected float weight = 0;
-	protected final int containerType;
+	protected int containerType;
 
 	protected IndexedArrayList<Item> itemList = new IndexedArrayList<>();
 	protected List<Position> activePosList = new ArrayList<>();
@@ -42,15 +42,6 @@ public abstract class AbstractContainer implements Iterable<Item> {
 	protected LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
 	protected boolean ignoreMaxLength = false;
-
-
-	public AbstractContainer(int height, int width, int length, float maxWeight, int containerType) {
-		this.width = width;
-		this.height = height;
-		this.length = length;
-		this.maxWeight = maxWeight;
-		this.containerType = containerType;
-	}
 
 	public float getWeight() {
 		return weight;
@@ -246,5 +237,25 @@ public abstract class AbstractContainer implements Iterable<Item> {
 				(item.allowedContainerSet.size() == 1 && item.allowedContainerSet.contains(ContainerData.DEFAULT_CONTAINER_TYPE))
 						// or only on specific ones
 						|| item.allowedContainerSet.contains(containerType);
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public void setMaxWeight(float maxWeight) {
+		this.maxWeight = maxWeight;
+	}
+
+	public void setContainerType(int containerType) {
+		this.containerType = containerType;
 	}
 }

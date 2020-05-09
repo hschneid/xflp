@@ -1,6 +1,7 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.GroundContactRule;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider
@@ -46,13 +47,18 @@ public class InternalContainerData extends ContainerData {
 	}
 
 	public Container create(DataManager manager) {
-		return new Container(
-				width,
-				length,
-				height,
-				maxWeight,
-				manager.getContainerTypeIdx(containerType),
-				1 //lifoImportance
-		);
+		Container c = new Container();
+
+		c.setWidth(width);
+		c.setLength(length);
+		c.setHeight(height);
+		c.setMaxWeight(maxWeight);
+		c.setContainerType(manager.getContainerTypeIdx(containerType));
+		c.setLifoImportance(1);
+		c.setGroundContactRule(GroundContactRule.FREE);
+
+		c.init();
+
+		return c;
 	}
 }

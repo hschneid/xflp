@@ -39,12 +39,9 @@ public class ZMultiBinAddPackerNoSort {
 //		int sumVolume = 0;
 		while(unpackedItems.length > 0) {
 			Container currentContainer = new Container(
-					container.getWidth(),
-					container.getLength(),
-					container.getHeight(),
-					container.getMaxWeight(),
-					container.getContainerType(),
-					container.getLifoImportance());
+					container,
+					container.getLifoImportance()
+			);
 			currentContainer.setIndex(containerIdx++);
 			
 			unpackedItems = singlePacker.createLoadingPlan(unpackedItems, currentContainer);

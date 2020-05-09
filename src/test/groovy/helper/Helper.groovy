@@ -1,20 +1,30 @@
 package helper
 
-import xf.xflp.base.problem.Container
-import xf.xflp.base.problem.Item
-import xf.xflp.base.problem.Position
-import xf.xflp.base.problem.RotatedPosition
+import xf.xflp.base.fleximport.ContainerData
+import xf.xflp.base.problem.*
 
 class Helper {
 
     static int itemIdx = 0;
 
     static Container getContainer(int width, int length, int height) {
-        return new Container(width, length, height, 999999999, 0, 0);
+        return getContainer(width, length, height, 999999999);
     }
 
     static Container getContainer(int width, int length, int height, float maxWeight) {
-        return new Container(width, length, height, maxWeight, 0, 0);
+        Container c = new Container();
+
+        c.setWidth(width);
+        c.setLength(length);
+        c.setHeight(height);
+        c.setMaxWeight(maxWeight);
+        c.setContainerType(ContainerData.DEFAULT_CONTAINER_TYPE);
+        c.setLifoImportance(0);
+        c.setGroundContactRule(GroundContactRule.FREE);
+
+        c.init();
+
+        return c;
     }
 
     static Item getItem(int w, int l, int h, int ww, long wC, int sG) {

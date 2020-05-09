@@ -48,7 +48,7 @@ class SingleContainerPackerSpec extends Specification {
         items.findAll {i -> i.x == -1 || i.y == -1 || i.z == -1}.size() == 1
     }
 
-    def "test with rotation - sucessfull"() {
+    def "test with rotation - successfully"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 18; i++)
             items.add(Helper.getItem(2,1,1,1,3,0))

@@ -1,5 +1,6 @@
 package xf.xflp.report
 
+import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.problem.Container
 
@@ -193,16 +194,14 @@ class ContainerReportTest extends Specification {
         rep.getPackageEvents().find {f -> f == e1} != null
         rep.getPackageEvents().find {f -> f == e2} != null
         Math.abs(sum.getUtilization() - (e1.getUsedVolumeInContainer() + e2.getUsedVolumeInContainer()) / (2 * 2 * 3)) < 0.1
-        sum.getMaxUsedVolume() == e1.getUsedVolumeInContainer() + e2.getUsedVolumeInContainer()
+        sum.getMaxUsedVolume() == (e1.getUsedVolumeInContainer() + e2.getUsedVolumeInContainer())
         sum.getMaxUsedWeight() == e2.getUsedWeightInContainer()
         sum.getNbrOfLoadedPackages() == 2
         sum.getNbrOfUnLoadedPackages() == 0
         rep.iterator().size() == 2
     }
 
-
     private Container getContainer(int width, int length, int height) {
-        return new Container(width, length, height, 999999999, 0, 0);
+        return Helper.getContainer(width, length, height, 999999999);
     }
-
 }

@@ -5,14 +5,14 @@ import util.collection.LPListMap;
 
 import java.util.*;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @author hschneid
  *
  */
@@ -39,33 +39,23 @@ public class Container extends AbstractContainer {
 
 	/* History of loaded items - is relevant for creating the solution report */
 	private List<Item> history = new ArrayList<>();
-	
-	private int maxPosIdx = 0;
-	private final float lifoImportance;
 
+	private int maxPosIdx = 0;
+	private float lifoImportance;
 	private GroundContactRule groundContactRule;
 
-	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance, GroundContactRule groundContactRule) {
-		super(height, width, length, maxWeight, containerType);
-		this.lifoImportance = lifoImportance;
-		this.groundContactRule = groundContactRule;
-
-		init();
+	public Container() {
 	}
 
-	public Container(int width, int length, int height, float maxWeight, int containerType, float lifoImportance) {
-		this(width, length, height, maxWeight, containerType, lifoImportance, GroundContactRule.FREE);
-	}
-	
 	public Container(Container containerPrototype, float lifoImportance) {
-		this(
-				containerPrototype.getWidth(),
-				containerPrototype.getLength(),
-				containerPrototype.getHeight(),
-				containerPrototype.getMaxWeight(),
-				containerPrototype.getContainerType(),
-				lifoImportance
-		);
+		this.width = containerPrototype.getWidth();
+		this.length = containerPrototype.getLength();
+		this.height = containerPrototype.getHeight();
+		this.maxWeight = containerPrototype.getMaxWeight();
+		this.containerType = containerPrototype.getContainerType();
+		this.groundContactRule = containerPrototype.groundContactRule;
+		this.lifoImportance = lifoImportance;
+		init();
 	}
 
 	/**
@@ -86,7 +76,7 @@ public class Container extends AbstractContainer {
 				Item leftItem = findNextLeftElement(tmpPosition);
 				// Projeziere diese Position komplett neu von ihrem Objekt aus
 				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.x = (leftItem != null) ? leftItem.xw : 0; 
+				projPos.x = (leftItem != null) ? leftItem.xw : 0;
 			}
 			List<Position> projVPosList = findVerticalProjectedPositions(item);
 			for (Position projPos : projVPosList) {
@@ -115,7 +105,7 @@ public class Container extends AbstractContainer {
 		}
 
 		history.add(item);
-		
+
 		return item.index;
 	}
 
@@ -154,7 +144,7 @@ public class Container extends AbstractContainer {
 		// Das muss rekusriv dann f�r dessen Eltern gepr�ft werden.
 		// SONST setze Position auf aktiv statt inaktiv
 		checkPosition(position);
-		
+
 		history.add(item);
 	}
 
@@ -183,75 +173,75 @@ public class Container extends AbstractContainer {
 			}
 
 			OUTER:
-				// For every active position
-				for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
-					Position pos = activePosList.get(k);
+			// For every active position
+			for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
+				Position pos = activePosList.get(k);
 
-					// Check overlapping with walls
-					if((pos.x + itemW) > width)
+				// Check overlapping with walls
+				if((pos.x + itemW) > width)
+					continue;
+				if((pos.z + itemH) > height)
+					continue;
+				if(!ignoreMaxLength && (pos.y + itemL) > length)
+					continue;
+
+				/*
+				 * Check Overlapping of items for insert position
+				 */
+				for (int j = nbrOfItems - 1; j >= 0; j--) {
+					Item item = itemList.get(j);
+					if(item == null)
 						continue;
-					if((pos.z + itemH) > height)
-						continue;
-					if(!ignoreMaxLength && (pos.y + itemL) > length)
-						continue;
 
-					/*
-					 * Check Overlapping of items for insert position
-					 */
-					for (int j = nbrOfItems - 1; j >= 0; j--) {
-						Item item = itemList.get(j);
-						if(item == null) 
-							continue;
+					if(
+							item.x < (pos.x + itemW) && item.xw > pos.x &&
+									item.y < (pos.y + itemL) && item.yl > pos.y &&
+									item.z < (pos.z + itemH) && item.zh > pos.z
+					)
+						continue OUTER;
 
-						if(
-								item.x < (pos.x + itemW) && item.xw > pos.x && 
-								item.y < (pos.y + itemL) && item.yl > pos.y && 
-								item.z < (pos.z + itemH) && item.zh > pos.z
-								)
-							continue OUTER;
+					// Pr�fe die LIFO-Eigenschaften
+					if(lifoImportance == 1) {
+						// Liegt das Item weiter entfernt von der Ladekante als die Position
+						// Liegt das Item im Entladekorridor zur Ladekante
+						if(item.yl <= pos.y && item.x < (pos.x + itemW) && item.xw > pos.x) {
+							// Wenn der Entladerang des neuen Items gr��er als der
+							// Entladeran des Items ist, dann geht diese Position nicht.
+							// Das bestehende Item m�sste fr�her entladen werden, als
+							// das verstellende neue Item
+							if(newItem.unLoadingLoc > item.unLoadingLoc)
+								// Das Item muss fr�her entladen werden, als
+								// das neue Item, was laut LIFO nicht sein darf.
+								continue OUTER;
 
-						// Pr�fe die LIFO-Eigenschaften
-						if(lifoImportance == 1) {
-							// Liegt das Item weiter entfernt von der Ladekante als die Position
-							// Liegt das Item im Entladekorridor zur Ladekante
-							if(item.yl <= pos.y && item.x < (pos.x + itemW) && item.xw > pos.x) {
-								// Wenn der Entladerang des neuen Items gr��er als der
-								// Entladeran des Items ist, dann geht diese Position nicht.
-								// Das bestehende Item m�sste fr�her entladen werden, als
-								// das verstellende neue Item
-								if(newItem.unLoadingLoc > item.unLoadingLoc)
-									// Das Item muss fr�her entladen werden, als
-									// das neue Item, was laut LIFO nicht sein darf.
-									continue OUTER;
-
-							}
 						}
-
-						// Sonst passt die Position
-						// => Ergo mache nix
 					}
 
-					/*
-					 * Stack restrictions
-					 */
-					// Check ground contact restriction
-					// New item must not hang in the air and maybe cover multiple items
-					if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
-						continue;
-
-					// Check stacking group and weight bearing capacity
-					// All lower items must have the same stacking group
-					if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
-						continue;
-
-					// Check bearing capacity
-					// All lower items can bear the additional weight
-					if(!checkLoadBearing(pos, newItem, rotation)) 
-						continue;
-
-					// Create RotatedPosition if this item is rotated
-					posList.add((rotation == 0) ? pos : new RotatedPosition(pos));
+					// Sonst passt die Position
+					// => Ergo mache nix
 				}
+
+				/*
+				 * Stack restrictions
+				 */
+				// Check ground contact restriction
+				// New item must not hang in the air and maybe cover multiple items
+				if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
+					continue;
+
+				// Check stacking group and weight bearing capacity
+				// All lower items must have the same stacking group
+				if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
+					continue;
+
+				// Check bearing capacity
+				// All lower items can bear the additional weight
+				if(!checkLoadBearing(pos, newItem, rotation))
+					continue;
+
+				// Create RotatedPosition if this item is rotated
+				posList.add((rotation == 0) ? pos : new RotatedPosition(pos));
+			}
 		}
 
 		return posList;
@@ -274,7 +264,7 @@ public class Container extends AbstractContainer {
 		boolean corner1, corner2, corner3, corner4;
 		corner1 = corner2 = corner3 = corner4 = false;
 
-		for(int i = 0, size = zList.size(); i < size; i++) {	
+		for(int i = 0, size = zList.size(); i < size; i++) {
 			Item fi = itemList.get(zList.get(i));
 			if(fi.zh == pos.getZ()) {
 				// Is the sgItem below the newItem at position pos
@@ -373,14 +363,14 @@ public class Container extends AbstractContainer {
 			// Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
 			if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
 				coveredPositionList.add(pos);
-			// Leigt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
+				// Leigt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
 			else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
 				coveredPositionList.add(pos);
 		}
 
 		return coveredPositionList;
 	}
-	
+
 	public float getMaxVolume() {
 		return height * length * width;
 	}
@@ -462,7 +452,7 @@ public class Container extends AbstractContainer {
 	private List<Position> findProjectableHorizontalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
-			if(pos.type == EXTENDED_H) 
+			if(pos.type == EXTENDED_H)
 				if(pos.x == item.xw && pos.y >= item.y && pos.y < item.yl)
 					list.add(pos);
 		}
@@ -587,12 +577,12 @@ public class Container extends AbstractContainer {
 		Position ancestor = posAncestorMap.get(pos);
 
 		if(
-				// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht und
-				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).size() == 0) 
-				// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
-				&& activePosList.contains(ancestor) 
-				// die Position nicht der Root ist, dann l�sche die Position
-				&& pos.type != ROOT) {
+			// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht und
+				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).size() == 0)
+						// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
+						&& activePosList.contains(ancestor)
+						// die Position nicht der Root ist, dann l�sche die Position
+						&& pos.type != ROOT) {
 			// L�sche pos
 			removePosition(pos);
 
@@ -628,7 +618,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void removeElement(Item item) {
 		Integer index = item.index;
@@ -651,7 +641,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private List<Position> findInsertPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
@@ -690,7 +680,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private Item findNextLeftElement(Position pos) {
 		Item leftItem = null;
@@ -707,7 +697,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private Item findNextLowerElement(Position pos) {
 		Item lowerItem = null;
@@ -724,16 +714,16 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private Position createPosition(int x, int y, int z, int type, boolean isProjected) {
 		return new Position(maxPosIdx++, x, y, z, type, isProjected);
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	private void init() {
+	public void init() {
 		// idx, x, y, z, type, isProjected
 		Position start = new Position(0, 0, 0, 0, ROOT, false);
 		activePosList.add(start);
@@ -744,7 +734,7 @@ public class Container extends AbstractContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void clear() {
@@ -761,19 +751,26 @@ public class Container extends AbstractContainer {
 
 		init();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public List<Item> getHistory() {
 		return history;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public float getLifoImportance() {
 		return lifoImportance;
 	}
-	
+
+	public void setLifoImportance(float lifoImportance) {
+		this.lifoImportance = lifoImportance;
+	}
+
+	public void setGroundContactRule(GroundContactRule groundContactRule) {
+		this.groundContactRule = groundContactRule;
+	}
 }

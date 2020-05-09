@@ -1,5 +1,6 @@
 package xf.xflp.report
 
+import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.problem.Container
 
@@ -161,7 +162,7 @@ class LPReportTest extends Specification {
     }
 
     private Container getContainer(int width, int length, int height) {
-        return new Container(width, length, height, 999999999, 0, 0);
+        return Helper.getContainer(width, length, height, 999999999);
     }
 
 }

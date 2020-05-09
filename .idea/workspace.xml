@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6caf6d75-33d5-42ec-a092-6c91586f0605" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/DoubleContainerAddPacker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/DoubleContainerAddPackerTest.groovy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/XFLPReportSpec.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/XFLPSolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/XFLPSolution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Position.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/SingleContainerAddPacker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/SingleContainerAddPacker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -94,11 +84,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/XFLPReportSpec.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+            <state relative-caret-position="251">
+              <caret line="41" selection-start-line="41" selection-end-line="41" />
             </state>
           </provider>
         </entry>
@@ -106,8 +96,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/DoubleContainerAddPacker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="125">
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
             </state>
           </provider>
         </entry>
@@ -115,8 +105,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="51" selection-start-line="51" selection-end-line="51" />
+            <state relative-caret-position="286">
+              <caret line="247" selection-start-line="247" selection-end-line="247" />
             </state>
           </provider>
         </entry>
@@ -124,8 +114,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/InternalContainerData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="53" column="37" lean-forward="true" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
+            <state relative-caret-position="181">
+              <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -133,8 +123,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="56" selection-start-line="56" selection-end-line="56" />
+            <state relative-caret-position="230">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
             </state>
           </provider>
         </entry>
@@ -142,20 +132,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+            <state relative-caret-position="140">
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="178" selection-start-line="178" selection-end-line="178" />
+            <state relative-caret-position="155">
+              <caret line="177" selection-start-line="177" selection-end-line="177" />
               <folding>
                 <element signature="e#1548#1549#0" expanded="true" />
                 <element signature="e#1599#1600#0" expanded="true" />
+                <element signature="e#4151#4152#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -195,6 +186,7 @@
         <entry key="$PROJECT_DIR$" value="update" />
       </map>
     </option>
+    <option name="WARN_ABOUT_CRLF" value="false" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -630,19 +622,17 @@
       <option name="project" value="LOCAL" />
       <updated>1589032974602</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Test for checking the correct allocation of external ids in report&#10;fix the correct allocation of external ids in report&#10;organized imports">
+      <created>1589037987143</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1589037987143</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 16h 52m 02s.xml">
-      <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 16h 52m 19s.xml">
-      <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
-    </history-entry>
-    <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 16h 52m 50s.xml">
-      <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
-    </history-entry>
     <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 16h 57m 05s.xml">
       <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
     </history-entry>
@@ -664,17 +654,27 @@
     <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 17h 21m 41s.xml">
       <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
     </history-entry>
+    <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 17h 22m 31s.xml">
+      <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="XFLPReportSpec_Test_container_id_and_item_id_allocation_in_result_report_with_two_container_types - 2020.05.09 at 17h 24m 29s.xml">
+      <configuration name="XFLPReportSpec.Test container id and item id allocation in result report with two container types" configurationId="GradleRunConfiguration" />
+    </history-entry>
+    <history-entry file="Tests_in_'xflp_test' - 2020.05.09 at 17h 24m 37s.xml">
+      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="74" y="23" width="1366" height="877" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Image Layers" order="0" />
       <window_info id="Designer" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.49893844" visible="true" weight="0.25" />
-      <window_info id="Structure" order="6" sideWeight="0.50106156" side_tool="true" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.49809885" visible="true" weight="0.25" />
+      <window_info id="Structure" order="6" sideWeight="0.50190115" side_tool="true" visible="true" weight="0.25" />
       <window_info id="Gradle" order="7" weight="0.32930514" />
       <window_info anchor="bottom" id="Thumbnails" weight="0.3299363" />
       <window_info anchor="bottom" id="Version Control" />
@@ -683,8 +683,8 @@
       <window_info anchor="bottom" id="Build" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299363" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3299363" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3299363" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -712,7 +712,8 @@
     <MESSAGE value="Added fast check function for unplanned items" />
     <MESSAGE value="Updated gradle version&#10;cleanup in build.gradle" />
     <MESSAGE value="LifoImportance is now a parameter in parameter object&#10;Added bigger test for projected positions&#10;Added simpler version of SingleBinPacker (only adding)" />
-    <option name="LAST_COMMIT_MESSAGE" value="LifoImportance is now a parameter in parameter object&#10;Added bigger test for projected positions&#10;Added simpler version of SingleBinPacker (only adding)" />
+    <MESSAGE value="Test for checking the correct allocation of external ids in report&#10;fix the correct allocation of external ids in report&#10;organized imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test for checking the correct allocation of external ids in report&#10;fix the correct allocation of external ids in report&#10;organized imports" />
   </component>
   <component name="WindowStateProjectService">
     <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588884621008">
@@ -771,30 +772,6 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="803" y="277" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588002877604" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java</url>
-          <line>243</line>
-          <properties />
-          <option name="timeStamp" value="163" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java</url>
-          <line>51</line>
-          <properties />
-          <option name="timeStamp" value="166" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java</url>
-          <line>178</line>
-          <properties />
-          <option name="timeStamp" value="167" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
@@ -974,13 +951,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/XFLPReportSpec.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -1020,13 +990,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ItemData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="87">
@@ -1034,42 +997,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/DoubleContainerAddPacker.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
+        <state relative-caret-position="155">
+          <caret line="177" selection-start-line="177" selection-end-line="177" />
+          <folding>
+            <element signature="e#1548#1549#0" expanded="true" />
+            <element signature="e#1599#1600#0" expanded="true" />
+            <element signature="e#4151#4152#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
+        <state relative-caret-position="230">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/InternalContainerData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="53" column="37" lean-forward="true" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
+        <state relative-caret-position="181">
+          <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/DataManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="178" selection-start-line="178" selection-end-line="178" />
-          <folding>
-            <element signature="e#1548#1549#0" expanded="true" />
-            <element signature="e#1599#1600#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="286">
+          <caret line="247" selection-start-line="247" selection-end-line="247" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/DoubleContainerAddPacker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/XFLPReportSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
         </state>
       </provider>
     </entry>

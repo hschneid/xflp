@@ -108,18 +108,20 @@ public class FlexiImporter implements Serializable {
 	}
 
 	/**
-	 * Clears all imported depots.
+	 * Clears all imported items.
 	 */
 	public void clearItems() {
 		itemList.clear();
+		lastItemData = null;
+		dataManager.clearItems();
 	}
 
 	/**
-	 * Removes all inserted vehicles and reset the planning parameters to default.
-	 * (See setCapacity() and setMaxRouteDuration() )
+	 * Removes all inserted container and reset the planning parameters to default.
 	 */
 	public void clearContainers() {
 		containerList.clear();
+		lastContainerData = null;
 	}
 
 	/**

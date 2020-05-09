@@ -6,26 +6,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @author hschneid
  *
  */
 public class DataManager implements Serializable {
 	private static final long serialVersionUID = 3987431565021981666L;
-	
+
 	private int maxItemID = 0;
 	private int maxShipmentID = 1;
 	private int maxLocationID = 0;
 	private int maxStackingGroupID = 1;
 	private int maxContainerTypeID = 1;
-	
+
 	private Map<String, Integer> itemMap = new HashMap<>();
 	private Map<Integer, String> itemIdMap = new HashMap<>();
 	private Map<String, Integer> shipmentMap = new HashMap<>();
@@ -40,7 +40,7 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param itemData
 	 */
 	public void add(InternalItemData itemData) {
@@ -51,17 +51,17 @@ public class DataManager implements Serializable {
 		addStackingGroup(itemData.getStackingGroup(), itemData.getAllowedStackingGroups());
 		addContainerTypes(itemData.getAllowedContainerTypes());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param conData
 	 */
 	public void add(InternalContainerData conData) {
 		addContainerType(conData.getContainerType());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param itemID
 	 */
 	public void addItem(String itemID) {
@@ -73,34 +73,34 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param shipmentID
 	 */
 	public void addShipment(String shipmentID) {
 		if(!shipmentMap.containsKey(shipmentID))
 			shipmentMap.put(shipmentID, maxShipmentID++);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param locationID
 	 */
 	public void addLocation(String locationID) {
 		if(!locationMap.containsKey(locationID))
 			locationMap.put(locationID, maxLocationID++);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param containerType
 	 */
 	public void addContainerType(String containerType) {
 		if(!containerTypeMap.containsKey(containerType))
 			containerTypeMap.put(containerType, maxContainerTypeID++);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param stackingGroupID
 	 * @param stackingGroups
 	 */
@@ -108,29 +108,29 @@ public class DataManager implements Serializable {
 		stackingGroupID = stackingGroupID.trim().toLowerCase();
 		if(!stackingGroupMap.containsKey(stackingGroupID))
 			stackingGroupMap.put(stackingGroupID, maxStackingGroupID++);
-		
+
 		String[] arr = stackingGroups.split(",");
 		for (String s : arr) {
 			if(!stackingGroupMap.containsKey(s))
 				stackingGroupMap.put(s, maxStackingGroupID++);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param containerTypes
 	 */
 	public void addContainerTypes(String containerTypes) {
 		String[] arr = containerTypes.split(",");
-		
+
 		for (String s : arr) {
 			if(!containerTypeMap.containsKey(s))
 				containerTypeMap.put(s, maxContainerTypeID++);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param itemID
 	 * @return
 	 */
@@ -143,7 +143,7 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param shipmentID
 	 * @return
 	 */
@@ -152,7 +152,7 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param locationID
 	 * @return
 	 */
@@ -161,7 +161,7 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stackingGroup
 	 * @return
 	 */
@@ -170,7 +170,7 @@ public class DataManager implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param containerType
 	 * @return
 	 */
@@ -189,49 +189,58 @@ public class DataManager implements Serializable {
 
 
 	/**
-	 * 
+	 *
 	 * @param allowedContainerSet
 	 * @return
 	 */
 	public Set<Integer> getContainerTypes(String allowedContainerSet) {
 		String[] arr = allowedContainerSet.split(",");
-		
+
 		Set<Integer> res = new HashSet<>();
 		for (String s : arr)
 			res.add(containerTypeMap.get(s));
-		
+
 		return res;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param allowedStackingGroups
 	 * @return
 	 */
 	public int getStackingGroups(String allowedStackingGroups) {
 		int res = 0;
-		
+
 		String[] arr = allowedStackingGroups.split(",");
 		for (String s : arr)
 			res += 1 << stackingGroupMap.get(s);
-		
+
 		return res;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void clear() {
 		maxItemID = 0;
-		maxShipmentID = 0;
+		maxShipmentID = 1;
 		maxLocationID = 0;
-		maxStackingGroupID = 0;
-		maxContainerTypeID = 0;
-		
+		maxStackingGroupID = 1;
+		maxContainerTypeID = 1;
+
 		itemMap.clear();
 		shipmentMap.clear();
 		locationMap.clear();
 		stackingGroupMap.clear();
 		containerTypeMap.clear();
+	}
+
+	public void clearItems() {
+		maxItemID = 0;
+		maxShipmentID = 1;
+		itemIdMap.clear();
+		itemMap.clear();
+		shipmentMap.clear();
+		shipmentMap.put("default_shipment", 0);
 	}
 }

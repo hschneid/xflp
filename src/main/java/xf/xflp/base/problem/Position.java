@@ -19,56 +19,18 @@ public class Position {
 	protected final int type;
 	protected final boolean isProjected;
 	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
 	protected Position(int x, int y) {
 		this(-1, x, y, -1, -1, false);
 	}
-	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
 	protected Position(int x, int y, int z) {
 		this(-1, x, y, z, -1, false);
 	}
-	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param type
-	 * @param isProjected
-	 */
 	protected Position(int idx, int x, int y, int type, boolean isProjected) {
 		this(idx, x, y, -1, type, isProjected);
 	}
-	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param type
-	 * @param isProjected
-	 */
 	protected Position(int x, int y, int type, boolean isProjected) {
 		this(-1, x, y, -1, type, isProjected);
 	}
-	
-	/**
-	 * 
-	 * @param idx
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
-	 * @param isProjected
-	 */
 	protected Position(int idx, int x, int y, int z, int type, boolean isProjected) {
 		this.idx = idx;
 		this.x = x;
@@ -77,34 +39,11 @@ public class Position {
 		this.type = type;
 		this.isProjected = isProjected;
 	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
 		return "("+x+","+y+","+z+")";
 	}
-	
-//	/*
-//	 * (non-Javadoc)
-//	 * @see java.lang.Object#hashCode()
-//	 */
-//	@Override
-//	public int hashCode() {
-//		return idx;
-//	}
-//	
-//	/*
-//	 * (non-Javadoc)
-//	 * @see java.lang.Object#equals(java.lang.Object)
-//	 */
-//	@Override
-//	public boolean equals(Object obj) {
-//		return (((Position)obj).idx == this.idx);
-//	}
 	
 	/**
 	 * 

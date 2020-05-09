@@ -7,8 +7,6 @@ import xf.xflp.base.problem.Position;
 import xf.xflp.base.problem.RotatedPosition;
 import xf.xflp.opt.construction.ZSingleBinAddPacker;
 
-import java.util.*;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

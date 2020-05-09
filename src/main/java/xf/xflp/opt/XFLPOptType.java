@@ -1,5 +1,7 @@
 package xf.xflp.opt;
 
+import xf.xflp.opt.construction.DoubleContainerAddPacker;
+import xf.xflp.opt.construction.SingleContainerAddPacker;
 import xf.xflp.opt.construction.SingleContainerPacker;
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 
@@ -10,7 +12,6 @@ import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
  * This enumeration holds all for the user available optimization
  * methods.
  * 
@@ -19,8 +20,10 @@ import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
  */
 public enum XFLPOptType {
 	
-	SINGLE_PACKER_ADD_REMOVE(SingleContainerPacker.class),
-	SINGLE_SWAP_PACKER(SingleBinOptimizedPacker.class);
+	SINGLE_CONTAINER_ADD_REMOVE_PACKER(SingleContainerPacker.class),
+	SINGLE_CONTAINER_ADD_PACKER(SingleContainerAddPacker.class),
+	DOUBLE_CONTAINER_ADD_PACKER(DoubleContainerAddPacker.class),
+	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class);
 	
 	private Class<? extends XFLPBase> clazz; 
 

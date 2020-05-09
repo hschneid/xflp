@@ -1,11 +1,12 @@
 package xf.xflp.opt.construction;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.*;
+import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.Item;
+import xf.xflp.base.problem.Position;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 import xf.xflp.opt.construction.strategy.StrategyIf;
-import xf.xflp.opt.construction.strategy.TouchingPerimeter;
 import xf.xflp.report.PackageEventType;
 
 import java.util.ArrayList;

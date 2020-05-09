@@ -12,7 +12,7 @@ class XFLPSpec extends Specification {
         service.addItem().setExternID("P1").setWidth(3).setLength(3).setHeight(1).setWeight(1)
         service.addItem().setExternID("P2").setWidth(3).setLength(2).setHeight(1).setWeight(1)
         service.addItem().setExternID("P3").setWidth(1).setLength(3).setHeight(1).setWeight(1)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_PACKER_ADD_REMOVE)
+        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_REMOVE_PACKER)
 
         when:
         service.executeLoadPlanning()
@@ -27,7 +27,7 @@ class XFLPSpec extends Specification {
         service.addItem().setExternID("P1").setWidth(3).setLength(3).setHeight(1).setWeight(1)
         service.addItem().setExternID("P2").setWidth(3).setLength(2).setHeight(1).setWeight(1)
         service.addItem().setExternID("P3").setWidth(1).setLength(3).setHeight(1).setWeight(1)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_PACKER_ADD_REMOVE)
+        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_REMOVE_PACKER)
 
         when:
         service.executeLoadPlanning()

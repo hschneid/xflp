@@ -5,7 +5,6 @@ import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /** 

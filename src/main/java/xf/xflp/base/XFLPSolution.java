@@ -41,7 +41,7 @@ public class XFLPSolution {
 		
 		// Add packed containers to report
 		for (Container con : model.getContainers()) {
-			String containerTypeName = dataManager.getContainerTypeName(con.getIndex());
+			String containerTypeName = dataManager.getContainerTypeName(con.getContainerType());
 			ContainerReport cRep = new ContainerReport(containerTypeName, con);
 			
 			for (Item item : con.getHistory()) {

@@ -1,9 +1,8 @@
 package xf.xflp.report;
 
-import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider

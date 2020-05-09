@@ -22,26 +22,26 @@ import java.util.Set;
  */
 public class Item implements Copyable<Item>, Cloneable, Indexable {
 
-	public final int size, volume, h;
+	public int size, volume, h;
 	public int x, y, z, xw, yl, zh, w, l;
 	
 	public boolean spinable, stackable;
-	public final int loadingLoc, unLoadingLoc;
+	public int loadingLoc, unLoadingLoc;
 	
 	// Binary representation, where only one bit can be active
-	public final int stackingGroup;
+	public int stackingGroup;
 	// Allowed container types (cooled, dangerous goods, etc.)
-	public final Set<Integer> allowedContainerSet;
+	public Set<Integer> allowedContainerSet;
 	// Allowed items that can be stacked on top (binary representation)
-	public final int allowedStackingGroups;
+	public int allowedStackingGroups;
 
-	public final float weight;
-	public final float stackingWeightLimit;
+	public float weight;
+	public float stackingWeightLimit;
 	
 	/* Unique index of this item object*/
-	public final int externalIndex;
+	public int externalIndex;
 	/* Type of item: loading or unloading */
-	public final PackageEventType loadingType;
+	public PackageEventType loadingType;
 	/* External externalIndex of this order. There can be two items
 	 * with the same order externalIndex (up- and unloading) */
 	public int orderIndex = -1;
@@ -56,46 +56,16 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	public boolean isLoading = false;
 	// Defines if this item was rotated (true) or not rotated (false)
 	public boolean isRotated = false;
-	
-	public Item(
-			int externalIdx,
-			int orderIndex,
-			int loadingLoc,
-			int unLoadingLoc,
-			int width,
-			int length,
-			int height,
-			float weight,
-			float bearingCapacity,
-			Set<Integer> allowedContainerSet,
-			int stackingGroup,
-			int allowedStackingGroups,
-			boolean isSpinable,
-			boolean isLoading
-			) {
-		this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
 
-		this.w = width;
-		this.l = length;
-		this.h = height;
+	public Item() {
+		this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
+		this.stackable = true;
+	}
+
+	public void postInit() {
 		this.size = w * l;
 		this.volume = h * w * l;
-		this.weight = weight;
-		this.stackingWeightLimit = bearingCapacity;
-		
-		this.stackingGroup = stackingGroup;
-		this.allowedStackingGroups = allowedStackingGroups;
-		
-		this.spinable = isSpinable;
-		this.stackable = true;
-		
-		this.externalIndex = externalIdx;
-		this.orderIndex = orderIndex;
-		this.loadingLoc = loadingLoc;
-		this.unLoadingLoc = unLoadingLoc;
-		this.loadingType = (isLoading == true) ? PackageEventType.LOAD : PackageEventType.UNLOAD;
-		
-		this.allowedContainerSet = allowedContainerSet;
+		this.loadingType = (isLoading) ? PackageEventType.LOAD : PackageEventType.UNLOAD;
 	}
 	
 	/**
@@ -182,5 +152,221 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	@Override
 	public void setIdx(int idx) {
 		this.index = idx;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
+
+	public int getH() {
+		return h;
+	}
+
+	public void setH(int h) {
+		this.h = h;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getZ() {
+		return z;
+	}
+
+	public void setZ(int z) {
+		this.z = z;
+	}
+
+	public int getXw() {
+		return xw;
+	}
+
+	public void setXw(int xw) {
+		this.xw = xw;
+	}
+
+	public int getYl() {
+		return yl;
+	}
+
+	public void setYl(int yl) {
+		this.yl = yl;
+	}
+
+	public int getZh() {
+		return zh;
+	}
+
+	public void setZh(int zh) {
+		this.zh = zh;
+	}
+
+	public int getW() {
+		return w;
+	}
+
+	public void setW(int w) {
+		this.w = w;
+	}
+
+	public int getL() {
+		return l;
+	}
+
+	public void setL(int l) {
+		this.l = l;
+	}
+
+	public boolean isSpinable() {
+		return spinable;
+	}
+
+	public void setSpinable(boolean spinable) {
+		this.spinable = spinable;
+	}
+
+	public boolean isStackable() {
+		return stackable;
+	}
+
+	public void setStackable(boolean stackable) {
+		this.stackable = stackable;
+	}
+
+	public int getLoadingLoc() {
+		return loadingLoc;
+	}
+
+	public void setLoadingLoc(int loadingLoc) {
+		this.loadingLoc = loadingLoc;
+	}
+
+	public int getUnLoadingLoc() {
+		return unLoadingLoc;
+	}
+
+	public void setUnLoadingLoc(int unLoadingLoc) {
+		this.unLoadingLoc = unLoadingLoc;
+	}
+
+	public int getStackingGroup() {
+		return stackingGroup;
+	}
+
+	public void setStackingGroup(int stackingGroup) {
+		this.stackingGroup = stackingGroup;
+	}
+
+	public Set<Integer> getAllowedContainerSet() {
+		return allowedContainerSet;
+	}
+
+	public void setAllowedContainerSet(Set<Integer> allowedContainerSet) {
+		this.allowedContainerSet = allowedContainerSet;
+	}
+
+	public int getAllowedStackingGroups() {
+		return allowedStackingGroups;
+	}
+
+	public void setAllowedStackingGroups(int allowedStackingGroups) {
+		this.allowedStackingGroups = allowedStackingGroups;
+	}
+
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
+
+	public float getStackingWeightLimit() {
+		return stackingWeightLimit;
+	}
+
+	public void setStackingWeightLimit(float stackingWeightLimit) {
+		this.stackingWeightLimit = stackingWeightLimit;
+	}
+
+	public int getExternalIndex() {
+		return externalIndex;
+	}
+
+	public void setExternalIndex(int externalIndex) {
+		this.externalIndex = externalIndex;
+	}
+
+	public PackageEventType getLoadingType() {
+		return loadingType;
+	}
+
+	public void setLoadingType(PackageEventType loadingType) {
+		this.loadingType = loadingType;
+	}
+
+	public int getOrderIndex() {
+		return orderIndex;
+	}
+
+	public void setOrderIndex(int orderIndex) {
+		this.orderIndex = orderIndex;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public int getContainerIndex() {
+		return containerIndex;
+	}
+
+	public void setContainerIndex(int containerIndex) {
+		this.containerIndex = containerIndex;
+	}
+
+	public boolean isLoading() {
+		return isLoading;
+	}
+
+	public void setLoading(boolean loading) {
+		isLoading = loading;
+	}
+
+	public boolean isRotated() {
+		return isRotated;
+	}
+
+	public void setRotated(boolean rotated) {
+		isRotated = rotated;
 	}
 }

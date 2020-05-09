@@ -2,7 +2,7 @@ package xf.xflp.base.fleximport;
 
 import xf.xflp.base.problem.Item;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
@@ -12,11 +12,11 @@ import xf.xflp.base.problem.Item;
  *
  * The InternalItemData class is only for interal use. 
  * It holds the same data like ItemData.
- * 
+ *
  * It gives access to the inserted data for XFLP suite. 
  * So the user wont see internal variable names or data
  * structures.
- * 
+ *
  * @author hschneid
  *
  */
@@ -113,56 +113,48 @@ public class InternalItemData extends ItemData {
 	public final boolean isSpinable() {
 		return spinable;
 	}
-	
+
 	/**
-	 * 
-	 * @param manager
-	 * @return
+	 *
 	 */
 	public Item createLoadingItem(DataManager manager) {
-		Item i = new Item(
-				manager.getItemIdx(externID),
-				manager.getShipmentIdx(shipmentID),
-				manager.getLocationIdx(loadingLocation),
-				-1,//manager.getLocationIdx(unloadingLocation),
-				width,
-				length,
-				height,
-				weight,
-				stackingWeightLimit,
-				manager.getContainerTypes(allowedContainerSet),
-				manager.getStackingGroupIdx(stackingGroup),
-				manager.getStackingGroups(allowedStackingGroups),
-				spinable,
-				true // isLoading
-				);
-		
+		Item i = createItem(manager);
+		i.setLoading(true); // is Loading
+
+		i.postInit();
+
 		return i;
 	}
-	
+
 	/**
-	 * 
-	 * @param manager
-	 * @return
+	 *
 	 */
 	public Item createUnLoadingItem(DataManager manager) {
-		Item i = new Item(
-				manager.getItemIdx(externID),
-				manager.getShipmentIdx(shipmentID),
-				manager.getLocationIdx(unloadingLocation),
-				-1,//manager.getLocationIdx(loadingLocation),
-				width,
-				length,
-				height,
-				weight,
-				stackingWeightLimit,
-				manager.getContainerTypes(allowedContainerSet),
-				manager.getStackingGroupIdx(stackingGroup),
-				manager.getStackingGroups(allowedStackingGroups),
-				spinable,
-				false // isLoading
-				);
-		
+		Item i = createItem(manager);
+		i.setLoading(false); // is Unloading
+
+		i.postInit();
+
+		return i;
+	}
+
+	private Item createItem(DataManager manager) {
+		Item i = new Item();
+
+		i.setExternalIndex(manager.getItemIdx(externID));
+		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
+		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
+		i.setUnLoadingLoc(-1);//manager.getLocationIdx(unloadingLocation),
+		i.setW(width);
+		i.setL(length);
+		i.setH(height);
+		i.setWeight(weight);
+		i.setStackingWeightLimit(stackingWeightLimit);
+		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));
+		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
+		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
+		i.setSpinable(spinable);
+
 		return i;
 	}
 

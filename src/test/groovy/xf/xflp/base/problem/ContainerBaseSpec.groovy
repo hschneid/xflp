@@ -1,17 +1,16 @@
 package xf.xflp.base.problem
 
+import helper.Helper
 import spock.lang.Specification
 
 class ContainerBaseSpec extends Specification {
 
-    def itemIdx = 0
-
     def "find first position in empty container"() {
         when:
-        def con = getContainer(2,2,2);
-        def i = getItem(1, 1, 1, 1, 10, 0);
+        def con = Helper.getContainer(2,2,2);
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0);
         def pList = con.getPossibleInsertPositionList(i);
-        def pp = findPos(pList, 0, 0, 0);
+        def pp = Helper.findPos(pList, 0, 0, 0);
 
         then:
         pp != null
@@ -20,8 +19,8 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add item into empty container"() {
-        def con = getContainer(2,2,2);
-        def i = getItem(1, 1, 1, 1, 10, 0);
+        def con = Helper.getContainer(2,2,2);
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0);
         def pList = con.getPossibleInsertPositionList(i);
 
         when:
@@ -33,9 +32,9 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find second position in container"() {
-        def con = getContainer(2,2,2);
-        def i = getItem(1, 1, 1, 1, 10, 0);
-        def i2 = getItem(1, 1, 1, 1, 10, 0);
+        def con = Helper.getContainer(2,2,2);
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0);
         con.add(i, con.getPossibleInsertPositionList(i).get(0));
 
         when:
@@ -43,21 +42,21 @@ class ContainerBaseSpec extends Specification {
 
         then:
         pList.size() == 3
-        findPos(pList, 0, 0, 0) == null
-        findPos(pList, 1, 0, 0) != null
-        findPos(pList, 0, 1, 0) != null
-        findPos(pList, 0, 0, 1) != null
+        Helper.findPos(pList, 0, 0, 0) == null
+        Helper.findPos(pList, 1, 0, 0) != null
+        Helper.findPos(pList, 0, 1, 0) != null
+        Helper.findPos(pList, 0, 0, 1) != null
     }
 
     def "add second item to container"() {
-        def con = getContainer(2,2,2);
-        def i = getItem(1, 1, 1, 1, 10, 0);
-        def i2 = getItem(1, 1, 1, 1, 10, 0);
+        def con = Helper.getContainer(2,2,2);
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0);
         con.add(i, con.getPossibleInsertPositionList(i).get(0));
         def pList = con.getPossibleInsertPositionList(i2);
 
         when:
-        con.add(i2, findPos(pList, 1, 0, 0));
+        con.add(i2, Helper.findPos(pList, 1, 0, 0));
 
         then:
         con.getNbrOfLoadedThings() == 2
@@ -65,13 +64,13 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add third item in container"() {
-        def con = getContainer(2,2,2);
-        def i = getItem(1, 1, 1, 1, 10, 0);
-        def i2 = getItem(1, 1, 1, 1, 10, 0);
-        def i3 = getItem(2, 1, 1, 1, 10, 0);
+        def con = Helper.getContainer(2,2,2);
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0);
+        def i3 = Helper.getItem(2, 1, 1, 1, 10, 0);
         con.add(i, con.getPossibleInsertPositionList(i).get(0));
         def pList = con.getPossibleInsertPositionList(i2);
-        con.add(i2, findPos(pList, 1, 0, 0));
+        con.add(i2, Helper.findPos(pList, 1, 0, 0));
 
         when:
         pList = con.getPossibleInsertPositionList(i3);
@@ -86,13 +85,13 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add forth item in container"() {
-        def con = getContainer(2,2,2)
-        def i1 = getItem(1, 1, 1, 1, 10, 0)
-        def i2 = getItem(1, 1, 1, 1, 10, 0)
-        def i3 = getItem(2, 1, 1, 1, 10, 0)
-        def i4 = getItem(1, 1, 1, 1, 10, 0)
+        def con = Helper.getContainer(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
         con.add(i1, con.getPossibleInsertPositionList(i1).get(0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
         con.add(i3, con.getPossibleInsertPositionList(i3)
                 .find {p -> p.getX() == 0 && p.getY() == 1 && p.getZ() == 0})
         when:
@@ -110,14 +109,14 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add fifth item in container"() {
-        def con = getContainer(2,2,2)
-        def i1 = getItem(1, 1, 1, 1, 10, 0)
-        def i2 = getItem(1, 1, 1, 1, 10, 0)
-        def i3 = getItem(2, 1, 1, 1, 10, 0)
-        def i4 = getItem(1, 1, 1, 1, 10, 0)
-        def i5 = getItem(1, 2, 1, 1, 10, 0)
+        def con = Helper.getContainer(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i5 = Helper.getItem(1, 2, 1, 1, 10, 0)
         con.add(i1, con.getPossibleInsertPositionList(i1).get(0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
         con.add(i3, con.getPossibleInsertPositionList(i3)
                 .find {p -> p.getX() == 0 && p.getY() == 1 && p.getZ() == 0})
         con.add(i4, con.getPossibleInsertPositionList(i4)
@@ -133,15 +132,15 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add sixth item in container"() {
-        def con = getContainer(2,2,2)
-        def i = getItem(1, 1, 1, 1, 10, 0)
-        def i2 = getItem(1, 1, 1, 1, 10, 0)
-        def i3 = getItem(2, 1, 1, 1, 10, 0)
-        def i4 = getItem(1, 1, 1, 1, 10, 0)
-        def i5 = getItem(1, 2, 1, 1, 10, 0)
-        def i6 = getItem(1, 1, 1, 1, 10, 0)
+        def con = Helper.getContainer(2,2,2)
+        def i = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i5 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i6 = Helper.getItem(1, 1, 1, 1, 10, 0)
         con.add(i, con.getPossibleInsertPositionList(i).get(0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
         con.add(i3, con.getPossibleInsertPositionList(i3)
                 .find {p -> p.getX() == 0 && p.getY() == 1 && p.getZ() == 0})
         con.add(i4, con.getPossibleInsertPositionList(i4)
@@ -161,8 +160,8 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find rotated insert position"() {
-        def con = getContainer(2,2,2)
-        def i = getItem(2, 1, 1, 1, 10, 0)
+        def con = Helper.getContainer(2,2,2)
+        def i = Helper.getItem(2, 1, 1, 1, 10, 0)
 
         when:
         def pList = con.getPossibleInsertPositionList(i)
@@ -174,12 +173,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "do not find insert positions for too big items"() {
-        def con = getContainer(2,2,2, 10)
-        def i1 = getItem(3, 1, 1, 1, 10, 0)
-        def i2 = getItem(1, 3, 1, 1, 10, 0);
-        def i3 = getItem(1, 1, 3, 1, 10, 0);
-        def i4 = getItem(1, 1, 1, 11, 10, 0);
-        def i5 = getItem(1, 1, 1, 9, 10, 0);
+        def con = Helper.getContainer(2,2,2, 10)
+        def i1 = Helper.getItem(3, 1, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 3, 1, 1, 10, 0);
+        def i3 = Helper.getItem(1, 1, 3, 1, 10, 0);
+        def i4 = Helper.getItem(1, 1, 1, 11, 10, 0);
+        def i5 = Helper.getItem(1, 1, 1, 9, 10, 0);
 
         when:
         def pList1 = con.getPossibleInsertPositionList(i1);
@@ -197,15 +196,15 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add and remove items from container"() {
-        def con = getContainer(2,2,5)
-        def i1 = getItem(1, 1, 1, 1, 100, 0)
-        def i2 = getItem(1, 1, 1, 1, 100, 0)
-        def i3 = getItem(1, 1, 1, 1, 100, 0)
+        def con = Helper.getContainer(2,2,5)
+        def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 100, 0)
 
         when:
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0,0,1))
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0,0,2))
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0,0,1))
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0,0,2))
         def apList1 = new ArrayList<>(con.activePosList)
         con.remove(i2)
         def apList2 = new ArrayList<>(con.activePosList)
@@ -215,33 +214,33 @@ class ContainerBaseSpec extends Specification {
         def apList4 = new ArrayList<>(con.activePosList)
 
         then:
-        findPos(apList1, 1, 0, 0) != null
-        findPos(apList1, 0, 1, 0) != null
-        findPos(apList1, 1, 0, 1) != null
-        findPos(apList1, 0, 1, 1) != null
-        findPos(apList1, 1, 0, 2) != null
-        findPos(apList1, 0, 1, 2) != null
-        findPos(apList1, 0, 0, 3) != null
-        findPos(apList2, 0, 0, 1) != null
-        findPos(apList3, 0, 0, 0) != null
+        Helper.findPos(apList1, 1, 0, 0) != null
+        Helper.findPos(apList1, 0, 1, 0) != null
+        Helper.findPos(apList1, 1, 0, 1) != null
+        Helper.findPos(apList1, 0, 1, 1) != null
+        Helper.findPos(apList1, 1, 0, 2) != null
+        Helper.findPos(apList1, 0, 1, 2) != null
+        Helper.findPos(apList1, 0, 0, 3) != null
+        Helper.findPos(apList2, 0, 0, 1) != null
+        Helper.findPos(apList3, 0, 0, 0) != null
         con.activePosList.size() == 1
-        findPos(apList4, 0, 0, 0) != null
+        Helper.findPos(apList4, 0, 0, 0) != null
     }
 
     def "test covered positions (X axis)"(){
-        def con = getContainer(3,3,3);
-        def i1 = getItem(1, 1, 1, 1, 1, 0);
-        def i2 = getItem(1, 1, 1, 1, 1, 0);
-        def i3 = getItem(2, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(3,3,3);
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i3 = Helper.getItem(2, 1, 1, 1, 1, 0);
 
         when:
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 1, 0, false));
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0, 1, 0, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.activePosList, 1, 1, 0);
-        def pos2 = findPos(con.inactivePosList, 1, 1, 0);
-        def pos3 = findPos(con.coveredPosList, 1, 1, 0);
+        def pos1 = Helper.findPos(con.activePosList, 1, 1, 0);
+        def pos2 = Helper.findPos(con.inactivePosList, 1, 1, 0);
+        def pos3 = Helper.findPos(con.coveredPosList, 1, 1, 0);
 
         then:
         pos1 == null
@@ -250,19 +249,19 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Y axis)"(){
-        def con = getContainer(3,3,3);
-        def i1 = getItem(1, 1, 1, 1, 1, 0);
-        def i2 = getItem(1, 1, 1, 1, 1, 0);
-        def i3 = getItem(1, 2, 1, 1, 1, 0);
+        def con = Helper.getContainer(3,3,3);
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i3 = Helper.getItem(1, 2, 1, 1, 1, 0);
 
         when:
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 1, 0, 0, false));
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 1, 0, 0, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.activePosList, 1, 1, 0);
-        def pos2 = findPos(con.inactivePosList, 1, 1, 0);
-        def pos3 = findPos(con.coveredPosList, 1, 1, 0);
+        def pos1 = Helper.findPos(con.activePosList, 1, 1, 0);
+        def pos2 = Helper.findPos(con.inactivePosList, 1, 1, 0);
+        def pos3 = Helper.findPos(con.coveredPosList, 1, 1, 0);
 
         then:
         pos1 == null
@@ -271,19 +270,19 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Z-X axis)"(){
-        def con = getContainer(3,3,3);
-        def i1 = getItem(1, 1, 1, 1, 1, 0);
-        def i2 = getItem(1, 1, 1, 1, 1, 0);
-        def i3 = getItem(2, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(3,3,3);
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i3 = Helper.getItem(2, 1, 1, 1, 1, 0);
 
         when:
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.activePosList, 1, 0, 1);
-        def pos2 = findPos(con.inactivePosList, 1, 0, 1);
-        def pos3 = findPos(con.coveredPosList, 1, 0, 1);
+        def pos1 = Helper.findPos(con.activePosList, 1, 0, 1);
+        def pos2 = Helper.findPos(con.inactivePosList, 1, 0, 1);
+        def pos3 = Helper.findPos(con.coveredPosList, 1, 0, 1);
 
         then:
         pos1 == null
@@ -292,19 +291,19 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Z-Y axis)"(){
-        def con = getContainer(3,3,3);
-        def i1 = getItem(1, 1, 1, 1, 1, 0);
-        def i2 = getItem(1, 1, 1, 1, 1, 0);
-        def i3 = getItem(1, 2, 1, 1, 1, 0);
+        def con = Helper.getContainer(3,3,3);
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def i3 = Helper.getItem(1, 2, 1, 1, 1, 0);
 
         when:
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0, 1, 0));
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0, 0, 1, false));
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
-        def pos1 = findPos(con.activePosList, 0, 1, 1);
-        def pos2 = findPos(con.inactivePosList, 0, 1, 1);
-        def pos3 = findPos(con.coveredPosList, 0, 1, 1);
+        def pos1 = Helper.findPos(con.activePosList, 0, 1, 1);
+        def pos2 = Helper.findPos(con.inactivePosList, 0, 1, 1);
+        def pos3 = Helper.findPos(con.coveredPosList, 0, 1, 1);
 
         then:
         pos1 == null
@@ -313,12 +312,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only one wall)"() {
-        def con = getContainer(10,10,10);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(10,10,10);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -327,12 +326,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only two walls on the width)"() {
-        def con = getContainer(4,10,10);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(4,10,10);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -341,12 +340,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only two walls on the length)"() {
-        def con = getContainer(10,4,10);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(10,4,10);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -355,12 +354,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only two walls on the height)"() {
-        def con = getContainer(10,10,4);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(10,10,4);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -369,12 +368,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only three walls on the width, length)"() {
-        def con = getContainer(4,4,10);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(4,4,10);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -383,12 +382,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only three walls on the width, height)"() {
-        def con = getContainer(4,10,4);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(4,10,4);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -397,12 +396,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only three walls on the length, height)"() {
-        def con = getContainer(10,4,4);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(10,4,4);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -411,12 +410,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only all walls)"() {
-        def con = getContainer(4,4,4);
-        def i = getItem(4, 4, 4, 1, 1, 0);
+        def con = Helper.getContainer(4,4,4);
+        def i = Helper.getItem(4, 4, 4, 1, 1, 0);
 
         when:
         def pList = con.getPossibleInsertPositionList(i);
-        def pos = findPos(pList, 0, 0, 0);
+        def pos = Helper.findPos(pList, 0, 0, 0);
         float f = con.getTouchingPerimeter(i, pos, 1, true, true);
 
         then:
@@ -425,14 +424,14 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (mixed wall and box)"() {
-        def con = getContainer(4,4,4);
-        def i1 = getItem(1, 4, 4, 1, 1, 0);
-        def i2 = getItem(2, 2, 2, 1, 1, 0);
+        def con = Helper.getContainer(4,4,4);
+        def i1 = Helper.getItem(1, 4, 4, 1, 1, 0);
+        def i2 = Helper.getItem(2, 2, 2, 1, 1, 0);
 
         when:
-        def pos = findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
+        def pos = Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
         con.add(i1, pos)
-        def pos2 = findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
+        def pos2 = Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
         float f = con.getTouchingPerimeter(i2, pos2, 1, true, true);
 
         then:
@@ -442,14 +441,14 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (mixed wall and half-height box)"() {
-        def con = getContainer(4,4,4);
-        def i1 = getItem(1, 4, 1, 1, 1, 0);
-        def i2 = getItem(2, 2, 2, 1, 1, 0);
+        def con = Helper.getContainer(4,4,4);
+        def i1 = Helper.getItem(1, 4, 1, 1, 1, 0);
+        def i2 = Helper.getItem(2, 2, 2, 1, 1, 0);
 
         when:
-        def pos = findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
+        def pos = Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
         con.add(i1, pos)
-        def pos2 = findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
+        def pos2 = Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
         float f = con.getTouchingPerimeter(i2, pos2, 1, true, true);
 
         then:
@@ -459,17 +458,17 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test touching perimeter (only box)"() {
-        def con = getContainer(4,4,4)
-        def i1 = getItem(1, 4, 4, 1, 1, 0)
-        def i2 = getItem(3, 1, 4, 1, 1, 0);
-        def i3 = getItem(2, 2, 2, 1, 1, 0)
+        def con = Helper.getContainer(4,4,4)
+        def i1 = Helper.getItem(1, 4, 4, 1, 1, 0)
+        def i2 = Helper.getItem(3, 1, 4, 1, 1, 0);
+        def i3 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
         when:
-        def pos = findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
+        def pos = Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0)
         con.add(i1, pos)
-        def pos2 = findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
+        def pos2 = Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0)
         con.add(i2, pos2)
-        def pos3 = findPos(con.getPossibleInsertPositionList(i2), 1, 1, 0)
+        def pos3 = Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 1, 0)
         float f = con.getTouchingPerimeter(i3, pos3, 1, true, true);
 
         then:
@@ -480,21 +479,21 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test full coverage of item ground"() {
-        def con = getContainer(5,1,3);
-        def i1 = getItem(1, 1, 2, 1, 100, 0);
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
-        def i2 = getItem(2, 1, 1, 1, 100, 0);
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
-        def i3 = getItem(2, 1, 2, 1, 100, 0);
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 3, 0, 0, false));
+        def con = Helper.getContainer(5,1,3);
+        def i1 = Helper.getItem(1, 1, 2, 1, 100, 0);
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        def i2 = Helper.getItem(2, 1, 1, 1, 100, 0);
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0));
+        def i3 = Helper.getItem(2, 1, 2, 1, 100, 0);
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 3, 0, 0, false));
 
         when:
-        def i4 = getItem(2, 1, 1, 1, 100, 0);
-        def pos4 = findPos(con.getPossibleInsertPositionList(i4), 0, 0, 2, false);
-        def i5 = getItem(3, 1, 1, 1, 100, 0);
-        def pos5 = findPos(con.getPossibleInsertPositionList(i5), 0, 0, 2, false);
-        def i6 = getItem(4, 1, 1, 1, 100, 0);
-        def pos6 = findPos(con.getPossibleInsertPositionList(i6), 0, 0, 2, false);
+        def i4 = Helper.getItem(2, 1, 1, 1, 100, 0);
+        def pos4 = Helper.findPos(con.getPossibleInsertPositionList(i4), 0, 0, 2, false);
+        def i5 = Helper.getItem(3, 1, 1, 1, 100, 0);
+        def pos5 = Helper.findPos(con.getPossibleInsertPositionList(i5), 0, 0, 2, false);
+        def i6 = Helper.getItem(4, 1, 1, 1, 100, 0);
+        def pos6 = Helper.findPos(con.getPossibleInsertPositionList(i6), 0, 0, 2, false);
 
         then:
         pos4 == null
@@ -503,12 +502,12 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test rotation"() {
-        def con = getContainer(2,2,1);
-        def i1 = getItem(1, 1, 1, 1, 100, 0);
-        def i2 = getItem(2, 1, 1, 1, 100, 0);
-        def i3 = getItem(2, 1, 1, 1, 100, 0);
+        def con = Helper.getContainer(2,2,1);
+        def i1 = Helper.getItem(1, 1, 1, 1, 100, 0);
+        def i2 = Helper.getItem(2, 1, 1, 1, 100, 0);
+        def i3 = Helper.getItem(2, 1, 1, 1, 100, 0);
         i3.spinable = false
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0));
 
 
         when:
@@ -516,131 +515,81 @@ class ContainerBaseSpec extends Specification {
         def pList3 = con.getPossibleInsertPositionList(i3);
 
         then:
-        findPos(pList2, 1, 0, 0, true) != null
-        findPos(pList2, 0, 1, 0, false) != null
-        findPos(pList3, 1, 0, 0, true) == null
-        findPos(pList3, 0, 1, 0, false) != null
+        Helper.findPos(pList2, 1, 0, 0, true) != null
+        Helper.findPos(pList2, 0, 1, 0, false) != null
+        Helper.findPos(pList3, 1, 0, 0, true) == null
+        Helper.findPos(pList3, 0, 1, 0, false) != null
     }
 
     def "test horizontal projection of insert position"() {
-        def con = getContainer(3, 5,2)
-        def i1 = getItem(2, 1, 1, 1, 100, 0)
-        def i2 = getItem(1, 3, 1, 1, 100, 0)
-        def i3 = getItem(3, 2, 1, 1, 100, 0)
+        def con = Helper.getContainer(3, 5,2)
+        def i1 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i2 = Helper.getItem(1, 3, 1, 1, 100, 0)
+        def i3 = Helper.getItem(3, 2, 1, 1, 100, 0)
 
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 2, 0, 0))
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 2, 0, 0))
         when:
         def pList = con.getPossibleInsertPositionList(i3)
-        def pos = findPos(pList, 0, 3, 0)
         then:
-        pos != null
+        Helper.findPos(pList, 0, 3, 0) != null
     }
 
     def "test vertical projection of insert position"() {
-        def con = getContainer(3, 5,2)
-        def i1 = getItem(1, 2, 1, 1, 100, 0)
-        def i2 = getItem(2, 1, 1, 1, 100, 0)
-        def i3 = getItem(1, 3, 1, 1, 100, 0)
+        def con = Helper.getContainer(3, 5,2)
+        def i1 = Helper.getItem(1, 2, 1, 1, 100, 0)
+        def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i3 = Helper.getItem(1, 3, 1, 1, 100, 0)
 
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
         when:
         def pList = con.getPossibleInsertPositionList(i3)
-        def pos = findPos(pList, 2, 0, 0)
         then:
-        pos != null
+        Helper.findPos(pList, 2, 0, 0) != null
     }
 
     def "test vertical projection of insert position at other box"() {
-        def con = getContainer(4, 6,2)
-        def i1 = getItem(3, 2, 1, 1, 100, 0)
-        def i2 = getItem(1, 2, 1, 1, 100, 0)
-        def i3 = getItem(2, 1, 1, 1, 100, 0)
-        def i4 = getItem(2, 3, 1, 1, 100, 0)
+        def con = Helper.getContainer(4, 6,2)
+        def i1 = Helper.getItem(3, 2, 1, 1, 100, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i4 = Helper.getItem(2, 3, 1, 1, 100, 0)
 
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 0, 4, 0))
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0, 2, 0))
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0, 4, 0))
         when:
         def pList = con.getPossibleInsertPositionList(i4)
-        def pos = findPos(pList, 2, 2, 0)
+        def pos = Helper.findPos(pList, 2, 2, 0)
         then:
         pos != null
     }
 
     def "big test projected insert positions"() {
-        def con = getContainer(4, 6,2)
-        def i1 = getItem(1, 1, 1, 1, 100, 0)
-        def i2 = getItem(1, 2, 1, 1, 100, 0)
-        def i3 = getItem(2, 1, 1, 1, 100, 0)
-        def i4 = getItem(1, 1, 1, 1, 100, 0)
+        def con = Helper.getContainer(4, 6,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 100, 0)
 
-        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
-        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
-        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 1, 2, 0))
+        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
+        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 1, 2, 0))
         when:
         def pList = con.getPossibleInsertPositionList(i4)
         then:
         // Normal pos
-        findPos(pList, 0, 1, 0) != null
-        findPos(pList, 1, 3, 0) != null
-        findPos(pList, 3, 2, 0) != null
-        findPos(pList, 2, 0, 0) != null
+        Helper.findPos(pList, 0, 1, 0) != null
+        Helper.findPos(pList, 1, 3, 0) != null
+        Helper.findPos(pList, 3, 2, 0) != null
+        Helper.findPos(pList, 2, 0, 0) != null
         // Horizontal projected pos
-        findPos(pList, 0, 2, 0) != null
-        findPos(pList, 0, 3, 0) != null
+        Helper.findPos(pList, 0, 2, 0) != null
+        Helper.findPos(pList, 0, 3, 0) != null
         // Vertical projected pos
-        findPos(pList, 3, 0, 0) != null
+        Helper.findPos(pList, 3, 0, 0) != null
     }
 
-    private Container getContainer(int width, int length, int height) {
-        return new Container(width, length, height, 999999999, 0, 0);
-    }
-    private Container getContainer(int width, int length, int height, float maxWeight) {
-        return new Container(width, length, height, maxWeight, 0, 0);
-    }
 
-    private Item getItem(int w, int l, int h, int ww, long wC, int sG) {
-        return getItem(w, l, h, ww, wC, sG, 1 << sG);
-    }
-    private Item getItem(int w, int l, int h, int ww, long wC, int sG, int allowedSG) {
-        Set<Integer> set = new HashSet<>();
-        set.add(0);
-
-        Item i = new Item(
-                itemIdx,
-                itemIdx,
-                itemIdx,
-                itemIdx + 1,
-                w,
-                l,
-                h,
-                ww,
-                wC,
-                set,
-                1<<sG,
-                allowedSG,
-                true,
-                true
-        );
-        itemIdx++;
-
-        return i;
-    }
-
-    private Position findPos(List<Position> pList, int x, int y, int z) {
-        return findPos(pList, x, y, z, false);
-    }
-
-    private Position findPos(List<Position> pList, int x, int y, int z, boolean rotated) {
-        for (Position position : pList) {
-            if(position.getX() == x && position.getY() == y && position.getZ() == z)
-                if((rotated && position instanceof RotatedPosition)
-                        || (!rotated && !(position instanceof RotatedPosition)))
-                    return position;
-        }
-
-        return null;
-    }
 }

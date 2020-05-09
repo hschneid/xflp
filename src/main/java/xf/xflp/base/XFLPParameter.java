@@ -10,9 +10,18 @@ package xf.xflp.base;
  **/
 public class XFLPParameter {
 
+	private float lifoImportance = 0f;
+
 	public void clear() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	public float getLifoImportance() {
+		return lifoImportance;
+	}
+
+	public void setLifoImportance(float lifoImportance) {
+		this.lifoImportance = lifoImportance;
+	}
 }

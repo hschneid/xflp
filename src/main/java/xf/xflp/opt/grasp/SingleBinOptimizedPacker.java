@@ -3,14 +3,14 @@ package xf.xflp.opt.grasp;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Item;
 import xf.xflp.opt.XFLPBase;
-import xf.xflp.opt.construction.ZSingleBinPacker;
+import xf.xflp.opt.construction.SingleContainerPacker;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class SingleBinOptimizedPacker extends XFLPBase {
 
-    private ZSingleBinPacker packer = new ZSingleBinPacker();
+    private SingleContainerPacker packer = new SingleContainerPacker();
 
     private Random rand = new Random(1234);
 

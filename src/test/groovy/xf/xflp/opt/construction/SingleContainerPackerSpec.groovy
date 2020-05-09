@@ -5,14 +5,12 @@ import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
-import xf.xflp.opt.construction.ZSingleBinPacker
-import xf.xflp.opt.construction.strategy.HighestLowerLeft
 
-class ZSingleBinPackerSpec extends Specification {
+class SingleContainerPackerSpec extends Specification {
 
     def itemIdx = 0
 
-    def service = new ZSingleBinPacker()
+    def service = new SingleContainerPacker()
 
     def "test only adding - sucessfull"() {
         def items = new ArrayList<Item>()

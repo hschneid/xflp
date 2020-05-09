@@ -569,6 +569,31 @@ class ContainerBaseSpec extends Specification {
         pos != null
     }
 
+    def "big test projected insert positions"() {
+        def con = getContainer(4, 6,2)
+        def i1 = getItem(1, 1, 1, 1, 100, 0)
+        def i2 = getItem(1, 2, 1, 1, 100, 0)
+        def i3 = getItem(2, 1, 1, 1, 100, 0)
+        def i4 = getItem(1, 1, 1, 1, 100, 0)
+
+        con.add(i1, findPos(con.getPossibleInsertPositionList(i1), 0, 0, 0))
+        con.add(i2, findPos(con.getPossibleInsertPositionList(i2), 1, 0, 0))
+        con.add(i3, findPos(con.getPossibleInsertPositionList(i3), 1, 2, 0))
+        when:
+        def pList = con.getPossibleInsertPositionList(i4)
+        then:
+        // Normal pos
+        findPos(pList, 0, 1, 0) != null
+        findPos(pList, 1, 3, 0) != null
+        findPos(pList, 3, 2, 0) != null
+        findPos(pList, 2, 0, 0) != null
+        // Horizontal projected pos
+        findPos(pList, 0, 2, 0) != null
+        findPos(pList, 0, 3, 0) != null
+        // Vertical projected pos
+        findPos(pList, 3, 0, 0) != null
+    }
+
     private Container getContainer(int width, int length, int height) {
         return new Container(width, length, height, 999999999, 0, 0);
     }

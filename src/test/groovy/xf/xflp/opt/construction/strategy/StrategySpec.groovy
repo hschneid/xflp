@@ -1,13 +1,10 @@
 package xf.xflp.opt.construction.strategy
 
 import spock.lang.Specification
-import xf.xflp.base.XFLPModel
-import xf.xflp.base.XFLPParameter
 import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
 import xf.xflp.base.problem.Position
 import xf.xflp.base.problem.RotatedPosition
-import xf.xflp.opt.construction.ZSingleBinPacker
 
 class StrategySpec extends Specification {
 

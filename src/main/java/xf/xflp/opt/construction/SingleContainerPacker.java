@@ -30,19 +30,19 @@ import java.util.Map;
  * @author hschneid
  *
  */
-public class ZSingleBinPacker extends XFLPBase {
+public class SingleContainerPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
 	private StrategyIf strategy;
 
-	public ZSingleBinPacker() {
+	public SingleContainerPacker() {
 		this.strategy = new HighestLowerLeft();
 	}
 
 	@Override
 	public void execute(XFLPModel model) {
-		Container container = new Container(model.getContainerTypes()[0], 1f);
+		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 

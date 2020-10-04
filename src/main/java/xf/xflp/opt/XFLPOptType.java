@@ -4,6 +4,7 @@ import xf.xflp.opt.construction.DoubleContainerAddPacker;
 import xf.xflp.opt.construction.SingleContainerAddPacker;
 import xf.xflp.opt.construction.SingleContainerPacker;
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
+import xf.xflp.opt.grasp.SingleBinRandomSearchPacker;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider
@@ -23,7 +24,8 @@ public enum XFLPOptType {
 	SINGLE_CONTAINER_ADD_REMOVE_PACKER(SingleContainerPacker.class),
 	SINGLE_CONTAINER_ADD_PACKER(SingleContainerAddPacker.class),
 	DOUBLE_CONTAINER_ADD_PACKER(DoubleContainerAddPacker.class),
-	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class);
+	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
+	SINGLE_CONTAINER_RANDOM_SEARCH(SingleBinRandomSearchPacker.class);
 	
 	private Class<? extends XFLPBase> clazz; 
 

@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6caf6d75-33d5-42ec-a092-6c91586f0605" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinRandomSearchPacker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/benchmarks/RatcliffSpec.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/InternalContainerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/InternalContainerData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/AbstractContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/ZMultiBinAddPackerNoSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/ZMultiBinAddPackerNoSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/helper/Helper.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/helper/Helper.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/ContainerReportTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/ContainerReportTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/LPReportTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/LPReportTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinOptimizedPacker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinOptimizedPacker.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -31,8 +26,7 @@
     <option name="myElementSize" value="193" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -79,78 +73,57 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ContainerData.java">
+        <entry file="file://$PROJECT_DIR$/src/test/groovy/benchmarks/RatcliffSpec.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+            <state relative-caret-position="150">
+              <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy">
+        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
+            <state relative-caret-position="279">
+              <caret line="26" column="45" lean-forward="true" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
               <folding>
-                <element signature="e#34#54#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/SingleContainerPacker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="45" column="40" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="56" column="45" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/LPReportTest.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="162" lean-forward="true" selection-start-line="162" selection-end-line="165" selection-end-column="5" />
-              <folding>
-                <element signature="e#24#44#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#939#940#0" expanded="true" />
+                <element signature="e#964#965#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/ContainerReportTest.groovy">
+        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinRandomSearchPacker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="206" column="5" selection-start-line="206" selection-start-column="5" selection-end-line="206" selection-end-column="5" />
+            <state relative-caret-position="312">
+              <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/report/LPReportSummary.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="246">
+              <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
               <folding>
-                <element signature="e#24#44#0" expanded="true" />
+                <element signature="e#1690#1691#0" expanded="true" />
+                <element signature="e#1768#1769#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy">
+        <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/report/ContainerReportSummary.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
-              <folding>
-                <element signature="e#34#54#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="114">
+              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -192,7 +165,6 @@
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Position.java" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/SingleContainerAddPacker.java" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/DoubleContainerAddPacker.java" />
-        <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/base/XFLPSolution.java" />
         <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/XFLPReportSpec.groovy" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ItemData.java" />
@@ -211,19 +183,24 @@
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/InternalContainerData.java" />
         <option value="$PROJECT_DIR$/src/test/groovy/helper/Helper.groovy" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/ZMultiBinAddPackerNoSort.java" />
-        <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy" />
         <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy" />
         <option value="$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java" />
         <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/LPReportTest.groovy" />
         <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/report/ContainerReportTest.groovy" />
+        <option value="$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy" />
+        <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinOptimizedPacker.java" />
+        <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinResartPacker.java" />
+        <option value="$PROJECT_DIR$/src/test/groovy/benchmarks/RatcliffSpec.groovy" />
+        <option value="$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinRandomSearchPacker.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="78" />
-    <option name="y" value="26" />
-    <option name="width" value="1362" />
-    <option name="height" value="864" />
+    <option name="x" value="140" />
+    <option name="y" value="138" />
+    <option name="width" value="1370" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectId" id="1b7H2C4H8bGXpKv8RFXcvJO5nsQ" />
   <component name="ProjectLevelVcsManager">
@@ -281,7 +258,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="xflp" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="opt" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="xflp" type="b2602c69:ProjectViewProjectNode" />
@@ -290,8 +267,8 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="xflp" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="fleximport" type="462c0819:PsiDirectoryNode" />
+              <item name="opt" type="462c0819:PsiDirectoryNode" />
+              <item name="grasp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="xflp" type="b2602c69:ProjectViewProjectNode" />
@@ -313,6 +290,14 @@
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="groovy" type="462c0819:PsiDirectoryNode" />
               <item name="helper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="xflp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xflp" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="groovy" type="462c0819:PsiDirectoryNode" />
+              <item name="xflp" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -355,11 +340,11 @@
       <recent name="xf.xflp" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="xf.xflp.opt.grasp" />
+      <recent name="benchmarks" />
       <recent name="xf.xflp.report" />
       <recent name="xf.xflp.opt.construction" />
       <recent name="xf.xflp.base.problem" />
-      <recent name="xf.xflp.opt" />
-      <recent name="xf.xflp.opt.construction.strategy" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Development\GIT_REPO\xflp\src" />
@@ -380,7 +365,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.Tests in 'xflp.test'">
+  <component name="RunManager" selected="JUnit.RatcliffSpec.BR1 - 1 test">
     <configuration name="SingleContainerPackerSpec.test with rotation - successfully" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -417,26 +402,6 @@
           </list>
         </option>
         <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="XFLPSpec.has unplanned items - yes" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;xf.xflp.XFLPSpec.has unplanned items - yes&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
       </ExternalSystemSettings>
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
@@ -480,20 +445,36 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="RatcliffSpec.BR1 - 1 test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="xflp.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="benchmarks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="benchmarks" />
+      <option name="MAIN_CLASS_NAME" value="benchmarks.RatcliffSpec" />
+      <option name="METHOD_NAME" value="BR1 - 1 test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Gradle.Tests in 'xflp.test'" />
-      <item itemvalue="Gradle.XFLPSpec.has unplanned items - yes" />
       <item itemvalue="Gradle.XFLPSpec.has unplanned items without planning - nope" />
       <item itemvalue="Gradle.xflp [build]" />
       <item itemvalue="Gradle.SingleContainerPackerSpec.test with rotation - successfully" />
+      <item itemvalue="JUnit.RatcliffSpec.BR1 - 1 test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RatcliffSpec.BR1 - 1 test" />
         <item itemvalue="Gradle.Tests in 'xflp.test'" />
         <item itemvalue="Gradle.SingleContainerPackerSpec.test with rotation - successfully" />
         <item itemvalue="Gradle.xflp [build]" />
         <item itemvalue="Gradle.XFLPSpec.has unplanned items without planning - nope" />
-        <item itemvalue="Gradle.XFLPSpec.has unplanned items - yes" />
       </list>
     </recent_temporary>
   </component>
@@ -621,43 +602,50 @@
       <option name="project" value="LOCAL" />
       <updated>1589060774045</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Change super big constructor in Container to set-methods&#10;Updated tests and imports">
+      <created>1589062728064</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1589062728064</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.09 at 23h 43m 13s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 15m 57s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.09 at 23h 43m 55s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 26m 12s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.09 at 23h 44m 03s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 26m 25s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.10 at 00h 11m 22s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 26m 40s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.10 at 00h 12m 32s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 27m 41s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.10 at 00h 12m 53s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 33m 47s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SingleContainerPackerSpec_test_with_rotation_-_successfully - 2020.05.10 at 00h 14m 43s.xml">
-      <configuration name="SingleContainerPackerSpec.test with rotation - successfully" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 35m 34s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SingleContainerPackerSpec_test_with_rotation_-_successfully - 2020.05.10 at 00h 15m 25s.xml">
-      <configuration name="SingleContainerPackerSpec.test with rotation - successfully" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 35m 49s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.10 at 00h 15m 32s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 36m 44s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Tests_in_'xflp_test' - 2020.05.10 at 00h 16m 38s.xml">
-      <configuration name="Tests in 'xflp.test'" configurationId="GradleRunConfiguration" />
+    <history-entry file="RatcliffSpec_BR1_-_1_test - 2020.10.04 at 14h 39m 40s.xml">
+      <configuration name="RatcliffSpec.BR1 - 1 test" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="74" y="23" width="1366" height="877" extended-state="6" />
+    <frame x="71" y="24" width="1370" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" order="0" />
@@ -665,23 +653,22 @@
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.49809885" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.49809885" visible="true" weight="0.25376505" />
       <window_info id="Structure" order="6" sideWeight="0.50190115" side_tool="true" weight="0.25" />
       <window_info id="Gradle" order="7" weight="0.32930514" />
-      <window_info anchor="bottom" id="Thumbnails" weight="0.3299363" />
-      <window_info anchor="bottom" id="Build" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" weight="0.3299363" />
-      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3299363" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.3299363" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3299363" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Coverage" side_tool="true" weight="0.32930514" />
+      <window_info anchor="bottom" id="Build" order="7" />
+      <window_info anchor="bottom" id="Thumbnails" order="8" weight="0.3299363" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3299363" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3299363" />
+      <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Palette" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Maven" order="2" />
@@ -690,6 +677,7 @@
       <window_info anchor="right" id="Commander" order="5" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.32930514" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -711,7 +699,8 @@
     <MESSAGE value="Added some tests for XFLP class" />
     <MESSAGE value="Removed old XFVRP code for parsing Instance files" />
     <MESSAGE value="Change super big constructor in Item to set-methods&#10;Updated tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change super big constructor in Item to set-methods&#10;Updated tests" />
+    <MESSAGE value="Change super big constructor in Container to set-methods&#10;Updated tests and imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change super big constructor in Container to set-methods&#10;Updated tests and imports" />
   </component>
   <component name="WindowStateProjectService">
     <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588884621008">
@@ -770,18 +759,6 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="803" y="277" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588002877604" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy</url>
-          <line>64</line>
-          <properties />
-          <option name="timeStamp" value="172" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/xflp$Tests_in__xflp_test_.ic" NAME="Tests in 'xflp.test' Coverage Results" MODIFIED="1589039922766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -905,13 +882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="24" column="44" lean-forward="true" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/src.zip!/java/util/List.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -997,33 +967,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="86" column="17" selection-start-line="86" selection-start-column="17" selection-end-line="86" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/util/instances/Tw.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="689">
-          <caret line="188" column="23" selection-start-line="188" selection-start-column="23" selection-end-line="188" selection-end-column="23" />
-          <folding>
-            <element signature="e#5477#5478#0" expanded="true" />
-            <element signature="e#5505#5506#0" expanded="true" />
-            <element signature="e#5631#5632#0" expanded="true" />
-            <element signature="e#5664#5665#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/instances/Tw.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/util/XFVRPFileUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -1049,121 +993,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="326">
           <caret line="157" column="17" lean-forward="true" selection-start-line="141" selection-start-column="8" selection-end-line="157" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
-          <folding>
-            <element signature="e#4083#4084#0" expanded="true" />
-            <element signature="e#4101#4102#0" expanded="true" />
-            <element signature="e#4135#4136#0" expanded="true" />
-            <element signature="e#4158#4159#0" expanded="true" />
-            <element signature="e#4185#4186#0" expanded="true" />
-            <element signature="e#4205#4206#0" expanded="true" />
-            <element signature="e#4243#4244#0" expanded="true" />
-            <element signature="e#4270#4271#0" expanded="true" />
-            <element signature="e#4292#4293#0" expanded="true" />
-            <element signature="e#4307#4308#0" expanded="true" />
-            <element signature="e#4335#4336#0" expanded="true" />
-            <element signature="e#4352#4353#0" expanded="true" />
-            <element signature="e#4374#4375#0" expanded="true" />
-            <element signature="e#4389#4390#0" expanded="true" />
-            <element signature="e#4417#4418#0" expanded="true" />
-            <element signature="e#4434#4435#0" expanded="true" />
-            <element signature="e#4456#4457#0" expanded="true" />
-            <element signature="e#4471#4472#0" expanded="true" />
-            <element signature="e#4499#4500#0" expanded="true" />
-            <element signature="e#4516#4517#0" expanded="true" />
-            <element signature="e#4538#4539#0" expanded="true" />
-            <element signature="e#4553#4554#0" expanded="true" />
-            <element signature="e#4581#4582#0" expanded="true" />
-            <element signature="e#4598#4599#0" expanded="true" />
-            <element signature="e#4621#4622#0" expanded="true" />
-            <element signature="e#4637#4638#0" expanded="true" />
-            <element signature="e#4667#4668#0" expanded="true" />
-            <element signature="e#4686#4687#0" expanded="true" />
-            <element signature="e#4709#4710#0" expanded="true" />
-            <element signature="e#4725#4726#0" expanded="true" />
-            <element signature="e#4755#4756#0" expanded="true" />
-            <element signature="e#4774#4775#0" expanded="true" />
-            <element signature="e#4797#4798#0" expanded="true" />
-            <element signature="e#4813#4814#0" expanded="true" />
-            <element signature="e#4843#4844#0" expanded="true" />
-            <element signature="e#4862#4863#0" expanded="true" />
-            <element signature="e#4884#4885#0" expanded="true" />
-            <element signature="e#4899#4900#0" expanded="true" />
-            <element signature="e#4927#4928#0" expanded="true" />
-            <element signature="e#4944#4945#0" expanded="true" />
-            <element signature="e#4966#4967#0" expanded="true" />
-            <element signature="e#4981#4982#0" expanded="true" />
-            <element signature="e#5009#5010#0" expanded="true" />
-            <element signature="e#5026#5027#0" expanded="true" />
-            <element signature="e#5058#5059#0" expanded="true" />
-            <element signature="e#5080#5081#0" expanded="true" />
-            <element signature="e#5126#5127#0" expanded="true" />
-            <element signature="e#5157#5158#0" expanded="true" />
-            <element signature="e#5190#5191#0" expanded="true" />
-            <element signature="e#5213#5214#0" expanded="true" />
-            <element signature="e#5261#5262#0" expanded="true" />
-            <element signature="e#5294#5295#0" expanded="true" />
-            <element signature="e#5325#5326#0" expanded="true" />
-            <element signature="e#5349#5350#0" expanded="true" />
-            <element signature="e#5395#5396#0" expanded="true" />
-            <element signature="e#5430#5431#0" expanded="true" />
-            <element signature="e#5463#5464#0" expanded="true" />
-            <element signature="e#5489#5490#0" expanded="true" />
-            <element signature="e#5539#5540#0" expanded="true" />
-            <element signature="e#5578#5579#0" expanded="true" />
-            <element signature="e#5612#5613#0" expanded="true" />
-            <element signature="e#5639#5640#0" expanded="true" />
-            <element signature="e#5691#5692#0" expanded="true" />
-            <element signature="e#5732#5733#0" expanded="true" />
-            <element signature="e#5781#5782#0" expanded="true" />
-            <element signature="e#5814#5815#0" expanded="true" />
-            <element signature="e#5982#5983#0" expanded="true" />
-            <element signature="e#6017#6018#0" expanded="true" />
-            <element signature="e#6085#6086#0" expanded="true" />
-            <element signature="e#6142#6143#0" expanded="true" />
-            <element signature="e#6171#6172#0" expanded="true" />
-            <element signature="e#6191#6192#0" expanded="true" />
-            <element signature="e#6231#6232#0" expanded="true" />
-            <element signature="e#6258#6259#0" expanded="true" />
-            <element signature="e#6300#6301#0" expanded="true" />
-            <element signature="e#6333#6334#0" expanded="true" />
-            <element signature="e#6399#6400#0" expanded="true" />
-            <element signature="e#6452#6453#0" expanded="true" />
-            <element signature="e#6486#6487#0" expanded="true" />
-            <element signature="e#6513#6514#0" expanded="true" />
-            <element signature="e#6565#6566#0" expanded="true" />
-            <element signature="e#6606#6607#0" expanded="true" />
-            <element signature="e#6651#6652#0" expanded="true" />
-            <element signature="e#6676#6677#0" expanded="true" />
-            <element signature="e#6737#6738#0" expanded="true" />
-            <element signature="e#6774#6775#0" expanded="true" />
-            <element signature="e#6805#6806#0" expanded="true" />
-            <element signature="e#6829#6830#0" expanded="true" />
-            <element signature="e#6875#6876#0" expanded="true" />
-            <element signature="e#6910#6911#0" expanded="true" />
-            <element signature="e#6936#6937#0" expanded="true" />
-            <element signature="e#6955#6956#0" expanded="true" />
-            <element signature="e#6991#6992#0" expanded="true" />
-            <element signature="e#7016#7017#0" expanded="true" />
-            <element signature="e#7051#7052#0" expanded="true" />
-            <element signature="e#7079#7080#0" expanded="true" />
-            <element signature="e#7133#7134#0" expanded="true" />
-            <element signature="e#7176#7177#0" expanded="true" />
-            <element signature="e#7207#7208#0" expanded="true" />
-            <element signature="e#7230#7231#0" expanded="true" />
-            <element signature="e#7274#7275#0" expanded="true" />
-            <element signature="e#7300#7301#0" expanded="true" />
-            <element signature="e#7331#7332#0" expanded="true" />
-            <element signature="e#7354#7355#0" expanded="true" />
-            <element signature="e#7398#7399#0" expanded="true" />
-            <element signature="e#7424#7425#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1265,24 +1094,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/fleximport/ContainerData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
+        <state relative-caret-position="225">
           <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
-          <folding>
-            <element signature="e#34#54#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleContainerPackerSpec.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
+        <state relative-caret-position="855">
           <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
           <folding>
             <element signature="e#34#54#0" expanded="true" />
@@ -1292,22 +1111,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/construction/SingleContainerPacker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
+        <state relative-caret-position="465">
           <caret line="45" column="40" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Container.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
+        <state relative-caret-position="795">
           <caret line="56" column="45" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/LPReportTest.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="162" lean-forward="true" selection-start-line="162" selection-end-line="165" selection-end-column="5" />
+        <state relative-caret-position="2400">
+          <caret line="162" selection-start-line="162" selection-end-line="165" selection-end-column="5" />
           <folding>
             <element signature="e#24#44#0" expanded="true" />
           </folding>
@@ -1316,11 +1135,101 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/report/ContainerReportTest.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="206" column="5" selection-start-line="206" selection-start-column="5" selection-end-line="206" selection-end-column="5" />
+        <state relative-caret-position="2925">
+          <caret line="197" column="63" selection-start-line="197" selection-start-column="63" selection-end-line="197" selection-end-column="63" />
           <folding>
             <element signature="e#24#44#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/opt/construction/SingleBinOptimizedPackerSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+          <folding>
+            <element signature="e#34#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/base/problem/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="22" column="16" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/groovy/xf/xflp/XFLPSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="86" column="17" selection-start-line="86" selection-start-column="17" selection-end-line="86" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/report/ContainerReportSummary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/report/LPReportSummary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
+          <folding>
+            <element signature="e#1690#1691#0" expanded="true" />
+            <element signature="e#1768#1769#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/XFLP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="219" column="16" selection-start-line="219" selection-start-column="16" selection-end-line="219" selection-end-column="16" />
+          <folding>
+            <element signature="e#5477#5478#0" expanded="true" />
+            <element signature="e#5505#5506#0" expanded="true" />
+            <element signature="e#5631#5632#0" expanded="true" />
+            <element signature="e#5664#5665#0" expanded="true" />
+            <element signature="e#6395#6396#0" expanded="true" />
+            <element signature="e#6424#6425#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinOptimizedPacker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2055">
+          <caret line="143" selection-start-line="143" selection-end-line="143" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/XFLPOptType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="26" column="45" lean-forward="true" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#939#940#0" expanded="true" />
+            <element signature="e#964#965#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/groovy/benchmarks/RatcliffSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/xf/xflp/opt/grasp/SingleBinRandomSearchPacker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
         </state>
       </provider>
     </entry>

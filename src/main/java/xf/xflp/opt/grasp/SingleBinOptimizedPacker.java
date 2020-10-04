@@ -19,15 +19,15 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         packer.execute(model);
         System.out.println("Init "+model.getUnplannedItems().length);
 
-        if(model.getUnplannedItems().length > 0) {
+        /*if(model.getUnplannedItems().length > 0) {
             doBestSwap(model);
         }
         if(model.getUnplannedItems().length > 0) {
-            doSwapLocalSearch2(model);
+            doSwapNextLocalSearch(model);
         }
         if(model.getUnplannedItems().length > 0) {
-            doExchangeLocalSearch(model);
-        }
+            doSwapLocalSearch(model);
+        }*/
         if(model.getUnplannedItems().length > 0) {
             doRelocateLocalSearch(model);
         }
@@ -35,6 +35,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
     private void doBestSwap(XFLPModel model) {
         packer.execute(model);
+        System.out.println("Init Swap Next "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 0};
@@ -59,9 +60,9 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
     }
 
-    private void doSwapLocalSearch2(XFLPModel model) {
+    private void doSwapNextLocalSearch(XFLPModel model) {
         packer.execute(model);
-        System.out.println("Init SwapLS "+model.getUnplannedItems().length);
+        System.out.println("Init Swap Next LS "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
@@ -87,9 +88,9 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
     }
 
-    private void doExchangeLocalSearch(XFLPModel model) {
+    private void doSwapLocalSearch(XFLPModel model) {
         packer.execute(model);
-        System.out.println("Init SwapLS2 "+model.getUnplannedItems().length);
+        System.out.println("Init Swap "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
@@ -128,7 +129,9 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         Item[] items = model.getItems();
         Item[] bestItems = Arrays.copyOf(items, items.length);
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
-        for (int k = 0; k < 1000; k++) {
+        for (int k = 0; k < 10; k++) {
+
+            System.out.println("iter "+k);
             bestValue[3] = 1;
             while (bestValue[3] == 1) {
                 bestValue[3] = 0;

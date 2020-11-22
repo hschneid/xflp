@@ -19,7 +19,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         packer.execute(model);
         System.out.println("Init "+model.getUnplannedItems().length);
 
-        /*if(model.getUnplannedItems().length > 0) {
+        if(model.getUnplannedItems().length > 0) {
             doBestSwap(model);
         }
         if(model.getUnplannedItems().length > 0) {
@@ -27,7 +27,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
         if(model.getUnplannedItems().length > 0) {
             doSwapLocalSearch(model);
-        }*/
+        }
         if(model.getUnplannedItems().length > 0) {
             doRelocateLocalSearch(model);
         }

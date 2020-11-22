@@ -2,9 +2,12 @@ apply plugin:'java'
 apply plugin:'groovy'
 apply plugin:'idea'
 apply plugin:'application'
+apply plugin:'maven-publish'
+apply plugin:'signing'
 
+group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.1.0-SNAPSHOT'
+version = '0.2.2'
  
 repositories {
     mavenCentral()
@@ -25,3 +28,77 @@ dependencies {
 
 	testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
 }
+
+// Maven
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+publishing {
+	publications {
+		myName(MavenPublication) {
+			artifact sourcesJar
+			artifact javadocJar
+
+			pom {
+				name = 'XFLP'
+				packaging 'jar'
+				// optionally artifactId can be defined here
+				description = 'Solver for realistic 3D container loading'
+				url = 'https://github.com/hschneid/xflp'
+
+				scm {
+					connection = 'scm:git:git://github.com/hschneid/xflp.git'
+					developerConnection = 'scm:git:ssh://github.com/hschneid/xflp.git'
+					url = 'https://github.com/hschneid/xflp'
+				}
+
+				licenses {
+					license {
+						name = 'MIT License'
+						url = 'http://www.opensource.org/licenses/mit-license.php'
+					}
+				}
+
+				developers {
+					developer {
+						id = 'hschneid'
+						name = 'Holger Schneider'
+						email = 'holger.schneider.81@gmail.com'
+					}
+				}
+			}
+
+		}
+	}
+	repositories {
+		maven {
+			credentials {
+				username ossrhUsername
+				password ossrhPassword
+			}
+			if (project.version.endsWith("-SNAPSHOT")) {
+				url "https://oss.sonatype.org/content/repositories/snapshots/"
+			} else {
+				url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+			}
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.myName
+}
+
+

@@ -32,18 +32,12 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 	private final Container container;
 	private List<LPPackageEvent> packageEventList = new ArrayList<>();
 	
-	/**
-	 *
-	 */
 	public ContainerReport(String containerTypeName, Container con) {
 		this.containerTypeName = containerTypeName;
 		this.container = con;
 		this.summary = new ContainerReportSummary(con);
 	}
 	
-	/**
-	 *
-	 */
 	public void add(LPPackageEvent e) {
 		summary.add(e);
 		packageEventList.add(e);

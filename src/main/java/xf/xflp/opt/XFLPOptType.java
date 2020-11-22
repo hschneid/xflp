@@ -25,7 +25,12 @@ public enum XFLPOptType {
 	SINGLE_CONTAINER_ADD_PACKER(SingleContainerAddPacker.class),
 	DOUBLE_CONTAINER_ADD_PACKER(DoubleContainerAddPacker.class),
 	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
-	SINGLE_CONTAINER_RANDOM_SEARCH(SingleBinRandomSearchPacker.class);
+	SINGLE_CONTAINER_RANDOM_SEARCH(SingleBinRandomSearchPacker.class),
+	FAST_FIXED_CONTAINER_PACKER(FastFixedContainerSolver.class),
+	BEST_FIXED_CONTAINER_PACKER(BestFixedContainerSolver.class),
+	FAST_MIN_CONTAINER_PACKER(FastMinContainerSolver.class),
+	BEST_MIN_CONTAINER_PACKER(BestMinContainerSolver.class)
+	;
 	
 	private Class<? extends XFLPBase> clazz; 
 

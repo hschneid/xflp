@@ -1,6 +1,7 @@
 package xf.xflp.opt.construction
 
 import helper.Helper
+import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
@@ -33,6 +34,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
+    @Ignore
     def "scenario with item bearing capacity and stacking groups"() {
         def items = getHardScenario()
         Collections.shuffle(items, new Random(1234))

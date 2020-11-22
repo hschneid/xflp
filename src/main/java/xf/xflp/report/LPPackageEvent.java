@@ -30,7 +30,7 @@ public class LPPackageEvent {
 	
 	/**
 	 * 
-	 * @return
+	 * @return id
 	 */
 	public String getId() {
 		return id;
@@ -46,7 +46,7 @@ public class LPPackageEvent {
 	
 	/**
 	 * 
-	 * @return
+	 * @return x
 	 */
 	public int getX() {
 		return x;
@@ -62,7 +62,7 @@ public class LPPackageEvent {
 	
 	/**
 	 * 
-	 * @return
+	 * @return y
 	 */
 	public int getY() {
 		return y;

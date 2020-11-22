@@ -26,18 +26,10 @@ public class ContainerReportSummary {
 	private float maxVolume = 0;
 	private float maxUsedWeight = 0;
 
-	/**
-	 * 
-	 * @param con
-	 */
 	public ContainerReportSummary(Container con) {
 		maxVolume = con.getMaxVolume();
 	}
 	
-	/**
-	 * 
-	 * @param e
-	 */
 	public void add(LPPackageEvent e) {
 		if(e.getType() == PackageEventType.LOAD) {
 			nbrOfLoadedPackages++;
@@ -79,7 +71,7 @@ public class ContainerReportSummary {
 	
 	/**
 	 * 
-	 * @return
+	 * @return max volume
 	 */
 	public float getMaxVolume() {
 		return maxVolume;
@@ -87,7 +79,7 @@ public class ContainerReportSummary {
 	
 	/**
 	 * 
-	 * @return
+	 * @return utilization of container
 	 */
 	public float getUtilization() {
 		return (maxVolume > 0) ? maxUsedVolume / maxVolume : 0;

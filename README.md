@@ -1,4 +1,8 @@
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![BCH compliance](https://bettercodehub.com/edge/badge/hschneid/xflp?branch=master)](https://bettercodehub.com/)
+
+[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+[![GitHub Release](https://img.shields.io/github/release/tterb/PlayMusic.svg?style=flat)]() 
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints

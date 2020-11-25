@@ -7,7 +7,7 @@ apply plugin:'signing'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.2.2'
+version = '0.2.0'
  
 repositories {
     mavenCentral()
@@ -29,25 +29,25 @@ dependencies {
 	testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
 }
 
-// Maven
+// Maven - Publish
 task javadocJar(type: Jar) {
-	classifier = 'javadoc'
+	archiveClassifier.set('javadoc')
 	from javadoc
 }
 
 task sourcesJar(type: Jar) {
-	classifier = 'sources'
+	archiveClassifier.set("sources")
 	from sourceSets.main.allSource
 }
 
-java {
-	withJavadocJar()
-	withSourcesJar()
+task mainJar(type: Jar) {
+	with jar
 }
 
 publishing {
 	publications {
-		myName(MavenPublication) {
+		maven(MavenPublication) {
+			artifact mainJar
 			artifact sourcesJar
 			artifact javadocJar
 
@@ -98,7 +98,7 @@ publishing {
 }
 
 signing {
-	sign publishing.publications.myName
+	sign publishing.publications.maven
 }
 
 

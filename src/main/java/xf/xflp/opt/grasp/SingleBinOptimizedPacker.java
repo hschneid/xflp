@@ -25,12 +25,12 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         if(model.getUnplannedItems().length > 0) {
             doSwapNextLocalSearch(model);
         }
-        if(model.getUnplannedItems().length > 0) {
+        /*if(model.getUnplannedItems().length > 0) {
             doSwapLocalSearch(model);
         }
         if(model.getUnplannedItems().length > 0) {
             doRelocateLocalSearch(model);
-        }
+        }*/
     }
 
     private void doBestSwap(XFLPModel model) {
@@ -44,12 +44,18 @@ public class SingleBinOptimizedPacker extends XFLPBase {
             swap(items, i, i + 1);
             // Pack
             packer.execute(model);
+
+            System.out.println(i + " " + model.getUnplannedItems().length);
             // Check if there are unplanned items
             if (model.getUnplannedItems().length < bestValue[0]) {
                 bestValue[0] = model.getUnplannedItems().length;
                 bestValue[1] = i;
                 bestValue[2] = i + 1;
                 bestValue[3] = 1;
+
+                if(model.getUnplannedItems().length == 0) {
+                    return;
+                }
             }
             // Change back
             swap(items, i, i + 1);

@@ -1,5 +1,6 @@
 package benchmarks
 
+import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
@@ -10,6 +11,7 @@ class RatcliffSpec extends Specification {
 
     def service = new XFLP()
 
+    @Ignore
     def "BR1 - 1 test"() {
         service.addContainer().setWidth(223).setLength(587).setHeight(220).setMaxWeight(10000)
         service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_RANDOM_SEARCH)
@@ -27,6 +29,7 @@ class RatcliffSpec extends Specification {
         result != null
     }
 
+    @Ignore
     def "BR7 - 1 test"() {
         service.addContainer().setWidth(223).setLength(587).setHeight(220).setMaxWeight(10000)
         service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_RANDOM_SEARCH)

@@ -111,6 +111,7 @@ public class DataManager implements Serializable {
 
 		String[] arr = stackingGroups.split(",");
 		for (String s : arr) {
+			s = s.trim().toLowerCase();
 			if(!stackingGroupMap.containsKey(s))
 				stackingGroupMap.put(s, maxStackingGroupID++);
 		}
@@ -212,8 +213,12 @@ public class DataManager implements Serializable {
 		int res = 0;
 
 		String[] arr = allowedStackingGroups.split(",");
-		for (String s : arr)
-			res += 1 << stackingGroupMap.get(s);
+		for (String s : arr) {
+			s = s.trim().toLowerCase();
+			if(stackingGroupMap.containsKey(s)) {
+				res += 1 << stackingGroupMap.get(s);
+			}
+		}
 
 		return res;
 	}

@@ -4,7 +4,6 @@ import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -22,7 +21,7 @@ import java.util.List;
  * This type of strategy chooses the highest, most left (width) and most decent (length).
  *
  */
-public class HighestLowerLeft implements StrategyIf {
+public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
@@ -30,23 +29,10 @@ public class HighestLowerLeft implements StrategyIf {
 			throw new IllegalStateException("List of positions must be not empty or null.");
 		}
 
-		float[] distances = new float[posList.size()];
-		for (int i = distances.length - 1; i >= 0; i--) {
-			distances[i] = getDistance(posList.get(i));
-		}
-
-		float minValue = Float.MAX_VALUE;
-		for (int i = posList.size() - 1; i >= 0; i--) {
-			minValue = Math.min(minValue, distances[i]);
-		}
-
-		// Search all positions with max value
-		List<Position> filteredPositions = new ArrayList<>();
-		for (int i = distances.length - 1; i >= 0; i--) {
-			if(distances[i] == minValue) {
-				filteredPositions.add(posList.get(i));
-			}
-		}
+		List<Position> filteredPositions = getPositionWithMinValue(
+				posList,
+				this::getDistance
+		);
 
 		if(filteredPositions.size() == 0) {
 			throw new IllegalStateException("There must be at least one position.");
@@ -59,6 +45,6 @@ public class HighestLowerLeft implements StrategyIf {
 		if(p == null) {
 			return Float.MAX_VALUE;
 		}
-		return (float)Math.pow((p.getX()*p.getX()) + (p.getY()*p.getY()) + (p.getZ()*p.getZ()), 0.5);
+		return (float)Math.pow((p.getX() * p.getX()) + (p.getY() * p.getY()) + (p.getZ() * p.getZ()), 0.5);
 	}
 }

@@ -3,8 +3,8 @@ package xf.xflp.opt.construction;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
-import xf.xflp.opt.construction.strategy.StrategyIf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class ZSingleBinAddPacker {
 		Map<Integer, Integer> rejectedIndexMap = new HashMap<>();
 		List<Item> rejectedItemList = new ArrayList<>();
 //		StrategyIf strategy = new TouchingPerimeter();
-		StrategyIf strategy = new HighestLowerLeft();
+		BaseStrategy strategy = new HighestLowerLeft();
 //		StrategyIf strategy = new MaxFreeLoadingMeter();
 
 		// �ber alle Items in der sortierten Reihenfolge

@@ -5,8 +5,9 @@ import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
-import xf.xflp.opt.construction.strategy.StrategyIf;
+import xf.xflp.opt.construction.strategy.WidthProportionFactor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class SingleContainerAddPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
-	private StrategyIf strategy;
+	private BaseStrategy strategy;
 
 	public SingleContainerAddPacker() {
 		this.strategy = new HighestLowerLeft();
@@ -81,7 +82,7 @@ public class SingleContainerAddPacker extends XFLPBase {
 		}
 	}
 
-	public void setStrategy(StrategyIf strategy) {
+	public void setStrategy(BaseStrategy strategy) {
 		this.strategy = strategy;
 	}
 

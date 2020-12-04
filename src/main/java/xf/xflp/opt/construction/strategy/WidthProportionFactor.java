@@ -5,7 +5,6 @@ import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 import xf.xflp.base.problem.RotatedPosition;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -24,7 +23,9 @@ import java.util.List;
  * As alternative strategy it uses the TouchingPerimeter
  *
  */
-public class WidthProportionFactor implements StrategyIf {
+public class WidthProportionFactor extends BaseStrategy {
+
+	private final TouchingPerimeter fallbackStrategy = new TouchingPerimeter();
 
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
@@ -36,40 +37,30 @@ public class WidthProportionFactor implements StrategyIf {
 			return posList.get(0);
 		}
 
-		float[] distances = new float[posList.size()];
-		for (int i = distances.length - 1; i >= 0; i--) {
-			distances[i] = getDistance(posList.get(i));
-		}
+		List<Position> filteredPositions = getPositionWithMinValue(
+				posList,
+				(Position p) -> getDeviationOfProportion(item, p, container)
+		);
 
-		float minValue = Float.MAX_VALUE;
-		for (int i = posList.size() - 1; i >= 0; i--) {
-			minValue = Math.min(minValue, distances[i]);
-		}
-
-		// Search all positions with max value
-		List<Position> filteredPositions = new ArrayList<>();
-		for (int i = distances.length - 1; i >= 0; i--) {
-			if(distances[i] == minValue) {
-				filteredPositions.add(posList.get(i));
-			}
+		if(filteredPositions.size() == 1) {
+			return filteredPositions.get(0);
 		}
 
 		if(filteredPositions.size() == 0) {
 			throw new IllegalStateException("There must be at least one position.");
 		}
 
-		return filteredPositions.get(0);
+		return fallbackStrategy.choose(item,container, filteredPositions);
 	}
 
-	private int getDeviationOfProportion(Item i, Position pos, Container container) {
+	private float getDeviationOfProportion(Item i, Position pos, Container container) {
 		int conWidth = container.getWidth();
 		int itemWidth =  (pos instanceof RotatedPosition) ? i.l : i.w;
 
-		float proportion = itemWidth / conWidth;
+		float proportion = conWidth / (float)itemWidth;
 		int bestProportion = (int) proportion;
 		float deviation = Math.abs(proportion - bestProportion);
-		int roundDeviation = Math.round(deviation * 10);
 
-		return roundDeviation;
+		return Math.round(deviation * 10);
 	}
 }

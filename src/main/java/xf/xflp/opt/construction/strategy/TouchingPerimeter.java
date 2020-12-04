@@ -4,7 +4,6 @@ import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -27,9 +26,9 @@ import java.util.List;
  * strategy HighestLowerLeft is used to decide.
  *
  */
-public class TouchingPerimeter implements StrategyIf {
+public class TouchingPerimeter extends BaseStrategy {
 
-	private HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
+	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
@@ -37,25 +36,18 @@ public class TouchingPerimeter implements StrategyIf {
 			throw new IllegalStateException("List of positions must be not empty or null.");
 		}
 
-		// Evaluate touching perimeters for positions
-		float[] touchingPerimeters = new float[posList.size()];
-		for (int i = touchingPerimeters.length - 1; i >= 0; i--) {
-			touchingPerimeters[i] = container.getTouchingPerimeter(item, posList.get(i), 1, true, true);
-		}
-
-		// Find max value
-		float maxValue = 0;
-		for (int i = touchingPerimeters.length - 1; i >= 0; i--) {
-			maxValue = Math.max(maxValue, touchingPerimeters[i]);
-		}
-
-		// Search all positions with max value
-		List<Position> filteredPositions = new ArrayList<>();
-		for (int i = touchingPerimeters.length - 1; i >= 0; i--) {
-			if(touchingPerimeters[i] == maxValue) {
-				filteredPositions.add(posList.get(i));
-			}
-		}
+		List<Position> filteredPositions = getPositionWithMinValue(
+				posList,
+				(Position p) ->
+						// Negative to find min value
+						-container.getTouchingPerimeter(
+								item,
+								p,
+								1,
+								true,
+								true
+						)
+		);
 
 		// Return found position or check further
 		if(filteredPositions.size() == 1) {

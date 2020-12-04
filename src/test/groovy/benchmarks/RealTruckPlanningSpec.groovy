@@ -20,12 +20,11 @@ class RealTruckPlanningSpec extends Specification {
         when:
         service.executeLoadPlanning()
         def result = service.getReport()
-        println result.getSummary().getUtilization()
-        println result.getUnplannedPackages().size()
 
         then:
         result != null
-        result.getSummary().getUtilization() > 0.85
+        // This is theoretical max
+        result.getSummary().getUtilization() > 0.92
     }
 
     private createItem(int bi, int l, int w, int h , int n, String stackGroup) {

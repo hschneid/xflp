@@ -30,7 +30,7 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class ZMultiBinAddPacker5 extends XFLPBase {
+public class MultiContainerAddPacker extends XFLPBase {
 
 	/* This comparator defines the ordering of items before planning process */
 	private Comparator<Item> itemOrderingComp = new Comparator<Item>() {

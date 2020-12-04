@@ -1,7 +1,7 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.opt.construction.ZMultiBinAddPacker5;
+import xf.xflp.opt.construction.MultiContainerAddPacker;
 
 /**
  * Copyright (c) 2012-present Holger Schneider
@@ -18,7 +18,7 @@ import xf.xflp.opt.construction.ZMultiBinAddPacker5;
  */
 public class FastMinContainerSolver extends XFLPBase {
 
-    private final ZMultiBinAddPacker5 packer = new ZMultiBinAddPacker5();
+    private final MultiContainerAddPacker packer = new MultiContainerAddPacker();
 
     @Override
     public void execute(XFLPModel model) {

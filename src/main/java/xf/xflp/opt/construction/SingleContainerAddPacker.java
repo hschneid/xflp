@@ -30,10 +30,16 @@ public class SingleContainerAddPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
-	private BaseStrategy strategy;
+	private boolean isInit = false;
+	private ZSingleBinAddPacker packer;
 
-	public SingleContainerAddPacker() {
-		this.strategy = new HighestLowerLeft();
+	public SingleContainerAddPacker() {}
+
+	private void init(XFLPModel model) {
+		if(!isInit) {
+			isInit = true;
+			model.getParameter().
+		}
 	}
 
 	@Override

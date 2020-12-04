@@ -1,6 +1,8 @@
 package xf.xflp.base;
 
-/** 
+import xf.xflp.opt.construction.strategy.Strategy;
+
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
@@ -11,6 +13,8 @@ package xf.xflp.base;
 public class XFLPParameter {
 
 	private float lifoImportance = 0f;
+	private int maxNbrOfContainer = 1;
+	private Strategy preferredPackingStrategy = Strategy.HIGH_LOW_LEFT;
 
 	public void clear() {
 		// TODO Auto-generated method stub
@@ -23,5 +27,21 @@ public class XFLPParameter {
 
 	public void setLifoImportance(float lifoImportance) {
 		this.lifoImportance = lifoImportance;
+	}
+
+	public Strategy getPreferredPackingStrategy() {
+		return preferredPackingStrategy;
+	}
+
+	public void setPreferredPackingStrategy(Strategy preferredPackingStrategy) {
+		this.preferredPackingStrategy = preferredPackingStrategy;
+	}
+
+	public int getMaxNbrOfContainer() {
+		return maxNbrOfContainer;
+	}
+
+	public void setMaxNbrOfContainer(int maxNbrOfContainer) {
+		this.maxNbrOfContainer = maxNbrOfContainer;
 	}
 }

@@ -1,8 +1,8 @@
 package xf.xflp.opt;
 
-import xf.xflp.opt.construction.DoubleContainerAddPacker;
-import xf.xflp.opt.construction.SingleContainerAddPacker;
-import xf.xflp.opt.construction.SingleContainerPacker;
+import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
+import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
+import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 import xf.xflp.opt.grasp.SingleBinRandomSearchPacker;
 
@@ -21,9 +21,9 @@ import xf.xflp.opt.grasp.SingleBinRandomSearchPacker;
  */
 public enum XFLPOptType {
 	
-	SINGLE_CONTAINER_ADD_REMOVE_PACKER(SingleContainerPacker.class),
-	SINGLE_CONTAINER_ADD_PACKER(SingleContainerAddPacker.class),
-	DOUBLE_CONTAINER_ADD_PACKER(DoubleContainerAddPacker.class),
+	SINGLE_CONTAINER_ADD_REMOVE_PACKER(OneContainerOneTypePacker.class),
+	SINGLE_CONTAINER_ADD_PACKER(OneContainerOneTypeAddPacker.class),
+	DOUBLE_CONTAINER_ADD_PACKER(OneContainerNTypeAddPacker.class),
 	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
 	SINGLE_CONTAINER_RANDOM_SEARCH(SingleBinRandomSearchPacker.class),
 	FAST_FIXED_CONTAINER_PACKER(FastFixedContainerSolver.class),

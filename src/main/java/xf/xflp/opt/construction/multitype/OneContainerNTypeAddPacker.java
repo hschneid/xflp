@@ -1,4 +1,4 @@
-package xf.xflp.opt.construction;
+package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
@@ -9,7 +9,10 @@ import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (c) 2012-present Holger Schneider
@@ -25,20 +28,19 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class DoubleContainerAddPacker extends XFLPBase {
+public class OneContainerNTypeAddPacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
 	private BaseStrategy strategy;
 
-	public DoubleContainerAddPacker() {
+	public OneContainerNTypeAddPacker() {
 		this.strategy = new HighestLowerLeft();
 	}
 
 	@Override
 	public void execute(XFLPModel model) {
-		Container container1 = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
-		Container container2 = new Container(model.getContainerTypes()[1], model.getParameter().getLifoImportance());
+		List<Container> containers = getContainers(model);
 
 		List<Item> unplannedItemList = new ArrayList<>();
 
@@ -48,27 +50,42 @@ public class DoubleContainerAddPacker extends XFLPBase {
 		resetItems(items);
 
 		for (Item item : items) {
-			Position insertPosition1 = getBestInsertPosition(item, container1);
-			Position insertPosition2 = getBestInsertPosition(item, container2);
+			List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers);
 
 			// Add item to container
-			if (insertPosition1 != null || insertPosition2 != null) {
-				insertIntoContainer(
-						item, insertPosition1, container1,
-						item, insertPosition2, container2
-				);
+			if (!containerPositions.isEmpty()) {
+				insertIntoContainer(item, containerPositions);
 			} else {
 				if (VERBOSE)
-					System.out.println("Item " + item.index + " konnte nicht hinzugef�gt werden.");
+					System.out.println("Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);
 			}
 		}
 
 		// Put result into model
-		model.setContainers(new Container[]{container1, container2});
+		model.setContainers(containers.toArray(new Container[0]));
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 
+	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) {
+		return containers.stream()
+				.map(con -> {
+					Position bestPosition = getBestInsertPosition(item, con);
+					if(bestPosition != null) {
+						return new ContainerPosition(con, bestPosition);
+					} else {
+						return null;
+					}
+				})
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+	}
+
+	private List<Container> getContainers(XFLPModel model) {
+		return Arrays.stream(model.getContainerTypes())
+				.map(cT -> new Container(cT, model.getParameter().getLifoImportance()))
+				.collect(Collectors.toList());
+	}
 
 	private Position getBestInsertPosition(Item item, Container container) {
 		// Check if item is allowed to this container type
@@ -85,12 +102,10 @@ public class DoubleContainerAddPacker extends XFLPBase {
 		return null;
 	}
 
-	private void insertIntoContainer(Item item, Position insertPosition1, Container container1, Item item1, Position insertPosition2, Container container2) {
-		if(insertPosition1 != null) {
-			container1.add(item, insertPosition1);
-		} else {
-			container2.add(item, insertPosition2);
-		}
+	private void insertIntoContainer(Item item, List<ContainerPosition> containerPositions) {
+		// Simply take first - Could be improved later
+		ContainerPosition containerPosition = containerPositions.get(0);
+		containerPosition.getContainer().add(item, containerPosition.getPosition());
 	}
 
 	private void resetItems(Item[] items) {

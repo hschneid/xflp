@@ -6,10 +6,11 @@ import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
+import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker
 
-class DoubleContainerAddPackerTest extends Specification {
+class OneContainerNTypeAddPackerTest extends Specification {
 
-    def service = new DoubleContainerAddPacker()
+    def service = new OneContainerNTypeAddPacker()
 
     def "test simple adding - all items fit"() {
         def items = new ArrayList<Item>()

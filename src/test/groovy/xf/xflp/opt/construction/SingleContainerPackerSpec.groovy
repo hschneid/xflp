@@ -6,10 +6,11 @@ import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
+import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
 class SingleContainerPackerSpec extends Specification {
 
-    def service = new SingleContainerPacker()
+    def service = new OneContainerOneTypePacker()
 
     def "test only adding - sucessfull"() {
         def items = new ArrayList<Item>()

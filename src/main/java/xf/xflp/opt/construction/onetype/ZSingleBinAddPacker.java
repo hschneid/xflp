@@ -1,55 +1,44 @@
-package xf.xflp.opt.construction;
+package xf.xflp.opt.construction.onetype;
 
-import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
-import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.HighestLowerLeft;
-import xf.xflp.opt.construction.strategy.WidthProportionFactor;
+import xf.xflp.opt.construction.strategy.Strategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/** 
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
+ * This class presents a function to add the given items to a given single container.
+ * All unfitting items will be returned.
  *
- * This packer puts the items in a sequence into one container with one container type.
- * Items will only be added to a container.
+ * The used algorithm to add items is a greedy heuristic. It takes the order of given items
+ * and places one after another to the best available position in container. The best position
+ * is chosen by a strategy.
  *
  * @author hschneid
  *
  */
-public class SingleContainerAddPacker extends XFLPBase {
+public class ZSingleBinAddPacker {
 
 	public static boolean VERBOSE = false;
 
-	private boolean isInit = false;
-	private ZSingleBinAddPacker packer;
+	private final BaseStrategy strategy;
 
-	public SingleContainerAddPacker() {}
-
-	private void init(XFLPModel model) {
-		if(!isInit) {
-			isInit = true;
-			model.getParameter().
-		}
+	public ZSingleBinAddPacker(Strategy s) {
+		this.strategy = s.getStrategy();
 	}
 
-	@Override
-	public void execute(XFLPModel model) {
-		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
-
+	public List<Item> createLoadingPlan(List<Item> items, Container container) {
 		List<Item> unplannedItemList = new ArrayList<>();
 
-		// For all items with respect to given sort order
-		Item[] items = model.getItems();
 		// Reset eventual presets
 		resetItems(items);
 
@@ -77,19 +66,10 @@ public class SingleContainerAddPacker extends XFLPBase {
 			}
 		}
 
-		// Put result into model
-		model.setContainers(new Container[]{container});
-		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
+		return unplannedItemList;
 	}
 
-	private void resetItems(Item[] items) {
-		for (int i = items.length - 1; i >= 0; i--) {
-			items[i].reset();
-		}
+	private void resetItems(List<Item> items) {
+		items.forEach(Item::reset);
 	}
-
-	public void setStrategy(BaseStrategy strategy) {
-		this.strategy = strategy;
-	}
-
 }

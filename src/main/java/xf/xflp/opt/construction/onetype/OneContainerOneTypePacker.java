@@ -1,4 +1,4 @@
-package xf.xflp.opt.construction;
+package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
@@ -31,13 +31,13 @@ import java.util.Map;
  * @author hschneid
  *
  */
-public class SingleContainerPacker extends XFLPBase {
+public class OneContainerOneTypePacker extends XFLPBase {
 
 	public static boolean VERBOSE = false;
 
 	private BaseStrategy strategy;
 
-	public SingleContainerPacker() {
+	public OneContainerOneTypePacker() {
 		this.strategy = new HighestLowerLeft();
 	}
 

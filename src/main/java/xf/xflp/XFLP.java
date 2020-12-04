@@ -220,4 +220,8 @@ public class XFLP {
 	public void setTypeOfOptimization(XFLPOptType optType) {
 		this.optType = optType;
 	}
+
+	public XFLPParameter getParameter() {
+		return parameter;
+	}
 }

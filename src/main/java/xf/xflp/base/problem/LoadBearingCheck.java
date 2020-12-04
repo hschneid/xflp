@@ -1,5 +1,7 @@
 package xf.xflp.base.problem;
 
+import xf.xflp.opt.ga.Debug;
+
 import java.util.Arrays;
 import java.util.List;
 

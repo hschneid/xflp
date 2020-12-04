@@ -3,6 +3,7 @@ package xf.xflp.opt;
 import xf.xflp.opt.construction.DoubleContainerAddPacker;
 import xf.xflp.opt.construction.SingleContainerAddPacker;
 import xf.xflp.opt.construction.SingleContainerPacker;
+import xf.xflp.opt.ga.SingleContainerGAPacker;
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 import xf.xflp.opt.grasp.SingleBinRandomSearchPacker;
 
@@ -26,6 +27,7 @@ public enum XFLPOptType {
 	DOUBLE_CONTAINER_ADD_PACKER(DoubleContainerAddPacker.class),
 	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
 	SINGLE_CONTAINER_RANDOM_SEARCH(SingleBinRandomSearchPacker.class),
+	GA(SingleContainerGAPacker.class),
 	FAST_FIXED_CONTAINER_PACKER(FastFixedContainerSolver.class),
 	BEST_FIXED_CONTAINER_PACKER(BestFixedContainerSolver.class),
 	FAST_MIN_CONTAINER_PACKER(FastMinContainerSolver.class),

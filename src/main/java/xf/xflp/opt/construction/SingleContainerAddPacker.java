@@ -62,6 +62,8 @@ public class SingleContainerAddPacker extends XFLPBase {
 
 			// Add item to container
 			if (insertPosition != null) {
+				System.out.println(item.toString()+" "+insertPosition.toString());
+
 				container.add(item, insertPosition);
 			} else {
 				if (VERBOSE)

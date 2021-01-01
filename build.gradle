@@ -7,7 +7,7 @@ apply plugin:'signing'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.2.0'
+version = '0.3.0'
  
 repositories {
     mavenCentral()

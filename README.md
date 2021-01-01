@@ -38,3 +38,11 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 
 ## License
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
+
+## Change log
+### 0.3.0
+- Fix of stacking group feature
+- Added a priorization criteria for choosing the next insert position. It takes the proportion of the item to the container into account.
+- More reasonable structure of planning heuristics
+### 0.2.0
+- First stable release 

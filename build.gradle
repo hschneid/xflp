@@ -8,6 +8,8 @@ apply plugin:'signing'
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
 version = '0.3.0'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
  
 repositories {
     mavenCentral()
@@ -26,7 +28,7 @@ dependencies {
 	// Fancy collection
 	implementation 'com.google.guava:guava:28.2-jre'
 
-	testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
+	testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
 }
 
 // Maven - Publish

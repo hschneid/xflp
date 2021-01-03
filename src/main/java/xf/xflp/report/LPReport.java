@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class LPReport implements Iterable<ContainerReport> {
 
-	private LPReportSummary summary = new LPReportSummary();
-	private List<ContainerReport> reportList = new ArrayList<>();
-	private List<LPPackageEvent> unplannedPackageList = new ArrayList<>();
+	private final LPReportSummary summary = new LPReportSummary();
+	private final List<ContainerReport> reportList = new ArrayList<>();
+	private final List<LPPackageEvent> unplannedPackageList = new ArrayList<>();
 
 	/**
 	 * A LPReport is the structral representation of a load planning solution
@@ -40,10 +40,6 @@ public class LPReport implements Iterable<ContainerReport> {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param pkg
-	 */
 	public void addUnplannedPackages(LPPackageEvent pkg) {
 		unplannedPackageList.add(pkg);
 		summary.addUnplannedPackage(pkg);
@@ -51,26 +47,14 @@ public class LPReport implements Iterable<ContainerReport> {
 
 	/* GetFunctions-Functions */
 
-	/**
-	 * 
-	 * @return
-	 */
 	public List<ContainerReport> getContainerReports() {
 		return reportList;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public List<LPPackageEvent> getUnplannedPackages() {
 		return unplannedPackageList;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public LPReportSummary getSummary() {
 		return summary;
 	}

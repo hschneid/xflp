@@ -19,7 +19,7 @@ import java.util.List;
  * LICENSE file in the root directory of this source tree.
  *
  *
- * The packer ZMultiBinAddPacker5 plans a set of items into a set of containers. It uses only one
+ * The packer NContainerOneTypeAddPacker plans a set of items into a set of containers. It uses only one
  * container type. All items will be packed into containers, because the number of containers is
  * unlimited. The ordering of items is predefined in the first step and will not changed during the
  * pack process.

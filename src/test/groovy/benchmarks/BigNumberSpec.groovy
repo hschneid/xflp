@@ -1,11 +1,9 @@
 package benchmarks
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
-
-import java.util.stream.IntStream
 
 class BigNumberSpec extends Specification {
 

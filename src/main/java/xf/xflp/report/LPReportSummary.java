@@ -24,12 +24,8 @@ public class LPReportSummary {
 	private int nbrOfNotLoadedPackages = 0;
 	private float utilizationSum = 0;
 	
-	private Map<Container, float[]> dataMap = new HashMap<>();
+	private final Map<Container, float[]> dataMap = new HashMap<>();
 	
-	/**
-	 * 
-	 * @param t
-	 */
 	public void add(ContainerReport t) {
 		if(!dataMap.containsKey(t.getContainer()))
 			dataMap.put(t.getContainer(), new float[LENGTH]);
@@ -43,53 +39,27 @@ public class LPReportSummary {
 		utilizationSum += routeSummary.getUtilization();
 	}
 	
-	/**
-	 * 
-	 * @param pkg
-	 */
 	public void addUnplannedPackage(LPPackageEvent pkg) {
 		if(pkg.getType() == PackageEventType.LOAD)
 			nbrOfNotLoadedPackages++;
 	}
 
-	/**
-	 * 
-	 * @param veh
-	 * @return the distance
-	 */
 	public float getNbrOfUsedVehicles(Container veh) {
 		return dataMap.get(veh)[0];
 	}
 	
-	/**
-	 * 
-	 * @param veh
-	 * @return the tour
-	 */
 	public float getNbrOfNotLoadedPackages(Container veh) {
 		return dataMap.get(veh)[1];
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public float getNbrOfUsedVehicles() {
 		return nbrOfUsedVehicles;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public float getNbrOfNotLoadedPackages() {
 		return nbrOfNotLoadedPackages;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public float getUtilization() {
 		return (nbrOfUsedVehicles > 0) ? utilizationSum / nbrOfUsedVehicles : 0;
 	}

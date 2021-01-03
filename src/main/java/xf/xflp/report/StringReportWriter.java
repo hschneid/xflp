@@ -1,6 +1,6 @@
 package xf.xflp.report;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
@@ -12,8 +12,13 @@ public class StringReportWriter {
 
 	public String write(LPReport r) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(">>> "+r.getSummary().getNbrOfUsedVehicles()+" ("+r.getSummary().getUtilization()*100f+"%)\n");
-		
+		sb
+				.append(">>> ")
+				.append(r.getSummary().getNbrOfUsedVehicles())
+				.append(" (")
+				.append(r.getSummary().getUtilization() * 100f)
+				.append("%)\n");
+
 		for (ContainerReport cr : r.getContainerReports()) {
 			sb.append("--- "+cr.getContainerTypeName()+"("+(cr.getSummary().getMaxUsedVolume()/cr.getSummary().getMaxVolume())*100f+"%)\n");
 			for (LPPackageEvent e : cr.getPackageEvents()) {

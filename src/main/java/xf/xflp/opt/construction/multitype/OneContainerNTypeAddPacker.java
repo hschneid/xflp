@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * LICENSE file in the root directory of this source tree.
  *
  *
- * This packer puts the items in a sequence into two containers with two different container types.
+ * This packer puts the items in a sequence for each container type into single container.
  * Items will only be added to a container.
  *
  * @author hschneid

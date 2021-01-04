@@ -7,7 +7,7 @@ apply plugin:'signing'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.3.0'
+version = '0.3.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
  

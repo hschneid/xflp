@@ -40,6 +40,8 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.3.1
+- Fast fixed solver uses new width proportion factor for choosing the next insert position
 ### 0.3.0
 - Fix of stacking group feature
 - Added a priorization criteria for choosing the next insert position. It takes the proportion of the item to the container into account.

@@ -59,11 +59,11 @@ class Helper {
         return i;
     }
 
-    static Position findPos(List<Position> pList, int x, int y, int z) {
+    static Position findPos(Collection<Position> pList, int x, int y, int z) {
         return findPos(pList, x, y, z, false);
     }
 
-    static Position findPos(List<Position> pList, int x, int y, int z, boolean rotated) {
+    static Position findPos(Collection<Position> pList, int x, int y, int z, boolean rotated) {
         for (Position position : pList) {
             if(position.getX() == x && position.getY() == y && position.getZ() == z)
                 if((rotated && position instanceof RotatedPosition)

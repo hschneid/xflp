@@ -1,6 +1,5 @@
 package xf.xflp.base.problem;
 
-import util.Copyable;
 import util.collection.LPListMap;
 import util.collection.SetIndexArrayList;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class ZItemGraph {
 
-	private final SetIndexArrayList<ZItemGraph.Entry> lowerList = new SetIndexArrayList<>();
+	private final SetIndexArrayList<ZItemGraphEntry> lowerList = new SetIndexArrayList<>();
 	private final SetIndexArrayList<List<Item>> upperList = new SetIndexArrayList<>();
 
 	/**
@@ -33,7 +32,7 @@ public class ZItemGraph {
 		// Lower
 		{
 			List<Item> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z));
-			Entry e = new Entry(newItem, lowerItems);
+			ZItemGraphEntry e = new ZItemGraphEntry(newItem, lowerItems);
 			lowerList.set(newItem.index, e);
 
 			// Update of lower items with new upper item
@@ -51,26 +50,34 @@ public class ZItemGraph {
 
 			// Update upper items with new lower item, which means new cut area ratio
 			for (Item upperItem : upperItems) {
-				Entry e = lowerList.get(upperItem.index);
+				ZItemGraphEntry e = lowerList.get(upperItem.index);
 				e.lowerItemList.add(newItem);
 				e.update();
 			}
 		}
 	}
 
-	/**
-	 * 
-	 * @param item
+	/*
+	 * Remove an item from Z graph
 	 */
 	public void remove(Item item) {
 		// Entferne Item aus lower items
-		if(lowerList.get(item.index) != null)
-			for (Item lowerItem : lowerList.get(item.index).lowerItemList)
-				upperList.get(lowerItem.index).remove(item);		
+		if(lowerList.get(item.index) != null) {
+			List<Item> get = lowerList.get(item.index).lowerItemList;
+			for (int i = get.size() - 1; i >= 0; i--) {
+				Item lowerItem = get.get(i);
+				upperList.get(lowerItem.index).remove(item);
+			}
+		}
+
 		// Entferne Item aus upper items
-		if(upperList.get(item.index) != null)
-			for (Item upperItem : upperList.get(item.index))
-				lowerList.get(upperItem.index).lowerItemList.remove(item);		
+		if(upperList.get(item.index) != null) {
+			List<Item> get = upperList.get(item.index);
+			for (int i = get.size() - 1; i >= 0; i--) {
+				Item upperItem = get.get(i);
+				lowerList.get(upperItem.index).lowerItemList.remove(item);
+			}
+		}
 
 		// Entferne lowerList-Eintrag
 		lowerList.remove(item.index);
@@ -78,36 +85,19 @@ public class ZItemGraph {
 		upperList.remove(item.index);
 	}
 
-	/**
-	 * 
-	 */
 	public void clear() {
 		lowerList.clear();
 		upperList.clear();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int size() {
 		return upperList.size();
 	}
 
-	/**
-	 * 
-	 * @param item
-	 * @return
-	 */
 	public List<Item> getItemsBelow(Item item) {
 		return lowerList.get(item.index).lowerItemList;
 	}
 
-	/**
-	 * 
-	 * @param item
-	 * @return
-	 */
 	public List<Item> getItemsAbove(Item item) {
 		return upperList.get(item.index);
 	}
@@ -163,9 +153,6 @@ public class ZItemGraph {
 		return ceilItems;
 	}
 
-	/**
-	 *
-	 */
 	public List<?>[] getItemsBelowWithCutArea(Item item) {
 		return new List[] {
 				lowerList.get(item.index).lowerItemList,
@@ -186,7 +173,7 @@ public class ZItemGraph {
 		if(item.z == 0)
 			return list;
 
-		for (int i = 0; i < zList.size(); i++) {
+		for (int i = zList.size()- 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
@@ -199,20 +186,13 @@ public class ZItemGraph {
 		return list;
 	}
 
-	/**
-	 * 
-	 * @param item
-	 * @param itemList
-	 * @param zList
-	 * @return List of all items above new item
-	 */
 	private List<Item> searchItemsAbove(Item item, List<Item> itemList, List<Integer> zList) {
 		List<Item> list = new ArrayList<>();
 
 		if(zList == null)
 			return list;
 
-		for (int i = 0; i < zList.size(); i++) {
+		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
@@ -225,76 +205,29 @@ public class ZItemGraph {
 		return list;
 	}
 
-	/**
-	 *
-	 */
 	private void searchBaseRecursive(Item item, boolean[] found) {
 		if(lowerList.get(item.index) == null)
 			return;
 
-		for (Item i : lowerList.get(item.index).lowerItemList) {
-			if(i.z == 0)
+		List<Item> lowerItemList = lowerList.get(item.index).lowerItemList;
+		for (int j = 0, lowerItemListSize = lowerItemList.size(); j < lowerItemListSize; j++) {
+			Item i = lowerItemList.get(j);
+			if (i.z == 0)
 				found[i.index] = true;
 			else
 				searchBaseRecursive(i, found);
 		}
 	}
 
-	/**
-	 *
-	 */
 	private void searchCeilRecursive(Item item, boolean[] found) {
-		if(upperList.get(item.index) == null || upperList.get(item.index).size() == 0)
+		if(upperList.get(item.index) == null || upperList.get(item.index).isEmpty())
 			found[item.index] = true;
-		else 
-			for (Item i : upperList.get(item.index))
+		else {
+			List<Item> get = upperList.get(item.index);
+			for (int j = 0, getSize = get.size(); j < getSize; j++) {
+				Item i = get.get(j);
 				searchCeilRecursive(i, found);
-	}
-
-
-	/**
-	 * 
-	 * @author hschneid
-	 *
-	 */
-	class Entry implements Copyable<Entry>{
-		public final Item item;
-		public final List<Item> lowerItemList;
-		public final List<Float> cutRatioList;
-		public final Object[] itemRatioArr;
-
-		/**
-		 * 
-		 * @param item
-		 * @param lowerItemList
-		 */
-		public Entry(Item item, List<Item> lowerItemList) {
-			this.item = item;
-			this.cutRatioList = new ArrayList<>();
-			this.lowerItemList = lowerItemList;
-			this.itemRatioArr = new Object[]{this.lowerItemList, this.cutRatioList};
-
-			update();
-		}
-
-		/**
-		 * 
-		 */
-		public void update() {
-			float[] bCuts = new float[lowerItemList.size()];
-			float sum = 0;
-			for (int i = 0; i < lowerItemList.size(); i++) {
-				bCuts[i] = Tools.getCutRatio(item, lowerItemList.get(i));
-				sum += bCuts[i];
 			}
-			// Anpassen der Anteile auf 100%
-			for (int i = 0; i < lowerItemList.size(); i++)
-				cutRatioList.add(bCuts[i] * (1f / sum));
-		}
-
-		@Override
-		public Entry copy() {
-			throw new IllegalStateException();
 		}
 	}
 

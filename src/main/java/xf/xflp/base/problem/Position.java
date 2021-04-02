@@ -1,6 +1,6 @@
 package xf.xflp.base.problem;
 
-/** 
+/**
  * Copyright (c) 2012-present Holger Schneider
  * All rights reserved.
  *
@@ -75,5 +75,17 @@ public class Position {
 	 */
 	public int getZ() {
 		return z;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		return idx == ((Position) o).idx;
+	}
+
+	@Override
+	public int hashCode() {
+		return idx;
 	}
 }

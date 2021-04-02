@@ -42,7 +42,7 @@ import java.util.List;
 public class XFLP {
 
 	/* Importer and data warehouse */
-	private FlexiImporter importer = new FlexiImporter();
+	private final FlexiImporter importer = new FlexiImporter();
 
 	/* Optimization type - Chosen by user */
 	private XFLPOptType optType;
@@ -51,16 +51,16 @@ public class XFLP {
 	private XFLPSolution lastSolution;
 
 	/* Shall be the metric transformed into a faster access metric */
-	private XFLPParameter parameter = new XFLPParameter();
+	private final XFLPParameter parameter = new XFLPParameter();
 
 	/* Manages internal status messages to external observer */
-	private StatusManager statusManager = new StatusManager();
+	private final StatusManager statusManager = new StatusManager();
 
 	/**
 	 * Calculates the Loading Problem with the before inserted data
 	 * by addContainer() and addItem()
 	 */
-	public void executeLoadPlanning() {
+	public void executeLoadPlanning() throws XFLPException {
 		statusManager.fireMessage(StatusCode.RUNNING, "XFLP started");
 
 		// Flush import buffer
@@ -83,19 +83,19 @@ public class XFLP {
 	 * for optimization.
 	 * 
 	 * @return Returns a model, which can be used for optimization procedures.
-	 * @throws IllegalArgumentException
+	 * @throws XFLPException
 	 */
-	private XFLPModel init() throws IllegalArgumentException {
+	private XFLPModel init() throws XFLPException {
 		statusManager.fireMessage(StatusCode.RUNNING, "Initialisation");
 
 		// Check input data
-		if(importer.getItemList().size() == 0) {
+		if(importer.getItemList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No items are given.");
-			throw new IllegalArgumentException("No items are given.");
+			throw new XFLPException("No items are given.");
 		}
-		if(importer.getContainerList().size() == 0) {
+		if(importer.getContainerList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No container information were set.");
-			throw new IllegalArgumentException("No container information were set.");
+			throw new XFLPException("No container information were set.");
 		}
 
 		// Copy imported data to internal data structure
@@ -116,7 +116,7 @@ public class XFLP {
 		
 		// Pre-Sort items for logical order (ascending order location index)
 		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
-		
+
 		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
 	}
 

@@ -1,13 +1,24 @@
+buildscript {
+	ext {
+		rootGradleDir = "${rootProject.rootDir}/gradle"
+	}
+}
+
+plugins {
+	id "com.github.spotbugs" version "4.7.0"
+}
+
 apply plugin:'java'
 apply plugin:'groovy'
 apply plugin:'idea'
 apply plugin:'application'
 apply plugin:'maven-publish'
 apply plugin:'signing'
+apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.3.0'
+version = '0.3.1'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
  
@@ -29,6 +40,9 @@ dependencies {
 	implementation 'com.google.guava:guava:28.2-jre'
 
 	testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
+
+	spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.11.0'
+	spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
 }
 
 // Maven - Publish
@@ -102,5 +116,27 @@ publishing {
 signing {
 	sign publishing.publications.maven
 }
+
+// Example to configure HTML report
+spotbugsMain {
+	reports {
+		html {
+			enabled = true
+			destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+			stylesheet = 'fancy-hist.xsl'
+		}
+	}
+}
+
+spotbugsTest {
+	reports {
+		html {
+			enabled = true
+			destination = file("$buildDir/reports/spotbugs/test/spotbugs.html")
+			stylesheet = 'fancy-hist.xsl'
+		}
+	}
+}
+
 
 

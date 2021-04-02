@@ -23,7 +23,6 @@ class SingleContainerPackerSpec extends Specification {
                 new XFLPParameter()
         )
 
-
         when:
         service.execute(model)
         then:

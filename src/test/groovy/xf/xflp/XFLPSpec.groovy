@@ -14,7 +14,7 @@ class XFLPSpec extends Specification {
         when:
         service.executeLoadPlanning()
         then:
-        thrown(IllegalArgumentException)
+        thrown(XFLPException)
     }
 
     def "error when no container inserted"() {
@@ -26,7 +26,7 @@ class XFLPSpec extends Specification {
         when:
         service.executeLoadPlanning()
         then:
-        thrown(IllegalArgumentException)
+        thrown(XFLPException)
     }
 
     def "error when no items because its cleared"() {
@@ -40,7 +40,7 @@ class XFLPSpec extends Specification {
         service.clearItems()
         service.executeLoadPlanning()
         then:
-        thrown(IllegalArgumentException)
+        thrown(XFLPException)
     }
 
     def "error when no container because its cleared"() {
@@ -54,7 +54,7 @@ class XFLPSpec extends Specification {
         service.clearContainers()
         service.executeLoadPlanning()
         then:
-        thrown(IllegalArgumentException)
+        thrown(XFLPException)
     }
 
     def "null report when no optimization"() {

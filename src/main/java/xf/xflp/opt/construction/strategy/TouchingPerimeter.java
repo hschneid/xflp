@@ -32,7 +32,7 @@ public class TouchingPerimeter extends BaseStrategy {
 
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
-		if(posList == null || posList.size() == 0) {
+		if(posList == null || posList.isEmpty()) {
 			throw new IllegalStateException("List of positions must be not empty or null.");
 		}
 
@@ -52,7 +52,7 @@ public class TouchingPerimeter extends BaseStrategy {
 		// Return found position or check further
 		if(filteredPositions.size() == 1) {
 			return filteredPositions.get(0);
-		} else if(filteredPositions.size() == 0) {
+		} else if(filteredPositions.isEmpty()) {
 			throw new IllegalStateException("There must be at least one position.");
 		} else {
 			return fallbackStrategy.choose(item, container, filteredPositions);

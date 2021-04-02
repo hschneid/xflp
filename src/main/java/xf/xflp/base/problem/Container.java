@@ -22,7 +22,7 @@ public class Container extends AbstractContainer {
 	private static final int EXTENDED_V = 4;
 
 	private final Position tmpPosition = new Position(-1, -1);
-	private List<Position> inactivePosList = new ArrayList<>();
+	private Set<Position> inactivePosList = new HashSet<>();
 	private List<Position> coveredPosList = new ArrayList<>();
 
 	/* Relation graph between position - Father position -> [child positions] */
@@ -256,7 +256,7 @@ public class Container extends AbstractContainer {
 			return true;
 
 		List<Integer> zList = zMap.get(pos.getZ());
-		if(zList == null || zList.size() == 0)
+		if(zList == null || zList.isEmpty())
 			return true;
 
 		int itemW = pos.x + w;
@@ -578,7 +578,7 @@ public class Container extends AbstractContainer {
 
 		if(
 			// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht und
-				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).size() == 0)
+				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).isEmpty())
 						// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
 						&& activePosList.contains(ancestor)
 						// die Position nicht der Root ist, dann l�sche die Position
@@ -724,8 +724,7 @@ public class Container extends AbstractContainer {
 	 *
 	 */
 	public void init() {
-		// idx, x, y, z, type, isProjected
-		Position start = new Position(0, 0, 0, 0, ROOT, false);
+		Position start = createPosition(0, 0, 0, ROOT, false);
 		activePosList.add(start);
 
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle

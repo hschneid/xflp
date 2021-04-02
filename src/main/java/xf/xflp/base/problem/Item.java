@@ -106,9 +106,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	@Override
 	public Item copy() {
 		try {
-			Item i = (Item)super.clone();
-			
-			return i;
+			return (Item)super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  */
 public class OneContainerNTypeAddPacker extends XFLPBase {
 
-	public static boolean VERBOSE = false;
+	public static final boolean VERBOSE = false;
 
 	private BaseStrategy strategy;
 
@@ -93,7 +93,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 			// Fetch existing insert positions
 			List<Position> posList = container.getPossibleInsertPositionList(item);
 
-			if (posList.size() != 0) {
+			if (!posList.isEmpty()) {
 				// Choose according to select strategy
 				return strategy.choose(item, container, posList);
 			}

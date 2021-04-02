@@ -1,10 +1,13 @@
 package xf.xflp.opt;
 
+import xf.xflp.XFLPException;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 import xf.xflp.opt.grasp.SingleBinRandomSearchPacker;
+
+import java.lang.reflect.InvocationTargetException;
 
 /** 
  * Copyright (c) 2012-present Holger Schneider
@@ -43,11 +46,11 @@ public enum XFLPOptType {
 	 * 
 	 * @return An object instance
 	 */
-	public XFLPBase createInstance() {
+	public XFLPBase createInstance() throws XFLPException {
 		try {
-			return (XFLPBase) Class.forName(clazz.getName()).newInstance();
-		} catch (Exception e) {
-			throw new IllegalStateException("no copy of optimization procedure possible");
+			return (XFLPBase) Class.forName(clazz.getName()).getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
+			throw new XFLPException("no copy of optimization procedure possible", e);
 		}
 	}
 }

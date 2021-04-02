@@ -25,7 +25,7 @@ public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
 	public Position choose(Item item, Container container, List<Position> posList) {
-		if(posList == null || posList.size() == 0) {
+		if(posList == null || posList.isEmpty()) {
 			throw new IllegalStateException("List of positions must be not empty or null.");
 		}
 
@@ -34,7 +34,7 @@ public class HighestLowerLeft extends BaseStrategy {
 				this::getDistance
 		);
 
-		if(filteredPositions.size() == 0) {
+		if(filteredPositions.isEmpty()) {
 			throw new IllegalStateException("There must be at least one position.");
 		}
 

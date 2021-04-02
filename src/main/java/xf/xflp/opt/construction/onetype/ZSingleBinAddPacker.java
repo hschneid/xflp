@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ZSingleBinAddPacker {
 
-	public static boolean VERBOSE = false;
+	public static final boolean VERBOSE = false;
 
 	private final BaseStrategy strategy;
 
@@ -50,7 +50,7 @@ public class ZSingleBinAddPacker {
 				// Fetch existing insert positions
 				List<Position> posList = container.getPossibleInsertPositionList(item);
 
-				if (posList.size() != 0) {
+				if (!posList.isEmpty()) {
 					// Choose according to select strategy
 					insertPosition = strategy.choose(item, container, posList);
 				}

@@ -8,6 +8,17 @@ import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Copyright (c) 2012-2021 Holger Schneider
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT License (MIT) found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *
+ * @author hschneid
+ *
+ */
 public class SingleBinOptimizedPacker extends XFLPBase {
 
     private OneContainerOneTypePacker packer = new OneContainerOneTypePacker();

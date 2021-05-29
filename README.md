@@ -1,6 +1,6 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![BCH compliance](https://bettercodehub.com/edge/badge/hschneid/xflp?branch=master)](https://bettercodehub.com/)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.3.2&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.4.0&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -40,6 +40,10 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.4.0
+- Add restriction, that on top of one item only one item can be placed
+- Fixed copyright information
+
 ### 0.3.2
 - Added SpotBugs in build process to find smellies
 - Fixed some smellies

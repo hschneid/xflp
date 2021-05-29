@@ -124,22 +124,18 @@ public class ZItemGraph {
 	}
 
 	/**
-	 * Searches for any item in Z-Graph the ceiling items with no further upper items
+	 * Searches for any item in Z-Graph, where the ceiling items have no further upper items
 	 * with regard to the base items of the given item
 	 * 
 	 * Pre-Condition: All items, even the given one, are added into the Z-Graph
-	 * 
-	 * @param item
-	 * @param itemList
-	 * @return
 	 */
-	public List<Item> getCeilItems(Item item, List<Item> itemList) {
+	public List<Item> getCeilItems(Item newItem, List<Item> itemList) {
 		boolean[] foundBase = new boolean[lowerList.size()];
 		boolean[] foundCeil = new boolean[lowerList.size()];
-		// Search base items
-		searchBaseRecursive(item, foundBase);
+		// Search base items (related items at the ground of container)
+		searchBaseRecursive(newItem, foundBase);
 
-		// Search ceil items with base items
+		// Search ceiling items of base items
 		for (int i = 0; i < foundBase.length; i++)
 			if(foundBase[i]) 
 				searchCeilRecursive(itemList.get(i), foundCeil);

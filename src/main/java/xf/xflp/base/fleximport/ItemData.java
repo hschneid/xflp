@@ -52,7 +52,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param externID the externID to set
-	 * @return
 	 */
 	public final ItemData setExternID(String externID) {
 		this.externID = externID;
@@ -61,7 +60,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param shipmentID the shipmentID to set
-	 * @return
 	 */
 	public final ItemData setShipmentID(String shipmentID) {
 		this.shipmentID = shipmentID;
@@ -70,7 +68,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param width the width to set
-	 * @return
 	 */
 	public final ItemData setWidth(int width) {
 		this.width = width;
@@ -79,7 +76,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param length the length to set
-	 * @return
 	 */
 	public final ItemData setLength(int length) {
 		this.length = length;
@@ -88,7 +84,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param height the height to set
-	 * @return
 	 */
 	public final ItemData setHeight(int height) {
 		this.height = height;
@@ -97,7 +92,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param weight the weight to set
-	 * @return
 	 */
 	public final ItemData setWeight(float weight) {
 		this.weight = weight;
@@ -106,7 +100,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param stackingWeightLimit the stackingWeightLimit to set
-	 * @return
 	 */
 	public final ItemData setStackingWeightLimit(float stackingWeightLimit) {
 		this.stackingWeightLimit = stackingWeightLimit;
@@ -115,7 +108,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param stackingGroup the stackingGroup to set
-	 * @return
 	 */
 	public final ItemData setStackingGroup(String stackingGroup) {
 		this.stackingGroup = stackingGroup;
@@ -124,7 +116,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param allowedStackingGroups the allowedStackingGroups to set
-	 * @return
 	 */
 	public final ItemData setAllowedStackingGroups(String allowedStackingGroups) {
 		this.allowedStackingGroups = allowedStackingGroups;
@@ -133,7 +124,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param allowedContainerSet the allowedContainerSet to set
-	 * @return
 	 */
 	public final ItemData setAllowedContainerSet(String allowedContainerSet) {
 		this.allowedContainerSet = allowedContainerSet;
@@ -142,7 +132,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param loadingLocation the loadingLocation to set
-	 * @return
 	 */
 	public final ItemData setLoadingLocation(String loadingLocation) {
 		this.loadingLocation = loadingLocation;
@@ -151,7 +140,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param unloadingLocation the unloadingLocation to set
-	 * @return
 	 */
 	public final ItemData setUnloadingLocation(String unloadingLocation) {
 		this.unloadingLocation = unloadingLocation;
@@ -160,7 +148,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param spinable the spinable to set
-	 * @return
 	 */
 	public final ItemData setSpinable(boolean spinable) {
 		this.spinable = spinable;

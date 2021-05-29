@@ -68,9 +68,6 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 		this.loadingType = (isLoading) ? PackageEventType.LOAD : PackageEventType.UNLOAD;
 	}
 	
-	/**
-	 * 
-	 */
 	public void rotate() {
 		int tmp = w;
 		w = l;
@@ -79,10 +76,6 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 		isRotated = !isRotated;
 	}
 	
-	/**
-	 * 
-	 * @param pos
-	 */
 	public void setPosition(Position pos) {
 		x = pos.x;
 		y = pos.y;

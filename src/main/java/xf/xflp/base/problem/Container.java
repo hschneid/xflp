@@ -22,23 +22,23 @@ public class Container extends AbstractContainer {
 	private static final int EXTENDED_V = 4;
 
 	private final Position tmpPosition = new Position(-1, -1);
-	private Set<Position> inactivePosList = new HashSet<>();
-	private List<Position> coveredPosList = new ArrayList<>();
+	private final Set<Position> inactivePosList = new HashSet<>();
+	private final List<Position> coveredPosList = new ArrayList<>();
 
 	/* Relation graph between position - Father position -> [child positions] */
-	private LPListMap<Position, Position> posFollowerMap = new LPListMap<>();
-	private Map<Position, Position> posAncestorMap = new HashMap<>();
+	private final LPListMap<Position, Position> posFollowerMap = new LPListMap<>();
+	private final Map<Position, Position> posAncestorMap = new HashMap<>();
 
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
 
 	/* Position -> Item */
-	private Map<Position, Item> positionItemMap = new HashMap<>();
+	private final Map<Position, Item> positionItemMap = new HashMap<>();
 	/* Item -> Position */
-	private HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
+	private final HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
 
 	/* History of loaded items - is relevant for creating the solution report */
-	private List<Item> history = new ArrayList<>();
+	private final List<Item> history = new ArrayList<>();
 
 	private int maxPosIdx = 0;
 	private float lifoImportance;
@@ -65,7 +65,7 @@ public class Container extends AbstractContainer {
 		pos = normPosition(item, pos);
 
 		// F�ge Element in Container ein
-		addElement(item, pos);
+		addItem(item, pos);
 
 		if(item.z == 0) {
 			// Pr�fe, ob das neue Objekt Projektionslinien schneidet
@@ -114,7 +114,7 @@ public class Container extends AbstractContainer {
 	 */
 	public void remove(Item item) {
 		// Entferne Objekt
-		removeElement(item);
+		removeItem(item);
 
 		Position position = itemPositionMap.remove(item);
 		if(position == null)
@@ -221,22 +221,8 @@ public class Container extends AbstractContainer {
 					// => Ergo mache nix
 				}
 
-				/*
-				 * Stack restrictions
-				 */
-				// Check ground contact restriction
-				// New item must not hang in the air and maybe cover multiple items
-				if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
-					continue;
-
-				// Check stacking group and weight bearing capacity
-				// All lower items must have the same stacking group
-				if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
-					continue;
-
-				// Check bearing capacity
-				// All lower items can bear the additional weight
-				if(!checkLoadBearing(pos, newItem, rotation))
+				// Check stacking restrictions
+				if(!checkStackingRestrictions(pos, newItem, itemW, itemL, rotation))
 					continue;
 
 				// Create RotatedPosition if this item is rotated
@@ -247,14 +233,35 @@ public class Container extends AbstractContainer {
 		return posList;
 	}
 
+	private boolean checkStackingRestrictions(Position pos,
+											  Item newItem,
+											  int itemW,
+											  int itemL,
+											  int rotation) {
+		// New item will be placed at ground. So no stacking needs to be checked.
+		if (pos.z == 0)
+			return true;
+
+		// Check ground contact restriction
+		// New item must not hang in the air and maybe cover multiple items
+		if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
+			return false;
+
+		// Check stacking group and weight bearing capacity
+		// All lower items must have the same stacking group
+		if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
+			return false;
+
+		// Check bearing capacity
+		// All lower items can bear the additional weight
+		return checkLoadBearing(pos, newItem, rotation);
+	}
+
 	/**
 	 * Checks whether the new item is placed on top of remaining items. It is tested
 	 * that all 4 corners of the new item have at least one current item directly below that item.
 	 */
 	private boolean checkStackingGroupAndBearing(Position pos, int w, int l, int stackingGroup) {
-		if(pos.z == 0)
-			return true;
-
 		List<Integer> zList = zMap.get(pos.getZ());
 		if(zList == null || zList.isEmpty())
 			return true;
@@ -264,6 +271,7 @@ public class Container extends AbstractContainer {
 		boolean corner1, corner2, corner3, corner4;
 		corner1 = corner2 = corner3 = corner4 = false;
 
+		// Check for all lower items if stacking group restriction is valid
 		for(int i = 0, size = zList.size(); i < size; i++) {
 			Item fi = itemList.get(zList.get(i));
 			if(fi.zh == pos.getZ()) {
@@ -313,41 +321,42 @@ public class Container extends AbstractContainer {
 	 * If number of lower items is bigger than 1 then it is overlapping.
 	 */
 	private boolean checkGroundContact(Position pos, Item item) {
-		if(pos.z == 0)
-			return true;
-
 		item.setPosition(pos);
 
 		Set<Item> foundSet = Tools.getAllFloorItems(item, itemList);
 
 		item.clearPosition();
 
-		if(foundSet.size() > 1)
-			return false;
-
-		return true;
+		return foundSet.size() <= 1;
 	}
 
 	/**
+	 * Check the load bearing restriction
+	 *
+	 * New item will be placed at the position in container, then the bearing check
+	 * is done by tree traversal through all touched items and then removed again from
+	 * container.
 	 *
 	 */
 	private boolean checkLoadBearing(Position pos, Item item, int rotation) {
-		if(pos.z == 0)
-			return true;
-
-		if(rotation == 1) item.rotate();
+		// Add to container
+		if(rotation == 1)
+			item.rotate();
 		item.setPosition(pos);
 		itemList.add(item);
 		zGraph.add(item, itemList, zMap);
 
+		// Do check by Z-tree traversal
 		List<Item> ceilItems = zGraph.getCeilItems(item, itemList);
 		LoadBearingCheck lbc = new LoadBearingCheck();
 		boolean result = lbc.checkLoadBearing(ceilItems, zGraph);
 
+		// Remove from container
 		zGraph.remove(item);
 		item.clearPosition();
 		itemList.remove(item.index);
-		if(rotation == 1) item.rotate();
+		if(rotation == 1)
+			item.rotate();
 
 		return result;
 	}
@@ -414,33 +423,21 @@ public class Container extends AbstractContainer {
 
 	/*******************************************************************/
 
-	/**
-	 * @param pos
-	 */
 	private void switchInactive2Active(Position pos) {
 		inactivePosList.remove(pos);
 		activePosList.add(pos);
 	}
 
-	/**
-	 * @param pos
-	 */
 	private void switchCovered2Active(Position pos) {
 		coveredPosList.remove(pos);
 		activePosList.add(pos);
 	}
 
-	/**
-	 * @param pos
-	 */
 	private void switchActive2Inactive(Position pos) {
 		activePosList.remove(pos);
 		inactivePosList.add(pos);
 	}
 
-	/**
-	 * @param pos
-	 */
 	private void switchActive2Covered(Position pos) {
 		activePosList.remove(pos);
 		coveredPosList.add(pos);
@@ -529,6 +526,12 @@ public class Container extends AbstractContainer {
 		posFollowerMap.put(ancestor, entry);
 	}
 
+	/**
+	 * Recursive function
+	 *
+	 * Checks for a certain position, if all following positions are inactive.
+	 * If so, then these follower positions can be deleted.
+	 */
 	private void checkTreeAndRemove2(Position pos) {
 		List<Position> mapList = posFollowerMap.get(pos);
 		if(mapList != null) {
@@ -538,10 +541,12 @@ public class Container extends AbstractContainer {
 				if(inactivePosList.contains(follower))
 					return;
 
+				// If follower has more followers, deep into and check them
 				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
 					checkTreeAndRemove2(follower);
 
-				if((posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0))
+				// If follower has still followers after deep check, then ignore
+				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
 					return;
 			}
 
@@ -577,7 +582,7 @@ public class Container extends AbstractContainer {
 		Position ancestor = posAncestorMap.get(pos);
 
 		if(
-			// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht und
+			// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht wurde und
 				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).isEmpty())
 						// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
 						&& activePosList.contains(ancestor)
@@ -594,7 +599,7 @@ public class Container extends AbstractContainer {
 	/**
 	 *
 	 */
-	private void addElement(Item item, Position pos) {
+	private void addItem(Item item, Position pos) {
 		item.setPosition(pos);
 		itemList.add(item);
 		item.containerIndex = this.index;
@@ -620,7 +625,7 @@ public class Container extends AbstractContainer {
 	/**
 	 *
 	 */
-	private void removeElement(Item item) {
+	private void removeItem(Item item) {
 		Integer index = item.index;
 
 		// Delete from Z-Graph

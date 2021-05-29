@@ -89,7 +89,7 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		int yl = pos.y + l;
 		int zh = pos.z + h;
 
-		List<Integer> list = null;
+		List<Integer> list;
 
 		// x-Achse
 		{

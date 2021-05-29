@@ -154,10 +154,6 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int length() {
 		return length;
 	}
@@ -174,10 +170,6 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		freeIndexCursor = -1;
 	}
 
-	/**
-	 * 
-	 * @param nbr
-	 */
 	private void expand(int nbr) {
 		for (int i = 0; i < nbr; i++) {
 			super.add(null);

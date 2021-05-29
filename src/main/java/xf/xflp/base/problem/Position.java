@@ -45,11 +45,6 @@ public class Position {
 		return "("+x+","+y+","+z+")";
 	}
 	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 */
 	public void setXY(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -71,7 +66,7 @@ public class Position {
 	
 	/**
 	 * 
-	 * @return
+	 * @return the z
 	 */
 	public int getZ() {
 		return z;

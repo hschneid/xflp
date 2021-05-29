@@ -26,12 +26,12 @@ public class DataManager implements Serializable {
 	private int maxStackingGroupID = 1;
 	private int maxContainerTypeID = 1;
 
-	private Map<String, Integer> itemMap = new HashMap<>();
-	private Map<Integer, String> itemIdMap = new HashMap<>();
-	private Map<String, Integer> shipmentMap = new HashMap<>();
-	private Map<String, Integer> locationMap = new HashMap<>();
-	private Map<String, Integer> stackingGroupMap = new HashMap<>();
-	private Map<String, Integer> containerTypeMap = new HashMap<>();
+	private final Map<String, Integer> itemMap = new HashMap<>();
+	private final Map<Integer, String> itemIdMap = new HashMap<>();
+	private final Map<String, Integer> shipmentMap = new HashMap<>();
+	private final Map<String, Integer> locationMap = new HashMap<>();
+	private final Map<String, Integer> stackingGroupMap = new HashMap<>();
+	private final Map<String, Integer> containerTypeMap = new HashMap<>();
 
 	public DataManager() {
 		containerTypeMap.put("default_container_type", 0);
@@ -39,10 +39,6 @@ public class DataManager implements Serializable {
 		shipmentMap.put("default_shipment", 0);
 	}
 
-	/**
-	 *
-	 * @param itemData
-	 */
 	public void add(InternalItemData itemData) {
 		addItem(itemData.getExternID());
 		addShipment(itemData.getShipmentID());
@@ -52,18 +48,10 @@ public class DataManager implements Serializable {
 		addContainerTypes(itemData.getAllowedContainerTypes());
 	}
 
-	/**
-	 *
-	 * @param conData
-	 */
 	public void add(InternalContainerData conData) {
 		addContainerType(conData.getContainerType());
 	}
 
-	/**
-	 *
-	 * @param itemID
-	 */
 	public void addItem(String itemID) {
 		if(!itemMap.containsKey(itemID)) {
 			itemMap.put(itemID, maxItemID);
@@ -72,38 +60,21 @@ public class DataManager implements Serializable {
 		}
 	}
 
-	/**
-	 *
-	 * @param shipmentID
-	 */
 	public void addShipment(String shipmentID) {
 		if(!shipmentMap.containsKey(shipmentID))
 			shipmentMap.put(shipmentID, maxShipmentID++);
 	}
 
-	/**
-	 *
-	 * @param locationID
-	 */
 	public void addLocation(String locationID) {
 		if(!locationMap.containsKey(locationID))
 			locationMap.put(locationID, maxLocationID++);
 	}
 
-	/**
-	 *
-	 * @param containerType
-	 */
 	public void addContainerType(String containerType) {
 		if(!containerTypeMap.containsKey(containerType))
 			containerTypeMap.put(containerType, maxContainerTypeID++);
 	}
 
-	/**
-	 *
-	 * @param stackingGroupID
-	 * @param stackingGroups
-	 */
 	public void addStackingGroup(String stackingGroupID, String stackingGroups) {
 		stackingGroupID = stackingGroupID.trim().toLowerCase();
 		if(!stackingGroupMap.containsKey(stackingGroupID))
@@ -117,10 +88,6 @@ public class DataManager implements Serializable {
 		}
 	}
 
-	/**
-	 *
-	 * @param containerTypes
-	 */
 	public void addContainerTypes(String containerTypes) {
 		String[] arr = containerTypes.split(",");
 
@@ -130,11 +97,6 @@ public class DataManager implements Serializable {
 		}
 	}
 
-	/**
-	 *
-	 * @param itemID
-	 * @return
-	 */
 	public int getItemIdx(String itemID) {
 		return itemMap.get(itemID);
 	}
@@ -143,38 +105,18 @@ public class DataManager implements Serializable {
 		return itemIdMap.get(itemIdx);
 	}
 
-	/**
-	 *
-	 * @param shipmentID
-	 * @return
-	 */
 	public int getShipmentIdx(String shipmentID) {
 		return shipmentMap.get(shipmentID);
 	}
 
-	/**
-	 *
-	 * @param locationID
-	 * @return
-	 */
 	public int getLocationIdx(String locationID) {
 		return locationMap.get(locationID.trim().toLowerCase());
 	}
 
-	/**
-	 *
-	 * @param stackingGroup
-	 * @return
-	 */
 	public int getStackingGroupIdx(String stackingGroup) {
 		return 1 << stackingGroupMap.get(stackingGroup.trim().toLowerCase());
 	}
 
-	/**
-	 *
-	 * @param containerType
-	 * @return
-	 */
 	public int getContainerTypeIdx(String containerType) {
 		return containerTypeMap.get(containerType);
 	}
@@ -188,12 +130,6 @@ public class DataManager implements Serializable {
 		return "not found";
 	}
 
-
-	/**
-	 *
-	 * @param allowedContainerSet
-	 * @return
-	 */
 	public Set<Integer> getContainerTypes(String allowedContainerSet) {
 		String[] arr = allowedContainerSet.split(",");
 
@@ -204,11 +140,6 @@ public class DataManager implements Serializable {
 		return res;
 	}
 
-	/**
-	 *
-	 * @param allowedStackingGroups
-	 * @return
-	 */
 	public int getStackingGroups(String allowedStackingGroups) {
 		int res = 0;
 

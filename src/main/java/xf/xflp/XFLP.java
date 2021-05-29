@@ -83,7 +83,7 @@ public class XFLP {
 	 * for optimization.
 	 * 
 	 * @return Returns a model, which can be used for optimization procedures.
-	 * @throws XFLPException
+	 * @throws XFLPException Is thrown, when given data is incorrect or missing
 	 */
 	private XFLPModel init() throws XFLPException {
 		statusManager.fireMessage(StatusCode.RUNNING, "Initialisation");

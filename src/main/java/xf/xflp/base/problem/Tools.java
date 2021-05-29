@@ -18,10 +18,7 @@ import java.util.Set;
 public class Tools {
 
 	/**
-	 * 
-	 * @param root
-	 * @param itemList
-	 * @return
+	 *
 	 */
 	public static Set<Item> getAllCeilingItems(Item root, List<Item> itemList) {
 		Set<Item> floorSet = getAllFloorItems(root, itemList);
@@ -35,8 +32,6 @@ public class Tools {
 	/**
 	 * Returns the area size ratio of the cut between root item and cut item to root items full area size
 	 * 
-	 * @param rootItem
-	 * @param cutItem
 	 * @return cut area size / root area size
 	 */
 	public static float getCutRatio(Item rootItem, Item cutItem) {
@@ -47,10 +42,7 @@ public class Tools {
 	}
 
 	/**
-	 * 
-	 * @param root
-	 * @param itemList
-	 * @param foundSet
+	 * Returns all items, which are below the given item (root)
 	 */
 	public static void getItemsBelow(Item root, List<Item> itemList, Set<Item> foundSet) {
 		if(root.z == 0)
@@ -103,9 +95,6 @@ public class Tools {
 
 	/**
 	 * 
-	 * @param item
-	 * @param itemList
-	 * @return
 	 */
 	public static List<Item> getItemsBelow(Item item, IndexedArrayList<Item> itemList) {
 		List<Item> list = new ArrayList<>();
@@ -129,9 +118,6 @@ public class Tools {
 
 	/**
 	 * 
-	 * @param root
-	 * @param itemList
-	 * @param foundSet
 	 */
 	public static void getLowerItems(Item root, List<Item> itemList, Set<Item> foundSet) {
 		if(root.z == 0)
@@ -155,6 +141,9 @@ public class Tools {
 		}
 	}
 
+	/**
+	 * Recursive method
+	 */
 	public static void getFloorItems(Item root, List<Item> itemList, Set<Item> foundSet) {
 		if(root.z == 0) {
 			foundSet.add(root);
@@ -175,6 +164,11 @@ public class Tools {
 		}
 	}
 
+	/**
+	 * Recursive method
+	 *
+	 * Returns all items, which are above the item (root) and stores them into found set
+	 */
 	public static void getCeilingItems(Item root, List<Item> itemList, Set<Item> foundSet) {
 		boolean foundCeilingItem = false;
 		for (int i = 0; i < itemList.size(); i++) {
@@ -193,10 +187,13 @@ public class Tools {
 
 		if(!foundCeilingItem) {
 			foundSet.add(root);
-			return;
 		}
 	}
 
+	/**
+	 * Returns all items which are placed at the ground of container and which
+	 * are below the given item (root)
+	 */
 	public static Set<Item> getAllFloorItems(Item root, List<Item> itemList) {
 		Set<Item> floorSet = new HashSet<>();
 		Set<Item> fSet = new HashSet<>();

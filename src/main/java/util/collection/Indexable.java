@@ -13,15 +13,7 @@ package util.collection;
  */
 public interface Indexable {
 
-	/**
-	 * 
-	 * @return
-	 */
-	public int getIdx();
-	
-	/**
-	 * 
-	 * @param idx
-	 */
-	public void setIdx(int idx);
+	int getIdx();
+
+	void setIdx(int idx);
 }

@@ -5,6 +5,7 @@ import xf.xflp.base.problem.Container;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** 
  * Copyright (c) 2012-2021 Holger Schneider
@@ -30,10 +31,10 @@ import java.util.List;
 public class FlexiImporter implements Serializable {
 	private static final long serialVersionUID = -6460880073124361069L;
 
-	private DataManager dataManager = new DataManager();
+	private final DataManager dataManager = new DataManager();
 	
-	private List<InternalItemData> itemList = new ArrayList<>();
-	private List<InternalContainerData> containerList = new ArrayList<>();
+	private final List<InternalItemData> itemList = new ArrayList<>();
+	private final List<InternalContainerData> containerList = new ArrayList<>();
 
 	private InternalItemData lastItemData = null;
 	private InternalContainerData lastContainerData = null;
@@ -140,23 +141,12 @@ public class FlexiImporter implements Serializable {
 		return containerList;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public List<Container> getConvertedContainerList() {
-		List<Container> list = new ArrayList<>();
-		
-		for (InternalContainerData con : containerList)
-			list.add(con.create(dataManager));
-		
-		return list;
+		return containerList.stream()
+				.map(con -> con.create(dataManager))
+				.collect(Collectors.toList());
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public DataManager getDataManager() {
 		return dataManager;
 	}

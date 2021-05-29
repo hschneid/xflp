@@ -35,7 +35,7 @@ public enum XFLPOptType {
 	BEST_MIN_CONTAINER_PACKER(BestMinContainerSolver.class)
 	;
 	
-	private Class<? extends XFLPBase> clazz; 
+	private final Class<? extends XFLPBase> clazz;
 
 	XFLPOptType(Class<? extends XFLPBase> clazz) {
 		this.clazz = clazz;

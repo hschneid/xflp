@@ -14,9 +14,5 @@ package util;
  */
 public interface Copyable<E> {
 
-	/**
-	 * 
-	 * @return
-	 */
-	public E copy();
+	E copy();
 }

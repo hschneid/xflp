@@ -23,19 +23,11 @@ public class XFLPSolution {
 	private final XFLPModel model;
 	private final DataManager dataManager;
 
-	/**
-	 * 
-	 * @param model
-	 */
 	public XFLPSolution(XFLPModel model, DataManager dataManager) {
 		this.model = model;
 		this.dataManager = dataManager;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public LPReport getReport() {
 		LPReport rep = new LPReport();
 		

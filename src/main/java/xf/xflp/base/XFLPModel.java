@@ -43,26 +43,14 @@ public class XFLPModel {
 		this.parameter = parameter;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Container[] getContainerTypes() {
 		return containerTypes;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public XFLPParameter getParameter() {
 		return parameter;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Item[] getItems() {
 		return items;
 	}

@@ -14,6 +14,7 @@ import java.io.Serializable;
  *
  */
 public abstract class ContainerData implements Serializable {
+
 	private static final long serialVersionUID = -5241212560474818458L;
 
 	public static final int DEFAULT_CONTAINER_TYPE = 0;

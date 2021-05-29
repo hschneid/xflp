@@ -153,6 +153,7 @@ public class InternalItemData extends ItemData {
 		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));
 		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
 		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
+		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
 		i.setSpinable(spinable);
 
 		return i;

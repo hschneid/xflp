@@ -1,4 +1,7 @@
-package xf.xflp.base.problem;
+package xf.xflp.base.problem.constraints;
+
+import xf.xflp.base.problem.Item;
+import xf.xflp.base.problem.ZItemGraph;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +18,10 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class LoadBearingCheck {
+public class LoadBearingChecker {
 
 	private float[] freeLoadBearing;
 	private float[] openWeight;
-
 
 	/**
 	 * Checks the bearing capacity of all items in the given graph.
@@ -29,7 +31,7 @@ public class LoadBearingCheck {
 	 * The weight of all ceiling items must be lower then the bearing capacity of the item.
 	 * If a item is placed on multiple items, the weight is splitted proportional of covered area.
 	 */
-	public boolean checkLoadBearing(List<Item> ceilingItems, ZItemGraph graph) {
+	boolean checkLoadBearing(List<Item> ceilingItems, ZItemGraph graph) {
 		freeLoadBearing = new float[graph.size()];
 		openWeight = new float[graph.size()];
 		Arrays.fill(freeLoadBearing, -1);

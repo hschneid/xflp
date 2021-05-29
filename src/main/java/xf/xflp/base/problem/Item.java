@@ -34,6 +34,8 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	public Set<Integer> allowedContainerSet;
 	// Allowed items that can be stacked on top (binary representation)
 	public int allowedStackingGroups;
+	// How many different items can be placed on top of this item
+	public int nbrOfAllowedStackedItems;
 
 	public float weight;
 	public float stackingWeightLimit;
@@ -359,5 +361,13 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 
 	public void setRotated(boolean rotated) {
 		isRotated = rotated;
+	}
+
+	public int getNbrOfAllowedStackedItems() {
+		return nbrOfAllowedStackedItems;
+	}
+
+	public void setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
+		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
 	}
 }

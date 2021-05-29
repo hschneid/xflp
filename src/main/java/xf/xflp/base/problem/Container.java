@@ -2,6 +2,7 @@ package xf.xflp.base.problem;
 
 import com.google.common.collect.HashBiMap;
 import util.collection.LPListMap;
+import xf.xflp.base.problem.constraints.StackingChecker;
 
 import java.util.*;
 
@@ -43,6 +44,9 @@ public class Container extends AbstractContainer {
 	private int maxPosIdx = 0;
 	private float lifoImportance;
 	private GroundContactRule groundContactRule;
+
+	/* Services */
+	private final StackingChecker stackingChecker = new StackingChecker();
 
 	public Container() {
 	}
@@ -213,7 +217,6 @@ public class Container extends AbstractContainer {
 								// Das Item muss fr�her entladen werden, als
 								// das neue Item, was laut LIFO nicht sein darf.
 								continue OUTER;
-
 						}
 					}
 
@@ -222,7 +225,7 @@ public class Container extends AbstractContainer {
 				}
 
 				// Check stacking restrictions
-				if(!checkStackingRestrictions(pos, newItem, itemW, itemL, rotation))
+				if(!stackingChecker.checkStackingRestrictions(this, pos, newItem, itemW, itemL, rotation))
 					continue;
 
 				// Create RotatedPosition if this item is rotated
@@ -231,72 +234,6 @@ public class Container extends AbstractContainer {
 		}
 
 		return posList;
-	}
-
-	private boolean checkStackingRestrictions(Position pos,
-											  Item newItem,
-											  int itemW,
-											  int itemL,
-											  int rotation) {
-		// New item will be placed at ground. So no stacking needs to be checked.
-		if (pos.z == 0)
-			return true;
-
-		// Check ground contact restriction
-		// New item must not hang in the air and maybe cover multiple items
-		if(groundContactRule != GroundContactRule.FREE && !checkGroundContact(pos, newItem))
-			return false;
-
-		// Check stacking group and weight bearing capacity
-		// All lower items must have the same stacking group
-		if(!checkStackingGroupAndBearing(pos, itemW, itemL, newItem.stackingGroup))
-			return false;
-
-		// Check bearing capacity
-		// All lower items can bear the additional weight
-		return checkLoadBearing(pos, newItem, rotation);
-	}
-
-	/**
-	 * Checks whether the new item is placed on top of remaining items. It is tested
-	 * that all 4 corners of the new item have at least one current item directly below that item.
-	 */
-	private boolean checkStackingGroupAndBearing(Position pos, int w, int l, int stackingGroup) {
-		List<Integer> zList = zMap.get(pos.getZ());
-		if(zList == null || zList.isEmpty())
-			return true;
-
-		int itemW = pos.x + w;
-		int itemL = pos.y + l;
-		boolean corner1, corner2, corner3, corner4;
-		corner1 = corner2 = corner3 = corner4 = false;
-
-		// Check for all lower items if stacking group restriction is valid
-		for(int i = 0, size = zList.size(); i < size; i++) {
-			Item fi = itemList.get(zList.get(i));
-			if(fi.zh == pos.getZ()) {
-				// Is the sgItem below the newItem at position pos
-				if(fi.xw > pos.getX() && fi.x < itemW && fi.yl > pos.getY() && fi.y < itemL) {
-					// AND-operation of two binary representations. If no bit fits
-					// then result is zero
-					if((fi.allowedStackingGroups & stackingGroup) == 0) {
-						return false;
-					}
-				} else
-					continue;
-
-				if(pos.x >= fi.x && pos.x <= fi.xw && pos.y >= fi.y && pos.y <= fi.yl)
-					corner1 = true;
-				if(itemW > fi.x && itemW <= fi.xw && pos.y >= fi.y && pos.y <= fi.yl)
-					corner2 = true;
-				if(pos.x >= fi.x && pos.x <= fi.xw && itemL > fi.y && itemL <= fi.yl)
-					corner3 = true;
-				if(itemW > fi.x && itemW <= fi.xw && itemL > fi.y && itemL <= fi.yl)
-					corner4 = true;
-			}
-		}
-
-		return corner1 && corner2 && corner3 && corner4;
 	}
 
 	/**
@@ -310,55 +247,6 @@ public class Container extends AbstractContainer {
 			pos = rPos.pos;
 		}
 		return pos;
-	}
-
-	/**
-	 * Checks whether there is an item which reaches over two stacks. Stacks are
-	 * settled by the base item on the floor. no item should overlap the borders
-	 * of the base item.
-	 *
-	 * Use the simple function to get all items, which are below the new item.
-	 * If number of lower items is bigger than 1 then it is overlapping.
-	 */
-	private boolean checkGroundContact(Position pos, Item item) {
-		item.setPosition(pos);
-
-		Set<Item> foundSet = Tools.getAllFloorItems(item, itemList);
-
-		item.clearPosition();
-
-		return foundSet.size() <= 1;
-	}
-
-	/**
-	 * Check the load bearing restriction
-	 *
-	 * New item will be placed at the position in container, then the bearing check
-	 * is done by tree traversal through all touched items and then removed again from
-	 * container.
-	 *
-	 */
-	private boolean checkLoadBearing(Position pos, Item item, int rotation) {
-		// Add to container
-		if(rotation == 1)
-			item.rotate();
-		item.setPosition(pos);
-		itemList.add(item);
-		zGraph.add(item, itemList, zMap);
-
-		// Do check by Z-tree traversal
-		List<Item> ceilItems = zGraph.getCeilItems(item, itemList);
-		LoadBearingCheck lbc = new LoadBearingCheck();
-		boolean result = lbc.checkLoadBearing(ceilItems, zGraph);
-
-		// Remove from container
-		zGraph.remove(item);
-		item.clearPosition();
-		itemList.remove(item.index);
-		if(rotation == 1)
-			item.rotate();
-
-		return result;
 	}
 
 	/**
@@ -776,5 +664,13 @@ public class Container extends AbstractContainer {
 
 	public void setGroundContactRule(GroundContactRule groundContactRule) {
 		this.groundContactRule = groundContactRule;
+	}
+
+	public ZItemGraph getZGraph() {
+		return zGraph;
+	}
+
+	public GroundContactRule getGroundContactRule() {
+		return groundContactRule;
 	}
 }

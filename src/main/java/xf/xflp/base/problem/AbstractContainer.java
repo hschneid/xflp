@@ -205,6 +205,10 @@ public abstract class AbstractContainer implements Iterable<Item> {
 		return value;
 	}
 
+	public IndexedArrayList<Item> getItemList() {
+		return itemList;
+	}
+
 	@Override
 	public Iterator<Item> iterator() {
 		return itemList.iterator();
@@ -257,5 +261,9 @@ public abstract class AbstractContainer implements Iterable<Item> {
 
 	public void setContainerType(int containerType) {
 		this.containerType = containerType;
+	}
+
+	public LPListMap<Integer, Integer> getZMap() {
+		return zMap;
 	}
 }

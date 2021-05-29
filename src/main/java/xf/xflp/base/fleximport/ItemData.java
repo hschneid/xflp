@@ -44,6 +44,7 @@ public abstract class ItemData implements Serializable {
 	protected String stackingGroup = "default_stacking_group";
 	protected String allowedStackingGroups = "default_stacking_group";
 	protected String allowedContainerSet = "default_container_type";
+	protected int nbrOfAllowedStackedItems = -1;
 	
 	protected String loadingLocation = "";
 	protected String unloadingLocation = "";

@@ -41,7 +41,8 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
 
 ## Change log
 ### 0.4.0
-- Add restriction, that on top of one item only one item can be placed
+- Add restriction, that one item must be fully placed on top of one item
+  - Business motivation: Certain packages may have restriction due to shoulder or feet forms, that stacking on multiple items is not possible.
 - Fixed copyright information
 
 ### 0.3.2

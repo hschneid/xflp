@@ -137,18 +137,15 @@ public class StackingChecker {
     }
 
     /**
-     * Check if number of placed items exceed the number of allowed stacked items
+     * Check, if number of below items exceed the number of allowed stacked items.
+     * If parameter "number of allowed stacked items" is undefined, it is always valid.
      */
     private boolean checkStackedItemCount(Container container, Item item) {
+        if(item.getNbrOfAllowedStackedItems() == Item.UNDEF_PARAMETER)
+            return true;
+
         List<Item> itemsBelow = container.getZGraph().getItemsBelow(item);
-        for (int i = 0; i < itemsBelow.size(); i++) {
-            Item itemBelow = itemsBelow.get(i);
-            if (itemBelow.getNbrOfAllowedStackedItems() > 0 &&
-                    container.getZGraph().getItemsAbove(itemBelow).size() > itemBelow.getNbrOfAllowedStackedItems()) {
-                return false;
-            }
-        }
-        return true;
+        return itemsBelow.size() <= item.getNbrOfAllowedStackedItems();
     }
 
     /**

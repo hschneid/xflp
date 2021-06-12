@@ -1,5 +1,7 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.problem.Item;
+
 import java.io.Serializable;
 
 /** 
@@ -44,12 +46,12 @@ public abstract class ItemData implements Serializable {
 	protected String stackingGroup = "default_stacking_group";
 	protected String allowedStackingGroups = "default_stacking_group";
 	protected String allowedContainerSet = "default_container_type";
-	protected int nbrOfAllowedStackedItems = -1;
+	protected int nbrOfAllowedStackedItems = Item.UNDEF_PARAMETER;
 	
 	protected String loadingLocation = "";
 	protected String unloadingLocation = "";
 	
-	protected boolean spinable = true;
+	protected boolean spinnable = true;
 
 	/**
 	 * @param externID the externID to set
@@ -148,10 +150,20 @@ public abstract class ItemData implements Serializable {
 	}
 
 	/**
-	 * @param spinable the spinable to set
+	 * @param spinnable the spinnable to set
 	 */
-	public final ItemData setSpinable(boolean spinable) {
-		this.spinable = spinable;
+	public final ItemData setSpinnable(boolean spinnable) {
+		this.spinnable = spinnable;
+		return this;
+	}
+
+	/**
+	 * @param nbrOfAllowedStackedItems is the number of allowed items below this item,
+	 *                                 when it will be stacked. 1 means, that this item must
+	 *                                 be stacked only one one other item.
+	 */
+	public final ItemData setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
+		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
 		return this;
 	}
 }

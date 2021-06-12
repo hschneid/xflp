@@ -15,12 +15,15 @@ import java.util.Set;
  * LICENSE file in the root directory of this source tree.
  *
  *
- * A Item object wraps a Package object with planning informations
+ * An item is the entity, which is placed into a container. It contains
+ * all master data, parameter and planning information (like the current position).
  * 
  * @author Hogo
  *
  */
 public class Item implements Copyable<Item>, Cloneable, Indexable {
+
+	public static final int UNDEF_PARAMETER = -1;
 
 	public int size, volume, h;
 	public int x, y, z, xw, yl, zh, w, l;
@@ -34,7 +37,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	public Set<Integer> allowedContainerSet;
 	// Allowed items that can be stacked on top (binary representation)
 	public int allowedStackingGroups;
-	// How many different items can be placed on top of this item
+	// How many different items can be below this item, if it is stacked.
 	public int nbrOfAllowedStackedItems;
 
 	public float weight;

@@ -108,10 +108,10 @@ public class InternalItemData extends ItemData {
 	}
 
 	/**
-	 * @return the spinable
+	 * @return the spinnable
 	 */
 	public final boolean isSpinable() {
-		return spinable;
+		return spinnable;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class InternalItemData extends ItemData {
 		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
 		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
 		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
-		i.setSpinable(spinable);
+		i.setSpinable(spinnable);
 
 		return i;
 	}

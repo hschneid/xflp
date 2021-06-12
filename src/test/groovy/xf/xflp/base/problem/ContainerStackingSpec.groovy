@@ -6,14 +6,14 @@ import spock.lang.Specification
 class ContainerStackingSpec extends Specification {
 
     def "add to stack simple"() {
-        Container con = Helper.getContainer(2,2,2);
-        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0);
-        def pList = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList.get(0));
+        Container con = Helper.getContainer(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def pList = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList.get(0))
 
         when:
-        def pList2 = con.getPossibleInsertPositionList(i2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
         def found = pList2.find {p -> p.getX() == 0 && p.getY() == 0 && p.getZ() == 1}
 
         then:
@@ -22,14 +22,14 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "stacking is not possible"() {
-        Container con = Helper.getContainer(2,2,2);
-        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i2 = Helper.getItem(1, 1, 1, 2, 10, 0);
-        def pList = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList.get(0));
+        Container con = Helper.getContainer(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i2 = Helper.getItem(1, 1, 1, 2, 10, 0)
+        def pList = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList.get(0))
 
         when:
-        def pList2 = con.getPossibleInsertPositionList(i2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
         def found = pList2.find {p -> p.getX() == 0 && p.getY() == 0 && p.getZ() == 1}
 
         then:
@@ -42,14 +42,14 @@ class ContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 10, 0)
-        def pList = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList.get(0));
+        def pList = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList.get(0))
 
         when:
-        def pList2 = con.getPossibleInsertPositionList(i2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
         def found2 = pList2.find {p -> p.getX() == 1 && p.getY() == 0 && p.getZ() == 0}
-        con.add(i2, found2);
-        def pList3 = con.getPossibleInsertPositionList(i3);
+        con.add(i2, found2)
+        def pList3 = con.getPossibleInsertPositionList(i3)
         def found3 = pList3.find {p -> p.getX() == 0 && p.getY() == 0 && p.getZ() == 1}
 
         then:
@@ -65,14 +65,14 @@ class ContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 3, 10, 0)
-        def pList = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList.get(0));
+        def pList = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList.get(0))
 
         when:
-        def pList2 = con.getPossibleInsertPositionList(i2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
         def found2 = pList2.find {p -> p.getX() == 1 && p.getY() == 0 && p.getZ() == 0}
-        con.add(i2, found2);
-        def pList3 = con.getPossibleInsertPositionList(i3);
+        con.add(i2, found2)
+        def pList3 = con.getPossibleInsertPositionList(i3)
         def found3 = pList3.find {p -> p.getX() == 0 && p.getY() == 0 && p.getZ() == 1}
 
         then:
@@ -115,26 +115,26 @@ class ContainerStackingSpec extends Specification {
 
 
     def "do not add to a double stack (too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(2,2,3);
-        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i3 = Helper.getItem(2, 1, 1, 2, 1, 0);
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(2,2,3)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i3 = Helper.getItem(2, 1, 1, 2, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
 
         when:
-        def pList1 = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList1.get(0));
+        def pList1 = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList1.get(0))
 
-        def pList2 = con.getPossibleInsertPositionList(i2);
-        def pos2 = Helper.findPos(pList2, 1, 0, 0);
-        con.add(i2, pos2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
+        def pos2 = Helper.findPos(pList2, 1, 0, 0)
+        con.add(i2, pos2)
 
-        def pList3 = con.getPossibleInsertPositionList(i3);
-        def pos3 = Helper.findPos(pList3, 0, 0, 1);
-        con.add(i3, pos3);
+        def pList3 = con.getPossibleInsertPositionList(i3)
+        def pos3 = Helper.findPos(pList3, 0, 0, 1)
+        con.add(i3, pos3)
 
-        def pList4 = con.getPossibleInsertPositionList(i4);
-        def pos4 = Helper.findPos(pList4, 0, 0, 2);
+        def pList4 = con.getPossibleInsertPositionList(i4)
+        def pos4 = Helper.findPos(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -145,26 +145,26 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "do not add to a double stack (nearly too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(2,2,3);
-        def i1 = Helper.getItem(1, 1, 1, 1, 2, 0);
-        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i3 = Helper.getItem(2, 1, 1, 2, 1, 0);
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(2,2,3)
+        def i1 = Helper.getItem(1, 1, 1, 1, 2, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i3 = Helper.getItem(2, 1, 1, 2, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
 
         when:
-        def pList1 = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList1.get(0));
+        def pList1 = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList1.get(0))
 
-        def pList2 = con.getPossibleInsertPositionList(i2);
-        def pos2 = Helper.findPos(pList2, 1, 0, 0);
-        con.add(i2, pos2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
+        def pos2 = Helper.findPos(pList2, 1, 0, 0)
+        con.add(i2, pos2)
 
-        def pList3 = con.getPossibleInsertPositionList(i3);
-        def pos3 = Helper.findPos(pList3, 0, 0, 1);
-        con.add(i3, pos3);
+        def pList3 = con.getPossibleInsertPositionList(i3)
+        def pos3 = Helper.findPos(pList3, 0, 0, 1)
+        con.add(i3, pos3)
 
-        def pList4 = con.getPossibleInsertPositionList(i4);
-        def pos4 = Helper.findPos(pList4, 0, 0, 2);
+        def pList4 = con.getPossibleInsertPositionList(i4)
+        def pos4 = Helper.findPos(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -175,26 +175,26 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a double stack (not too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(3,3,3);
-        def i1 = Helper.getItem(2, 1, 1, 1, 2, 0);
-        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0);
-        def i3 = Helper.getItem(3, 1, 1, 2, 1, 0);
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(3,3,3)
+        def i1 = Helper.getItem(2, 1, 1, 1, 2, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i3 = Helper.getItem(3, 1, 1, 2, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
 
         when:
-        def pList1 = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList1.get(0));
+        def pList1 = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList1.get(0))
 
-        def pList2 = con.getPossibleInsertPositionList(i2);
-        def pos2 = Helper.findPos(pList2, 2, 0, 0);
-        con.add(i2, pos2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
+        def pos2 = Helper.findPos(pList2, 2, 0, 0)
+        con.add(i2, pos2)
 
-        def pList3 = con.getPossibleInsertPositionList(i3);
-        def pos3 = Helper.findPos(pList3, 0, 0, 1);
-        con.add(i3, pos3);
+        def pList3 = con.getPossibleInsertPositionList(i3)
+        def pos3 = Helper.findPos(pList3, 0, 0, 1)
+        con.add(i3, pos3)
 
-        def pList4 = con.getPossibleInsertPositionList(i4);
-        def pos4 = Helper.findPos(pList4, 0, 0, 2);
+        def pList4 = con.getPossibleInsertPositionList(i4)
+        def pos4 = Helper.findPos(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -205,26 +205,26 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a double stack with bigger size (not too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(6,3,3);
-        def i1 = Helper.getItem(4, 1, 1, 1, 2, 0);
-        def i2 = Helper.getItem(2, 1, 1, 1, 1, 0);
-        def i3 = Helper.getItem(6, 1, 1, 2, 1, 0);
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0);
+        def con = Helper.getContainer(6,3,3)
+        def i1 = Helper.getItem(4, 1, 1, 1, 2, 0)
+        def i2 = Helper.getItem(2, 1, 1, 1, 1, 0)
+        def i3 = Helper.getItem(6, 1, 1, 2, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
 
         when:
-        def pList1 = con.getPossibleInsertPositionList(i1);
-        con.add(i1, pList1.get(0));
+        def pList1 = con.getPossibleInsertPositionList(i1)
+        con.add(i1, pList1.get(0))
 
-        def pList2 = con.getPossibleInsertPositionList(i2);
-        def pos2 = Helper.findPos(pList2, 4, 0, 0);
-        con.add(i2, pos2);
+        def pList2 = con.getPossibleInsertPositionList(i2)
+        def pos2 = Helper.findPos(pList2, 4, 0, 0)
+        con.add(i2, pos2)
 
-        def pList3 = con.getPossibleInsertPositionList(i3);
-        def pos3 = Helper.findPos(pList3, 0, 0, 1);
-        con.add(i3, pos3);
+        def pList3 = con.getPossibleInsertPositionList(i3)
+        def pos3 = Helper.findPos(pList3, 0, 0, 1)
+        con.add(i3, pos3)
 
-        def pList4 = con.getPossibleInsertPositionList(i4);
-        def pos4 = Helper.findPos(pList4, 0, 0, 2);
+        def pList4 = con.getPossibleInsertPositionList(i4)
+        def pos4 = Helper.findPos(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0

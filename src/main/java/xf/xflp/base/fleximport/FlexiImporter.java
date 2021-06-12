@@ -34,10 +34,10 @@ public class FlexiImporter implements Serializable {
 	private final DataManager dataManager = new DataManager();
 	
 	private final List<InternalItemData> itemList = new ArrayList<>();
-	private final List<InternalContainerData> containerList = new ArrayList<>();
+	private final List<ContainerData> containerList = new ArrayList<>();
 
 	private InternalItemData lastItemData = null;
-	private InternalContainerData lastContainerData = null;
+	private ContainerData lastContainerData = null;
 
 	/**
 	 * If XFLP suite begins execution, the import process is finished
@@ -90,7 +90,7 @@ public class FlexiImporter implements Serializable {
 			containerList.add(lastContainerData);
 		}
 
-		lastContainerData = new InternalContainerData();
+		lastContainerData = new ContainerData();
 
 		return lastContainerData;
 	}
@@ -137,7 +137,7 @@ public class FlexiImporter implements Serializable {
 	 * 
 	 * @return the collected vehicles
 	 */
-	public List<InternalContainerData> getContainerList() {
+	public List<ContainerData> getContainerList() {
 		return containerList;
 	}
 	

@@ -1,5 +1,8 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.GroundContactRule;
+
 import java.io.Serializable;
 
 /** 
@@ -13,7 +16,7 @@ import java.io.Serializable;
  * @author hschneid
  *
  */
-public abstract class ContainerData implements Serializable {
+public class ContainerData implements Serializable {
 
 	private static final long serialVersionUID = -5241212560474818458L;
 
@@ -59,5 +62,30 @@ public abstract class ContainerData implements Serializable {
 	public final ContainerData setContainerType(String containerType) {
 		this.containerType = containerType;
 		return this;
+	}
+
+	////////////////////////////////////////
+
+	/**
+	 * @return the containerType
+	 */
+	String getContainerType() {
+		return containerType;
+	}
+
+	Container create(DataManager manager) {
+		Container c = new Container();
+
+		c.setWidth(width);
+		c.setLength(length);
+		c.setHeight(height);
+		c.setMaxWeight(maxWeight);
+		c.setContainerType(manager.getContainerTypeIdx(containerType));
+		c.setLifoImportance(1);
+		c.setGroundContactRule(GroundContactRule.FREE);
+
+		c.init();
+
+		return c;
 	}
 }

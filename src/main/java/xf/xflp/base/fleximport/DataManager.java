@@ -48,7 +48,7 @@ public class DataManager implements Serializable {
 		addContainerTypes(itemData.getAllowedContainerTypes());
 	}
 
-	public void add(InternalContainerData conData) {
+	public void add(ContainerData conData) {
 		addContainerType(conData.getContainerType());
 	}
 

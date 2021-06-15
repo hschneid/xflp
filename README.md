@@ -44,6 +44,7 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
 - Add restriction, that one item must be fully placed on top of one item
   - Business motivation: Certain packages may have restriction due to shoulder or feet forms, that stacking on multiple items is not possible.
 - Fixed copyright information
+- Refactored import classes
 
 ### 0.3.2
 - Added SpotBugs in build process to find smellies

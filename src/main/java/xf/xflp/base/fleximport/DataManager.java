@@ -39,7 +39,7 @@ public class DataManager implements Serializable {
 		shipmentMap.put("default_shipment", 0);
 	}
 
-	public void add(InternalItemData itemData) {
+	public void add(ItemData itemData) {
 		addItem(itemData.getExternID());
 		addShipment(itemData.getShipmentID());
 		addLocation(itemData.getLoadingLocation());

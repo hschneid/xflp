@@ -30,7 +30,8 @@ import java.io.Serializable;
  * @author hschneid
  *
  */
-public abstract class ItemData implements Serializable {
+public class ItemData implements Serializable {
+
 	private static final long serialVersionUID = -8970875565639368202L;
 	
 	protected String externID = "";
@@ -165,5 +166,137 @@ public abstract class ItemData implements Serializable {
 	public final ItemData setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
 		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
 		return this;
+	}
+
+	/////////////////////////////////////////////////////////////
+
+	/**
+	 * @return the externID
+	 */
+	String getExternID() {
+		return externID;
+	}
+
+	/**
+	 * @return the shipmentID
+	 */
+	String getShipmentID() {
+		return shipmentID;
+	}
+
+	/**
+	 * @return the width
+	 */
+	int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return the length
+	 */
+	int getLength() {
+		return length;
+	}
+
+	/**
+	 * @return the height
+	 */
+	int getHeight() {
+		return height;
+	}
+
+	/**
+	 * @return the weight
+	 */
+	float getWeight() {
+		return weight;
+	}
+
+	/**
+	 * @return the stackingWeightLimit
+	 */
+	float getStackingWeightLimit() {
+		return stackingWeightLimit;
+	}
+
+	/**
+	 * @return the stackingGroup
+	 */
+	String getStackingGroup() {
+		return stackingGroup;
+	}
+
+	/**
+	 * @return the allowedStackingGroups
+	 */
+	String getAllowedStackingGroups() {
+		return allowedStackingGroups;
+	}
+
+	/**
+	 * @return the allowedContainerSet
+	 */
+	String getAllowedContainerTypes() {
+		return allowedContainerSet;
+	}
+
+	/**
+	 * @return the loadingLocation
+	 */
+	String getLoadingLocation() {
+		return loadingLocation;
+	}
+
+	/**
+	 * @return the unloadingLocation
+	 */
+	String getUnloadingLocation() {
+		return unloadingLocation;
+	}
+
+	/**
+	 * @return the spinnable
+	 */
+	boolean isSpinable() {
+		return spinnable;
+	}
+
+	public Item createLoadingItem(DataManager manager) {
+		Item i = createItem(manager);
+		i.setLoading(true); // is Loading
+
+		i.postInit();
+
+		return i;
+	}
+
+	public Item createUnLoadingItem(DataManager manager) {
+		Item i = createItem(manager);
+		i.setLoading(false); // is Unloading
+
+		i.postInit();
+
+		return i;
+	}
+
+	private Item createItem(DataManager manager) {
+		Item i = new Item();
+
+		i.setExternalIndex(manager.getItemIdx(externID));
+		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
+		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
+		i.setUnLoadingLoc(-1);//manager.getLocationIdx(unloadingLocation),
+		i.setW(width);
+		i.setL(length);
+		i.setH(height);
+		i.setWeight(weight);
+		i.setStackingWeightLimit(stackingWeightLimit);
+		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));
+		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
+		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
+		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
+		i.setSpinable(spinnable);
+
+		return i;
 	}
 }

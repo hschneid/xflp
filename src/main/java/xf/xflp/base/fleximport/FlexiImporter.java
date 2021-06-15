@@ -1,11 +1,14 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** 
  * Copyright (c) 2012-2021 Holger Schneider
@@ -33,10 +36,10 @@ public class FlexiImporter implements Serializable {
 
 	private final DataManager dataManager = new DataManager();
 	
-	private final List<InternalItemData> itemList = new ArrayList<>();
+	private final List<ItemData> itemList = new ArrayList<>();
 	private final List<ContainerData> containerList = new ArrayList<>();
 
-	private InternalItemData lastItemData = null;
+	private ItemData lastItemData = null;
 	private ContainerData lastContainerData = null;
 
 	/**
@@ -68,7 +71,7 @@ public class FlexiImporter implements Serializable {
 			itemList.add(lastItemData);
 		}
 
-		lastItemData = new InternalItemData();
+		lastItemData = new ItemData();
 
 		return lastItemData;
 	}
@@ -129,8 +132,23 @@ public class FlexiImporter implements Serializable {
 	 * 
 	 * @return the collected depots
 	 */
-	public List<InternalItemData> getItemList() {
+	public List<ItemData> getItemList() {
 		return itemList;
+	}
+
+	/**
+	 * Transform imported items into loading and unloading items
+	 */
+	public List<Item> getConvertedItemList() {
+		return itemList.stream()
+				.flatMap(itemData -> {
+					Item i1 = itemData.createLoadingItem(dataManager);
+					if(itemData.getUnloadingLocation().length() > 0)
+						return Stream.of(i1, itemData.createUnLoadingItem(dataManager));
+					return Stream.of(i1);
+				})
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
 	/**

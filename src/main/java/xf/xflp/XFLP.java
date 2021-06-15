@@ -5,7 +5,6 @@ import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.XFLPSolution;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.fleximport.FlexiImporter;
-import xf.xflp.base.fleximport.InternalItemData;
 import xf.xflp.base.fleximport.ItemData;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
@@ -98,21 +97,10 @@ public class XFLP {
 			throw new XFLPException("No container information were set.");
 		}
 
-		// Copy imported data to internal data structure
 		// Container
 		List<Container> containerTypeList = importer.getConvertedContainerList();
 		// Items
-		List<Item> itemList = new ArrayList<>();
-		{
-			// Transform imported items into loading and unloading items
-			List<InternalItemData> itemDataList = importer.getItemList();
-			
-			for (InternalItemData iD : itemDataList) {
-				itemList.add(iD.createLoadingItem(importer.getDataManager()));
-				if(iD.getUnloadingLocation().length() > 0)
-					itemList.add(iD.createUnLoadingItem(importer.getDataManager()));
-			}
-		}
+		List<Item> itemList = importer.getConvertedItemList();
 		
 		// Pre-Sort items for logical order (ascending order location index)
 		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));

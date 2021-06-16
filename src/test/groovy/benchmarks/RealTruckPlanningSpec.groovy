@@ -5,6 +5,9 @@ import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
 import xf.xflp.opt.construction.strategy.Strategy
 
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.stream.Collectors
 import java.util.stream.IntStream
 
 class RealTruckPlanningSpec extends Specification {
@@ -27,6 +30,48 @@ class RealTruckPlanningSpec extends Specification {
         result != null
         // This is theoretical max
         result.getSummary().getUtilization() > 0.92
+    }
+
+    def "business test 1"() {
+        def xflp = new XFLP()
+        xflp.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
+        xflp.getParameter().setPreferredPackingStrategy(Strategy.WIDTH_PROPORTION)
+
+        def tokens = Files.lines(Path.of("./src/test/resources/test1.data"))
+                .map({f -> f.split("#")})
+                .collect(Collectors.toList())
+        tokens.stream()
+                .filter({f -> f[0].equals("CON")})
+                .forEach({t ->
+                    xflp
+                            .addContainer()
+                            .setContainerType(t[1])
+                            .setWidth(Integer.parseInt(t[2]))
+                            .setLength(Integer.parseInt(t[3]))
+                            .setHeight(Integer.parseInt(t[4]))
+                            .setMaxWeight(Float.parseFloat(t[5]))
+                })
+        tokens.stream()
+                .filter({f -> f[0].equals("ITM")})
+                .forEach({t ->
+                    xflp
+                            .addItem()
+                            .setExternID(t[1])
+                            .setLength(Integer.parseInt(t[2]))
+                            .setWidth(Integer.parseInt(t[3]))
+                            .setHeight(Integer.parseInt(t[4]))
+                            .setWeight(Float.parseFloat(t[5]))
+                            .setStackingWeightLimit(Float.MAX_VALUE)
+                            .setStackingGroup(t[7])
+                            .setAllowedStackingGroups(String.join(",", t[8]))
+                            .setNbrOfAllowedStackedItems(1)
+                })
+
+        when:
+        xflp.executeLoadPlanning()
+        def result = xflp.getReport()
+        then:
+        result != null
     }
 
     private createItem(int bi, int l, int w, int h , int n, String stackGroup) {

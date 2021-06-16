@@ -13,7 +13,7 @@ class BigNumberSpec extends Specification {
 
     def "1000 boxes"() {
         service.addContainer().setWidth(41).setLength(20).setHeight(7).setMaxWeight(10000)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_OPTIMIZER)
+        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
 
         long boxVol = 0
         for (int i = 0; i < 1000; i++) {
@@ -45,6 +45,7 @@ class BigNumberSpec extends Specification {
                 .setLength(d)
                 .setWeight(1)
                 .setStackingWeightLimit(1000)
+                .setNbrOfAllowedStackedItems(2)
     }
 
 

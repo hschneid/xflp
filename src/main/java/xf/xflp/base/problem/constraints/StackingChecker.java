@@ -118,13 +118,15 @@ public class StackingChecker {
         container.getItemList().add(item);
         container.getZGraph().add(item, container.getItemList(), container.getZMap());
 
-        // Check number of allowed stacked items
-        if(!checkStackedItemCount(container, item))
-            return false;
+        boolean isValid = true;
 
+        // Check number of allowed stacked items OR
         // Check load bearing restriction by Z-tree traversal
-        if(!checkLoadBearing(container, item))
-            return false;
+        if(!checkStackedItemCount(container, item) ||
+                !checkLoadBearing(container, item)
+        ) {
+            isValid = false;
+        }
 
         // Remove from container
         container.getZGraph().remove(item);
@@ -133,7 +135,7 @@ public class StackingChecker {
         if(rotation == 1)
             item.rotate();
 
-        return true;
+        return isValid;
     }
 
     /**

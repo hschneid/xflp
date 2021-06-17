@@ -21,6 +21,14 @@ public abstract class BaseStrategy {
 	public abstract Position choose(Item item, Container container, List<Position> posList);
 
 	protected List<Position> getPositionWithMinValue(List<Position> posList, Function<Position, Float> positionValue) {
+		if(posList == null) {
+			return new ArrayList<>();
+		}
+
+		if(posList.size() <= 1) {
+			return posList;
+		}
+
 		float[] distances = new float[posList.size()];
 		for (int i = distances.length - 1; i >= 0; i--) {
 			distances[i] = positionValue.apply(posList.get(i));

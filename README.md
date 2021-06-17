@@ -45,6 +45,7 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
   - Business motivation: Certain packages may have restriction due to shoulder or feet forms, that stacking on multiple items is not possible.
 - Fixed copyright information
 - Refactored import classes
+- Use specific exception instead of runtime exceptions
 
 ### 0.3.2
 - Added SpotBugs in build process to find smellies

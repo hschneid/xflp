@@ -21,7 +21,7 @@ public class FastFixedContainerSolver extends XFLPBase {
 
     @Override
     public void execute(XFLPModel model) {
-        packer.setStrategy(new WidthProportionFactor());
+        packer.setStrategy(model.getParameter().getPreferredPackingStrategy().getStrategy());
         packer.execute(model);
     }
 }

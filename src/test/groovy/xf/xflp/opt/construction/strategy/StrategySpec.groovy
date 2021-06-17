@@ -2,6 +2,9 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
+import xf.xflp.base.problem.Position
+
+import java.util.function.Function
 
 class StrategySpec extends Specification {
 
@@ -96,6 +99,24 @@ class StrategySpec extends Specification {
         def result = serviceTP.choose(i5, con, con.getPossibleInsertPositionList(i5))
         then:
         result.x == 0 && result.y == 0 && result.z == 1
+    }
+
+    def "getPositionWithMinValue - only one value"() {
+        def func = {
+            "1234"
+        } as Function<Position, Float>
+        def pos = Mock Position
+        def posList = [pos]
+        def emptyList = []
+        when:
+        def result = serviceHLL.getPositionWithMinValue(posList, func)
+        def emptyResult = serviceHLL.getPositionWithMinValue(emptyList, func)
+        def nullResult = serviceHLL.getPositionWithMinValue(null, func)
+        then:
+        0 * func.apply(_)
+        result == posList
+        emptyResult == emptyList
+        nullResult.size() == 0
     }
 
     def "TP with positionList = null "() {

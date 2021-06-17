@@ -53,7 +53,7 @@ public class WidthProportionFactor extends BaseStrategy {
 		return fallbackStrategy.choose(item,container, filteredPositions);
 	}
 
-	private float getDeviationOfProportion(Item i, Position pos, Container container) {
+	float getDeviationOfProportion(Item i, Position pos, Container container) {
 		int conWidth = container.getWidth();
 		int itemWidth =  (pos instanceof RotatedPosition) ? i.l : i.w;
 

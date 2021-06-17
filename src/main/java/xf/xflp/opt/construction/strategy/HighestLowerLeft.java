@@ -41,7 +41,7 @@ public class HighestLowerLeft extends BaseStrategy {
 		return filteredPositions.get(0);
 	}
 
-	private float getDistance(Position p) {
+	float getDistance(Position p) {
 		if(p == null) {
 			return Float.MAX_VALUE;
 		}

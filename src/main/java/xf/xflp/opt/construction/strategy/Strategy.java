@@ -15,6 +15,7 @@ public enum Strategy {
 
     TOUCHING_PERIMETER(new TouchingPerimeter()),
     HIGH_LOW_LEFT(new HighestLowerLeft()),
+    SAME_BASE(new SameBaseStrategy()),
     WIDTH_PROPORTION(new WidthProportionFactor());
 
     private final BaseStrategy strategy;

@@ -133,7 +133,7 @@ public class DataManager implements Serializable {
 	public Set<Integer> getContainerTypes(String allowedContainerSet) {
 		String[] arr = allowedContainerSet.split(",");
 
-		Set<Integer> res = new HashSet<>();
+		Set<Integer> res = new HashSet<>(arr.length);
 		for (String s : arr)
 			res.add(containerTypeMap.get(s));
 

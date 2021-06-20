@@ -32,13 +32,6 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		map = new HashMap<>(size);
 	}
 
-	public LPListMap(LPListMap<K, E> lm) {
-		map = new HashMap<>(lm.size());
-		for (K k : lm.keySet())
-			put(k, lm.get(k));
-
-	}
-
 	public void put(K key, E element) {
 		if(map.containsKey(key)) {
 			map.get(key).add(element);

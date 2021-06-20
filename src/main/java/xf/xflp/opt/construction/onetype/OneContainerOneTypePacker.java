@@ -4,6 +4,7 @@ import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
@@ -42,7 +43,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 	}
 
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();

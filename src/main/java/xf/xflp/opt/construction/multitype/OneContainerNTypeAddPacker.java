@@ -4,6 +4,7 @@ import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
@@ -11,7 +12,6 @@ import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +39,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 	}
 
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		List<Container> containers = getContainers(model);
 
 		List<Item> unplannedItemList = new ArrayList<>();
@@ -67,18 +67,16 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 
-	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) {
-		return containers.stream()
-				.map(con -> {
-					Position bestPosition = getBestInsertPosition(item, con);
-					if(bestPosition != null) {
-						return new ContainerPosition(con, bestPosition);
-					} else {
-						return null;
-					}
-				})
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) throws XFLPException {
+		List<ContainerPosition> containerPositions = new ArrayList<>();
+		for (Container container : containers) {
+			Position bestPosition = getBestInsertPosition(item, container);
+			if(bestPosition != null) {
+				containerPositions.add(new ContainerPosition(container, bestPosition));
+			}
+		}
+
+		return containerPositions;
 	}
 
 	private List<Container> getContainers(XFLPModel model) {
@@ -87,7 +85,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 				.collect(Collectors.toList());
 	}
 
-	private Position getBestInsertPosition(Item item, Container container) {
+	private Position getBestInsertPosition(Item item, Container container) throws XFLPException {
 		// Check if item is allowed to this container type
 		if (container.isItemAllowed(item)) {
 			// Fetch existing insert positions

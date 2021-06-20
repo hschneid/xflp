@@ -1,6 +1,7 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.onetype.NContainerOneTypeAddPacker;
 
 /**
@@ -19,7 +20,7 @@ public class FastMinContainerSolver extends XFLPBase {
     private final NContainerOneTypeAddPacker packer = new NContainerOneTypeAddPacker();
 
     @Override
-    public void execute(XFLPModel model) {
+    public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
     }
 }

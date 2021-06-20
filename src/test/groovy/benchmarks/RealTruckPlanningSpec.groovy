@@ -4,7 +4,6 @@ import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
 import xf.xflp.opt.construction.strategy.Strategy
-import xf.xflp.report.StringReportWriter
 
 import java.nio.file.Files
 import java.nio.file.Path

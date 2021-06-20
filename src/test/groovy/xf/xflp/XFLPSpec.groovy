@@ -1,6 +1,7 @@
 package xf.xflp
 
 import spock.lang.Specification
+import xf.xflp.exception.XFLPException
 import xf.xflp.opt.XFLPOptType
 
 class XFLPSpec extends Specification {

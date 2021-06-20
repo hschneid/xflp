@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.strategy
 import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.problem.Position
+import xf.xflp.exception.XFLPException
 
 import java.util.function.Function
 
@@ -52,7 +53,7 @@ class StrategySpec extends Specification {
         when:
         serviceHLL.choose(i1, con, null)
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 
     def "HLL with positionList = empty "() {
@@ -62,7 +63,7 @@ class StrategySpec extends Specification {
         when:
         serviceHLL.choose(i1, con, [])
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 
     def "TP chooses corner"() {
@@ -126,7 +127,7 @@ class StrategySpec extends Specification {
         when:
         serviceTP.choose(i1, con, null)
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 
     def "TP with positionList = empty "() {
@@ -136,7 +137,7 @@ class StrategySpec extends Specification {
         when:
         serviceTP.choose(i1, con, [])
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 
 }

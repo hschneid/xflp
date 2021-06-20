@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -36,7 +37,7 @@ public class ZSingleBinAddPacker {
 		this.strategy = s.getStrategy();
 	}
 
-	public List<Item> createLoadingPlan(List<Item> items, Container container) {
+	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItemList = new ArrayList<>();
 
 		// Reset eventual presets

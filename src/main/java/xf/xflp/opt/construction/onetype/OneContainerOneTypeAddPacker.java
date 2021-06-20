@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -28,7 +29,7 @@ public class OneContainerOneTypeAddPacker extends XFLPBase {
 	private ZSingleBinAddPacker packer;
 
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
 		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());

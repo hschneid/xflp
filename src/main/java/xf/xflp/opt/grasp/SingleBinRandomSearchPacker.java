@@ -2,6 +2,7 @@ package xf.xflp.opt.grasp;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Item;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 
@@ -26,7 +27,7 @@ public class SingleBinRandomSearchPacker extends XFLPBase {
     private Random rand = new Random(1234);
 
     @Override
-    public void execute(XFLPModel model) {
+    public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init "+model.getUnplannedItems().length);
 
@@ -41,10 +42,9 @@ public class SingleBinRandomSearchPacker extends XFLPBase {
         }
     }
 
-    private void search(XFLPModel model, int K, float p) {
+    private void search(XFLPModel model, int K, float p) throws XFLPException {
         packer.execute(model);
         System.out.println("Init Random search "+model.getUnplannedItems().length);
-
 
         Item[] bestItems = Arrays.copyOf(model.getItems(), model.getItems().length);
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};

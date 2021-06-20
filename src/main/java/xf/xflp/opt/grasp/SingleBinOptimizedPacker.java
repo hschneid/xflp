@@ -2,6 +2,7 @@ package xf.xflp.opt.grasp;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.problem.Item;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 
@@ -26,7 +27,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
     private Random rand = new Random(1234);
 
     @Override
-    public void execute(XFLPModel model) {
+    public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init "+model.getUnplannedItems().length);
 
@@ -44,7 +45,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }*/
     }
 
-    private void doBestSwap(XFLPModel model) {
+    private void doBestSwap(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init Swap Next "+model.getUnplannedItems().length);
 
@@ -77,7 +78,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
     }
 
-    private void doSwapNextLocalSearch(XFLPModel model) {
+    private void doSwapNextLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init Swap Next LS "+model.getUnplannedItems().length);
 
@@ -105,7 +106,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
     }
 
-    private void doSwapLocalSearch(XFLPModel model) {
+    private void doSwapLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init Swap "+model.getUnplannedItems().length);
 
@@ -139,7 +140,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         }
     }
 
-    private void doRelocateLocalSearch(XFLPModel model) {
+    private void doRelocateLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
         System.out.println("Init RelocateLS "+model.getUnplannedItems().length);
 

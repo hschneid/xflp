@@ -3,6 +3,8 @@ package xf.xflp.opt.construction.strategy;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.List;
 
@@ -24,9 +26,9 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
-			throw new IllegalStateException("List of positions must be not empty or null.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		List<Position> filteredPositions = getPositionWithMinValue(
@@ -35,7 +37,7 @@ public class HighestLowerLeft extends BaseStrategy {
 		);
 
 		if(filteredPositions.isEmpty()) {
-			throw new IllegalStateException("There must be at least one position.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
 		return filteredPositions.get(0);

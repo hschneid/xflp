@@ -1,6 +1,7 @@
 package xf.xflp.opt;
 
-import xf.xflp.XFLPException;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
@@ -50,7 +51,7 @@ public enum XFLPOptType {
 		try {
 			return (XFLPBase) Class.forName(clazz.getName()).getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
-			throw new XFLPException("no copy of optimization procedure possible", e);
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "no copy of optimization procedure possible", e);
 		}
 	}
 }

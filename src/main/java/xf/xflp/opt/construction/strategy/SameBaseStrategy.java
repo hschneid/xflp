@@ -3,10 +3,11 @@ package xf.xflp.opt.construction.strategy;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -33,9 +34,9 @@ public class SameBaseStrategy extends BaseStrategy {
 	private final WidthProportionFactor widthProportion = new WidthProportionFactor();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
-			throw new IllegalStateException("List of positions must be not empty or null.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		// Is there a stack, where this item has same base
@@ -105,7 +106,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return minHighLowPositions.get(0);
 	}
 
-	private Position findPosition(Item item, Container container, List<Position> posList) {
+	private Position findPosition(Item item, Container container, List<Position> posList) throws XFLPException {
 		/*List<Position> minTpPositions = getPositionWithMinValue(
 				posList,
 				(Position p) ->
@@ -130,7 +131,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		);
 
 		if(filteredPositions.isEmpty()) {
-			throw new IllegalStateException("There must be at least one position.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
 		return filteredPositions.get(0);

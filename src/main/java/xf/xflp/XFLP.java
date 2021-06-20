@@ -11,10 +11,11 @@ import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.monitor.StatusMonitor;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 import xf.xflp.opt.XFLPOptType;
 import xf.xflp.report.LPReport;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -90,11 +91,11 @@ public class XFLP {
 		// Check input data
 		if(importer.getItemList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No items are given.");
-			throw new XFLPException("No items are given.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No items are given.");
 		}
 		if(importer.getContainerList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No container information were set.");
-			throw new XFLPException("No container information were set.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No container information were set.");
 		}
 
 		// Container

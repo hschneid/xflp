@@ -1,8 +1,8 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
-import xf.xflp.opt.construction.strategy.WidthProportionFactor;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -20,7 +20,7 @@ public class FastFixedContainerSolver extends XFLPBase {
     private final OneContainerOneTypePacker packer = new OneContainerOneTypePacker();
 
     @Override
-    public void execute(XFLPModel model) {
+    public void execute(XFLPModel model) throws XFLPException {
         packer.setStrategy(model.getParameter().getPreferredPackingStrategy().getStrategy());
         packer.execute(model);
     }

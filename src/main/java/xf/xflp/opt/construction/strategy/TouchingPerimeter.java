@@ -3,6 +3,8 @@ package xf.xflp.opt.construction.strategy;
 import xf.xflp.base.problem.Container;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.List;
 
@@ -31,9 +33,9 @@ public class TouchingPerimeter extends BaseStrategy {
 	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
-			throw new IllegalStateException("List of positions must be not empty or null.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		List<Position> filteredPositions = getPositionWithMinValue(
@@ -53,7 +55,7 @@ public class TouchingPerimeter extends BaseStrategy {
 		if(filteredPositions.size() == 1) {
 			return filteredPositions.get(0);
 		} else if(filteredPositions.isEmpty()) {
-			throw new IllegalStateException("There must be at least one position.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		} else {
 			return fallbackStrategy.choose(item, container, filteredPositions);
 		}

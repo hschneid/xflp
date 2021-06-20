@@ -5,6 +5,7 @@ import xf.xflp.base.problem.Container
 import xf.xflp.base.problem.Item
 import xf.xflp.base.problem.Position
 import xf.xflp.base.problem.RotatedPosition
+import xf.xflp.exception.XFLPException
 
 class WidthProportionFactorTest extends Specification {
 
@@ -50,6 +51,6 @@ class WidthProportionFactorTest extends Specification {
         when:
         service.choose(item, container, [])
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 }

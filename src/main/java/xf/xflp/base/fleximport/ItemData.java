@@ -40,6 +40,7 @@ public class ItemData implements Serializable {
 	protected int width = -1;
 	protected int length = -1;
 	protected int height = -1;
+	protected int immersiveDepth = 0;
 	
 	protected float weight = 0;
 	protected float stackingWeightLimit = Float.MAX_VALUE;
@@ -168,6 +169,15 @@ public class ItemData implements Serializable {
 		return this;
 	}
 
+	/**
+	 * @param immersiveDepth - If items have special form groups at the top or bottom (shoulder or feet), then
+	 *                       during stacking the lower and upper item dives into each other and the overall height
+	 *                       is reduced. The amount of reduced height by diving into each other is the immersive depth.
+	 */
+	public void setImmersiveDepth(int immersiveDepth) {
+		this.immersiveDepth = immersiveDepth;
+	}
+
 	/////////////////////////////////////////////////////////////
 
 	/**
@@ -254,6 +264,10 @@ public class ItemData implements Serializable {
 		return unloadingLocation;
 	}
 
+	int getImmersiveDepth() {
+		return immersiveDepth;
+	}
+
 	/**
 	 * @return the spinnable
 	 */
@@ -295,6 +309,7 @@ public class ItemData implements Serializable {
 		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
 		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
 		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
+		i.setImmersiveDepth(immersiveDepth);
 		i.setSpinable(spinnable);
 
 		return i;

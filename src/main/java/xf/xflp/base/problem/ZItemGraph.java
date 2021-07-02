@@ -106,10 +106,6 @@ public class ZItemGraph {
 	 * Searches for any item in Z-Graph the base items with z = 0
 	 * 
 	 * Pre-Condition: All items, even the given one, are added into the Z-Graph
-	 * 
-	 * @param item
-	 * @param itemList
-	 * @return
 	 */
 	public List<Item> getBaseItems(Item item, List<Item> itemList) {
 		boolean[] found = new boolean[lowerList.size()];

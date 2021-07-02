@@ -1,6 +1,6 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![BCH compliance](https://bettercodehub.com/edge/badge/hschneid/xflp?branch=master)](https://bettercodehub.com/)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.4.0&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.4.1&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -16,9 +16,10 @@ It supports:
   * last in, first out condition
 * consideration of stacking groups
 * consideration of container types
+* consideration of immersive depth during stacking
 
 Optimization:
-* Contruction heuristic
+* Construction heuristic
 * GRASP heuristic
   * Swap and relocate neighborhood search
 
@@ -40,6 +41,9 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.4.1
+- Add immersive depth
+
 ### 0.4.0
 - Add restriction, that one item must be fully placed on top of one item
   - Business motivation: Certain packages may have restriction due to shoulder or feet forms, that stacking on multiple items is not possible.

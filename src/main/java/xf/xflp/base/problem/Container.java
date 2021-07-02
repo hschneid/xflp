@@ -5,6 +5,7 @@ import util.collection.LPListMap;
 import xf.xflp.base.problem.constraints.StackingChecker;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -158,7 +159,7 @@ public class Container extends AbstractContainer {
 	public List<Position> getPossibleInsertPositionList(Item newItem) {
 		List<Position> posList = new ArrayList<>();
 
-		int itemW = newItem.w, itemL = newItem.l, itemH = newItem.h;
+		int itemW = newItem.w, itemL = newItem.l;
 
 		int nbrOfItems = itemList.size();
 		int nbrOfActivePositions = activePosList.size();
@@ -180,6 +181,8 @@ public class Container extends AbstractContainer {
 			// For every active position
 			for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
 				Position pos = activePosList.get(k);
+
+				int itemH = retrieveHeight(newItem, pos);
 
 				// Check overlapping with walls
 				if((pos.x + itemW) > width)
@@ -488,6 +491,9 @@ public class Container extends AbstractContainer {
 	 *
 	 */
 	private void addItem(Item item, Position pos) {
+		// Adjust height for immersive depth
+		item.h = retrieveHeight(item, pos);
+
 		item.setPosition(pos);
 		itemList.add(item);
 		item.containerIndex = this.index;
@@ -529,6 +535,7 @@ public class Container extends AbstractContainer {
 		zMap.get(item.zh).remove(index);
 
 		weight -= item.weight;
+		item.h = item.origH;
 
 		item.containerIndex = -1;
 	}
@@ -611,6 +618,38 @@ public class Container extends AbstractContainer {
 	 */
 	private Position createPosition(int x, int y, int z, int type, boolean isProjected) {
 		return new Position(maxPosIdx++, x, y, z, type, isProjected);
+	}
+
+	/**
+	 * If it is a stacking position (z > 0), then the immersive depth of lower items
+	 * must be checked. If this is the case, then the height of given item is reduced.
+	 */
+	private int retrieveHeight(Item item, Position pos) {
+		if(pos.z == 0) {
+			return item.h;
+		}
+
+		List<Item> lowerItems = getItemsBelow(pos, item);
+		int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
+
+		return item.h - minImmersiveDepth;
+	}
+
+	private List<Item> getItemsBelow(Position pos, Item newItem) {
+		if(!zMap.containsKey(pos.z)) {
+			return Collections.emptyList();
+		}
+
+		return zMap.get(pos.z)
+				.stream()
+				.map(idx -> itemList.get(idx))
+				.filter(lowerItem -> lowerItem.zh == pos.z &&
+								lowerItem.x < pos.x + newItem.w &&
+								lowerItem.xw > pos.x &&
+								lowerItem.y < pos.y + newItem.l &&
+								lowerItem.yl > pos.y
+						)
+				.collect(Collectors.toList());
 	}
 
 	/**

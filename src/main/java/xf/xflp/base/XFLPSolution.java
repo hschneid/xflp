@@ -49,7 +49,7 @@ public class XFLPSolution {
 				e.setWeight(item.weight);
 				e.setWeightLimit(item.stackingWeightLimit);
 				e.setStackingGrp(item.stackingGroup);
-				e.setUsedVolumeInContainer(item.volume);
+				e.setUsedVolumeInContainer(item.getVolume());
 				cRep.add(e);
 			}
 			

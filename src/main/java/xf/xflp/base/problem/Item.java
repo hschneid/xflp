@@ -25,7 +25,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 
 	public static final int UNDEF_PARAMETER = -1;
 
-	public int size, volume, h;
+	public int size, volume, h, origH;
 	public int x, y, z, xw, yl, zh, w, l;
 	
 	public boolean spinable, stackable;
@@ -39,6 +39,8 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	public int allowedStackingGroups;
 	// How many different items can be below this item, if it is stacked.
 	public int nbrOfAllowedStackedItems;
+	// height, which reduces height of upper item, when something is stacked upon.
+	public int immersiveDepth;
 
 	public float weight;
 	public float stackingWeightLimit;
@@ -159,7 +161,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	}
 
 	public int getVolume() {
-		return volume;
+		return w * l * h;
 	}
 
 	public void setVolume(int volume) {
@@ -172,6 +174,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 
 	public void setH(int h) {
 		this.h = h;
+		this.origH = h;
 	}
 
 	public int getX() {
@@ -372,5 +375,13 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 
 	public void setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
 		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
+	}
+
+	public int getImmersiveDepth() {
+		return immersiveDepth;
+	}
+
+	public void setImmersiveDepth(int immersiveDepth) {
+		this.immersiveDepth = immersiveDepth;
 	}
 }

@@ -47,4 +47,19 @@ class XFLPReportSpec extends Specification {
         rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.getId() == "P3"} != null
         rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.getId() == "P4"} != null
     }
+
+
+    def "Test result report with immersive depth"() {
+        service.addContainer().setContainerType("CON1").setWidth(1).setLength(1).setHeight(20).setMaxWeight(10)
+        service.addItem().setExternID("P1").setWidth(1).setLength(1).setHeight(10).setWeight(1).setImmersiveDepth(2)
+        service.addItem().setExternID("P2").setWidth(1).setLength(1).setHeight(12).setWeight(1)
+        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_PACKER)
+
+        when:
+        service.executeLoadPlanning()
+        def rep = service.getReport()
+        then:
+        // Immersive depth on stacked items must be not considered
+        rep.getContainerReports().get(0).getSummary().getMaxUsedVolume() == (1 * 1 * 10) * 2
+    }
 }

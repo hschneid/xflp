@@ -6,7 +6,7 @@ import spock.lang.Specification
 class ContainerRemoveSpec extends Specification {
 
     def "clear means clear - full container"() {
-        Container con = Helper.getContainer(3,3,2)
+        ComplexContainer con = Helper.getContainer(3,3,2)
         def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 111, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
@@ -35,7 +35,7 @@ class ContainerRemoveSpec extends Specification {
     }
 
     def "clear means clear - empty container"() {
-        Container con = Helper.getContainer(3,3,2)
+        ComplexContainer con = Helper.getContainer(3,3,2)
         def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
 
         when:
@@ -48,7 +48,7 @@ class ContainerRemoveSpec extends Specification {
     }
 
     def "remove an item - a valid item"() {
-        Container con = Helper.getContainer(3,3,2)
+        ComplexContainer con = Helper.getContainer(3,3,2)
         def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 111, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
@@ -68,7 +68,7 @@ class ContainerRemoveSpec extends Specification {
     }
 
     def "remove an item - an invalid item"() {
-        Container con = Helper.getContainer(3,3,2)
+        ComplexContainer con = Helper.getContainer(3,3,2)
         def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 111, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
@@ -94,7 +94,7 @@ class ContainerRemoveSpec extends Specification {
     }
 
     def "remove everything one by one"() {
-        Container con = Helper.getContainer(3,3,2)
+        ComplexContainer con = Helper.getContainer(3,3,2)
         def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 111, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)

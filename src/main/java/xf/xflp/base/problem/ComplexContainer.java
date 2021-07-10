@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class Container extends AbstractContainer {
+public class ComplexContainer extends AbstractContainer {
 
 	private static final int EXTENDED_H = 3;
 	private static final int EXTENDED_V = 4;
@@ -49,10 +49,10 @@ public class Container extends AbstractContainer {
 	/* Services */
 	private final StackingChecker stackingChecker = new StackingChecker();
 
-	public Container() {
+	public ComplexContainer() {
 	}
 
-	public Container(Container containerPrototype, float lifoImportance) {
+	public ComplexContainer(ComplexContainer containerPrototype, float lifoImportance) {
 		this.width = containerPrototype.getWidth();
 		this.length = containerPrototype.getLength();
 		this.height = containerPrototype.getHeight();

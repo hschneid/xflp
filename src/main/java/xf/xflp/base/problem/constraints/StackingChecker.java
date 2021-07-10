@@ -19,7 +19,7 @@ import java.util.Set;
 public class StackingChecker {
 
     public boolean checkStackingRestrictions(
-            Container container,
+            ComplexContainer container,
             Position pos,
             Item newItem,
             int itemW,
@@ -53,7 +53,7 @@ public class StackingChecker {
      * Use the simple function to get all items, which are below the new item.
      * If number of lower items is bigger than 1 then it is overlapping.
      */
-    private boolean checkGroundContact(Container container, Position pos, Item item) {
+    private boolean checkGroundContact(ComplexContainer container, Position pos, Item item) {
         item.setPosition(pos);
 
         Set<Item> foundSet = Tools.getAllFloorItems(item, container.getItemList());
@@ -67,7 +67,7 @@ public class StackingChecker {
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private boolean checkStackingGroupAndBearing(Container container, Position pos, int w, int l, int stackingGroup) {
+    private boolean checkStackingGroupAndBearing(ComplexContainer container, Position pos, int w, int l, int stackingGroup) {
         List<Integer> zList = container.getZMap().get(pos.getZ());
         if(zList == null || zList.isEmpty())
             return true;
@@ -110,7 +110,7 @@ public class StackingChecker {
      *
      * Hereby the new item is added to container and removed afterwards
      */
-    private boolean checkLoadBearingAndItemCount(Container container, Position pos, Item item, int rotation) {
+    private boolean checkLoadBearingAndItemCount(ComplexContainer container, Position pos, Item item, int rotation) {
         // Add to container
         if(rotation == 1)
             item.rotate();
@@ -142,7 +142,7 @@ public class StackingChecker {
      * Check, if number of below items exceed the number of allowed stacked items.
      * If parameter "number of allowed stacked items" is undefined, it is always valid.
      */
-    private boolean checkStackedItemCount(Container container, Item item) {
+    private boolean checkStackedItemCount(ComplexContainer container, Item item) {
         if(item.getNbrOfAllowedStackedItems() == Item.UNDEF_PARAMETER)
             return true;
 
@@ -158,7 +158,7 @@ public class StackingChecker {
      * container.
      *
      */
-    private boolean checkLoadBearing(Container container, Item item) {
+    private boolean checkLoadBearing(ComplexContainer container, Item item) {
         List<Item> ceilItems = container.getZGraph().getCeilItems(item, container.getItemList());
         LoadBearingChecker lbc = new LoadBearingChecker();
         return lbc.checkLoadBearing(ceilItems, container.getZGraph());

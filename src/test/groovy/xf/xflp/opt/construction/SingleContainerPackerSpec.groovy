@@ -4,7 +4,7 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.problem.Container
+import xf.xflp.base.problem.ComplexContainer
 import xf.xflp.base.problem.Item
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
@@ -19,7 +19,7 @@ class SingleContainerPackerSpec extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
+                [Helper.getContainer(3,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 
@@ -37,7 +37,7 @@ class SingleContainerPackerSpec extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
+                [Helper.getContainer(3,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 
@@ -55,7 +55,7 @@ class SingleContainerPackerSpec extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
+                [Helper.getContainer(4,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 
@@ -76,7 +76,7 @@ class SingleContainerPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
+                [Helper.getContainer(4,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 
@@ -97,7 +97,7 @@ class SingleContainerPackerSpec extends Specification {
         items.sort({i,j -> (j.w*j.l) - (i.w*i.l)})
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
+                [Helper.getContainer(4,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 
@@ -120,7 +120,7 @@ class SingleContainerPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
+                [Helper.getContainer(3,3,3)] as ComplexContainer[],
                 new XFLPParameter()
         )
 

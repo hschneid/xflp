@@ -1,6 +1,6 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 
 import java.io.Serializable;
@@ -159,7 +159,7 @@ public class FlexiImporter implements Serializable {
 		return containerList;
 	}
 	
-	public List<Container> getConvertedContainerList() {
+	public List<ComplexContainer> getConvertedContainerList() {
 		return containerList.stream()
 				.map(con -> con.create(dataManager))
 				.collect(Collectors.toList());

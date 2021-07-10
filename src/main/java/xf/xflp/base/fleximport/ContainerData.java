@@ -1,6 +1,6 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.GroundContactRule;
 
 import java.io.Serializable;
@@ -73,8 +73,8 @@ public class ContainerData implements Serializable {
 		return containerType;
 	}
 
-	Container create(DataManager manager) {
-		Container c = new Container();
+	ComplexContainer create(DataManager manager) {
+		ComplexContainer c = new ComplexContainer();
 
 		c.setWidth(width);
 		c.setLength(length);

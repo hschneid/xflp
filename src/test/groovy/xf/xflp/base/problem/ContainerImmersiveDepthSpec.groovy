@@ -6,7 +6,7 @@ import spock.lang.Specification
 class ContainerImmersiveDepthSpec extends Specification {
 
     def "only immersive depth, item is fitting, just adding"() {
-        Container con = Helper.getContainer(2,2,20)
+        ComplexContainer con = Helper.getContainer(2,2,20)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         con.add(i1, con.getPossibleInsertPositionList(i1).get(0))
@@ -22,7 +22,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "even with immersive depth, item is not fitting"() {
-        Container con = Helper.getContainer(2,2,19)
+        ComplexContainer con = Helper.getContainer(2,2,19)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         con.add(i1, con.getPossibleInsertPositionList(i1).get(0))
@@ -36,7 +36,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "stack 3 items with immersive depth"() {
-        Container con = Helper.getContainer(2,2,30)
+        ComplexContainer con = Helper.getContainer(2,2,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         con.add(i1, con.getPossibleInsertPositionList(i1).get(0))
@@ -56,7 +56,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "add, remove and readd 3 items with immersive depth"() {
-        Container con = Helper.getContainer(2,2,30)
+        ComplexContainer con = Helper.getContainer(2,2,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
@@ -82,7 +82,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "stack item on multiple items, with different immersive depth"() {
-        Container con = Helper.getContainer(3,3,30)
+        ComplexContainer con = Helper.getContainer(3,3,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         def i2 = Helper.getItem(1, 1, 10, 1, 10, 0)

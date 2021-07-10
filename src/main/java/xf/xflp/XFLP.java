@@ -9,7 +9,7 @@ import xf.xflp.base.fleximport.ItemData;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.monitor.StatusMonitor;
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
@@ -99,14 +99,14 @@ public class XFLP {
 		}
 
 		// Container
-		List<Container> containerTypeList = importer.getConvertedContainerList();
+		List<ComplexContainer> containerTypeList = importer.getConvertedContainerList();
 		// Items
 		List<Item> itemList = importer.getConvertedItemList();
 		
 		// Pre-Sort items for logical order (ascending order location index)
 		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
 
-		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
+		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new ComplexContainer[0]), parameter);
 	}
 
 	/**

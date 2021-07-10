@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
@@ -44,13 +44,13 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
-		List<Container> containerList = new ArrayList<>();
+		List<ComplexContainer> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());
 		
 		int containerIdx = 0;
 		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx)) {
 			// Create new container
-			Container currentContainer = createContainer(model);
+			ComplexContainer currentContainer = createContainer(model);
 			currentContainer.setIndex(containerIdx++);
 		
 			// Try to pack all unplanned items into the current empty container. The order
@@ -61,16 +61,16 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 		}
 		
 		// Write created containers to model. There are no unplanned items.
-		model.setContainers(containerList.toArray(new Container[0]));
+		model.setContainers(containerList.toArray(new ComplexContainer[0]));
 	}
 
 	private boolean hasMoreContainer(XFLPModel model, int containerIdx) {
 		return containerIdx < model.getParameter().getMaxNbrOfContainer();
 	}
 
-	private Container createContainer(XFLPModel model) {
-		Container containerType = model.getContainerTypes()[0];
-		return new Container(containerType, containerType.getLifoImportance());
+	private ComplexContainer createContainer(XFLPModel model) {
+		ComplexContainer containerType = model.getContainerTypes()[0];
+		return new ComplexContainer(containerType, containerType.getLifoImportance());
 	}
 
 	private void init(XFLPModel model) {

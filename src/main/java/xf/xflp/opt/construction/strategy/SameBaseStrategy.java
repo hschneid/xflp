@@ -1,6 +1,6 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 import xf.xflp.exception.XFLPException;
@@ -34,7 +34,7 @@ public class SameBaseStrategy extends BaseStrategy {
 	private final WidthProportionFactor widthProportion = new WidthProportionFactor();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
+	public Position choose(Item item, ComplexContainer container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
@@ -48,7 +48,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return findPosition(item, container, posList);
 	}
 
-	private Position checkSameBaseStack(Item item, Container container, List<Position> posList) {
+	private Position checkSameBaseStack(Item item, ComplexContainer container, List<Position> posList) {
 		List<Position> sameBasePositions = new ArrayList<>(posList.size());
 		List<Position> smallerBasePositions = new ArrayList<>(posList.size());
 
@@ -57,7 +57,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return chooseBasePosition(sameBasePositions, smallerBasePositions);
 	}
 
-	private void findBasePositions(Item item, Container container, List<Position> posList, List<Position> sameBasePositions, List<Position> smallerBasePositions) {
+	private void findBasePositions(Item item, ComplexContainer container, List<Position> posList, List<Position> sameBasePositions, List<Position> smallerBasePositions) {
 		int itemLength = Math.max(item.l, item.w);
 		int itemWidth = Math.min(item.l, item.w);
 		for (Position pos : posList) {
@@ -106,7 +106,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return minHighLowPositions.get(0);
 	}
 
-	private Position findPosition(Item item, Container container, List<Position> posList) throws XFLPException {
+	private Position findPosition(Item item, ComplexContainer container, List<Position> posList) throws XFLPException {
 		/*List<Position> minTpPositions = getPositionWithMinValue(
 				posList,
 				(Position p) ->

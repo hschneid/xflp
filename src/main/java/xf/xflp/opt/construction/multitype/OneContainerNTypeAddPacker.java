@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 import xf.xflp.exception.XFLPException;
@@ -40,7 +40,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		List<Container> containers = getContainers(model);
+		List<ComplexContainer> containers = getContainers(model);
 
 		List<Item> unplannedItemList = new ArrayList<>();
 
@@ -63,13 +63,13 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		}
 
 		// Put result into model
-		model.setContainers(containers.toArray(new Container[0]));
+		model.setContainers(containers.toArray(new ComplexContainer[0]));
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 
-	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) throws XFLPException {
+	private List<ContainerPosition> getBestContainerPositions(Item item, List<ComplexContainer> containers) throws XFLPException {
 		List<ContainerPosition> containerPositions = new ArrayList<>();
-		for (Container container : containers) {
+		for (ComplexContainer container : containers) {
 			Position bestPosition = getBestInsertPosition(item, container);
 			if(bestPosition != null) {
 				containerPositions.add(new ContainerPosition(container, bestPosition));
@@ -79,13 +79,13 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		return containerPositions;
 	}
 
-	private List<Container> getContainers(XFLPModel model) {
+	private List<ComplexContainer> getContainers(XFLPModel model) {
 		return Arrays.stream(model.getContainerTypes())
-				.map(cT -> new Container(cT, model.getParameter().getLifoImportance()))
+				.map(cT -> new ComplexContainer(cT, model.getParameter().getLifoImportance()))
 				.collect(Collectors.toList());
 	}
 
-	private Position getBestInsertPosition(Item item, Container container) throws XFLPException {
+	private Position getBestInsertPosition(Item item, ComplexContainer container) throws XFLPException {
 		// Check if item is allowed to this container type
 		if (container.isItemAllowed(item)) {
 			// Fetch existing insert positions

@@ -1,6 +1,6 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.base.problem.Position;
 import xf.xflp.base.problem.RotatedPosition;
@@ -30,7 +30,7 @@ public class WidthProportionFactor extends BaseStrategy {
 	private final TouchingPerimeter fallbackStrategy = new TouchingPerimeter();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
+	public Position choose(Item item, ComplexContainer container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
@@ -55,7 +55,7 @@ public class WidthProportionFactor extends BaseStrategy {
 		return fallbackStrategy.choose(item,container, filteredPositions);
 	}
 
-	float getDeviationOfProportion(Item i, Position pos, Container container) {
+	float getDeviationOfProportion(Item i, Position pos, ComplexContainer container) {
 		int conWidth = container.getWidth();
 		int itemWidth =  (pos instanceof RotatedPosition) ? i.l : i.w;
 

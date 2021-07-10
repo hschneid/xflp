@@ -6,7 +6,7 @@ import spock.lang.Specification
 class ContainerStackingSpec extends Specification {
 
     def "add to stack simple"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = con.getPossibleInsertPositionList(i1)
@@ -22,7 +22,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "stacking is not possible"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 2, 10, 0)
         def pList = con.getPossibleInsertPositionList(i1)
@@ -38,7 +38,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a stack with two stack"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 10, 0)
@@ -61,7 +61,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "do not add to a stack with two stack (too heavy/bearing capacity)"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 3, 10, 0)
@@ -84,7 +84,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "placing one item over two stacks - stacking groups not fitting"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 1)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 1)
@@ -99,7 +99,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "placing one item over two stacks - stacking groups are fitting"() {
-        Container con = Helper.getContainer(2,2,2)
+        ComplexContainer con = Helper.getContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 2)

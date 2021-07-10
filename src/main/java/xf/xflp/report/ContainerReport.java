@@ -1,6 +1,6 @@
 package xf.xflp.report;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.problem.ComplexContainer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,10 +29,10 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 
 	private final ContainerReportSummary summary;
 	private final String containerTypeName;
-	private final Container container;
+	private final ComplexContainer container;
 	private final List<LPPackageEvent> packageEventList = new ArrayList<>();
 	
-	public ContainerReport(String containerTypeName, Container con) {
+	public ContainerReport(String containerTypeName, ComplexContainer con) {
 		this.containerTypeName = containerTypeName;
 		this.container = con;
 		this.summary = new ContainerReportSummary(con);
@@ -43,7 +43,7 @@ public class ContainerReport implements Iterable<LPPackageEvent> {
 		packageEventList.add(e);
 	}
 
-	public Container getContainer() {
+	public ComplexContainer getContainer() {
 		return container;
 	}
 

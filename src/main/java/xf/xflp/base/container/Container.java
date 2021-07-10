@@ -75,7 +75,7 @@ public interface Container {
     /**
      * Returns the loaded weight (weight of inserted items)
      */
-    long getloadedWeight();
+    float getLoadedWeight();
 
     /**
      * Returns the paramter for behaviour of this container

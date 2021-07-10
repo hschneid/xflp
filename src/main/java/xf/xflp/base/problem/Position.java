@@ -13,16 +13,16 @@ package xf.xflp.base.problem;
  */
 public class Position {
 
-	protected int x, y, z;
+	public int x, y, z;
 
 	protected final int idx;
-	protected final int type;
+	public final int type;
 	protected final boolean isProjected;
 	
-	protected Position(int x, int y) {
+	public Position(int x, int y) {
 		this(-1, x, y, -1, -1, false);
 	}
-	protected Position(int x, int y, int z) {
+	public Position(int x, int y, int z) {
 		this(-1, x, y, z, -1, false);
 	}
 	protected Position(int idx, int x, int y, int type, boolean isProjected) {
@@ -31,7 +31,7 @@ public class Position {
 	protected Position(int x, int y, int type, boolean isProjected) {
 		this(-1, x, y, -1, type, isProjected);
 	}
-	protected Position(int idx, int x, int y, int z, int type, boolean isProjected) {
+	public Position(int idx, int x, int y, int z, int type, boolean isProjected) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;

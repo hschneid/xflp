@@ -1,6 +1,6 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.ComplexContainer;
+import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.problem.Item;
 
 import java.io.Serializable;

@@ -5,7 +5,7 @@ import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.problem.ComplexContainer
+import xf.xflp.base.container.ComplexContainer
 import xf.xflp.base.problem.Item
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker
 

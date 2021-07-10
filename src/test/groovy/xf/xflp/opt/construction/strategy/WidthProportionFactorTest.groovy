@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy
 
 import spock.lang.Specification
-import xf.xflp.base.problem.ComplexContainer
+import xf.xflp.base.container.ComplexContainer
 import xf.xflp.base.problem.Item
 import xf.xflp.base.problem.Position
 import xf.xflp.base.problem.RotatedPosition

@@ -13,9 +13,9 @@ package xf.xflp.base.problem;
  */
 public class RotatedPosition extends Position {
 		
-	protected final Position pos;
+	public final Position pos;
 
-	protected RotatedPosition(Position pos) {
+	public RotatedPosition(Position pos) {
 		super(pos.x, pos.y, pos.z);
 		
 		this.pos = pos;

@@ -2,7 +2,7 @@ package xf.xflp.report
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.problem.ComplexContainer
+import xf.xflp.base.container.ComplexContainer
 
 class LPReportTest extends Specification {
 

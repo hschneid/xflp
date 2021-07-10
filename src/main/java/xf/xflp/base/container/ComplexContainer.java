@@ -1,7 +1,11 @@
-package xf.xflp.base.problem;
+package xf.xflp.base.container;
 
 import com.google.common.collect.HashBiMap;
 import util.collection.LPListMap;
+import xf.xflp.base.problem.Item;
+import xf.xflp.base.problem.Position;
+import xf.xflp.base.problem.RotatedPosition;
+import xf.xflp.base.problem.RotationType;
 import xf.xflp.base.problem.constraints.StackingChecker;
 
 import java.util.*;

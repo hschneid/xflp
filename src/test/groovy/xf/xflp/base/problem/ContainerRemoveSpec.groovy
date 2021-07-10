@@ -2,6 +2,7 @@ package xf.xflp.base.problem
 
 import helper.Helper
 import spock.lang.Specification
+import xf.xflp.base.container.ComplexContainer
 
 class ContainerRemoveSpec extends Specification {
 

@@ -1,5 +1,7 @@
 package helper
 
+import xf.xflp.base.container.ComplexContainer
+import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.problem.*
 

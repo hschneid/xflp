@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.ComplexContainer;
+import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.problem.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;

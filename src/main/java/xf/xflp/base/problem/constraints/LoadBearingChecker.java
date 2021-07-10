@@ -1,7 +1,7 @@
 package xf.xflp.base.problem.constraints;
 
 import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.ZItemGraph;
+import xf.xflp.base.container.ZItemGraph;
 
 import java.util.Arrays;
 import java.util.List;

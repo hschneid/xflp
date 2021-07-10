@@ -1,7 +1,7 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.ComplexContainer;
-import xf.xflp.base.problem.GroundContactRule;
+import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.GroundContactRule;
 
 import java.io.Serializable;
 

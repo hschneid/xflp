@@ -1,6 +1,6 @@
 package xf.xflp.opt.construction.multitype;
 
-import xf.xflp.base.problem.ComplexContainer;
+import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.problem.Position;
 
 /**

@@ -1,7 +1,8 @@
-package xf.xflp.base.problem;
+package xf.xflp.base.container;
 
 import util.collection.LPListMap;
 import util.collection.SetIndexArrayList;
+import xf.xflp.base.problem.Item;
 
 import java.util.ArrayList;
 import java.util.List;

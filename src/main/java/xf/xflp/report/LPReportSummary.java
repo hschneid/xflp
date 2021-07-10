@@ -1,6 +1,6 @@
 package xf.xflp.report;
 
-import xf.xflp.base.problem.ComplexContainer;
+import xf.xflp.base.container.ComplexContainer;
 
 import java.util.HashMap;
 import java.util.Map;

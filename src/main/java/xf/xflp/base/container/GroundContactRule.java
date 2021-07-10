@@ -1,4 +1,4 @@
-package xf.xflp.base.problem;
+package xf.xflp.base.container;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -13,7 +13,7 @@ package xf.xflp.base.problem;
  */
 public enum GroundContactRule {
 
-    // A part of an item can hang over a stack
+    // Free/unlimited stacking, A part of an item can hang over a stack
     FREE,
     // An item must stand on the floor or other items for all 4 floor corners
     COVERED,

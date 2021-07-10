@@ -1,7 +1,7 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
 
 import java.util.List;
 

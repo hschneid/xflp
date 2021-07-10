@@ -1,6 +1,6 @@
-package xf.xflp.base.problem.constraints;
+package xf.xflp.base.item.constraints;
 
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.item.Item;
 import xf.xflp.base.container.ZItemGraph;
 
 import java.util.Arrays;

@@ -1,8 +1,8 @@
-package xf.xflp.base.problem.constraints;
+package xf.xflp.base.item.constraints;
 
 import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.container.GroundContactRule;
-import xf.xflp.base.problem.*;
+import xf.xflp.base.item.*;
 
 import java.util.List;
 import java.util.Set;

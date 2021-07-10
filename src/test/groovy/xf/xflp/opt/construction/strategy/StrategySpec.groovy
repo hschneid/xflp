@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.problem.Position
+import xf.xflp.base.item.Position
 import xf.xflp.exception.XFLPException
 
 import java.util.function.Function

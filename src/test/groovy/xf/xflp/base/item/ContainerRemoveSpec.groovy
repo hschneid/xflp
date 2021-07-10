@@ -1,4 +1,4 @@
-package xf.xflp.base.problem
+package xf.xflp.base.item
 
 import helper.Helper
 import spock.lang.Specification

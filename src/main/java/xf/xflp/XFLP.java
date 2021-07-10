@@ -10,7 +10,7 @@ import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.monitor.StatusMonitor;
 import xf.xflp.base.container.ComplexContainer;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 import xf.xflp.opt.XFLPOptType;

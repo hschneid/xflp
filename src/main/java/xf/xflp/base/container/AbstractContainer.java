@@ -3,9 +3,9 @@ package xf.xflp.base.container;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.fleximport.ContainerData;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
-import xf.xflp.base.problem.RotatedPosition;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.RotatedPosition;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,9 +1,9 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.ComplexContainer;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
-import xf.xflp.base.problem.RotatedPosition;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 

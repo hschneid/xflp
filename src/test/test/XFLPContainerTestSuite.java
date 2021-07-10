@@ -1,10 +1,10 @@
 package test;
 
 import org.junit.Test;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
-import xf.xflp.base.problem.RotatedPosition;
+import xf.xflp.base.item.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.opt.construction.ZSingleBinAddPacker;
 
 import static org.junit.Assert.assertFalse;

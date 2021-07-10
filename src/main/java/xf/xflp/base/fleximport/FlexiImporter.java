@@ -1,7 +1,7 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.container.ComplexContainer;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.item.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;

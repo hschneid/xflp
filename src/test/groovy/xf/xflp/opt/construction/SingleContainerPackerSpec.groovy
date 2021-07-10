@@ -5,7 +5,7 @@ import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.container.ComplexContainer
-import xf.xflp.base.problem.Item
+import xf.xflp.base.item.Item
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
 class SingleContainerPackerSpec extends Specification {

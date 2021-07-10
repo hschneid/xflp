@@ -1,6 +1,6 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.item.Item;
 
 import java.io.Serializable;
 

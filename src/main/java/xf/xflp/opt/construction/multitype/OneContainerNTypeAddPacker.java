@@ -2,8 +2,8 @@ package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.ComplexContainer;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;

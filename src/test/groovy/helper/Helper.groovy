@@ -1,9 +1,13 @@
 package helper
 
+import xf.xflp.base.container.AddRemoveContainer
 import xf.xflp.base.container.ComplexContainer
+import xf.xflp.base.container.Container
 import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.fleximport.ContainerData
-import xf.xflp.base.item.*
+import xf.xflp.base.item.Item
+import xf.xflp.base.item.Position
+import xf.xflp.base.item.RotatedPosition
 
 class Helper {
 
@@ -27,6 +31,22 @@ class Helper {
         c.init()
 
         return c
+    }
+
+    static Container getContainer2(int width, int length, int height) {
+        return getContainer2(width, length, height, 999999999)
+    }
+
+    static Container getContainer2(int width, int length, int height, float maxWeight) {
+        return new AddRemoveContainer(
+                width,
+                length,
+                height,
+                maxWeight,
+                ContainerData.DEFAULT_CONTAINER_TYPE,
+                GroundContactRule.FREE,
+                0
+        )
     }
 
     static Item getItem(int w, int l, int h, int ww, long wC, int sG) {

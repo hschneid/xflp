@@ -2,7 +2,9 @@ package xf.xflp.base.item.constraints;
 
 import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.container.GroundContactRule;
-import xf.xflp.base.item.*;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.Tools;
 
 import java.util.List;
 import java.util.Set;

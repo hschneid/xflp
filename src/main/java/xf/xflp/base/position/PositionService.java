@@ -96,7 +96,7 @@ public class PositionService {
             return false;
         }
 
-        int lifoImportance = (Integer)container.getParameter().get(ParameterType.LIFO_IMPORTANCE);
+        float lifoImportance = (Float)container.getParameter().get(ParameterType.LIFO_IMPORTANCE);
 
         if(lifoImportance == 1) {
             // Liegt das Item weiter entfernt von der Ladekante als die Position

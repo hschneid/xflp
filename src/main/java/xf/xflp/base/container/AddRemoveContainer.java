@@ -653,6 +653,17 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	}
 
 	@Override
+	public LPListMap<Integer, Integer> getXMap() {
+		return xMap;
+	}
+
+	@Override
+	public LPListMap<Integer, Integer> getYMap() {
+		return yMap;
+	}
+
+
+	@Override
 	public LPListMap<Integer, Integer> getZMap() {
 		return zMap;
 	}

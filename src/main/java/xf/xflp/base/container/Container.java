@@ -81,4 +81,9 @@ public interface Container {
      * Returns the paramter for behaviour of this container
      */
     ContainerParameter getParameter();
+
+    /**
+     * Returns internal data structures of container
+     */
+    ContainerBaseData getBaseData();
 }

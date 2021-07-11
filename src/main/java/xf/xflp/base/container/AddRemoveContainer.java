@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class AddRemoveContainer implements Container {
+public class AddRemoveContainer implements Container, ContainerBaseData {
 
 	private static final Position rootPos = new Position(-1, -1, -1);
 	private static final int ROOT = 0;
@@ -645,5 +645,20 @@ public class AddRemoveContainer implements Container {
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle
 		// realen Positionen erben von dieser virtuellen.
 		insertTree(start, rootPos);
+	}
+
+	@Override
+	public ContainerBaseData getBaseData() {
+		return this;
+	}
+
+	@Override
+	public LPListMap<Integer, Integer> getZMap() {
+		return zMap;
+	}
+
+	@Override
+	public ZItemGraph getZGraph() {
+		return zGraph;
 	}
 }

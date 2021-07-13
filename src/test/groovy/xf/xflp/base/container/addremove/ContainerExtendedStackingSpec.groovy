@@ -2,7 +2,6 @@ package xf.xflp.base.container.addremove
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.container.ComplexContainer
 import xf.xflp.base.container.Container
 import xf.xflp.base.position.PositionService
 

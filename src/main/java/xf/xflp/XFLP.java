@@ -3,7 +3,6 @@ package xf.xflp;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.XFLPSolution;
-import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.fleximport.FlexiImporter;

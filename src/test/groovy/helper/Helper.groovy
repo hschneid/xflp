@@ -1,7 +1,6 @@
 package helper
 
 import xf.xflp.base.container.AddRemoveContainer
-import xf.xflp.base.container.ComplexContainer
 import xf.xflp.base.container.Container
 import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.fleximport.ContainerData
@@ -12,26 +11,6 @@ import xf.xflp.base.item.RotatedPosition
 class Helper {
 
     static int itemIdx = 0
-
-    static ComplexContainer getContainer(int width, int length, int height) {
-        return getContainer(width, length, height, 999999999)
-    }
-
-    static ComplexContainer getContainer(int width, int length, int height, float maxWeight) {
-        ComplexContainer c = new ComplexContainer()
-
-        c.setWidth(width)
-        c.setLength(length)
-        c.setHeight(height)
-        c.setMaxWeight(maxWeight)
-        c.setContainerType(ContainerData.DEFAULT_CONTAINER_TYPE)
-        c.setLifoImportance(0)
-        c.setGroundContactRule(GroundContactRule.FREE)
-
-        c.init()
-
-        return c
-    }
 
     static Container getContainer2(int width, int length, int height) {
         return getContainer2(width, length, height, 999999999)

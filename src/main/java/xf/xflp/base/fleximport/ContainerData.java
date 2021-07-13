@@ -1,7 +1,6 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.container.AddRemoveContainer;
-import xf.xflp.base.container.ComplexContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
 

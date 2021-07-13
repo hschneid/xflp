@@ -24,8 +24,6 @@ public class PositionService {
         List<Position> posList = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;
-
-        int nbrOfItems = container.getItems().size();
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
@@ -58,8 +56,7 @@ public class PositionService {
                 /*
                  * Check Overlapping of items for insert position
                  */
-                for (int j = nbrOfItems - 1; j >= 0; j--) {
-                    Item otherItem = container.getItems().get(j);
+                for (Item otherItem : container.getItems()) {
                     if(otherItem == null)
                         continue;
 

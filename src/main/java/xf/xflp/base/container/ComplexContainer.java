@@ -199,12 +199,11 @@ public class ComplexContainer extends AbstractContainer {
 				/*
 				 * Check Overlapping of items for insert position
 				 */
-				for (int j = nbrOfItems - 1; j >= 0; j--) {
-					Item item = itemList.get(j);
-					if(item == null)
+				for (Item item : itemList) {
+					if (item == null)
 						continue;
 
-					if(
+					if (
 							item.x < (pos.x + itemW) && item.xw > pos.x &&
 									item.y < (pos.y + itemL) && item.yl > pos.y &&
 									item.z < (pos.z + itemH) && item.zh > pos.z
@@ -212,15 +211,15 @@ public class ComplexContainer extends AbstractContainer {
 						continue OUTER;
 
 					// Pr�fe die LIFO-Eigenschaften
-					if(lifoImportance == 1) {
+					if (lifoImportance == 1) {
 						// Liegt das Item weiter entfernt von der Ladekante als die Position
 						// Liegt das Item im Entladekorridor zur Ladekante
-						if(item.yl <= pos.y && item.x < (pos.x + itemW) && item.xw > pos.x) {
+						if (item.yl <= pos.y && item.x < (pos.x + itemW) && item.xw > pos.x) {
 							// Wenn der Entladerang des neuen Items gr��er als der
 							// Entladeran des Items ist, dann geht diese Position nicht.
 							// Das bestehende Item m�sste fr�her entladen werden, als
 							// das verstellende neue Item
-							if(newItem.unLoadingLoc > item.unLoadingLoc)
+							if (newItem.unLoadingLoc > item.unLoadingLoc)
 								// Das Item muss fr�her entladen werden, als
 								// das neue Item, was laut LIFO nicht sein darf.
 								continue OUTER;

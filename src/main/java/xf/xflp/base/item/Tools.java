@@ -102,13 +102,12 @@ public class Tools {
 		if(item.z == 0)
 			return list;
 
-		for (int i = 0; i < itemList.size(); i++) {
-			Item it = itemList.get(i);
-			if(it == null)
+		for (Item it : itemList) {
+			if (it == null)
 				continue;
 
-			if(it.zh == item.z && 
-					it.xw > item.x && it.x < item.xw && 
+			if (it.zh == item.z &&
+					it.xw > item.x && it.x < item.xw &&
 					it.yl > item.y && it.y < item.yl)
 				list.add(it);
 		}

@@ -10,7 +10,7 @@ class ContainerExtendedStackingSpec extends Specification {
     def "Item can be placed on 2 other items"() {
         def nbrOfAllowedItemsBelow = 2
 
-        Container con = Helper.getContainer2(1,10,2)
+        Container con = Helper.getContainer(1,10,2)
         def i = Helper.getItem(1, 2, 1, 1, 10, 0)
         con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
         i = Helper.getItem(1, 2, 1, 1, 10, 0)
@@ -31,7 +31,7 @@ class ContainerExtendedStackingSpec extends Specification {
     def "Item can not be placed on 2 other items"() {
         def nbrOfAllowedItemsBelow = 1
 
-        Container con = Helper.getContainer2(1,10,2)
+        Container con = Helper.getContainer(1,10,2)
         def i = Helper.getItem(1, 2, 1, 1, 10, 0)
         con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
         i = Helper.getItem(1, 2, 1, 1, 10, 0)
@@ -52,7 +52,7 @@ class ContainerExtendedStackingSpec extends Specification {
     def "Item can be placed only on floor, because no stackable"() {
         def nbrOfAllowedItemsBelow = 0
 
-        Container con = Helper.getContainer2(1,10,2)
+        Container con = Helper.getContainer(1,10,2)
         def i = Helper.getItem(1, 2, 1, 1, 10, 0)
         con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
         i = Helper.getItem(1, 2, 1, 1, 10, 0)

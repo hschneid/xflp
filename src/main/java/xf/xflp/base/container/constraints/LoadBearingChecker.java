@@ -1,4 +1,4 @@
-package xf.xflp.base.item.constraints;
+package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.ZItemGraph;
 import xf.xflp.base.item.Item;

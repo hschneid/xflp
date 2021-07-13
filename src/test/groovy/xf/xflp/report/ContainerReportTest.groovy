@@ -201,6 +201,6 @@ class ContainerReportTest extends Specification {
     }
 
     static Container getContainer(int width, int length, int height) {
-        return Helper.getContainer2(width, length, height, 999999999)
+        return Helper.getContainer(width, length, height, 999999999)
     }
 }

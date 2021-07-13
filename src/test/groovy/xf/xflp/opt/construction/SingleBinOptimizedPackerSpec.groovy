@@ -23,7 +23,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer2(4,3,3)] as Container[],
+                [Helper.getContainer(4,3,3)] as Container[],
                 new XFLPParameter()
         )
 
@@ -40,7 +40,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer2(4, 9, 3, 1000)] as Container[],
+                [Helper.getContainer(4, 9, 3, 1000)] as Container[],
                 new XFLPParameter()
         )
 

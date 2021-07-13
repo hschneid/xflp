@@ -8,7 +8,7 @@ import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.base.item.RotationType;
-import xf.xflp.base.item.constraints.NewStackingChecker;
+import xf.xflp.base.container.constraints.StackingChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,7 +77,7 @@ public class PositionService {
                 }
 
                 // Check stacking restrictions
-                if(!NewStackingChecker.checkStackingRestrictions(container, pos, item, itemW, itemL, rotation))
+                if(!StackingChecker.checkStackingRestrictions(container, pos, item, itemW, itemL, rotation))
                     continue;
 
                 // Create RotatedPosition if this item is rotated

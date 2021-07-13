@@ -12,11 +12,11 @@ class Helper {
 
     static int itemIdx = 0
 
-    static Container getContainer2(int width, int length, int height) {
-        return getContainer2(width, length, height, 999999999)
+    static Container getContainer(int width, int length, int height) {
+        return getContainer(width, length, height, 999999999)
     }
 
-    static Container getContainer2(int width, int length, int height, float maxWeight) {
+    static Container getContainer(int width, int length, int height, float maxWeight) {
         return new AddRemoveContainer(
                 width,
                 length,

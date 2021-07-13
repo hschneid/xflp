@@ -1,4 +1,4 @@
-package xf.xflp.base.item.constraints;
+package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
@@ -21,7 +21,7 @@ import java.util.Set;
  * @author hschneid
  *
  */
-public class NewStackingChecker {
+public class StackingChecker {
 
     public static boolean checkStackingRestrictions(
             Container container,

@@ -14,7 +14,7 @@ class StrategySpec extends Specification {
     def serviceTP = new TouchingPerimeter()
 
     def "HLL chooses higher ground"() {
-        def con = Helper.getContainer2(3,4,2)
+        def con = Helper.getContainer(3,4,2)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
@@ -31,7 +31,7 @@ class StrategySpec extends Specification {
     }
 
     def "HLL chooses next stack"() {
-        def con = Helper.getContainer2(3,3,1)
+        def con = Helper.getContainer(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
@@ -48,7 +48,7 @@ class StrategySpec extends Specification {
     }
 
     def "HLL with positionList = null "() {
-        def con = Helper.getContainer2(3,3,1)
+        def con = Helper.getContainer(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -58,7 +58,7 @@ class StrategySpec extends Specification {
     }
 
     def "HLL with positionList = empty "() {
-        def con = Helper.getContainer2(3,3,1)
+        def con = Helper.getContainer(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -68,7 +68,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP chooses corner"() {
-        def con = Helper.getContainer2(3,4,3)
+        def con = Helper.getContainer(3,4,3)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
@@ -85,7 +85,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP chooses HLL if all equal"() {
-        def con = Helper.getContainer2(3,4,3)
+        def con = Helper.getContainer(3,4,3)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
@@ -122,7 +122,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP with positionList = null "() {
-        def con = Helper.getContainer2(3,3,1)
+        def con = Helper.getContainer(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -132,7 +132,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP with positionList = empty "() {
-        def con = Helper.getContainer2(3,3,1)
+        def con = Helper.getContainer(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:

@@ -263,8 +263,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		return containerType;
 	}
 
-	/*******************************************************************/
-
 	/**
 	 * The given position will be normed to an unrotated position.
 	 */

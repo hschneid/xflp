@@ -5,7 +5,6 @@ import spock.lang.Specification
 
 class TouchingPerimeterServiceTest extends Specification {
 
-
     def "test touching perimeter (only one wall)"() {
         def con = Helper.getContainer2(10,10,10)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)

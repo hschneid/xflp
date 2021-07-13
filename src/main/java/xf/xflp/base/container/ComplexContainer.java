@@ -165,7 +165,6 @@ public class ComplexContainer extends AbstractContainer {
 
 		int itemW = newItem.w, itemL = newItem.l;
 
-		int nbrOfItems = itemList.size();
 		int nbrOfActivePositions = activePosList.size();
 
 		// Check weight capacity of container

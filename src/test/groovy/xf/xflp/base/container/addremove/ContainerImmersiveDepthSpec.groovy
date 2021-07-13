@@ -1,8 +1,9 @@
-package xf.xflp.base.item
+package xf.xflp.base.container.addremove
 
 import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.container.ComplexContainer
+import xf.xflp.base.item.Item
 
 class ContainerImmersiveDepthSpec extends Specification {
 

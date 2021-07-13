@@ -1,4 +1,4 @@
-package xf.xflp.base.item
+package xf.xflp.base.container.addremove
 
 import helper.Helper
 import spock.lang.Specification

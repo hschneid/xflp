@@ -5,7 +5,7 @@ import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.container.ComplexContainer
+import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker
 
@@ -23,7 +23,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as ComplexContainer[],
+                [Helper.getContainer2(4,3,3)] as Container[],
                 new XFLPParameter()
         )
 
@@ -40,7 +40,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         Collections.shuffle(items, new Random(1234))
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(4, 9, 3, 1000)] as ComplexContainer[],
+                [Helper.getContainer2(4, 9, 3, 1000)] as Container[],
                 new XFLPParameter()
         )
 
@@ -51,7 +51,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
-    private List<Item> getHardScenario() {
+    static List<Item> getHardScenario() {
         return [
                 Helper.getItem(2, 2, 1, 3, 3, 1),
                 Helper.getItem(2, 2, 1, 3, 3, 1),

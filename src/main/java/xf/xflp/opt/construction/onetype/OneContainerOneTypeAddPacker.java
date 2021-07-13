@@ -1,7 +1,8 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
@@ -32,7 +33,7 @@ public class OneContainerOneTypeAddPacker extends XFLPBase {
 	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
-		ComplexContainer container = new ComplexContainer(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
+		Container container = new AddRemoveContainer(model.getContainerTypes()[0]);
 
 		List<Item> unplannedItemList = packer.createLoadingPlan(
 				Arrays.asList(model.getItems()),
@@ -40,7 +41,7 @@ public class OneContainerOneTypeAddPacker extends XFLPBase {
 		);
 
 		// Put result into model
-		model.setContainers(new ComplexContainer[]{container});
+		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 

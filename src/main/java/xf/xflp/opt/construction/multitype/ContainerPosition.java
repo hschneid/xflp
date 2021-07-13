@@ -1,6 +1,6 @@
 package xf.xflp.opt.construction.multitype;
 
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Position;
 
 /**
@@ -15,15 +15,15 @@ import xf.xflp.base.item.Position;
  */
 public class ContainerPosition {
 
-    private final ComplexContainer container;
+    private final Container container;
     private final Position position;
 
-    public ContainerPosition(ComplexContainer container, Position position) {
+    public ContainerPosition(Container container, Position position) {
         this.container = container;
         this.position = position;
     }
 
-    public ComplexContainer getContainer() {
+    public Container getContainer() {
         return container;
     }
 

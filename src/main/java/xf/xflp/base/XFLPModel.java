@@ -1,6 +1,6 @@
 package xf.xflp.base;
 
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 
 
@@ -25,25 +25,25 @@ public class XFLPModel {
 	protected Item[] items;
 
 	/* Only one object per container type, solution will copy these objects */
-	protected final ComplexContainer[] containerTypes;
+	protected final Container[] containerTypes;
 
 	protected final XFLPParameter parameter;
 	
 	/* Result objects */
-	private ComplexContainer[] containers = new ComplexContainer[0];
+	private Container[] containers = new Container[0];
 	private Item[] unplannedItems = new Item[0];
 
 	/**
 	 * Initialize an optimization model object with the given input data. It contains the general
 	 * parameter for all optimization procedures. It holds no solution information.
 	 */
-	public XFLPModel(Item[] items, ComplexContainer[] containerTypes, XFLPParameter parameter) {
+	public XFLPModel(Item[] items, Container[] containerTypes, XFLPParameter parameter) {
 		this.items = items;
 		this.containerTypes = containerTypes;
 		this.parameter = parameter;
 	}
 
-	public ComplexContainer[] getContainerTypes() {
+	public Container[] getContainerTypes() {
 		return containerTypes;
 	}
 
@@ -58,14 +58,14 @@ public class XFLPModel {
 	/**
 	 * @return the containers
 	 */
-	public final ComplexContainer[] getContainers() {
+	public final Container[] getContainers() {
 		return containers;
 	}
 
 	/**
 	 * @param containers the containers to set
 	 */
-	public final void setContainers(ComplexContainer[] containers) {
+	public final void setContainers(Container[] containers) {
 		this.containers = containers;
 	}
 

@@ -1,6 +1,7 @@
 package xf.xflp.report;
 
 import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 
 
 /** 
@@ -26,8 +27,8 @@ public class ContainerReportSummary {
 	private float maxVolume = 0;
 	private float maxUsedWeight = 0;
 
-	public ContainerReportSummary(ComplexContainer con) {
-		maxVolume = con.getMaxVolume();
+	public ContainerReportSummary(Container con) {
+		maxVolume = con.getHeight() * con.getLength() * con.getWidth();
 	}
 	
 	public void add(LPPackageEvent e) {

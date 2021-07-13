@@ -4,7 +4,7 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.container.ComplexContainer
+import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker
 
@@ -19,7 +19,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3), Helper.getContainer(2,2,3)] as ComplexContainer[],
+                [Helper.getContainer2(3,3,3),
+                 Helper.getContainer2(2,2,3)] as Container[],
                 new XFLPParameter()
         )
 
@@ -41,7 +42,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3), Helper.getContainer(2,2,3)] as ComplexContainer[],
+                [Helper.getContainer2(3,3,3),
+                 Helper.getContainer2(2,2,3)] as Container[],
                 new XFLPParameter()
         )
 

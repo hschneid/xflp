@@ -1,9 +1,11 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
@@ -44,7 +46,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		ComplexContainer container = new ComplexContainer(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
+		Container container = new AddRemoveContainer(model.getContainerTypes()[0]);
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
@@ -63,7 +65,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<Position> posList = container.getPossibleInsertPositionList(item);
+					List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
 
 					if(!posList.isEmpty()) {
 						// Choose according to select strategy
@@ -91,7 +93,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 		}
 
 		// Put result into model
-		model.setContainers(new ComplexContainer[]{container});
+		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 

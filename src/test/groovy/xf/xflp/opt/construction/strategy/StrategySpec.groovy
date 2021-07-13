@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.strategy
 import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.item.Position
+import xf.xflp.base.position.PositionService
 import xf.xflp.exception.XFLPException
 
 import java.util.function.Function
@@ -13,41 +14,41 @@ class StrategySpec extends Specification {
     def serviceTP = new TouchingPerimeter()
 
     def "HLL chooses higher ground"() {
-        def con = Helper.getContainer(3,4,2)
+        def con = Helper.getContainer2(3,4,2)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
-        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1,0,0))
-        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0,1,0))
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,1,0))
 
         when:
-        def result = serviceHLL.choose(i4, con, con.getPossibleInsertPositionList(i4))
+        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
         then:
         result.x == 0 && result.y == 0 && result.z == 1
     }
 
     def "HLL chooses next stack"() {
-        def con = Helper.getContainer(3,3,1)
+        def con = Helper.getContainer2(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
-        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 0,1,0))
-        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 1,0,0))
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,1,0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 1,0,0))
 
         when:
-        def result = serviceHLL.choose(i4, con, con.getPossibleInsertPositionList(i4))
+        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
         then:
         result.x == 1 && result.y == 1 && result.z == 0
     }
 
     def "HLL with positionList = null "() {
-        def con = Helper.getContainer(3,3,1)
+        def con = Helper.getContainer2(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -57,7 +58,7 @@ class StrategySpec extends Specification {
     }
 
     def "HLL with positionList = empty "() {
-        def con = Helper.getContainer(3,3,1)
+        def con = Helper.getContainer2(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -67,37 +68,37 @@ class StrategySpec extends Specification {
     }
 
     def "TP chooses corner"() {
-        def con = Helper.getContainer(3,4,3)
+        def con = Helper.getContainer2(3,4,3)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
-        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1,0,0))
-        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 0,1,0))
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,1,0))
 
         when:
-        def result = serviceTP.choose(i4, con, con.getPossibleInsertPositionList(i4))
+        def result = serviceTP.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
         then:
         result.x == 2 && result.y == 0 && result.z == 0
     }
 
     def "TP chooses HLL if all equal"() {
-        def con = Helper.getContainer(3,4,3)
+        def con = Helper.getContainer2(3,4,3)
         def i1 = Helper.getItem(1,1,1,1,111,0)
         def i2 = Helper.getItem(1,1,1,1,111,0)
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
         def i5 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(con.getPossibleInsertPositionList(i1), 0,0,0))
-        con.add(i2, Helper.findPos(con.getPossibleInsertPositionList(i2), 1,0,0))
-        con.add(i3, Helper.findPos(con.getPossibleInsertPositionList(i3), 2,0,0))
-        con.add(i4, Helper.findPos(con.getPossibleInsertPositionList(i4), 0,1,0))
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 2,0,0))
+        con.add(i4, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i4), 0,1,0))
 
         when:
-        def result = serviceTP.choose(i5, con, con.getPossibleInsertPositionList(i5))
+        def result = serviceTP.choose(i5, con, PositionService.getPossibleInsertPositionList(con, i5))
         then:
         result.x == 0 && result.y == 0 && result.z == 1
     }
@@ -121,7 +122,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP with positionList = null "() {
-        def con = Helper.getContainer(3,3,1)
+        def con = Helper.getContainer2(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:
@@ -131,7 +132,7 @@ class StrategySpec extends Specification {
     }
 
     def "TP with positionList = empty "() {
-        def con = Helper.getContainer(3,3,1)
+        def con = Helper.getContainer2(3,3,1)
         def i1 = Helper.getItem(1,1,1,1,111,0)
 
         when:

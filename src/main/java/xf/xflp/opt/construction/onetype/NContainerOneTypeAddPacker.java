@@ -1,7 +1,8 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
@@ -44,15 +45,14 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
-		List<ComplexContainer> containerList = new ArrayList<>();
+		List<Container> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());
 		
 		int containerIdx = 0;
 		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx)) {
 			// Create new container
-			ComplexContainer currentContainer = createContainer(model);
-			currentContainer.setIndex(containerIdx++);
-		
+			Container currentContainer = createContainer(model);
+
 			// Try to pack all unplanned items into the current empty container. The order
 			// of items is untouched by this planning. Each unplanned item will be checked.
 			unpackedItems = packer.createLoadingPlan(unpackedItems, currentContainer);
@@ -61,16 +61,15 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 		}
 		
 		// Write created containers to model. There are no unplanned items.
-		model.setContainers(containerList.toArray(new ComplexContainer[0]));
+		model.setContainers(containerList.toArray(new Container[0]));
 	}
 
 	private boolean hasMoreContainer(XFLPModel model, int containerIdx) {
 		return containerIdx < model.getParameter().getMaxNbrOfContainer();
 	}
 
-	private ComplexContainer createContainer(XFLPModel model) {
-		ComplexContainer containerType = model.getContainerTypes()[0];
-		return new ComplexContainer(containerType, containerType.getLifoImportance());
+	private Container createContainer(XFLPModel model) {
+		return new AddRemoveContainer(model.getContainerTypes()[0]);
 	}
 
 	private void init(XFLPModel model) {

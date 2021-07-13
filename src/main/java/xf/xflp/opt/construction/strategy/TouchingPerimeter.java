@@ -1,8 +1,9 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.position.TouchingPerimeterService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
@@ -33,7 +34,7 @@ public class TouchingPerimeter extends BaseStrategy {
 	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
 	@Override
-	public Position choose(Item item, ComplexContainer container, List<Position> posList) throws XFLPException {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
@@ -42,7 +43,8 @@ public class TouchingPerimeter extends BaseStrategy {
 				posList,
 				(Position p) ->
 						// Negative to find min value
-						-container.getTouchingPerimeter(
+						-TouchingPerimeterService.getTouchingPerimeter(
+								container,
 								item,
 								p,
 								1,

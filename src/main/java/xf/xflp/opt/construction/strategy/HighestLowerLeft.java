@@ -1,6 +1,6 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.exception.XFLPException;
@@ -26,7 +26,7 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public Position choose(Item item, ComplexContainer container, List<Position> posList) throws XFLPException {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}

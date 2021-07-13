@@ -1,6 +1,6 @@
 package xf.xflp.report;
 
-import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class LPReportSummary {
 	private int nbrOfNotLoadedPackages = 0;
 	private float utilizationSum = 0;
 	
-	private final Map<ComplexContainer, float[]> dataMap = new HashMap<>();
+	private final Map<Container, float[]> dataMap = new HashMap<>();
 	
 	public void add(ContainerReport t) {
 		if(!dataMap.containsKey(t.getContainer()))
@@ -44,11 +44,11 @@ public class LPReportSummary {
 			nbrOfNotLoadedPackages++;
 	}
 
-	public float getNbrOfUsedVehicles(ComplexContainer veh) {
+	public float getNbrOfUsedVehicles(Container veh) {
 		return dataMap.get(veh)[0];
 	}
 	
-	public float getNbrOfNotLoadedPackages(ComplexContainer veh) {
+	public float getNbrOfNotLoadedPackages(Container veh) {
 		return dataMap.get(veh)[1];
 	}
 	

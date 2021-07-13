@@ -1,18 +1,20 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
 
 import java.io.Serializable;
 
-/** 
+/**
  * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
+ *
  * @author hschneid
  *
  */
@@ -21,13 +23,13 @@ public class ContainerData implements Serializable {
 	private static final long serialVersionUID = -5241212560474818458L;
 
 	public static final int DEFAULT_CONTAINER_TYPE = 0;
-	
+
 	protected int width = Integer.MAX_VALUE;
 	protected int length = Integer.MAX_VALUE;
 	protected int height = Integer.MAX_VALUE;
 	protected float maxWeight = Float.MAX_VALUE;
 	protected String containerType = "default_container_type";
-	
+
 	/**
 	 * @param width the width to set
 	 */
@@ -73,18 +75,16 @@ public class ContainerData implements Serializable {
 		return containerType;
 	}
 
-	ComplexContainer create(DataManager manager) {
-		ComplexContainer c = new ComplexContainer();
-
-		c.setWidth(width);
-		c.setLength(length);
-		c.setHeight(height);
-		c.setMaxWeight(maxWeight);
-		c.setContainerType(manager.getContainerTypeIdx(containerType));
-		c.setLifoImportance(1);
-		c.setGroundContactRule(GroundContactRule.FREE);
-
-		c.init();
+	Container create(DataManager manager) {
+		Container c = new AddRemoveContainer(
+				width,
+				length,
+				height,
+				maxWeight,
+				manager.getContainerTypeIdx(containerType),
+				GroundContactRule.FREE,
+				1
+		);
 
 		return c;
 	}

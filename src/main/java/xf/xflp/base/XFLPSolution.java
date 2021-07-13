@@ -1,6 +1,7 @@
 package xf.xflp.base;
 
 import xf.xflp.base.container.ComplexContainer;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.DataManager;
 import xf.xflp.base.item.Item;
 import xf.xflp.report.ContainerReport;
@@ -32,7 +33,7 @@ public class XFLPSolution {
 		LPReport rep = new LPReport();
 		
 		// Add packed containers to report
-		for (ComplexContainer con : model.getContainers()) {
+		for (Container con : model.getContainers()) {
 			String containerTypeName = dataManager.getContainerTypeName(con.getContainerType());
 			ContainerReport cRep = new ContainerReport(containerTypeName, con);
 			

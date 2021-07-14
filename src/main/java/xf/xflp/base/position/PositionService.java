@@ -1,5 +1,6 @@
 package xf.xflp.base.position;
 
+import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
@@ -11,9 +12,7 @@ import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.base.item.RotationType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PositionService {
 
@@ -38,7 +37,6 @@ public class PositionService {
                 itemL = item.w;
             }
 
-            OUTER:
             // For every active position
             for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
                 Position pos = container.getActivePositions().get(k);
@@ -53,27 +51,8 @@ public class PositionService {
                 if((pos.y + itemL) > container.getLength())
                     continue;
 
-                /*
-                 * Check Overlapping of items for insert position
-                 */
-                for (Item otherItem : container.getItems()) {
-                    if(otherItem == null)
-                        continue;
-
-                    if(otherItem.x < (pos.x + itemW) && otherItem.xw > pos.x &&
-                            otherItem.y < (pos.y + itemL) && otherItem.yl > pos.y &&
-                            otherItem.z < (pos.z + itemH) && otherItem.zh > pos.z
-                    ) {
-                        continue OUTER;
-                    }
-
-                    // Pr�fe die LIFO-Eigenschaften
-                    if (checkLIFO(container, otherItem, pos, item, itemW)) {
-                        continue OUTER;
-                    }
-
-                    // Sonst passt die Position
-                    // => Ergo mache nix
+                if (checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH)) {
+                    continue;
                 }
 
                 // Check stacking restrictions
@@ -86,6 +65,32 @@ public class PositionService {
         }
 
         return posList;
+    }
+
+    private static boolean checkOverlappingWithItems(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
+        IndexedArrayList<Item> items = (IndexedArrayList<Item>) container.getItems();
+
+        for (int idx = items.length() - 1; idx >= 0; idx--) {
+            Item otherItem = items.get(idx);
+            if(otherItem == null)
+                continue;
+
+            if(otherItem.x < (pos.x + itemW) && otherItem.xw > pos.x &&
+                    otherItem.y < (pos.y + itemL) && otherItem.yl > pos.y &&
+                    otherItem.z < (pos.z + itemH) && otherItem.zh > pos.z
+            ) {
+                return true;
+            }
+
+            // Pr�fe die LIFO-Eigenschaften
+            if (checkLIFO(container, otherItem, pos, item, itemW)) {
+                return true;
+            }
+
+            // Sonst passt die Position
+            // => Ergo mache nix
+        }
+        return false;
     }
 
     private static boolean checkLIFO(Container container, Item otherItem, Position pos, Item newItem, int itemW) {
@@ -124,28 +129,32 @@ public class PositionService {
             return item.h;
         }
 
-        List<Item> lowerItems = getItemsBelow(pos, item, container);
-        int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
-
-        return item.h - minImmersiveDepth;
+        int minImmersiveDepth = getMinImmersiveDepthOfBelow(pos, item, container);
+        int newHeight = item.h - minImmersiveDepth;
+        return (newHeight == 0) ? 1 : newHeight;
     }
 
-    private static List<Item> getItemsBelow(Position pos, Item newItem, Container container) {
+    private static int getMinImmersiveDepthOfBelow(Position pos, Item newItem, Container container) {
         LPListMap<Integer, Integer> zMap = container.getBaseData().getZMap();
 
         if(!zMap.containsKey(pos.z)) {
-            return Collections.emptyList();
+            return 0;
         }
 
-        return zMap.get(pos.z)
-                .stream()
-                .map(idx -> container.getItems().get(idx))
-                .filter(lowerItem -> lowerItem.zh == pos.z &&
-                        lowerItem.x < pos.x + newItem.w &&
-                        lowerItem.xw > pos.x &&
-                        lowerItem.y < pos.y + newItem.l &&
-                        lowerItem.yl > pos.y
-                )
-                .collect(Collectors.toList());
+        int minImmersiveDepthOfBelow = Integer.MAX_VALUE;
+
+        List<Integer> zItems = zMap.get(pos.z);
+        for (int i = zItems.size() - 1; i >= 0; i--) {
+            Item lowerItem = container.getItems().get(zItems.get(i));
+            if(lowerItem.zh == pos.z &&
+                    lowerItem.x < pos.x + newItem.w &&
+                    lowerItem.xw > pos.x &&
+                    lowerItem.y < pos.y + newItem.l &&
+                    lowerItem.yl > pos.y) {
+                minImmersiveDepthOfBelow = Math.min(minImmersiveDepthOfBelow, lowerItem.getImmersiveDepth());
+            }
+        }
+
+        return minImmersiveDepthOfBelow;
     }
 }

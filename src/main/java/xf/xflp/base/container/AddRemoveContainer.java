@@ -619,7 +619,8 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		List<Item> lowerItems = getItemsBelow(pos, item);
 		int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
 
-		return item.h - minImmersiveDepth;
+		int newHeight = item.h - minImmersiveDepth;
+		return (newHeight == 0) ? 1 : newHeight;
 	}
 
 	private List<Item> getItemsBelow(Position pos, Item newItem) {

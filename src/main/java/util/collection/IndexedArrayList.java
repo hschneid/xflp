@@ -155,7 +155,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 	}
 
 	public int length() {
-		return length;
+		return super.size();
 	}
 	public int size() {
 		return length;

@@ -4,11 +4,11 @@ import util.collection.LPListMap;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
+import xf.xflp.base.container.constraints.StackingChecker;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.base.item.RotationType;
-import xf.xflp.base.container.constraints.StackingChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;

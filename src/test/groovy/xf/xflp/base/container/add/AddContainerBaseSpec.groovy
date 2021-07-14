@@ -5,7 +5,7 @@ import spock.lang.Specification
 import xf.xflp.base.item.RotatedPosition
 import xf.xflp.base.position.PositionService
 
-class ContainerBaseSpec extends Specification {
+class AddContainerBaseSpec extends Specification {
 
     def "find first position in empty container"() {
         when:

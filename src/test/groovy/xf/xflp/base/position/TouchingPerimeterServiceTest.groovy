@@ -134,8 +134,25 @@ class TouchingPerimeterServiceTest extends Specification {
         f == 12
     }
 
-    def "test touching perimeter (mixed wall and half-height box)"() {
+    def "test touching perimeter (mixed wall and half-height box) AddRemoveContainer"() {
         def con = Helper.getContainer(4,4,4)
+        def i1 = Helper.getItem(1, 4, 1, 1, 1, 0)
+        def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
+
+        when:
+        def pos = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
+        con.add(i1, pos)
+        def pos2 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, i2, pos2, 1, true, true)
+
+        then:
+        pos != null
+        pos2 != null
+        f == 10
+    }
+
+    def "test touching perimeter (mixed wall and half-height box) AddContainer"() {
+        def con = Helper.getAddContainer(4,4,4)
         def i1 = Helper.getItem(1, 4, 1, 1, 1, 0)
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 

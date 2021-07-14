@@ -299,7 +299,7 @@ public class ItemData implements Serializable {
 		i.setExternalIndex(manager.getItemIdx(externID));
 		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
 		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
-		i.setUnLoadingLoc(-1);//manager.getLocationIdx(unloadingLocation),
+		i.setUnLoadingLoc(manager.getLocationIdx(unloadingLocation));
 		i.setW(width);
 		i.setL(length);
 		i.setH(height);

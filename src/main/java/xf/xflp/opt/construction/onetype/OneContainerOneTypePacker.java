@@ -1,7 +1,6 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
@@ -46,7 +45,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		Container container = new AddRemoveContainer(model.getContainerTypes()[0]);
+		Container container = model.getContainerTypes()[0].newInstance();
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 

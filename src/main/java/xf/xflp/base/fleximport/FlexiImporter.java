@@ -159,10 +159,21 @@ public class FlexiImporter implements Serializable {
 		return containerList;
 	}
 	
-	public List<Container> getConvertedContainerList() {
+	public List<Container> getConvertedContainerList(List<Item> items) {
+		boolean isAddingAndRemovingItems = checkForAddRemove(items);
+
 		return containerList.stream()
-				.map(con -> con.create(dataManager))
+				.map(con -> con.create(dataManager, isAddingAndRemovingItems))
 				.collect(Collectors.toList());
+	}
+
+	private boolean checkForAddRemove(List<Item> items) {
+		for (Item item : items) {
+			if(item.getUnLoadingLoc() != -1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public DataManager getDataManager() {

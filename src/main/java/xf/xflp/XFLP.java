@@ -98,15 +98,15 @@ public class XFLP {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No container information were set.");
 		}
 
-		// Container
-		List<Container> containerTypeList = importer.getConvertedContainerList();
 		// Items
-		List<Item> itemList = importer.getConvertedItemList();
-		
-		// Pre-Sort items for logical order (ascending order location index)
-		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
+		List<Item> items = importer.getConvertedItemList();
+		// Container
+		List<Container> containerTypeList = importer.getConvertedContainerList(items);
 
-		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
+		// Pre-Sort items for logical order (ascending order location index)
+		items.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
+
+		return new XFLPModel(items.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
 	}
 
 	/**

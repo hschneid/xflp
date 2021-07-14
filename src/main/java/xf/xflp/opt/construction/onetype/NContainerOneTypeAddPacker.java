@@ -1,7 +1,6 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
@@ -69,7 +68,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	}
 
 	private Container createContainer(XFLPModel model) {
-		return new AddRemoveContainer(model.getContainerTypes()[0]);
+		return model.getContainerTypes()[0].newInstance();
 	}
 
 	private void init(XFLPModel model) {

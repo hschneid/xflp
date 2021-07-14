@@ -1,10 +1,15 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -74,17 +79,29 @@ public class ContainerData implements Serializable {
 		return containerType;
 	}
 
-	Container create(DataManager manager) {
-		Container c = new AddRemoveContainer(
-				width,
-				length,
-				height,
-				maxWeight,
-				manager.getContainerTypeIdx(containerType),
-				GroundContactRule.FREE,
-				1
-		);
+	Container create(DataManager manager, boolean isAddingAndRemovingItems) throws XFLPException {
+		Class<? extends Container> correctContainerClass = (isAddingAndRemovingItems)
+				? AddRemoveContainer.class
+				: AddContainer.class;
 
-		return c;
+		for (Constructor<?> constructor : correctContainerClass.getConstructors()) {
+			if(constructor.getParameterCount() == 7) {
+				try {
+					return (Container) constructor.newInstance(
+							width,
+							length,
+							height,
+							maxWeight,
+							manager.getContainerTypeIdx(containerType),
+							GroundContactRule.FREE,
+							1
+					);
+				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+					throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, e.getMessage(), e);
+				}
+			}
+		}
+
+		throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "Could not find correct constructor for container");
 	}
 }

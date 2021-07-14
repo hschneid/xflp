@@ -11,7 +11,7 @@ package xf.xflp.exception;
  * @author hschneid
  *
  */
-public class XFLPException extends Exception {
+public class XFLPException extends RuntimeException {
 
     private final XFLPExceptionType type;
 

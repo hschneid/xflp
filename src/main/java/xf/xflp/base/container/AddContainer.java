@@ -61,14 +61,15 @@ public class AddContainer implements Container, ContainerBaseData {
 	private int maxPosIdx = 0;
 	private ContainerParameter parameter = new DirectContainerParameter();
 
+	/* Is called by reflection */
 	public AddContainer(
-		int width,
-		int length,
-		int height,
-		float maxWeight,
-		int containerType,
-		GroundContactRule groundContactRule,
-		float lifoImportance
+			int width,
+			int length,
+			int height,
+			float maxWeight,
+			int containerType,
+			GroundContactRule groundContactRule,
+			float lifoImportance
 	) {
 		this.width = width;
 		this.length = length;
@@ -79,6 +80,11 @@ public class AddContainer implements Container, ContainerBaseData {
 		parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
 
 		init();
+	}
+
+	@Override
+	public Container newInstance() {
+		return new AddContainer(this);
 	}
 
 	public AddContainer(Container containerPrototype) {
@@ -416,11 +422,11 @@ public class AddContainer implements Container, ContainerBaseData {
 				.stream()
 				.map(idx -> itemList.get(idx))
 				.filter(lowerItem -> lowerItem.zh == pos.z &&
-								lowerItem.x < pos.x + newItem.w &&
-								lowerItem.xw > pos.x &&
-								lowerItem.y < pos.y + newItem.l &&
-								lowerItem.yl > pos.y
-						)
+						lowerItem.x < pos.x + newItem.w &&
+						lowerItem.xw > pos.x &&
+						lowerItem.y < pos.y + newItem.l &&
+						lowerItem.yl > pos.y
+				)
 				.collect(Collectors.toList());
 	}
 

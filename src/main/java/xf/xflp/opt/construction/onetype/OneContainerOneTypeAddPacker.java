@@ -1,7 +1,6 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
@@ -33,7 +32,7 @@ public class OneContainerOneTypeAddPacker extends XFLPBase {
 	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
-		Container container = new AddRemoveContainer(model.getContainerTypes()[0]);
+		Container container = model.getContainerTypes()[0].newInstance();
 
 		List<Item> unplannedItemList = packer.createLoadingPlan(
 				Arrays.asList(model.getItems()),

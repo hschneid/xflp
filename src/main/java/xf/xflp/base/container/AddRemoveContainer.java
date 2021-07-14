@@ -68,6 +68,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	private int maxPosIdx = 0;
 	private ContainerParameter parameter = new DirectContainerParameter();
 
+	/* Is called by reflection */
 	public AddRemoveContainer(
 		int width,
 		int length,
@@ -86,6 +87,11 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
 
 		init();
+	}
+
+	@Override
+	public Container newInstance() {
+		return new AddRemoveContainer(this);
 	}
 
 	public AddRemoveContainer(Container containerPrototype) {

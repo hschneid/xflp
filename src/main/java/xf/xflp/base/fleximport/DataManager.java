@@ -37,6 +37,7 @@ public class DataManager implements Serializable {
 		containerTypeMap.put("default_container_type", 0);
 		stackingGroupMap.put("default_stacking_group", 0);
 		shipmentMap.put("default_shipment", 0);
+		locationMap.put("", -1);
 	}
 
 	public void add(ItemData itemData) {

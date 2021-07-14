@@ -8,6 +8,12 @@ import java.util.List;
 public interface Container {
 
     /**
+     *  Creates a new container instance. The master data of the called container are initialized.
+     *  The new container is empty.
+     */
+    Container newInstance();
+
+    /**
      * Adds an item at given position to current container.
      * New positions will be created and covered positions get inactive.
      *

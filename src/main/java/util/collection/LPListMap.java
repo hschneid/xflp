@@ -5,7 +5,7 @@ import util.Copyable;
 import java.util.*;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -14,12 +14,12 @@ import java.util.*;
  * 
  * @author Hogo
  *
- * @param <K>
- * @param <E>
+ * @param <K> Key
+ * @param <E> Value
  */
 public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 
-	private HashMap<K, List<E>> map;
+	private final HashMap<K, List<E>> map;
 
 	/**
 	 * 
@@ -28,30 +28,10 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		map = new HashMap<>();
 	}
 
-	/**
-	 * 
-	 * @param size
-	 */
 	public LPListMap(int size) {
 		map = new HashMap<>(size);
 	}
 
-	/**
-	 * 
-	 * @param lm
-	 */
-	public LPListMap(LPListMap<K, E> lm) {
-		map = new HashMap<>(lm.size());
-		for (K k : lm.keySet())
-			put(k, lm.get(k));
-
-	}
-
-	/**
-	 * 
-	 * @param key
-	 * @param element
-	 */
 	public void put(K key, E element) {
 		if(map.containsKey(key)) {
 			map.get(key).add(element);
@@ -62,11 +42,6 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param key
-	 * @param element
-	 */
 	public void putSave(K key, E element) {
 		if(map.containsKey(key) && map.get(key) != null) {
 			map.get(key).add(element);
@@ -77,11 +52,6 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		}
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param list
-	 */
 	public void put(K key, List<E> list) {
 		if(map.containsKey(key) && map.get(key) != null)
 			map.get(key).addAll(list);
@@ -89,11 +59,6 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 			map.put(key, list);
 	}
 	
-	/**
-	 * 
-	 * @param key
-	 * @param list
-	 */
 	public void putSave(K key, List<E> list) {
 		if(list != null) {
 			if(map.containsKey(key) && map.get(key) != null)
@@ -103,29 +68,15 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		}
 	}
 
-	/**
-	 * 
-	 * @param key
-	 */
 	public void remove(K key) {
 		map.remove(key);
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param element
-	 */
 	public void remove(K key, E element) {
 		if(map.containsKey(key))
 			map.get(key).remove(element);
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param element
-	 */
 	public void removeFully(K key, E element) {
 		if(map.containsKey(key)) {
 			map.get(key).remove(element);
@@ -134,45 +85,22 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		}
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @return
-	 */
 	public List<E> get(K key) {
 		return map.get(key);
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @return
-	 */
 	public boolean containsKey(K key) {
 		return map.containsKey(key);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Set<K> keySet() {
 		return map.keySet();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int size() {
 		return map.size();
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @return
-	 */
 	public Iterator<E> iterator(K key) {
 		if(map.containsKey(key))
 			return map.get(key).iterator();
@@ -180,10 +108,6 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see da.util.Copyable#copy()
-	 */
 	@Override
 	public LPListMap<K, E> copy() {
 		LPListMap<K, E> copy = new LPListMap<>(size());
@@ -199,70 +123,37 @@ public class LPListMap<K, E> implements Copyable<LPListMap<K,E>> {
 		return copy;
 	}
 
-	/**
-	 * 
-	 * @param list
-	 * @param e
-	 */
 	public void removeAll(List<K> list, E e) {
 		for (K k : list)
 			removeFully(k, e);
 	}
 
-	/**
-	 * @param list
-	 * @param e
-	 */
 	public void put(List<K> list, E e) {
 		for (K k : list)
 			put(k, e);
 	}
 	
-	/**
-	 * @param list
-	 * @param e
-	 */
 	public void putSave(List<K> list, E e) {
 		for (K k : list)
 			putSave(k, e);
 	}
 
-	/**
-	 * @param key
-	 * @return
-	 */
 	public List<E> getSave(K key) {
 		List<E> l = null;
 		if(map.containsKey(key)) {
-			l = map.get(key);
-			if(l == null) {
-				l = new ArrayList<>();
-				map.put(key, l);
-			}
+			l = map.computeIfAbsent(key, k -> new ArrayList<>());
 		}
 
 		return l;
 	}
-	
-	/**
-	 * @param key
-	 * @return
-	 */
+
 	public List<E> getSave2(K key) {
 		if(map.containsKey(key)) {
-			List<E> l = map.get(key);
-			if(l == null) {
-				l = new ArrayList<>();
-				map.put(key, l);
-			}
-			return l;
+			return map.computeIfAbsent(key, k -> new ArrayList<>());
 		}
 		return new ArrayList<>();
 	}
 	
-	/**
-	 * 
-	 */
 	public void clear() {
 		map.clear();
 	}

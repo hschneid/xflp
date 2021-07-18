@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -50,7 +50,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 			return true;
 		} 
 		
-		e.setIdx(this.size());
+		e.setIdx(super.size());
 		return super.add(e);
 	}
 
@@ -61,9 +61,9 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 	@Override
 	public void add(int index, E e) {
 		length++;
-		if(index >= this.size()) {
+		if(index >= super.size()) {
 			ensureCapacity(index + 10);
-			expand((index - this.size()) + 1);
+			expand((index - super.size()) + 1);
 		}
 		e.setIdx(index);
 		super.set(index, e);
@@ -93,7 +93,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 	 */
 	@Override
 	public E set(int index, E e) {
-		if(index >= this.size()) {
+		if(index >= super.size()) {
 			this.add(index, e);
 		}
 		E oldEntry = super.get(index);
@@ -154,11 +154,10 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int length() {
+		return super.size();
+	}
+	public int size() {
 		return length;
 	}
 
@@ -174,10 +173,6 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		freeIndexCursor = -1;
 	}
 
-	/**
-	 * 
-	 * @param nbr
-	 */
 	private void expand(int nbr) {
 		for (int i = 0; i < nbr; i++) {
 			super.add(null);

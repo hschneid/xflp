@@ -1,13 +1,15 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -24,9 +26,9 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
-			throw new IllegalStateException("List of positions must be not empty or null.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		List<Position> filteredPositions = getPositionWithMinValue(
@@ -35,13 +37,13 @@ public class HighestLowerLeft extends BaseStrategy {
 		);
 
 		if(filteredPositions.isEmpty()) {
-			throw new IllegalStateException("There must be at least one position.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
 		return filteredPositions.get(0);
 	}
 
-	private float getDistance(Position p) {
+	float getDistance(Position p) {
 		if(p == null) {
 			return Float.MAX_VALUE;
 		}

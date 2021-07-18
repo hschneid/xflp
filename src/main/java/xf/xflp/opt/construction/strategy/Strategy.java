@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 /**
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -15,6 +15,7 @@ public enum Strategy {
 
     TOUCHING_PERIMETER(new TouchingPerimeter()),
     HIGH_LOW_LEFT(new HighestLowerLeft()),
+    SAME_BASE(new SameBaseStrategy()),
     WIDTH_PROPORTION(new WidthProportionFactor());
 
     private final BaseStrategy strategy;

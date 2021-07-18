@@ -1,14 +1,14 @@
 package xf.xflp.base;
 
+import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.DataManager;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.item.Item;
 import xf.xflp.report.ContainerReport;
 import xf.xflp.report.LPPackageEvent;
 import xf.xflp.report.LPReport;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -23,19 +23,11 @@ public class XFLPSolution {
 	private final XFLPModel model;
 	private final DataManager dataManager;
 
-	/**
-	 * 
-	 * @param model
-	 */
 	public XFLPSolution(XFLPModel model, DataManager dataManager) {
 		this.model = model;
 		this.dataManager = dataManager;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public LPReport getReport() {
 		LPReport rep = new LPReport();
 		
@@ -57,7 +49,8 @@ public class XFLPSolution {
 				e.setWeight(item.weight);
 				e.setWeightLimit(item.stackingWeightLimit);
 				e.setStackingGrp(item.stackingGroup);
-				e.setUsedVolumeInContainer(item.volume);
+				e.setUsedVolumeInContainer(item.getVolume());
+				e.setUsedWeightInContainer(item.getWeight());
 				cRep.add(e);
 			}
 			

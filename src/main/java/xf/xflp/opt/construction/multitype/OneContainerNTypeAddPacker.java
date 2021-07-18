@@ -1,9 +1,12 @@
 package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionService;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
@@ -11,11 +14,10 @@ import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -39,7 +41,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 	}
 
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		List<Container> containers = getContainers(model);
 
 		List<Item> unplannedItemList = new ArrayList<>();
@@ -67,31 +69,29 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 
-	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) {
-		return containers.stream()
-				.map(con -> {
-					Position bestPosition = getBestInsertPosition(item, con);
-					if(bestPosition != null) {
-						return new ContainerPosition(con, bestPosition);
-					} else {
-						return null;
-					}
-				})
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) throws XFLPException {
+		List<ContainerPosition> containerPositions = new ArrayList<>();
+		for (Container container : containers) {
+			Position bestPosition = getBestInsertPosition(item, container);
+			if(bestPosition != null) {
+				containerPositions.add(new ContainerPosition(container, bestPosition));
+			}
+		}
+
+		return containerPositions;
 	}
 
 	private List<Container> getContainers(XFLPModel model) {
 		return Arrays.stream(model.getContainerTypes())
-				.map(cT -> new Container(cT, model.getParameter().getLifoImportance()))
+				.map(AddRemoveContainer::new)
 				.collect(Collectors.toList());
 	}
 
-	private Position getBestInsertPosition(Item item, Container container) {
+	private Position getBestInsertPosition(Item item, Container container) throws XFLPException {
 		// Check if item is allowed to this container type
 		if (container.isItemAllowed(item)) {
 			// Fetch existing insert positions
-			List<Position> posList = container.getPossibleInsertPositionList(item);
+			List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
 
 			if (!posList.isEmpty()) {
 				// Choose according to select strategy

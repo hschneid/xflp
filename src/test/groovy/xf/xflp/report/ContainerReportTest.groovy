@@ -2,13 +2,12 @@ package xf.xflp.report
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.problem.Container
+import xf.xflp.base.container.Container
 
 class ContainerReportTest extends Specification {
 
     def "Create an empty report"() {
         def con = getContainer(2,2,3)
-        con.setIndex(99)
         def containerTypeName = "C1"
 
         when:
@@ -32,21 +31,21 @@ class ContainerReportTest extends Specification {
         def rep = new ContainerReport('C1', con)
 
         def e = new LPPackageEvent()
-        e.setId("BLUB");
-        e.setX(123);
-        e.setY(456);
-        e.setZ(789);
-        e.setWidth(135);
-        e.setLength(246);
-        e.setHeight(357);
-        e.setStackingGrp(88);
-        e.setWeight(99);
-        e.setWeightLimit(66);
-        e.setInvalid(true);
-        e.setType(PackageEventType.LOAD);
-        e.setUsedVolumeInContainer(1);
+        e.setId("BLUB")
+        e.setX(123)
+        e.setY(456)
+        e.setZ(789)
+        e.setWidth(135)
+        e.setLength(246)
+        e.setHeight(357)
+        e.setStackingGrp(88)
+        e.setWeight(99)
+        e.setWeightLimit(66)
+        e.setInvalid(true)
+        e.setType(PackageEventType.LOAD)
+        e.setUsedVolumeInContainer(1)
         e.setUsedWeightInContainer(222)
-        e.setNbrStacksInContainer(333);
+        e.setNbrStacksInContainer(333)
 
         when:
         rep.add(e)
@@ -66,39 +65,39 @@ class ContainerReportTest extends Specification {
         def rep = new ContainerReport('C1', con)
 
         def eLoad = new LPPackageEvent()
-        eLoad.setId("BLUB");
-        eLoad.setX(123);
-        eLoad.setY(456);
-        eLoad.setZ(789);
-        eLoad.setWidth(135);
-        eLoad.setLength(246);
-        eLoad.setHeight(357);
-        eLoad.setStackingGrp(88);
-        eLoad.setWeight(99);
-        eLoad.setWeightLimit(66);
-        eLoad.setInvalid(true);
-        eLoad.setType(PackageEventType.LOAD);
-        eLoad.setUsedVolumeInContainer(1);
+        eLoad.setId("BLUB")
+        eLoad.setX(123)
+        eLoad.setY(456)
+        eLoad.setZ(789)
+        eLoad.setWidth(135)
+        eLoad.setLength(246)
+        eLoad.setHeight(357)
+        eLoad.setStackingGrp(88)
+        eLoad.setWeight(99)
+        eLoad.setWeightLimit(66)
+        eLoad.setInvalid(true)
+        eLoad.setType(PackageEventType.LOAD)
+        eLoad.setUsedVolumeInContainer(1)
         eLoad.setUsedWeightInContainer(222)
-        eLoad.setNbrStacksInContainer(333);
+        eLoad.setNbrStacksInContainer(333)
         rep.add(eLoad)
 
         def ee = new LPPackageEvent()
-        ee.setId("BLUB");
-        ee.setX(123);
-        ee.setY(456);
-        ee.setZ(789);
-        ee.setWidth(135);
-        ee.setLength(246);
-        ee.setHeight(357);
-        ee.setStackingGrp(88);
-        ee.setWeight(99);
-        ee.setWeightLimit(66);
-        ee.setInvalid(true);
-        ee.setType(PackageEventType.UNLOAD);
-        ee.setUsedVolumeInContainer(1);
+        ee.setId("BLUB")
+        ee.setX(123)
+        ee.setY(456)
+        ee.setZ(789)
+        ee.setWidth(135)
+        ee.setLength(246)
+        ee.setHeight(357)
+        ee.setStackingGrp(88)
+        ee.setWeight(99)
+        ee.setWeightLimit(66)
+        ee.setInvalid(true)
+        ee.setType(PackageEventType.UNLOAD)
+        ee.setUsedVolumeInContainer(1)
         ee.setUsedWeightInContainer(222)
-        ee.setNbrStacksInContainer(333);
+        ee.setNbrStacksInContainer(333)
 
         when:
         rep.add(ee)
@@ -118,21 +117,21 @@ class ContainerReportTest extends Specification {
         def rep = new ContainerReport('C1', con)
 
         def ee = new LPPackageEvent()
-        ee.setId("BLUB");
-        ee.setX(123);
-        ee.setY(456);
-        ee.setZ(789);
-        ee.setWidth(135);
-        ee.setLength(246);
-        ee.setHeight(357);
-        ee.setStackingGrp(88);
-        ee.setWeight(99);
-        ee.setWeightLimit(66);
-        ee.setInvalid(true);
-        ee.setType(PackageEventType.UNLOAD);
-        ee.setUsedVolumeInContainer(1);
+        ee.setId("BLUB")
+        ee.setX(123)
+        ee.setY(456)
+        ee.setZ(789)
+        ee.setWidth(135)
+        ee.setLength(246)
+        ee.setHeight(357)
+        ee.setStackingGrp(88)
+        ee.setWeight(99)
+        ee.setWeightLimit(66)
+        ee.setInvalid(true)
+        ee.setType(PackageEventType.UNLOAD)
+        ee.setUsedVolumeInContainer(1)
         ee.setUsedWeightInContainer(222)
-        ee.setNbrStacksInContainer(333);
+        ee.setNbrStacksInContainer(333)
 
         when:
         rep.add(ee)
@@ -152,38 +151,38 @@ class ContainerReportTest extends Specification {
         def rep = new ContainerReport('C1', con)
 
         def e1 = new LPPackageEvent()
-        e1.setId("BLUB");
-        e1.setX(123);
-        e1.setY(456);
-        e1.setZ(789);
-        e1.setWidth(135);
-        e1.setLength(246);
-        e1.setHeight(357);
-        e1.setStackingGrp(88);
-        e1.setWeight(99);
-        e1.setWeightLimit(66);
-        e1.setInvalid(true);
-        e1.setType(PackageEventType.LOAD);
-        e1.setUsedVolumeInContainer(1);
+        e1.setId("BLUB")
+        e1.setX(123)
+        e1.setY(456)
+        e1.setZ(789)
+        e1.setWidth(135)
+        e1.setLength(246)
+        e1.setHeight(357)
+        e1.setStackingGrp(88)
+        e1.setWeight(99)
+        e1.setWeightLimit(66)
+        e1.setInvalid(true)
+        e1.setType(PackageEventType.LOAD)
+        e1.setUsedVolumeInContainer(1)
         e1.setUsedWeightInContainer(222)
-        e1.setNbrStacksInContainer(333);
+        e1.setNbrStacksInContainer(333)
 
         def e2 = new LPPackageEvent()
-        e2.setId("BLUB");
-        e2.setX(123);
-        e2.setY(456);
-        e2.setZ(789);
-        e2.setWidth(135);
-        e2.setLength(246);
-        e2.setHeight(357);
-        e2.setStackingGrp(88);
-        e2.setWeight(99);
-        e2.setWeightLimit(66);
-        e2.setInvalid(true);
-        e2.setType(PackageEventType.LOAD);
-        e2.setUsedVolumeInContainer(3);
+        e2.setId("BLUB")
+        e2.setX(123)
+        e2.setY(456)
+        e2.setZ(789)
+        e2.setWidth(135)
+        e2.setLength(246)
+        e2.setHeight(357)
+        e2.setStackingGrp(88)
+        e2.setWeight(99)
+        e2.setWeightLimit(66)
+        e2.setInvalid(true)
+        e2.setType(PackageEventType.LOAD)
+        e2.setUsedVolumeInContainer(3)
         e2.setUsedWeightInContainer(444)
-        e2.setNbrStacksInContainer(333);
+        e2.setNbrStacksInContainer(333)
 
         when:
         rep.add(e1)
@@ -201,7 +200,7 @@ class ContainerReportTest extends Specification {
         rep.iterator().size() == 2
     }
 
-    private Container getContainer(int width, int length, int height) {
-        return Helper.getContainer(width, length, height, 999999999);
+    static Container getContainer(int width, int length, int height) {
+        return Helper.getContainer(width, length, height, 999999999)
     }
 }

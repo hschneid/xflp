@@ -1,11 +1,11 @@
 package xf.xflp.base;
 
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
 
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -43,26 +43,14 @@ public class XFLPModel {
 		this.parameter = parameter;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Container[] getContainerTypes() {
 		return containerTypes;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public XFLPParameter getParameter() {
 		return parameter;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Item[] getItems() {
 		return items;
 	}

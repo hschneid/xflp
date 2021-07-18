@@ -1,9 +1,11 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.item.Item;
+
 import java.io.Serializable;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -28,7 +30,8 @@ import java.io.Serializable;
  * @author hschneid
  *
  */
-public abstract class ItemData implements Serializable {
+public class ItemData implements Serializable {
+
 	private static final long serialVersionUID = -8970875565639368202L;
 	
 	protected String externID = "";
@@ -37,6 +40,7 @@ public abstract class ItemData implements Serializable {
 	protected int width = -1;
 	protected int length = -1;
 	protected int height = -1;
+	protected int immersiveDepth = 0;
 	
 	protected float weight = 0;
 	protected float stackingWeightLimit = Float.MAX_VALUE;
@@ -44,15 +48,15 @@ public abstract class ItemData implements Serializable {
 	protected String stackingGroup = "default_stacking_group";
 	protected String allowedStackingGroups = "default_stacking_group";
 	protected String allowedContainerSet = "default_container_type";
+	protected int nbrOfAllowedStackedItems = Item.UNDEF_PARAMETER;
 	
 	protected String loadingLocation = "";
 	protected String unloadingLocation = "";
 	
-	protected boolean spinable = true;
+	protected boolean spinnable = true;
 
 	/**
 	 * @param externID the externID to set
-	 * @return
 	 */
 	public final ItemData setExternID(String externID) {
 		this.externID = externID;
@@ -61,7 +65,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param shipmentID the shipmentID to set
-	 * @return
 	 */
 	public final ItemData setShipmentID(String shipmentID) {
 		this.shipmentID = shipmentID;
@@ -70,7 +73,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param width the width to set
-	 * @return
 	 */
 	public final ItemData setWidth(int width) {
 		this.width = width;
@@ -79,7 +81,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param length the length to set
-	 * @return
 	 */
 	public final ItemData setLength(int length) {
 		this.length = length;
@@ -88,7 +89,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param height the height to set
-	 * @return
 	 */
 	public final ItemData setHeight(int height) {
 		this.height = height;
@@ -97,7 +97,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param weight the weight to set
-	 * @return
 	 */
 	public final ItemData setWeight(float weight) {
 		this.weight = weight;
@@ -106,7 +105,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param stackingWeightLimit the stackingWeightLimit to set
-	 * @return
 	 */
 	public final ItemData setStackingWeightLimit(float stackingWeightLimit) {
 		this.stackingWeightLimit = stackingWeightLimit;
@@ -115,7 +113,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param stackingGroup the stackingGroup to set
-	 * @return
 	 */
 	public final ItemData setStackingGroup(String stackingGroup) {
 		this.stackingGroup = stackingGroup;
@@ -124,7 +121,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param allowedStackingGroups the allowedStackingGroups to set
-	 * @return
 	 */
 	public final ItemData setAllowedStackingGroups(String allowedStackingGroups) {
 		this.allowedStackingGroups = allowedStackingGroups;
@@ -133,7 +129,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param allowedContainerSet the allowedContainerSet to set
-	 * @return
 	 */
 	public final ItemData setAllowedContainerSet(String allowedContainerSet) {
 		this.allowedContainerSet = allowedContainerSet;
@@ -142,7 +137,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param loadingLocation the loadingLocation to set
-	 * @return
 	 */
 	public final ItemData setLoadingLocation(String loadingLocation) {
 		this.loadingLocation = loadingLocation;
@@ -151,7 +145,6 @@ public abstract class ItemData implements Serializable {
 
 	/**
 	 * @param unloadingLocation the unloadingLocation to set
-	 * @return
 	 */
 	public final ItemData setUnloadingLocation(String unloadingLocation) {
 		this.unloadingLocation = unloadingLocation;
@@ -159,11 +152,166 @@ public abstract class ItemData implements Serializable {
 	}
 
 	/**
-	 * @param spinable the spinable to set
-	 * @return
+	 * @param spinnable the spinnable to set
 	 */
-	public final ItemData setSpinable(boolean spinable) {
-		this.spinable = spinable;
+	public final ItemData setSpinnable(boolean spinnable) {
+		this.spinnable = spinnable;
 		return this;
+	}
+
+	/**
+	 * @param nbrOfAllowedStackedItems is the number of allowed items below this item,
+	 *                                 when it will be stacked. 1 means, that this item must
+	 *                                 be stacked only one one other item.
+	 */
+	public final ItemData setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
+		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
+		return this;
+	}
+
+	/**
+	 * @param immersiveDepth - If items have special form groups at the top or bottom (shoulder or feet), then
+	 *                       during stacking the lower and upper item dives into each other and the overall height
+	 *                       is reduced. The amount of reduced height by diving into each other is the immersive depth.
+	 */
+	public void setImmersiveDepth(int immersiveDepth) {
+		this.immersiveDepth = immersiveDepth;
+	}
+
+	/////////////////////////////////////////////////////////////
+
+	/**
+	 * @return the externID
+	 */
+	String getExternID() {
+		return externID;
+	}
+
+	/**
+	 * @return the shipmentID
+	 */
+	String getShipmentID() {
+		return shipmentID;
+	}
+
+	/**
+	 * @return the width
+	 */
+	int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return the length
+	 */
+	int getLength() {
+		return length;
+	}
+
+	/**
+	 * @return the height
+	 */
+	int getHeight() {
+		return height;
+	}
+
+	/**
+	 * @return the weight
+	 */
+	float getWeight() {
+		return weight;
+	}
+
+	/**
+	 * @return the stackingWeightLimit
+	 */
+	float getStackingWeightLimit() {
+		return stackingWeightLimit;
+	}
+
+	/**
+	 * @return the stackingGroup
+	 */
+	String getStackingGroup() {
+		return stackingGroup;
+	}
+
+	/**
+	 * @return the allowedStackingGroups
+	 */
+	String getAllowedStackingGroups() {
+		return allowedStackingGroups;
+	}
+
+	/**
+	 * @return the allowedContainerSet
+	 */
+	String getAllowedContainerTypes() {
+		return allowedContainerSet;
+	}
+
+	/**
+	 * @return the loadingLocation
+	 */
+	String getLoadingLocation() {
+		return loadingLocation;
+	}
+
+	/**
+	 * @return the unloadingLocation
+	 */
+	String getUnloadingLocation() {
+		return unloadingLocation;
+	}
+
+	int getImmersiveDepth() {
+		return immersiveDepth;
+	}
+
+	/**
+	 * @return the spinnable
+	 */
+	boolean isSpinable() {
+		return spinnable;
+	}
+
+	public Item createLoadingItem(DataManager manager) {
+		Item i = createItem(manager);
+		i.setLoading(true); // is Loading
+
+		i.postInit();
+
+		return i;
+	}
+
+	public Item createUnLoadingItem(DataManager manager) {
+		Item i = createItem(manager);
+		i.setLoading(false); // is Unloading
+
+		i.postInit();
+
+		return i;
+	}
+
+	private Item createItem(DataManager manager) {
+		Item i = new Item();
+
+		i.setExternalIndex(manager.getItemIdx(externID));
+		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
+		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
+		i.setUnLoadingLoc(manager.getLocationIdx(unloadingLocation));
+		i.setW(width);
+		i.setL(length);
+		i.setH(height);
+		i.setWeight(weight);
+		i.setStackingWeightLimit(stackingWeightLimit);
+		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));
+		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
+		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
+		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
+		i.setImmersiveDepth(immersiveDepth);
+		i.setSpinable(spinnable);
+
+		return i;
 	}
 }

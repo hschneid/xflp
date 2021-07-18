@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-	id "com.github.spotbugs" version "4.7.0"
+	id "com.github.spotbugs" version "4.7.1"
 }
 
 apply plugin:'java'
@@ -18,7 +18,7 @@ apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.3.2-SNAPSHOT'
+version = '0.5.0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
  
@@ -118,6 +118,14 @@ signing {
 }
 
 // Example to configure HTML report
+spotbugs {
+	ignoreFailures = true
+	// showStackTraces = false
+	// showProgress = true
+	// effort = 'default'
+	// reportLevel = 'default'
+}
+
 spotbugsMain {
 	reports {
 		html {

@@ -1,8 +1,9 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -28,10 +29,10 @@ public class OneContainerOneTypeAddPacker extends XFLPBase {
 	private ZSingleBinAddPacker packer;
 
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
-		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
+		Container container = model.getContainerTypes()[0].newInstance();
 
 		List<Item> unplannedItemList = packer.createLoadingPlan(
 				Arrays.asList(model.getItems()),

@@ -3,24 +3,23 @@ package xf.xflp;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.XFLPSolution;
+import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.fleximport.FlexiImporter;
-import xf.xflp.base.fleximport.InternalItemData;
 import xf.xflp.base.fleximport.ItemData;
+import xf.xflp.base.item.Item;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.monitor.StatusMonitor;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 import xf.xflp.opt.XFLPOptType;
 import xf.xflp.report.LPReport;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -83,7 +82,7 @@ public class XFLP {
 	 * for optimization.
 	 * 
 	 * @return Returns a model, which can be used for optimization procedures.
-	 * @throws XFLPException
+	 * @throws XFLPException Is thrown, when given data is incorrect or missing
 	 */
 	private XFLPModel init() throws XFLPException {
 		statusManager.fireMessage(StatusCode.RUNNING, "Initialisation");
@@ -91,33 +90,53 @@ public class XFLP {
 		// Check input data
 		if(importer.getItemList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No items are given.");
-			throw new XFLPException("No items are given.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No items are given.");
 		}
 		if(importer.getContainerList().isEmpty()) {
 			statusManager.fireMessage(StatusCode.ABORT, "No container information were set.");
-			throw new XFLPException("No container information were set.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No container information were set.");
 		}
 
-		// Copy imported data to internal data structure
-		// Container
-		List<Container> containerTypeList = importer.getConvertedContainerList();
 		// Items
-		List<Item> itemList = new ArrayList<>();
-		{
-			// Transform imported items into loading and unloading items
-			List<InternalItemData> itemDataList = importer.getItemList();
-			
-			for (InternalItemData iD : itemDataList) {
-				itemList.add(iD.createLoadingItem(importer.getDataManager()));
-				if(iD.getUnloadingLocation().length() > 0)
-					itemList.add(iD.createUnLoadingItem(importer.getDataManager()));
+		List<Item> items = importer.getConvertedItemList();
+
+		// Container
+		List<Container> containerTypeList = importer.getConvertedContainerList(items);
+
+		// Check phase
+		checkItems(items, containerTypeList);
+
+		return new XFLPModel(items.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
+	}
+
+	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {
+		double maxWeightCapacity = containerTypeList.stream().mapToDouble(Container::getMaxWeight).max().orElse(Double.MAX_VALUE);
+		for (Item item : itemList) {
+			if(item.w == 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Width of item must be greater 0 : Item " + item.externalIndex);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Width of item must be greater 0 : Item " + item.externalIndex);
+			}
+			if(item.l == 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Length of item must be greater 0 : Item " + item.externalIndex);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Length of item must be greater 0 : Item " + item.externalIndex);
+			}
+			if(item.h == 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Height of item must be greater 0 : Item " + item.externalIndex);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Height of item must be greater 0 : Item " + item.externalIndex);
+			}
+			if(item.immersiveDepth < 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
+			}
+			if(item.h - item.immersiveDepth <= 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
+			}
+			if(item.weight > maxWeightCapacity) {
+				statusManager.fireMessage(StatusCode.ABORT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
 			}
 		}
-		
-		// Pre-Sort items for logical order (ascending order location index)
-		itemList.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
-
-		return new XFLPModel(itemList.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
 	}
 
 	/**

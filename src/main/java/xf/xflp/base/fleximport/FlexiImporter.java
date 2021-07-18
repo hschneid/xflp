@@ -1,13 +1,17 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -30,13 +34,13 @@ import java.util.List;
 public class FlexiImporter implements Serializable {
 	private static final long serialVersionUID = -6460880073124361069L;
 
-	private DataManager dataManager = new DataManager();
+	private final DataManager dataManager = new DataManager();
 	
-	private List<InternalItemData> itemList = new ArrayList<>();
-	private List<InternalContainerData> containerList = new ArrayList<>();
+	private final List<ItemData> itemList = new ArrayList<>();
+	private final List<ContainerData> containerList = new ArrayList<>();
 
-	private InternalItemData lastItemData = null;
-	private InternalContainerData lastContainerData = null;
+	private ItemData lastItemData = null;
+	private ContainerData lastContainerData = null;
 
 	/**
 	 * If XFLP suite begins execution, the import process is finished
@@ -67,7 +71,7 @@ public class FlexiImporter implements Serializable {
 			itemList.add(lastItemData);
 		}
 
-		lastItemData = new InternalItemData();
+		lastItemData = new ItemData();
 
 		return lastItemData;
 	}
@@ -89,7 +93,7 @@ public class FlexiImporter implements Serializable {
 			containerList.add(lastContainerData);
 		}
 
-		lastContainerData = new InternalContainerData();
+		lastContainerData = new ContainerData();
 
 		return lastContainerData;
 	}
@@ -128,35 +132,50 @@ public class FlexiImporter implements Serializable {
 	 * 
 	 * @return the collected depots
 	 */
-	public List<InternalItemData> getItemList() {
+	public List<ItemData> getItemList() {
 		return itemList;
+	}
+
+	/**
+	 * Transform imported items into loading and unloading items
+	 */
+	public List<Item> getConvertedItemList() {
+		return itemList.stream()
+				.flatMap(itemData -> {
+					Item i1 = itemData.createLoadingItem(dataManager);
+					if(itemData.getUnloadingLocation().length() > 0)
+						return Stream.of(i1, itemData.createUnLoadingItem(dataManager));
+					return Stream.of(i1);
+				})
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
 	/**
 	 * 
 	 * @return the collected vehicles
 	 */
-	public List<InternalContainerData> getContainerList() {
+	public List<ContainerData> getContainerList() {
 		return containerList;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Container> getConvertedContainerList() {
-		List<Container> list = new ArrayList<>();
-		
-		for (InternalContainerData con : containerList)
-			list.add(con.create(dataManager));
-		
-		return list;
+	public List<Container> getConvertedContainerList(List<Item> items) {
+		boolean isAddingAndRemovingItems = checkForAddRemove(items);
+
+		return containerList.stream()
+				.map(con -> con.create(dataManager, isAddingAndRemovingItems))
+				.collect(Collectors.toList());
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
+	private boolean checkForAddRemove(List<Item> items) {
+		for (Item item : items) {
+			if(item.getUnLoadingLoc() != -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public DataManager getDataManager() {
 		return dataManager;
 	}

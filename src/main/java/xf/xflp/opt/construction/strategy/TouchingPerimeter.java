@@ -1,13 +1,16 @@
 package xf.xflp.opt.construction.strategy;
 
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.position.TouchingPerimeterService;
+import xf.xflp.exception.XFLPException;
+import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -31,16 +34,17 @@ public class TouchingPerimeter extends BaseStrategy {
 	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) {
+	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
-			throw new IllegalStateException("List of positions must be not empty or null.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		List<Position> filteredPositions = getPositionWithMinValue(
 				posList,
 				(Position p) ->
 						// Negative to find min value
-						-container.getTouchingPerimeter(
+						-TouchingPerimeterService.getTouchingPerimeter(
+								container,
 								item,
 								p,
 								1,
@@ -53,7 +57,7 @@ public class TouchingPerimeter extends BaseStrategy {
 		if(filteredPositions.size() == 1) {
 			return filteredPositions.get(0);
 		} else if(filteredPositions.isEmpty()) {
-			throw new IllegalStateException("There must be at least one position.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		} else {
 			return fallbackStrategy.choose(item, container, filteredPositions);
 		}

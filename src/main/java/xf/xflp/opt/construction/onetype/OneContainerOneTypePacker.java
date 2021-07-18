@@ -1,9 +1,11 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionService;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.HighestLowerLeft;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -42,8 +44,8 @@ public class OneContainerOneTypePacker extends XFLPBase {
 	}
 
 	@Override
-	public void execute(XFLPModel model) {
-		Container container = new Container(model.getContainerTypes()[0], model.getParameter().getLifoImportance());
+	public void execute(XFLPModel model) throws XFLPException {
+		Container container = model.getContainerTypes()[0].newInstance();
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
@@ -62,7 +64,7 @@ public class OneContainerOneTypePacker extends XFLPBase {
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<Position> posList = container.getPossibleInsertPositionList(item);
+					List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
 
 					if(!posList.isEmpty()) {
 						// Choose according to select strategy

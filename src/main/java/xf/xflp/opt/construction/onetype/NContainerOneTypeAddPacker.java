@@ -1,8 +1,9 @@
 package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -40,7 +41,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	 * @see de.fhg.iml.vlog.xflp.opt.XFLPBase#execute(de.fhg.iml.vlog.xflp.base.XFLPModel)
 	 */
 	@Override
-	public void execute(XFLPModel model) {
+	public void execute(XFLPModel model) throws XFLPException {
 		init(model);
 
 		List<Container> containerList = new ArrayList<>();
@@ -50,8 +51,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx)) {
 			// Create new container
 			Container currentContainer = createContainer(model);
-			currentContainer.setIndex(containerIdx++);
-		
+
 			// Try to pack all unplanned items into the current empty container. The order
 			// of items is untouched by this planning. Each unplanned item will be checked.
 			unpackedItems = packer.createLoadingPlan(unpackedItems, currentContainer);
@@ -68,8 +68,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	}
 
 	private Container createContainer(XFLPModel model) {
-		Container containerType = model.getContainerTypes()[0];
-		return new Container(containerType, containerType.getLifoImportance());
+		return model.getContainerTypes()[0].newInstance();
 	}
 
 	private void init(XFLPModel model) {

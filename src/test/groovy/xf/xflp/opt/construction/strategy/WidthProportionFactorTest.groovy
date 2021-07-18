@@ -1,14 +1,16 @@
 package xf.xflp.opt.construction.strategy
 
+import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.problem.Container
-import xf.xflp.base.problem.Item
-import xf.xflp.base.problem.Position
-import xf.xflp.base.problem.RotatedPosition
+import xf.xflp.base.item.Item
+import xf.xflp.base.item.Position
+import xf.xflp.base.item.RotatedPosition
+import xf.xflp.exception.XFLPException
 
 class WidthProportionFactorTest extends Specification {
 
     def service = new WidthProportionFactor()
+    def container = Helper.getContainer(240, 1000, 1)
 
     def "choose min proportion - one pos wins"() {
         def item = new Item()
@@ -17,7 +19,6 @@ class WidthProportionFactorTest extends Specification {
         def item2 = new Item()
         item2.l = 100
         item2.w = 80
-        def container = new Container(length: 1000, width: 240)
         def posList = [
                 new Position(1,1),
                 new RotatedPosition(new Position(1,1))
@@ -33,7 +34,6 @@ class WidthProportionFactorTest extends Specification {
 
     def "choose min proportion - one position"() {
         def item = new Item()
-        def container = new Container(length: 1000, width: 240)
         def posList = [
                 new Position(1,1)
         ]
@@ -45,11 +45,9 @@ class WidthProportionFactorTest extends Specification {
 
     def "choose min proportion - zero positions"() {
         def item = new Item()
-        def container = new Container(length: 1000, width: 240)
-
         when:
         service.choose(item, container, [])
         then:
-        thrown(IllegalStateException)
+        thrown(XFLPException)
     }
 }

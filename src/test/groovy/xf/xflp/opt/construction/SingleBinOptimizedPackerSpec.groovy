@@ -5,8 +5,8 @@ import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.problem.Container
-import xf.xflp.base.problem.Item
+import xf.xflp.base.container.Container
+import xf.xflp.base.item.Item
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker
 
 class SingleBinOptimizedPackerSpec extends Specification {
@@ -51,7 +51,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
-    private List<Item> getHardScenario() {
+    static List<Item> getHardScenario() {
         return [
                 Helper.getItem(2, 2, 1, 3, 3, 1),
                 Helper.getItem(2, 2, 1, 3, 3, 1),

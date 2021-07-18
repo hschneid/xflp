@@ -50,6 +50,7 @@ Temporary Items
 /build/
 /out/
 /classes/
+/doc/
 *.iml
 
 # Hidden credentials

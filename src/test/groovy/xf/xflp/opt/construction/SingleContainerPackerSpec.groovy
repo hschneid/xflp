@@ -4,24 +4,20 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
-import xf.xflp.base.problem.Container
-import xf.xflp.base.problem.Item
+import xf.xflp.base.container.Container
+import xf.xflp.base.item.Item
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
 class SingleContainerPackerSpec extends Specification {
 
     def service = new OneContainerOneTypePacker()
 
-    def "test only adding - sucessfull"() {
+    def "test only adding - successful"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 27; i++)
             items.add(Helper.getItem(1,1,1,1,3,0))
 
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 3, 3, 3)
 
         when:
         service.execute(model)
@@ -35,11 +31,7 @@ class SingleContainerPackerSpec extends Specification {
         for (int i = 0; i < 28; i++)
             items.add(Helper.getItem(1,1,1,1,3,0))
 
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 3, 3, 3)
 
         when:
         service.execute(model)
@@ -53,11 +45,7 @@ class SingleContainerPackerSpec extends Specification {
         for (int i = 0; i < 18; i++)
             items.add(Helper.getItem(2,1,1,1,3,0))
 
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 4, 3, 3)
 
         when:
         service.execute(model)
@@ -74,11 +62,7 @@ class SingleContainerPackerSpec extends Specification {
             items.add(Helper.getItem(1,1,1,1,3,0))
 
         Collections.shuffle(items, new Random(1234))
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 4, 3, 3)
 
         when:
         service.execute(model)
@@ -95,11 +79,7 @@ class SingleContainerPackerSpec extends Specification {
             items.add(Helper.getItem(1,1,1,1,3,0))
 
         items.sort({i,j -> (j.w*j.l) - (i.w*i.l)})
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(4,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 4, 3, 3)
 
         when:
         service.execute(model)
@@ -118,16 +98,21 @@ class SingleContainerPackerSpec extends Specification {
             items.add(Helper.getItem(1,1,1,1,3,4))
 
         Collections.shuffle(items, new Random(1234))
-        XFLPModel model = new XFLPModel(
-                items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3)] as Container[],
-                new XFLPParameter()
-        )
+        XFLPModel model = getModel(items, 3, 3, 3)
 
         when:
         service.execute(model)
         then:
         model.containers.length == 1
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+    }
+
+    static XFLPModel getModel(ArrayList<Item> items, width, length, height) {
+        XFLPModel model = new XFLPModel(
+                items.toArray(new Item[0]),
+                [Helper.getContainer(width, length, height)] as Container[],
+                new XFLPParameter()
+        )
+        return model
     }
 }

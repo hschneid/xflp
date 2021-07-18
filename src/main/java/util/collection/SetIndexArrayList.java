@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -118,10 +118,6 @@ public class SetIndexArrayList<E> extends ArrayList<E> {
 		throw new UnsupportedOperationException();
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public int length() {
 		return length;
 	}
@@ -136,10 +132,6 @@ public class SetIndexArrayList<E> extends ArrayList<E> {
 		length = 0;
 	}
 	
-	/**
-	 * 
-	 * @param nbr
-	 */
 	private void expand(int nbr) {
 		for (int i = 0; i < nbr; i++) {
 			super.add(null);

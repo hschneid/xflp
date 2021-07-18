@@ -1,8 +1,10 @@
 package xf.xflp.opt.construction.onetype;
 
-import xf.xflp.base.problem.Container;
-import xf.xflp.base.problem.Item;
-import xf.xflp.base.problem.Position;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionService;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -36,7 +38,7 @@ public class ZSingleBinAddPacker {
 		this.strategy = s.getStrategy();
 	}
 
-	public List<Item> createLoadingPlan(List<Item> items, Container container) {
+	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItemList = new ArrayList<>();
 
 		// Reset eventual presets
@@ -48,7 +50,7 @@ public class ZSingleBinAddPacker {
 			// Check if item is allowed to this container type
 			if (container.isItemAllowed(item)) {
 				// Fetch existing insert positions
-				List<Position> posList = container.getPossibleInsertPositionList(item);
+				List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
 
 				if (!posList.isEmpty()) {
 					// Choose according to select strategy

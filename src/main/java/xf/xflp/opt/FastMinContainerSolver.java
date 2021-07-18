@@ -1,10 +1,11 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
+import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.onetype.NContainerOneTypeAddPacker;
 
 /**
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -19,7 +20,7 @@ public class FastMinContainerSolver extends XFLPBase {
     private final NContainerOneTypeAddPacker packer = new NContainerOneTypeAddPacker();
 
     @Override
-    public void execute(XFLPModel model) {
+    public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
     }
 }

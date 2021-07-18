@@ -1,10 +1,10 @@
 package xf.xflp.report;
 
-import xf.xflp.base.problem.Container;
+import xf.xflp.base.container.Container;
 
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -27,7 +27,7 @@ public class ContainerReportSummary {
 	private float maxUsedWeight = 0;
 
 	public ContainerReportSummary(Container con) {
-		maxVolume = con.getMaxVolume();
+		maxVolume = con.getHeight() * con.getLength() * con.getWidth();
 	}
 	
 	public void add(LPPackageEvent e) {

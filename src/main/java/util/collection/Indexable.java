@@ -1,7 +1,7 @@
 package util.collection;
 
 /** 
- * Copyright (c) 2012-present Holger Schneider
+ * Copyright (c) 2012-2021 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -13,15 +13,7 @@ package util.collection;
  */
 public interface Indexable {
 
-	/**
-	 * 
-	 * @return
-	 */
-	public int getIdx();
-	
-	/**
-	 * 
-	 * @param idx
-	 */
-	public void setIdx(int idx);
+	int getIdx();
+
+	void setIdx(int idx);
 }

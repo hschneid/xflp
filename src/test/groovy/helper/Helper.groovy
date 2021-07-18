@@ -1,66 +1,89 @@
 package helper
 
+import xf.xflp.base.container.AddContainer
+import xf.xflp.base.container.AddRemoveContainer
+import xf.xflp.base.container.Container
+import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.fleximport.ContainerData
-import xf.xflp.base.problem.*
+import xf.xflp.base.item.Item
+import xf.xflp.base.item.Position
+import xf.xflp.base.item.RotatedPosition
 
 class Helper {
 
-    static int itemIdx = 0;
+    static int itemIdx = 0
 
     static Container getContainer(int width, int length, int height) {
-        return getContainer(width, length, height, 999999999);
+        return getContainer(width, length, height, 999999999)
     }
 
     static Container getContainer(int width, int length, int height, float maxWeight) {
-        Container c = new Container();
+        return new AddRemoveContainer(
+                width,
+                length,
+                height,
+                maxWeight,
+                ContainerData.DEFAULT_CONTAINER_TYPE,
+                GroundContactRule.FREE,
+                0
+        )
+    }
 
-        c.setWidth(width);
-        c.setLength(length);
-        c.setHeight(height);
-        c.setMaxWeight(maxWeight);
-        c.setContainerType(ContainerData.DEFAULT_CONTAINER_TYPE);
-        c.setLifoImportance(0);
-        c.setGroundContactRule(GroundContactRule.FREE);
+    static Container getAddContainer(int width, int length, int height) {
+        return getContainer(width, length, height, 999999999)
+    }
 
-        c.init();
-
-        return c;
+    static Container getAddContainer(int width, int length, int height, float maxWeight) {
+        return new AddContainer(
+                width,
+                length,
+                height,
+                maxWeight,
+                ContainerData.DEFAULT_CONTAINER_TYPE,
+                GroundContactRule.FREE,
+                0
+        )
     }
 
     static Item getItem(int w, int l, int h, int ww, long wC, int sG) {
-        return getItem(w, l, h, ww, wC, sG, Math.max(1,sG));
+        return getItem(w, l, h, ww, wC, sG, Math.max(1,sG))
     }
 
     static Item getItem(int w, int l, int h, int ww, long wC, int sG, int allowedSG) {
-        Set<Integer> set = new HashSet<>();
-        set.add(0);
+        return getItem(w, l, h, ww, wC, sG, allowedSG, -1)
+    }
 
-        Item i = new Item();
+    static Item getItem(int w, int l, int h, int ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
+        Set<Integer> set = new HashSet<>()
+        set.add(0)
 
-        i.setExternalIndex(itemIdx);
-        i.setOrderIndex(itemIdx);
-        i.setLoadingLoc(itemIdx);
-        i.setUnLoadingLoc(itemIdx + 1);//manager.getLocationIdx(unloadingLocation),
-        i.setW(w);
-        i.setL(l);
-        i.setH(h);
-        i.setWeight(ww);
-        i.setStackingWeightLimit(wC);
-        i.setAllowedContainerSet(set);
-        i.setStackingGroup(Math.max(1,sG));
-        i.setStackingGroup(Math.max(1,sG));
-        i.setAllowedStackingGroups(allowedSG);
-        i.setSpinable(true);
-        i.setLoading(true);
+        Item i = new Item()
+
+        i.setExternalIndex(itemIdx)
+        i.setOrderIndex(itemIdx)
+        i.setLoadingLoc(itemIdx)
+        i.setUnLoadingLoc(itemIdx + 1)
+        i.setW(w)
+        i.setL(l)
+        i.setH(h)
+        i.setWeight(ww)
+        i.setStackingWeightLimit(wC)
+        i.setAllowedContainerSet(set)
+        i.setStackingGroup(Math.max(1,sG))
+        i.setStackingGroup(Math.max(1,sG))
+        i.setAllowedStackingGroups(allowedSG)
+        i.setNbrOfAllowedStackedItems(nbrAllowedStackItems)
+        i.setSpinable(true)
+        i.setLoading(true)
         i.postInit()
 
-        itemIdx++;
+        itemIdx++
 
-        return i;
+        return i
     }
 
     static Position findPos(Collection<Position> pList, int x, int y, int z) {
-        return findPos(pList, x, y, z, false);
+        return findPos(pList, x, y, z, false)
     }
 
     static Position findPos(Collection<Position> pList, int x, int y, int z, boolean rotated) {
@@ -68,9 +91,9 @@ class Helper {
             if(position.getX() == x && position.getY() == y && position.getZ() == z)
                 if((rotated && position instanceof RotatedPosition)
                         || (!rotated && !(position instanceof RotatedPosition)))
-                    return position;
+                    return position
         }
 
-        return null;
+        return null
     }
 }

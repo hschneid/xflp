@@ -83,4 +83,8 @@ public class Position {
 	public int hashCode() {
 		return idx;
 	}
+
+	public String getKey() {
+		return x+"/"+y+"/"+z;
+	}
 }

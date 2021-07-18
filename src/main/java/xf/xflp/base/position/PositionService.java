@@ -131,7 +131,7 @@ public class PositionService {
 
         int minImmersiveDepth = getMinImmersiveDepthOfBelow(pos, item, container);
         int newHeight = item.h - minImmersiveDepth;
-        return (newHeight == 0) ? 1 : newHeight;
+        return (newHeight <= 0) ? 1 : newHeight;
     }
 
     private static int getMinImmersiveDepthOfBelow(Position pos, Item newItem, Container container) {

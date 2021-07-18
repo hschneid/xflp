@@ -50,6 +50,7 @@ public class XFLPSolution {
 				e.setWeightLimit(item.stackingWeightLimit);
 				e.setStackingGrp(item.stackingGroup);
 				e.setUsedVolumeInContainer(item.getVolume());
+				e.setUsedWeightInContainer(item.getWeight());
 				cRep.add(e);
 			}
 			

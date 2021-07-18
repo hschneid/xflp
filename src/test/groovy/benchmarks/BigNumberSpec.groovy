@@ -1,9 +1,10 @@
 package benchmarks
 
-
+import spock.lang.Ignore
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
+import xf.xflp.report.StringReportWriter
 
 import java.util.stream.Collectors
 
@@ -12,18 +13,21 @@ class BigNumberSpec extends Specification {
     XFLP service
     def random = new Random(1234)
 
+    @Ignore
     def "1000 boxes"() {
         when:
         long time = System.currentTimeMillis()
+        def result
         for (i in 0..< 100) {
             fillService()
             service.executeLoadPlanning()
-            def result = service.getReport()
+            result = service.getReport()
             println i + " : " + result.getSummary().getUtilization()
         }
         println "Runtime: " + (System.currentTimeMillis() - time) + " ms"
         then:
 
+        println new StringReportWriter().write(result)
         // Vol of boxes <16000
         // Vol of container 15000
         assert true
@@ -32,10 +36,10 @@ class BigNumberSpec extends Specification {
     private void fillService() {
         service = new XFLP()
 
-        service.addContainer().setWidth(410).setLength(200).setHeight(70).setMaxWeight(10000)
+        service.addContainer().setWidth(200).setLength(100).setHeight(70).setMaxWeight(999999)
         service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000; i++) {
             int w = randInt(1, 40)
             int l = randInt(1, 20)
             int h = randInt(1, 20)

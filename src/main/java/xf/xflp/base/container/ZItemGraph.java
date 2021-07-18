@@ -129,6 +129,7 @@ public class ZItemGraph {
 	public List<Item> getCeilItems(Item newItem, List<Item> itemList) {
 		boolean[] foundBase = new boolean[lowerList.size()];
 		boolean[] foundCeil = new boolean[lowerList.size()];
+
 		// Search base items (related items at the ground of container)
 		searchBaseRecursive(newItem, foundBase);
 

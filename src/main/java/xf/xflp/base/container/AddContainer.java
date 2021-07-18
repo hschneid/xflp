@@ -39,6 +39,8 @@ public class AddContainer implements Container, ContainerBaseData {
 	private float weight = 0;
 
 	private final IndexedArrayList<Item> itemList = new IndexedArrayList<>();
+
+	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final List<Position> activePosList = new ArrayList<>();
 
 	private final LPListMap<Integer, Integer> xMap = new LPListMap<>();
@@ -122,7 +124,7 @@ public class AddContainer implements Container, ContainerBaseData {
 			for (Position projPos : projVPosList) {
 				Item s = positionItemMap.get(projPos);
 				tmpPosition.setXY(s.xw, s.y);
-				Item lowerItem = findNextLowerElement(tmpPosition);
+				Item lowerItem = findNextDeeperElement(tmpPosition);
 				// Projeziere diese Position komplett neu von ihrem Objekt aus
 				// Ersetze dabei nur die x-y-Koordinaten
 				projPos.y = (lowerItem != null) ? lowerItem.yl : 0;
@@ -134,7 +136,12 @@ public class AddContainer implements Container, ContainerBaseData {
 		// Erzeuge neue Einf�ge-Punkte und f�ge sie in Tree ein
 		List<Position> newPosList = findInsertPositions(item);
 		for (Position newPos : newPosList) {
+			if(uniquePositionKeys.contains(newPos.getKey())) {
+				continue;
+			}
+
 			activePosList.add(newPos);
+			uniquePositionKeys.add(newPos.getKey());
 			// Diese Position wurde von diesem Item erzeugt.
 			positionItemMap.put(newPos, item);
 		}
@@ -255,6 +262,7 @@ public class AddContainer implements Container, ContainerBaseData {
 
 		for (Position position : coveredPositionList) {
 			activePosList.remove(position);
+			uniquePositionKeys.remove(position.getKey());
 		}
 	}
 
@@ -316,6 +324,7 @@ public class AddContainer implements Container, ContainerBaseData {
 
 		// Active position gets inactive by adding item
 		activePosList.remove(pos);
+		uniquePositionKeys.remove(pos.getKey());
 	}
 
 	/**
@@ -344,7 +353,7 @@ public class AddContainer implements Container, ContainerBaseData {
 			}
 
 			if(item.y > 0 && horizontalPosition != null) {
-				Item lowerElement = findNextLowerElement(horizontalPosition);
+				Item lowerElement = findNextDeeperElement(horizontalPosition);
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
 				posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V, false));
 			}
@@ -377,7 +386,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private Item findNextLowerElement(Position pos) {
+	private Item findNextDeeperElement(Position pos) {
 		Item lowerItem = null;
 
 		for (Item item : itemList) {
@@ -411,7 +420,7 @@ public class AddContainer implements Container, ContainerBaseData {
 		int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
 
 		int newHeight = item.h - minImmersiveDepth;
-		return (newHeight == 0) ? 1 : newHeight;
+		return (newHeight <= 0) ? 1 : newHeight;
 	}
 
 	private List<Item> getItemsBelow(Position pos, Item newItem) {

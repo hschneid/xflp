@@ -16,7 +16,6 @@ import xf.xflp.exception.XFLPExceptionType;
 import xf.xflp.opt.XFLPOptType;
 import xf.xflp.report.LPReport;
 
-import java.util.Comparator;
 import java.util.List;
 
 /** 
@@ -100,18 +99,18 @@ public class XFLP {
 
 		// Items
 		List<Item> items = importer.getConvertedItemList();
-		checkDimensionOfItems(items);
 
 		// Container
 		List<Container> containerTypeList = importer.getConvertedContainerList(items);
 
-		// Pre-Sort items for logical order (ascending order location index)
-		items.sort(Comparator.comparingInt(arg0 -> arg0.loadingLoc));
+		// Check phase
+		checkItems(items, containerTypeList);
 
 		return new XFLPModel(items.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
 	}
 
-	private void checkDimensionOfItems(List<Item> itemList) {
+	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {
+		double maxWeightCapacity = containerTypeList.stream().mapToDouble(Container::getMaxWeight).max().orElse(Double.MAX_VALUE);
 		for (Item item : itemList) {
 			if(item.w == 0) {
 				statusManager.fireMessage(StatusCode.ABORT, "Width of item must be greater 0 : Item " + item.externalIndex);
@@ -125,9 +124,17 @@ public class XFLP {
 				statusManager.fireMessage(StatusCode.ABORT, "Height of item must be greater 0 : Item " + item.externalIndex);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Height of item must be greater 0 : Item " + item.externalIndex);
 			}
+			if(item.immersiveDepth < 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
+			}
 			if(item.h - item.immersiveDepth <= 0) {
 				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
+			}
+			if(item.weight > maxWeightCapacity) {
+				statusManager.fireMessage(StatusCode.ABORT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
 			}
 		}
 	}

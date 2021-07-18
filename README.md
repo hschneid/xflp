@@ -49,7 +49,10 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
     - Items can be added and removed (current implementation)
     - Items can only be added. Implementation can be way simpler and performance is better.
 - Refactoring of current container service methods, which improves performance
+- Added check for duplicate positions, which maybe bring a bit of performance
 - Import function checks, which type of container is necessary.
+- After import, some values of items are checked for validity.
+
 
 ### 0.4.1
 - Add immersive depth

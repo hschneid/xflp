@@ -41,14 +41,13 @@ public class PositionService {
             for (int k = nbrOfActivePositions - 1; k >= 0; k--) {
                 Position pos = container.getActivePositions().get(k);
 
-                int itemH = retrieveHeight(item, pos, container);
-
                 // Check overlapping with walls
                 if((pos.x + itemW) > container.getWidth())
                     continue;
-                if((pos.z + itemH) > container.getHeight())
-                    continue;
                 if((pos.y + itemL) > container.getLength())
+                    continue;
+                int itemH = retrieveHeight(item, pos, container);
+                if((pos.z + itemH) > container.getHeight())
                     continue;
 
                 if (checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH)) {

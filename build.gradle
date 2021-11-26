@@ -18,7 +18,7 @@ apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.5.1-SNAPSHOT'
+version = '0.5.2-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
  

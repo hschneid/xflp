@@ -2,6 +2,7 @@ package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.exception.XFLPException;
+import xf.xflp.opt.construction.multitype.OneContainerNTypePacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 
 /**
@@ -17,11 +18,17 @@ import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
  */
 public class FastFixedContainerSolver extends XFLPBase {
 
-    private final OneContainerOneTypePacker packer = new OneContainerOneTypePacker();
+    private final OneContainerOneTypePacker singlePacker = new OneContainerOneTypePacker();
+    private final OneContainerNTypePacker multiPacker = new OneContainerNTypePacker();
 
     @Override
     public void execute(XFLPModel model) throws XFLPException {
-        packer.setStrategy(model.getParameter().getPreferredPackingStrategy().getStrategy());
-        packer.execute(model);
+        if(model.getContainerTypes().length == 1) {
+            singlePacker.setStrategy(model.getParameter().getPreferredPackingStrategy().getStrategy());
+            singlePacker.execute(model);
+        } else {
+            multiPacker.setStrategy(model.getParameter().getPreferredPackingStrategy().getStrategy());
+            multiPacker.execute(model);
+        }
     }
 }

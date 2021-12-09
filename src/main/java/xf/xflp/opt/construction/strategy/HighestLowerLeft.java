@@ -20,7 +20,8 @@ import java.util.List;
  *
  * The strategy is used in construction heuristic to choose best possible insert position.
  *
- * This type of strategy chooses the highest, most left (width) and most decent (length).
+ * This type of strategy chooses with maximal priority the highest and secondary the
+ * most left (width) and most decent (length) position.
  *
  */
 public class HighestLowerLeft extends BaseStrategy {
@@ -33,8 +34,15 @@ public class HighestLowerLeft extends BaseStrategy {
 
 		List<Position> filteredPositions = getPositionWithMinValue(
 				posList,
-				this::getDistance
+				this::getDistanceZ
 		);
+
+		if(filteredPositions.size() > 1) {
+			filteredPositions = getPositionWithMinValue(
+					filteredPositions,
+					this::getDistance
+			);
+		}
 
 		if(filteredPositions.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
@@ -48,5 +56,9 @@ public class HighestLowerLeft extends BaseStrategy {
 			return Float.MAX_VALUE;
 		}
 		return (float)Math.pow((p.getX() * p.getX()) + (p.getY() * p.getY()) + (p.getZ() * p.getZ()), 0.5);
+	}
+
+	float getDistanceZ(Position p) {
+		return p == null ? Float.MAX_VALUE : (float) p.getZ() * -1;
 	}
 }

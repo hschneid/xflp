@@ -22,7 +22,7 @@ public class LPPackageEvent {
 	private float weightLimit = -1;
 	private boolean isInvalid = false;
 	
-	private PackageEventType type = PackageEventType.LOAD;
+	private LoadType type = LoadType.LOAD;
 	
 	private float usedVolumeInContainer = 0;
 	private float usedWeightInContainer = 0;
@@ -137,14 +137,14 @@ public class LPPackageEvent {
 	/**
 	 * @return the type
 	 */
-	public final PackageEventType getType() {
+	public final LoadType getType() {
 		return type;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
-	public final void setType(PackageEventType type) {
+	public final void setType(LoadType type) {
 		this.type = type;
 	}
 

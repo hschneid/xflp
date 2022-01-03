@@ -16,7 +16,7 @@ class RealTruckPlanningSpec extends Specification {
 
     def "Mega trailer"() {
         service.addContainer().setWidth(248).setLength(1360).setHeight(300).setMaxWeight(25000)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_PACKER)
+        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
         service.getParameter().setPreferredPackingStrategy(Strategy.WIDTH_PROPORTION)
 
         createItem(1, 120, 100, 100, 60,'G')

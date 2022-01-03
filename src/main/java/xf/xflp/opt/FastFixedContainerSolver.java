@@ -6,7 +6,7 @@ import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
-import xf.xflp.report.PackageEventType;
+import xf.xflp.report.LoadType;
 
 /**
  * Copyright (c) 2012-2022 Holger Schneider
@@ -47,7 +47,7 @@ public class FastFixedContainerSolver extends XFLPBase {
 
     private boolean isOnlyAddingItems(XFLPModel model) {
         for (Item item : model.getItems()) {
-            if(item.loadingType == PackageEventType.UNLOAD) {
+            if(item.loadingType == LoadType.UNLOAD) {
                 return false;
             }
         }

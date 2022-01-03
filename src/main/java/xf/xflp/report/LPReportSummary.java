@@ -40,7 +40,7 @@ public class LPReportSummary {
 	}
 	
 	public void addUnplannedPackage(LPPackageEvent pkg) {
-		if(pkg.getType() == PackageEventType.LOAD)
+		if(pkg.getType() == LoadType.LOAD)
 			nbrOfNotLoadedPackages++;
 	}
 

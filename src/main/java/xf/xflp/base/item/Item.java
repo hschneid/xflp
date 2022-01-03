@@ -3,7 +3,7 @@ package xf.xflp.base.item;
 
 import util.Copyable;
 import util.collection.Indexable;
-import xf.xflp.report.PackageEventType;
+import xf.xflp.report.LoadType;
 
 import java.util.Set;
 
@@ -17,8 +17,8 @@ import java.util.Set;
  *
  * An item is the entity, which is placed into a container. It contains
  * all master data, parameter and planning information (like the current position).
- * 
- * @author Hogo
+ *
+ * @author hschneid
  *
  */
 public class Item implements Copyable<Item>, Cloneable, Indexable {
@@ -48,7 +48,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	/* Unique index of this item object*/
 	public int externalIndex;
 	/* Type of item: loading or unloading */
-	public PackageEventType loadingType;
+	public LoadType loadingType;
 	/* External externalIndex of this order. There can be two items
 	 * with the same order externalIndex (up- and unloading) */
 	public int orderIndex = -1;
@@ -72,7 +72,7 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	public void postInit() {
 		this.size = w * l;
 		this.volume = h * w * l;
-		this.loadingType = (isLoading) ? PackageEventType.LOAD : PackageEventType.UNLOAD;
+		this.loadingType = (isLoading) ? LoadType.LOAD : LoadType.UNLOAD;
 	}
 	
 	public void rotate() {
@@ -321,11 +321,11 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 		this.externalIndex = externalIndex;
 	}
 
-	public PackageEventType getLoadingType() {
+	public LoadType getLoadingType() {
 		return loadingType;
 	}
 
-	public void setLoadingType(PackageEventType loadingType) {
+	public void setLoadingType(LoadType loadingType) {
 		this.loadingType = loadingType;
 	}
 

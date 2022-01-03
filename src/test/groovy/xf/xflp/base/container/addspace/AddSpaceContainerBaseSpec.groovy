@@ -323,6 +323,7 @@ class AddSpaceContainerBaseSpec extends Specification {
 
     def "test horizontal projection of insert position with space limiting box"() {
         def con = Helper.getAddSpaceContainer(4, 6,2)
+        con.getParameter().add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
         def i1 = Helper.getItem(1, 3, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -382,6 +383,7 @@ class AddSpaceContainerBaseSpec extends Specification {
 
     def "test vertical projection of insert position at other box with space limiting box"() {
         def con = Helper.getAddSpaceContainer(6, 4,2)
+        con.getParameter().add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
         def i1 = Helper.getItem(3,1,1, 1, 100, 0)
         def i2 = Helper.getItem(1,1,1, 1, 100, 0)
         def i3 = Helper.getItem(1,2,1, 1, 100, 0)

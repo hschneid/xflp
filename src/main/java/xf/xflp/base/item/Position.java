@@ -8,7 +8,7 @@ package xf.xflp.base.item;
  * LICENSE file in the root directory of this source tree.
  *
  * 
- * @author Hogo
+ * @author hschneid
  *
  */
 public class Position {

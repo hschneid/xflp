@@ -31,12 +31,12 @@ public class ContainerReportSummary {
 	}
 	
 	public void add(LPPackageEvent e) {
-		if(e.getType() == PackageEventType.LOAD) {
+		if(e.getType() == LoadType.LOAD) {
 			nbrOfLoadedPackages++;
 			// Only loaded items increase the max loaded volume/weight values
 			maxUsedVolume += e.getUsedVolumeInContainer();
 			maxUsedWeight = Math.max(maxUsedWeight, e.getUsedWeightInContainer());
-		} else if(e.getType() == PackageEventType.UNLOAD) {
+		} else if(e.getType() == LoadType.UNLOAD) {
 			nbrOfUnLoadedPackages++;
 		}
 	}

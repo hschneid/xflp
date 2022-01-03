@@ -8,7 +8,7 @@ import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.report.PackageEventType;
+import xf.xflp.report.LoadType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class OneContainerOneTypePacker implements Packer {
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 
-			if(item.loadingType == PackageEventType.LOAD) {
+			if(item.loadingType == LoadType.LOAD) {
 				Position insertPosition = null;
 
 				// Check if item is allowed to this container type

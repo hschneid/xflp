@@ -28,7 +28,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 
 	private static final int ROOT = 0;
 	private static final int BASIC = 1;
-	private static final int EXTENDED = 2;
 	private static final int EXTENDED_H = 3;
 	private static final int EXTENDED_V = 4;
 
@@ -49,8 +48,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	private final LPListMap<Integer, Integer> xMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
-
-	private final Position tmpPosition = new Position(-1, -1);
 
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
@@ -292,37 +289,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private List<Position> findHorizontalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == EXTENDED_H) {
-				Item s = positionItemMap.get(pos);
-				if(pos.z == item.z && pos.x <= item.xw && s.x > item.x && pos.y >= item.y && pos.y <= item.yl)
-					posList.add(pos);
-			}
-		}
-		return posList;
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findVerticalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == EXTENDED_V) {
-				Item s = positionItemMap.get(pos);
-
-				if(pos.z == item.z && pos.y <= item.yl && s.y > item.y && pos.x >= item.x && pos.x <= item.xw)
-					posList.add(pos);
-			}
-		}
-		return posList;
-	}
-
-	/**
-	 *
-	 */
 	private void addItem(Item item, Position pos) {
 		// Adjust height for immersive depth
 		item.h = retrieveHeight(item, pos);
@@ -358,15 +324,15 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 		// 3 basic positions
 		Position verticalPosition = null, horizontalPosition = null;
 		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC, false);
+			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC);
 			posList.add(verticalPosition);
 		}
 		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC, false);
+			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC);
 			posList.add(horizontalPosition);
 		}
 		if(item.z + item.h < this.height) {
-			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC, false));
+			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC));
 		}
 
 		// 2 projected positions
@@ -376,7 +342,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				int leftPos = (leftElement != null) ? leftElement.xw : 0;
 
 				if(leftPos < item.x) {
-					posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H, false));
+					posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H));
 				}
 			}
 
@@ -385,7 +351,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
 
 				if(lowerPos < item.y) {
-					posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V, false));
+					posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V));
 				}
 			}
 		}
@@ -440,20 +406,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 		return leftItem;
 	}
 
-	private Item findNextRightElement(Position pos) {
-		Item rightItem = null;
-
-		for (Item item : itemList) {
-			if(item == null || item.x < pos.x || item.y > pos.y || item.yl <= pos.y || item.z > pos.z || item.zh <= pos.z)
-				continue;
-
-			if(rightItem == null || item.x > rightItem.x)
-				rightItem = item;
-		}
-
-		return rightItem;
-	}
-
 	private Item findNextDeeperElement(Position pos) {
 		Item lowerItem = null;
 
@@ -469,44 +421,10 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	}
 
 	/**
-	 * Outgoing from given position find the next "visible" item in direction to the end of the container (y)
-	 */
-	private Item findNextShallowElement(Position pos) {
-		Item shallowItem = null;
-
-		for (Item item : itemList) {
-			if(item == null || item.y <= pos.y || item.x > pos.x || item.xw <= pos.x || item.z > pos.z || item.zh <= pos.z)
-				continue;
-
-			if(shallowItem == null || item.y > shallowItem.y)
-				shallowItem = item;
-		}
-
-		return shallowItem;
-	}
-
-	/**
-	 * Outgoing from given position find the next higher item (z)
-	 */
-	private Item findNextHigherElement(Position pos) {
-		Item highItem = null;
-
-		for (Item item : itemList) {
-			if(item == null || item.z <= pos.z || item.x > pos.x || item.xw <= pos.x || item.y > pos.y || item.yl <= pos.y)
-				continue;
-
-			if(highItem == null || item.z > highItem.z)
-				highItem = item;
-		}
-
-		return highItem;
-	}
-
-	/**
 	 *
 	 */
-	private Position createPosition(int x, int y, int z, int type, boolean isProjected) {
-		return new Position(maxPosIdx++, x, y, z, type, isProjected);
+	private Position createPosition(int x, int y, int z, int type) {
+		return new Position(maxPosIdx++, x, y, z, type);
 	}
 
 	/**
@@ -546,7 +464,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	 *
 	 */
 	private void init() {
-		Position start = createPosition(0, 0, 0, ROOT, false);
+		Position start = createPosition(0, 0, 0, ROOT);
 		activePosList.add(start);
 		spacePositions.put(start, Collections.singletonList(Space.of(length, width, height)));
 	}

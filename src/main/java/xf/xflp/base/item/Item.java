@@ -1,7 +1,6 @@
 package xf.xflp.base.item;
 
 
-import util.Copyable;
 import util.collection.Indexable;
 import xf.xflp.report.LoadType;
 
@@ -21,7 +20,7 @@ import java.util.Set;
  * @author hschneid
  *
  */
-public class Item implements Copyable<Item>, Cloneable, Indexable {
+public class Item implements Indexable {
 
 	public static final int UNDEF_PARAMETER = -1;
 
@@ -97,20 +96,6 @@ public class Item implements Copyable<Item>, Cloneable, Indexable {
 	 */
 	public void clearPosition() {
 		this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see da.util.Copyable#copy()
-	 */
-	@Override
-	public Item copy() {
-		try {
-			return (Item)super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	/*

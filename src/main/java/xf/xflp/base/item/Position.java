@@ -17,27 +17,22 @@ public class Position {
 
 	protected final int idx;
 	public final int type;
-	protected final boolean isProjected;
-	
+
 	public Position(int x, int y) {
-		this(-1, x, y, -1, -1, false);
+		this(-1, x, y, -1, -1);
 	}
 	public Position(int x, int y, int z) {
-		this(-1, x, y, z, -1, false);
+		this(-1, x, y, z, -1);
 	}
-	protected Position(int idx, int x, int y, int type, boolean isProjected) {
-		this(idx, x, y, -1, type, isProjected);
+	protected Position(int idx, int x, int y, int type) {
+		this(idx, x, y, -1, type);
 	}
-	protected Position(int x, int y, int type, boolean isProjected) {
-		this(-1, x, y, -1, type, isProjected);
-	}
-	public Position(int idx, int x, int y, int z, int type, boolean isProjected) {
+	public Position(int idx, int x, int y, int z, int type) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.type = type;
-		this.isProjected = isProjected;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package xf.xflp.base.space;
 
-import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
@@ -84,16 +83,6 @@ public class SpaceService {
                 position.x >= item.xw ||
                 position.y >= item.yl ||
                 position.z >= item.zh;
-    }
-
-    public List<Item> getItemsInSpaceFromPosition(Position position, Container container, List<Item> allItems) {
-        Space space = Space.of(
-                container.getLength() - position.y,
-                container.getWidth() - position.x,
-                container.getHeight() - position.z
-        );
-
-        return getItemsInSpace(position, space, allItems);
     }
 
     public List<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {

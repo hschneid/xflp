@@ -86,38 +86,12 @@ public class ZItemGraph {
 		upperList.remove(item.index);
 	}
 
-	public void clear() {
-		lowerList.clear();
-		upperList.clear();
-	}
-
 	public int size() {
 		return upperList.size();
 	}
 
 	public List<Item> getItemsBelow(Item item) {
 		return lowerList.get(item.index).lowerItemList;
-	}
-
-	public List<Item> getItemsAbove(Item item) {
-		return upperList.get(item.index);
-	}
-
-	/**
-	 * Searches for any item in Z-Graph the base items with z = 0
-	 * 
-	 * Pre-Condition: All items, even the given one, are added into the Z-Graph
-	 */
-	public List<Item> getBaseItems(Item item, List<Item> itemList) {
-		boolean[] found = new boolean[lowerList.size()];
-		searchBaseRecursive(item, found);
-
-		List<Item> baseItems = new ArrayList<>();
-		for (int i = 0; i < found.length; i++)
-			if(found[i])
-				baseItems.add(itemList.get(i));
-
-		return baseItems;
 	}
 
 	/**

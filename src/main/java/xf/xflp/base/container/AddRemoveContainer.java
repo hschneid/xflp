@@ -27,7 +27,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	private static final Position rootPos = new Position(-1, -1, -1);
 	private static final int ROOT = 0;
 	private static final int BASIC = 1;
-	private static final int EXTENDED = 2;
 	private static final int EXTENDED_H = 3;
 	private static final int EXTENDED_V = 4;
 
@@ -536,11 +535,11 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		// 2 simple positions
 		Position verticalPosition = null, horizontalPosition = null;
 		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC, false);
+			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC);
 			posList.add(verticalPosition);
 		}
 		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC, false);
+			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC);
 			posList.add(horizontalPosition);
 		}
 
@@ -549,19 +548,19 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 			if(item.x > 0 && verticalPosition != null) {
 				Item leftElement = findNextLeftElement(verticalPosition);
 				int leftPos = (leftElement != null) ? leftElement.xw : 0;
-				posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H, false));
+				posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H));
 			}
 
 			if(item.y > 0 && horizontalPosition != null) {
 				Item lowerElement = findNextLowerElement(horizontalPosition);
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
-				posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V, false));
+				posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V));
 			}
 		}
 
 		// 1 ceiling position
 		if(item.z + item.h < this.height)
-			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC, false));
+			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC));
 
 		return posList;
 	}
@@ -603,8 +602,8 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private Position createPosition(int x, int y, int z, int type, boolean isProjected) {
-		return new Position(maxPosIdx++, x, y, z, type, isProjected);
+	private Position createPosition(int x, int y, int z, int type) {
+		return new Position(maxPosIdx++, x, y, z, type);
 	}
 
 	/**
@@ -644,7 +643,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	 *
 	 */
 	private void init() {
-		Position start = createPosition(0, 0, 0, ROOT, false);
+		Position start = createPosition(0, 0, 0, ROOT);
 		activePosList.add(start);
 
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle

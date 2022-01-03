@@ -8,6 +8,15 @@ import xf.xflp.base.item.Space;
 import java.util.*;
 import java.util.function.Function;
 
+/**
+ * Copyright (c) 2012-2022 Holger Schneider
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT License (MIT) found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @author hschneid
+ */
 public class SpaceService {
 
     public List<Space> createSpacesAtPosition(Position position, Space space, Item newItem) {
@@ -119,17 +128,5 @@ public class SpaceService {
         dominatingSpaces.removeAll(dominatedSpaces);
 
         return dominatingSpaces;
-    }
-
-    private Map<Integer, List<Space>> mapByDimension(Collection<Space> spaces, Function<Space, Integer> func) {
-        Map<Integer, List<Space>> dimension = new HashMap<>();
-        for (Space space : spaces) {
-            int key = func.apply(space);
-            if(!dimension.containsKey(key))
-                dimension.put(key, new ArrayList<>());
-            dimension.get(key).add(space);
-        }
-
-        return dimension;
     }
 }

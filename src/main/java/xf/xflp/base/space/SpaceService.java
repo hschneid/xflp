@@ -1,0 +1,135 @@
+package xf.xflp.base.space;
+
+import xf.xflp.base.container.Container;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.Space;
+
+import java.util.*;
+import java.util.function.Function;
+
+public class SpaceService {
+
+    public List<Space> createSpacesAtPosition(Position position, Space space, Item newItem) {
+        // Are position and space out of reach for newItem
+        if (isItemNotInSpace(position, space, newItem))
+            return Collections.singletonList(space);
+
+        // New item is touching this space!
+
+        // New item is over the position
+        boolean itemHovering = position.z < newItem.z;
+        // New item is in view range (upper right of position)
+        boolean widthLimited = position.y >= newItem.y && position.y < newItem.yl;
+        boolean lengthLimited = position.x >= newItem.x && position.x < newItem.xw;
+        boolean itemOverPosition = widthLimited && lengthLimited;
+
+        List<Space> spaces = new ArrayList<>(3);
+        if (itemHovering) {
+            spaces.add(Space.of(
+                            space.l,
+                            space.w,
+                            (newItem.z - position.z)
+                    ));
+            if(!itemOverPosition) {
+                spaces.add(Space.of(
+                                (lengthLimited) ? (newItem.y - position.y) : space.l,
+                                (widthLimited) ? (newItem.x - position.x) : space.w,
+                                space.h
+                        ));
+            }
+        }
+
+        if (widthLimited || lengthLimited) {
+            if(!itemHovering && !itemOverPosition) {
+                spaces.add(Space.of(
+                                (lengthLimited) ? (newItem.y - position.y) : space.l,
+                                (widthLimited) ? (newItem.x - position.x) : space.w,
+                                space.h
+                        ));
+            }
+        }
+        // New item is only partially in view range (cutting position coordinates)
+        else {
+            spaces.add(Space.of(
+                            newItem.y - position.y,
+                            space.w,
+                            space.h
+                    ));
+            spaces.add(Space.of(
+                            space.l,
+                            newItem.x - position.x,
+                            space.h
+                    ));
+        }
+
+        return spaces;
+    }
+
+    private boolean isItemNotInSpace(Position position, Space space, Item item) {
+        return position.x + space.w <= item.x ||
+                position.y + space.l <= item.y ||
+                position.z + space.h <= item.z ||
+                position.x >= item.xw ||
+                position.y >= item.yl ||
+                position.z >= item.zh;
+    }
+
+    public List<Item> getItemsInSpaceFromPosition(Position position, Container container, List<Item> allItems) {
+        Space space = Space.of(
+                container.getLength() - position.y,
+                container.getWidth() - position.x,
+                container.getHeight() - position.z
+        );
+
+        return getItemsInSpace(position, space, allItems);
+    }
+
+    public List<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
+        List<Item> itemsInSpace = new ArrayList<>();
+        for (Item item : allItems) {
+            if(isItemNotInSpace(position, space, item)) {
+                continue;
+            }
+            itemsInSpace.add(item);
+        }
+
+        return itemsInSpace;
+    }
+
+    public List<Space> getDominatingSpaces(Collection<Space> spaces) {
+        List<Space> dominatingSpaces = new ArrayList<>(spaces);
+
+        if(spaces.size() == 1) {
+            return dominatingSpaces;
+        }
+
+        List<Space> dominatedSpaces = new ArrayList<>();
+        for (Space spaceA : spaces) {
+            for (Space spaceB : spaces) {
+                if(spaceA.l == spaceB.l && spaceA.w == spaceB.w && spaceA.h > spaceB.h)
+                    dominatedSpaces.add(spaceB);
+                if(spaceA.l == spaceB.l && spaceA.h == spaceB.h && spaceA.w > spaceB.w)
+                    dominatedSpaces.add(spaceB);
+                if(spaceA.h == spaceB.h && spaceA.w == spaceB.w && spaceA.l > spaceB.l)
+                    dominatedSpaces.add(spaceB);
+            }
+        }
+
+        dominatingSpaces.removeAll(dominatedSpaces);
+
+        return dominatingSpaces;
+    }
+
+    private Map<Integer, List<Space>> mapByDimension(Collection<Space> spaces, Function<Space, Integer> func) {
+        Map<Integer, List<Space>> dimension = new HashMap<>();
+        for (Space space : spaces) {
+            int key = func.apply(space);
+            if(!dimension.containsKey(key))
+                dimension.put(key, new ArrayList<>());
+            dimension.get(key).add(space);
+        }
+
+        return dimension;
+    }
+}

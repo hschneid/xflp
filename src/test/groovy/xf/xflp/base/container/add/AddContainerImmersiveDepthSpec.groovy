@@ -58,32 +58,6 @@ class AddContainerImmersiveDepthSpec extends Specification {
         check(i3, 10, 20, 30, 11)
     }
 
-    def "add, remove and readd 3 items with immersive depth"() {
-        Container con = Helper.getAddContainer(2,2,30)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
-        def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
-        i2.immersiveDepth = 1
-        def i3 = Helper.getItem(1, 1, 11, 1, 10, 0)
-
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 20))
-        con.remove(i3)
-        con.remove(i2)
-        con.remove(i1)
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10))
-
-        when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 20)
-        con.add(i3, found)
-        then:
-        found != null
-        check(i2, 10, 10, 20, 12)
-        check(i3, 10, 20, 30, 11)
-    }
-
     def "stack item on multiple items, with different immersive depth"() {
         Container con = Helper.getAddContainer(3,3,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)

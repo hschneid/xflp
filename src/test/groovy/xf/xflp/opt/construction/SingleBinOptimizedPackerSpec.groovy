@@ -6,6 +6,8 @@ import spock.lang.Specification
 import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.container.Container
+import xf.xflp.base.container.GroundContactRule
+import xf.xflp.base.container.ParameterType
 import xf.xflp.base.item.Item
 import xf.xflp.opt.grasp.SingleBinOptimizedPacker
 
@@ -26,6 +28,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
                 [Helper.getContainer(4,3,3)] as Container[],
                 new XFLPParameter()
         )
+        model.containerTypes[0].parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
 
         when:
         service.execute(model)

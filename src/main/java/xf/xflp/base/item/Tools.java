@@ -67,9 +67,6 @@ public class Tools {
 
 	/**
 	 * 
-	 * @param pos
-	 * @param itemList
-	 * @return
 	 */
 	public static List<Item> getItemsBelow(Position pos, Item upperItem, List<Item> itemList) {
 		List<Item> list = new ArrayList<>();

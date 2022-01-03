@@ -1,4 +1,4 @@
-package xf.xflp.base.container.addremove
+package xf.xflp.base.container.addspace
 
 import helper.Helper
 import spock.lang.Specification
@@ -7,11 +7,11 @@ import xf.xflp.base.container.ParameterType
 import xf.xflp.base.item.RotatedPosition
 import xf.xflp.base.position.PositionService
 
-class ContainerBaseSpec extends Specification {
+class AddSpaceContainerBaseSpec extends Specification {
 
     def "find first position in empty container"() {
         when:
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i)
         def pp = Helper.findPos(pList, 0, 0, 0)
@@ -23,7 +23,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add item into empty container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i)
 
@@ -36,7 +36,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find second position in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         con.add(i, PositionService.getPossibleInsertPositionList(con, i).get(0))
@@ -53,7 +53,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add second item to container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         con.add(i, PositionService.getPossibleInsertPositionList(con, i).get(0))
@@ -68,7 +68,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add third item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -89,7 +89,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add forth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -113,7 +113,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add fifth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -135,7 +135,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add sixth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -161,7 +161,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find rotated insert position"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(2, 1, 1, 1, 10, 0)
 
         when:
@@ -174,7 +174,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "do not find insert positions for too big items"() {
-        def con = Helper.getContainer(2,2,2, 10)
+        def con = Helper.getAddSpaceContainer(2,2,2, 10)
         def i1 = Helper.getItem(3, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 3, 1, 1, 10, 0)
         def i3 = Helper.getItem(1, 1, 3, 1, 10, 0)
@@ -196,40 +196,8 @@ class ContainerBaseSpec extends Specification {
         pList5.size() > 0
     }
 
-    def "add and remove items from container"() {
-        def con = Helper.getContainer(2,2,5)
-        def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
-        def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
-        def i3 = Helper.getItem(1, 1, 1, 1, 100, 0)
-
-        when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0,1))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0,2))
-        def apList1 = new ArrayList<>(con.getActivePositions())
-        con.remove(i2)
-        def apList2 = new ArrayList<>(con.getActivePositions())
-        con.remove(i1)
-        def apList3 = new ArrayList<>(con.getActivePositions())
-        con.remove(i3)
-        def apList4 = new ArrayList<>(con.getActivePositions())
-
-        then:
-        Helper.findPos(apList1, 1, 0, 0) != null
-        Helper.findPos(apList1, 0, 1, 0) != null
-        Helper.findPos(apList1, 1, 0, 1) != null
-        Helper.findPos(apList1, 0, 1, 1) != null
-        Helper.findPos(apList1, 1, 0, 2) != null
-        Helper.findPos(apList1, 0, 1, 2) != null
-        Helper.findPos(apList1, 0, 0, 3) != null
-        Helper.findPos(apList2, 0, 0, 1) != null
-        Helper.findPos(apList3, 0, 0, 0) != null
-        con.getActivePositions().size() == 1
-        Helper.findPos(apList4, 0, 0, 0) != null
-    }
-
     def "test covered positions (X axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 0)
@@ -240,17 +208,13 @@ class ContainerBaseSpec extends Specification {
         con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0, 1, 0, false))
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
         def pos1 = Helper.findPos(con.getActivePositions(), 1, 1, 0)
-        def pos2 = Helper.findPos(con.inactivePosList, 1, 1, 0)
-        def pos3 = Helper.findPos(con.coveredPosList, 1, 1, 0)
 
         then:
         pos1 == null
-        pos2 == null
-        pos3 != null
     }
 
     def "test covered positions (Y axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 1, 0)
@@ -261,17 +225,13 @@ class ContainerBaseSpec extends Specification {
         con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 1, 0, 0, false))
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
         def pos1 = Helper.findPos(con.getActivePositions(), 1, 1, 0)
-        def pos2 = Helper.findPos(con.inactivePosList, 1, 1, 0)
-        def pos3 = Helper.findPos(con.coveredPosList, 1, 1, 0)
 
         then:
         pos1 == null
-        pos2 == null
-        pos3 != null
     }
 
     def "test covered positions (Z-X axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 0)
@@ -282,17 +242,13 @@ class ContainerBaseSpec extends Specification {
         con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0, 0, 1, false))
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
         def pos1 = Helper.findPos(con.getActivePositions(), 1, 0, 1)
-        def pos2 = Helper.findPos(con.inactivePosList, 1, 0, 1)
-        def pos3 = Helper.findPos(con.coveredPosList, 1, 0, 1)
 
         then:
         pos1 == null
-        pos2 == null
-        pos3 != null
     }
 
     def "test covered positions (Z-Y axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 1, 0)
@@ -303,17 +259,13 @@ class ContainerBaseSpec extends Specification {
         con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0, 0, 1, false))
         // Pr�fe, ob es die Position (1,1,0) in der activePosList gibt. -> das w�re illegal
         def pos1 = Helper.findPos(con.getActivePositions(), 0, 1, 1)
-        def pos2 = Helper.findPos(con.inactivePosList, 0, 1, 1)
-        def pos3 = Helper.findPos(con.coveredPosList, 0, 1, 1)
 
         then:
         pos1 == null
-        pos2 == null
-        pos3 != null
     }
 
     def "test full coverage of item ground"() {
-        def con = Helper.getContainer(5,1,3)
+        def con = Helper.getAddSpaceContainer(5,1,3)
         con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
         def i1 = Helper.getItem(1, 1, 2, 1, 100, 0)
         con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
@@ -337,7 +289,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test rotation"() {
-        def con = Helper.getContainer(2,2,1)
+        def con = Helper.getAddSpaceContainer(2,2,1)
         def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -356,7 +308,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test horizontal projection of insert position"() {
-        def con = Helper.getContainer(3, 5,2)
+        def con = Helper.getAddSpaceContainer(3, 5,2)
         def i1 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 3, 1, 1, 100, 0)
         def i3 = Helper.getItem(3, 2, 1, 1, 100, 0)
@@ -369,8 +321,36 @@ class ContainerBaseSpec extends Specification {
         Helper.findPos(pList, 0, 3, 0) != null
     }
 
+    def "test horizontal projection of insert position with space limiting box"() {
+        def con = Helper.getAddSpaceContainer(4, 6,2)
+        def i1 = Helper.getItem(1, 3, 1, 1, 100, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i4 = Helper.getItem(2, 2, 1, 1, 100, 0)
+        def i5 = Helper.getItem(2, 1, 1, 1, 100, 0)
+        def i6 = Helper.getItem(1, 3, 1, 1, 100, 0)
+        def i7 = Helper.getItem(3, 1, 1, 1, 100, 0)
+        def i8 = Helper.getItem(3, 2, 1, 1, 100, 0)
+        def i9 = Helper.getItem(3, 1, 2, 1, 100, 0)
+
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0, 3, 0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0, 4, 0))
+        con.add(i4, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i4), 0, 3, 1))
+        con.add(i5, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i5), 1, 0, 0))
+        con.add(i6, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i6), 3, 0, 0))
+        when:
+        def pList1 = PositionService.getPossibleInsertPositionList(con, i7)
+        def pList2 = PositionService.getPossibleInsertPositionList(con, i8)
+        def pList3 = PositionService.getPossibleInsertPositionList(con, i9)
+        then:
+        Helper.findPos(pList1, 1, 3, 0) != null
+        Helper.findPos(pList2, 1, 3, 0) == null
+        Helper.findPos(pList3, 1, 3, 0) == null
+    }
+
     def "test vertical projection of insert position"() {
-        def con = Helper.getContainer(3, 5,2)
+        def con = Helper.getAddSpaceContainer(3, 5,2)
         def i1 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(1, 3, 1, 1, 100, 0)
@@ -384,7 +364,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test vertical projection of insert position at other box"() {
-        def con = Helper.getContainer(4, 6,2)
+        def con = Helper.getAddSpaceContainer(4, 6,2)
         def i1 = Helper.getItem(3, 2, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -400,8 +380,36 @@ class ContainerBaseSpec extends Specification {
         pos != null
     }
 
+    def "test vertical projection of insert position at other box with space limiting box"() {
+        def con = Helper.getAddSpaceContainer(6, 4,2)
+        def i1 = Helper.getItem(3,1,1, 1, 100, 0)
+        def i2 = Helper.getItem(1,1,1, 1, 100, 0)
+        def i3 = Helper.getItem(1,2,1, 1, 100, 0)
+        def i4 = Helper.getItem(2,2,1, 1, 100, 0)
+        def i5 = Helper.getItem(1,2,1, 1, 100, 0)
+        def i6 = Helper.getItem(3,1,1, 1, 100, 0)
+        def i7 = Helper.getItem(1,3,1, 1, 100, 0)
+        def i8 = Helper.getItem(2,3,1, 1, 100, 0)
+        def i9 = Helper.getItem(1,3,2, 1, 100, 0)
+
+        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
+        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 3, 0, 0))
+        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 4, 0, 0))
+        con.add(i4, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i4), 3, 0, 1))
+        con.add(i5, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i5), 0, 1, 0))
+        con.add(i6, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i6), 0, 3, 0))
+        when:
+        def pList1 = PositionService.getPossibleInsertPositionList(con, i7)
+        def pList2 = PositionService.getPossibleInsertPositionList(con, i8)
+        def pList3 = PositionService.getPossibleInsertPositionList(con, i9)
+        then:
+        Helper.findPos(pList1, 3, 1,0) != null
+        Helper.findPos(pList2, 3, 1,0) == null
+        Helper.findPos(pList3, 3, 1,0) == null
+    }
+
     def "big test projected insert positions"() {
-        def con = Helper.getContainer(4, 6,2)
+        def con = Helper.getAddSpaceContainer(4, 6,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)

@@ -17,6 +17,8 @@ public enum GroundContactRule {
     FREE,
     // An item must stand on the floor or other items for all 4 floor corners
     COVERED,
+    // An item must be stacked only upon one other item
+    SINGLE,
     // An item can stand on the ground or must cover multiple items
     MULTIPLE
 }

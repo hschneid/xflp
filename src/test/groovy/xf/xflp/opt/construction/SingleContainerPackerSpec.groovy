@@ -88,7 +88,7 @@ class SingleContainerPackerSpec extends Specification {
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
-    def "test with distinct stacking groups - sucessfull"() {
+    def "test with distinct stacking groups - successful"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 9; i++)
             items.add(Helper.getItem(1,1,1,1,3,1))

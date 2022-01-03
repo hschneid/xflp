@@ -3,13 +3,11 @@ package xf.xflp.base.position;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.StackingChecker;
-import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
-import xf.xflp.base.item.RotatedPosition;
-import xf.xflp.base.item.RotationType;
+import xf.xflp.base.item.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +48,13 @@ public class PositionService {
                 if((pos.z + itemH) > container.getHeight())
                     continue;
 
+/*                boolean b1 = checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
+                boolean bb = checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
+
+                if(b1 != bb) {
+                    System.out.println("Hier");
+                }
+*/
                 if (checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH)) {
                     continue;
                 }
@@ -66,7 +71,16 @@ public class PositionService {
         return posList;
     }
 
+    /**
+     * Checks if new item at this position will collide with other items in container.
+     * true = collision, invalid
+     * false = valid
+     */
     private static boolean checkOverlappingWithItems(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
+        if(container instanceof AddSpaceContainer) {
+            return checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
+        }
+
         IndexedArrayList<Item> items = (IndexedArrayList<Item>) container.getItems();
 
         for (int idx = items.length() - 1; idx >= 0; idx--) {
@@ -90,6 +104,20 @@ public class PositionService {
             // => Ergo mache nix
         }
         return false;
+    }
+
+    private static boolean checkOverlappingWithSpaces(AddSpaceContainer container, Position pos, int itemW, int itemL, int itemH) {
+        List<Space> spaces = container.getSpace(pos);
+
+        // If item is fitting into one of the spaces, then it is okay.
+        for (Space space : spaces) {
+            // Is item fitting into space
+            if(space.l >= itemL &&
+                    space.w >= itemW &&
+                    space.h >= itemH)
+                return false;
+        }
+        return true;
     }
 
     private static boolean checkLIFO(Container container, Item otherItem, Position pos, Item newItem, int itemW) {

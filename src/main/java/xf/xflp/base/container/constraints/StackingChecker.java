@@ -5,10 +5,9 @@ import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
-import xf.xflp.base.item.Tools;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Copyright (c) 2012-2021 Holger Schneider
@@ -34,53 +33,30 @@ public class StackingChecker {
         if (pos.getZ() == 0)
             return true;
 
-        // Check ground contact restriction
-        // New item must not hang in the air and maybe cover multiple items
-        if(container.getParameter().get(ParameterType.GROUND_CONTACT_RULE) != GroundContactRule.FREE &&
-                !checkGroundContact(container, pos, newItem))
+        // Check stacking group - All lower items must have the same stacking group
+        // Check ground contact - Items must fulfill certain constraints, if items must be placed on other items
+        if(!checkStackingGroupAndGroundContact(container, pos, itemW, itemL, newItem.stackingGroup))
             return false;
 
-        // Check stacking group and weight bearing capacity
-        // All lower items must have the same stacking group
-        if(!checkStackingGroupAndBearing(container, pos, itemW, itemL, newItem.stackingGroup))
-            return false;
-
-        // Check bearing capacity
-        // All lower items can bear the additional weight
+        // Check bearing capacity - All lower items can bear the additional weight
         return checkLoadBearingAndItemCount(container, pos, newItem, rotation);
-    }
-
-    /**
-     * Checks whether there is an item which reaches over two stacks. Stacks are
-     * settled by the base item on the floor. no item should overlap the borders
-     * of the base item.
-     *
-     * Use the simple function to get all items, which are below the new item.
-     * If number of lower items is bigger than 1 then it is overlapping.
-     */
-    private static boolean checkGroundContact(Container container, Position pos, Item item) {
-        item.setPosition(pos);
-
-        Set<Item> foundSet = Tools.getAllFloorItems(item, container.getItems());
-
-        item.clearPosition();
-
-        return foundSet.size() <= 1;
     }
 
     /**
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private static boolean checkStackingGroupAndBearing(Container container, Position pos, int w, int l, int stackingGroup) {
+    private static boolean checkStackingGroupAndGroundContact(Container container, Position pos, int w, int l, int stackingGroup) {
         List<Integer> zList = container.getBaseData().getZMap().get(pos.getZ());
         if(zList == null || zList.isEmpty())
             return true;
 
         int itemW = pos.getX() + w;
         int itemL = pos.getY() + l;
+        int cornerItem1, cornerItem2, cornerItem3, cornerItem4;
         boolean corner1, corner2, corner3, corner4;
         corner1 = corner2 = corner3 = corner4 = false;
+        cornerItem1 = cornerItem2 = cornerItem3 = cornerItem4 = -1;
 
         // Check for all lower items if stacking group restriction is valid
         for(int i = 0, size = zList.size(); i < size; i++) {
@@ -96,18 +72,34 @@ public class StackingChecker {
                 } else
                     continue;
 
-                if(pos.getX() >= fi.x && pos.getX() <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl)
+                if(pos.getX() >= fi.x && pos.getX() <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
+                    cornerItem1 = fi.externalIndex;
                     corner1 = true;
-                if(itemW > fi.x && itemW <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl)
+                }
+                if(itemW > fi.x && itemW <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
+                    cornerItem2 = fi.externalIndex;
                     corner2 = true;
-                if(pos.getX() >= fi.x && pos.getX() <= fi.xw && itemL > fi.y && itemL <= fi.yl)
+                }
+                if(pos.getX() >= fi.x && pos.getX() <= fi.xw && itemL > fi.y && itemL <= fi.yl) {
+                    cornerItem3 = fi.externalIndex;
                     corner3 = true;
-                if(itemW > fi.x && itemW <= fi.xw && itemL > fi.y && itemL <= fi.yl)
+                }
+                if(itemW > fi.x && itemW <= fi.xw && itemL > fi.y && itemL <= fi.yl) {
+                    cornerItem4 = fi.externalIndex;
                     corner4 = true;
+                }
             }
         }
 
-        return corner1 && corner2 && corner3 && corner4;
+        boolean hasAnyGroundContact = (corner1 || corner2 || corner3 || corner4);
+        boolean hasFullGroundContact = (corner1 && corner2 && corner3 && corner4);
+        if(container.getParameter().get(ParameterType.GROUND_CONTACT_RULE) == GroundContactRule.SINGLE) {
+            return allEqual(cornerItem1, cornerItem2, cornerItem3, cornerItem4) && hasFullGroundContact;
+        }
+        if(container.getParameter().get(ParameterType.GROUND_CONTACT_RULE) == GroundContactRule.FREE) {
+            return hasAnyGroundContact;
+        }
+        return hasFullGroundContact;
     }
 
     /**
@@ -167,5 +159,10 @@ public class StackingChecker {
         List<Item> ceilItems = container.getBaseData().getZGraph().getCeilItems(item, container.getItems());
         LoadBearingChecker lbc = new LoadBearingChecker();
         return lbc.checkLoadBearing(ceilItems, container.getBaseData().getZGraph());
+    }
+
+    private static boolean allEqual(int... values) {
+        Arrays.sort(values);
+        return values[0] == values[values.length - 1];
     }
 }

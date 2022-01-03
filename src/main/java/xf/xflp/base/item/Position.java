@@ -42,7 +42,7 @@ public class Position {
 
 	@Override
 	public String toString() {
-		return "("+x+","+y+","+z+")";
+		return "("+x+","+y+","+z+((this instanceof RotatedPosition) ? ",R":"")+")";
 	}
 	
 	public void setXY(int x, int y) {

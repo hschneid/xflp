@@ -33,16 +33,14 @@ import java.util.List;
  */
 public class NContainerOneTypeAddPacker extends XFLPBase {
 
-	private boolean isInit = false;
-	private ZSingleBinAddPacker packer;
-
 	/*
 	 * (non-Javadoc)
 	 * @see de.fhg.iml.vlog.xflp.opt.XFLPBase#execute(de.fhg.iml.vlog.xflp.base.XFLPModel)
 	 */
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		init(model);
+		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
+		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy);
 
 		List<Container> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());
@@ -54,7 +52,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 
 			// Try to pack all unplanned items into the current empty container. The order
 			// of items is untouched by this planning. Each unplanned item will be checked.
-			unpackedItems = packer.createLoadingPlan(unpackedItems, currentContainer);
+			unpackedItems = heuristic.createLoadingPlan(unpackedItems, currentContainer);
 			
 			containerList.add(currentContainer);
 		}
@@ -70,13 +68,4 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	private Container createContainer(XFLPModel model) {
 		return model.getContainerTypes()[0].newInstance();
 	}
-
-	private void init(XFLPModel model) {
-		if(!isInit) {
-			isInit = true;
-			Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-			packer = new ZSingleBinAddPacker(strategy);
-		}
-	}
-
 }

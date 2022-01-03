@@ -7,6 +7,7 @@ import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.Strategy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,17 +26,26 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class OneContainerNTypeAddPacker implements Packer {
+public class NContainerNTypeAddPacker implements Packer {
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
 
-		// Create one container per type
-		List<Container> containers = getContainers(model);
-		// Try to insert items in containers
-		List<Item> unplannedItems = new MultiBinAddHeuristic(strategy)
-				.createLoadingPlan(Arrays.asList(model.getItems()), containers);
+		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
+		MultiBinAddHeuristic heuristic = new MultiBinAddHeuristic(strategy);
+
+		List<Container> containers = new ArrayList<>();
+		List<Item> unplannedItems = Arrays.asList(model.getItems());
+		while(!unplannedItems.isEmpty()) {
+			// Create one container per type
+			List<Container> newContainers = getContainers(model);
+			// Try to insert items in containers
+			List<Item> restItems = heuristic.createLoadingPlan(unplannedItems, newContainers);
+
+			containers.addAll(newContainers);
+			// Rest containers will go into next round
+			unplannedItems = restItems;
+		}
 
 		// Put result into model
 		model.setContainers(containers.toArray(new Container[0]));

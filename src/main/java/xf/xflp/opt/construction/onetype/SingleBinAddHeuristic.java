@@ -28,13 +28,13 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class ZSingleBinAddPacker {
+public class SingleBinAddHeuristic {
 
 	public static final boolean VERBOSE = false;
 
 	private final BaseStrategy strategy;
 
-	public ZSingleBinAddPacker(Strategy s) {
+	public SingleBinAddHeuristic(Strategy s) {
 		this.strategy = s.getStrategy();
 	}
 
@@ -72,6 +72,8 @@ public class ZSingleBinAddPacker {
 	}
 
 	private void resetItems(List<Item> items) {
-		items.forEach(Item::reset);
+		for (Item item : items) {
+			item.reset();
+		}
 	}
 }

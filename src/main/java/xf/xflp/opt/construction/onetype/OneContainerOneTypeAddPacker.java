@@ -25,31 +25,21 @@ import java.util.List;
  */
 public class OneContainerOneTypeAddPacker implements Packer {
 
-	private boolean isInit = false;
-	private ZSingleBinAddPacker packer;
-
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		init(model);
-
 		Container container = model.getContainerTypes()[0].newInstance();
 
-		List<Item> unplannedItemList = packer.createLoadingPlan(
-				Arrays.asList(model.getItems()),
-				container
-		);
+		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
+
+		List<Item> unplannedItemList = new SingleBinAddHeuristic(strategy)
+				.createLoadingPlan(
+						Arrays.asList(model.getItems()),
+						container
+				);
 
 		// Put result into model
 		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
-	}
-
-	private void init(XFLPModel model) {
-		if(!isInit) {
-			isInit = true;
-			Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-			packer = new ZSingleBinAddPacker(strategy);
-		}
 	}
 
 }

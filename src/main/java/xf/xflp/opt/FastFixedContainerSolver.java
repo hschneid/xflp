@@ -21,6 +21,9 @@ import xf.xflp.report.LoadType;
  *
  * It uses only construction heuristics.
  *
+ * Goal: All items should be packed into a single set of container types.
+ *       If items are not fitting, then they will be placed in separate list. (unplanned)
+ *
  */
 public class FastFixedContainerSolver extends XFLPBase {
 

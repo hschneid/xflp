@@ -31,18 +31,18 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         packer.execute(model);
         System.out.println("Init "+model.getUnplannedItems().length);
 
-        if(model.getUnplannedItems().length > 0) {
+        /*if(model.getUnplannedItems().length > 0) {
             doBestSwap(model);
         }
         if(model.getUnplannedItems().length > 0) {
             doSwapNextLocalSearch(model);
         }
-        /*if(model.getUnplannedItems().length > 0) {
+        if(model.getUnplannedItems().length > 0) {
             doSwapLocalSearch(model);
-        }
+        }*/
         if(model.getUnplannedItems().length > 0) {
             doRelocateLocalSearch(model);
-        }*/
+        }
     }
 
     private void doBestSwap(XFLPModel model) throws XFLPException {
@@ -162,6 +162,9 @@ public class SingleBinOptimizedPacker extends XFLPBase {
                         move(items, i, j);
                         // Pack
                         packer.execute(model);
+
+                        System.out.println(i+" "+j+" "+bestValue[0]);
+
                         // Check if there are unplanned items
                         if (model.getUnplannedItems().length < bestValue[0]) {
                             setBestMove(model, bestValue, i, j);
@@ -188,7 +191,6 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
             // Make random move in search space
             perturb(items);
-
         }
 
         // Reset best solution

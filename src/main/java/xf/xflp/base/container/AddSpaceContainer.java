@@ -115,29 +115,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 
 		addItem(item, pos);
 
-		if(item.z == 0) {
-			/* TODO: Hier müsste nicht die projezierte Position verschoben, sondern eine neue erstellt werden. */
-			// Pr�fe, ob das neue Objekt Projektionslinien schneidet
-			List<Position> projHPosList = findHorizontalProjectedPositions(item);
-			for (Position projPos : projHPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.x, s.yl);
-				Item leftItem = findNextLeftElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.x = (leftItem != null) ? leftItem.xw : 0;
-			}
-			List<Position> projVPosList = findVerticalProjectedPositions(item);
-			for (Position projPos : projVPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.xw, s.y);
-				Item lowerItem = findNextDeeperElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.y = (lowerItem != null) ? lowerItem.yl : 0;
-			}
-		}
-
 		removeCoveredPositions(item);
 
 		// Check existing spaces, if new item will shrink them
@@ -178,12 +155,24 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				spaces = nextSpaces;
 			}
 
-			spacePositions.put(newPos, spaceService.getDominatingSpaces(spaces));
+			List<Space> newSpaces = spaceService.getDominatingSpaces(spaces);
+			if(newSpaces.size() > 0) {
+				spacePositions.put(newPos, newSpaces);
+			} else {
+				removePosition(newPos);
+			}
 		}
 
 		history.add(item);
 
 		return item.index;
+	}
+
+	private void removePosition(Position position) {
+		activePosList.remove(position);
+		uniquePositionKeys.remove(position.getKey());
+		positionItemMap.remove(position);
+		spacePositions.remove(position);
 	}
 
 	/**
@@ -296,9 +285,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 		}
 
 		for (Position position : coveredPositionList) {
-			activePosList.remove(position);
-			uniquePositionKeys.remove(position.getKey());
-			spacePositions.remove(position);
+			removePosition(position);
 		}
 	}
 
@@ -336,7 +323,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private List<Space> addItem(Item item, Position pos) {
+	private void addItem(Item item, Position pos) {
 		// Adjust height for immersive depth
 		item.h = retrieveHeight(item, pos);
 
@@ -359,9 +346,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 		zGraph.add(item, itemList, zMap);
 
 		// Active position gets inactive by adding item
-		activePosList.remove(pos);
-		uniquePositionKeys.remove(pos.getKey());
-		return spacePositions.remove(pos);
+		removePosition(pos);
 	}
 
 	/**
@@ -409,6 +394,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	}
 
 	private void checkExistingSpaces(Item newItem) {
+		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
 			if(position.x >= newItem.xw ||
@@ -427,7 +413,16 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				);
 			}
 
-			spacePositions.put(position, spaceService.getDominatingSpaces(newSpaces));
+			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
+			if(spaces.size() > 0) {
+				spacePositions.put(position, spaces);
+			} else {
+				removablePositions.add(position);
+			}
+		}
+
+		for (Position removablePosition : removablePositions) {
+			removePosition(removablePosition);
 		}
 	}
 
@@ -579,21 +574,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	@Override
 	public ZItemGraph getZGraph() {
 		return zGraph;
-	}
-
-	public void addSpace(Position pos, Space space) {
-		// If one dimension is 0, then this position is obsolete.
-		if (space.w * space.l * space.h <= 0) {
-			System.out.println("Position can be removed. TODO");
-		}
-
-		if(spacePositions.containsKey(pos)) {
-			spacePositions.get(pos).add(space);
-		} else {
-			List<Space> spaces = new ArrayList<>();
-			spaces.add(space);
-			spacePositions.put(pos, spaces);
-		}
 	}
 
 	public List<Space> getSpace(Position pos) {

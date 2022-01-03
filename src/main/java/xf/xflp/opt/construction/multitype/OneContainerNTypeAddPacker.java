@@ -7,9 +7,8 @@ import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,19 +29,14 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class OneContainerNTypeAddPacker extends XFLPBase {
+public class OneContainerNTypeAddPacker implements Packer {
 
 	public static final boolean VERBOSE = false;
-
-	private BaseStrategy strategy;
-
-	public OneContainerNTypeAddPacker() {
-		this.strategy = new HighestLowerLeft();
-	}
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		List<Container> containers = getContainers(model);
+		BaseStrategy strategy = model.getParameter().getPreferredPackingStrategy().getStrategy();
 
 		List<Item> unplannedItemList = new ArrayList<>();
 
@@ -52,7 +46,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		resetItems(items);
 
 		for (Item item : items) {
-			List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers);
+			List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers, strategy);
 
 			// Add item to container
 			if (!containerPositions.isEmpty()) {
@@ -69,10 +63,10 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
 	}
 
-	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers) throws XFLPException {
+	private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
 		List<ContainerPosition> containerPositions = new ArrayList<>();
 		for (Container container : containers) {
-			Position bestPosition = getBestInsertPosition(item, container);
+			Position bestPosition = getBestInsertPosition(item, container, strategy);
 			if(bestPosition != null) {
 				containerPositions.add(new ContainerPosition(container, bestPosition));
 			}
@@ -87,7 +81,7 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 				.collect(Collectors.toList());
 	}
 
-	private Position getBestInsertPosition(Item item, Container container) throws XFLPException {
+	private Position getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
 		// Check if item is allowed to this container type
 		if (container.isItemAllowed(item)) {
 			// Fetch existing insert positions
@@ -113,9 +107,4 @@ public class OneContainerNTypeAddPacker extends XFLPBase {
 			items[i].reset();
 		}
 	}
-
-	public void setStrategy(BaseStrategy strategy) {
-		this.strategy = strategy;
-	}
-
 }

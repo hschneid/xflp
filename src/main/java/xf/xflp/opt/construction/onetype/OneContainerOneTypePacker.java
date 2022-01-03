@@ -6,9 +6,8 @@ import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.HighestLowerLeft;
 import xf.xflp.report.PackageEventType;
 
 import java.util.ArrayList;
@@ -33,19 +32,14 @@ import java.util.Map;
  * @author hschneid
  *
  */
-public class OneContainerOneTypePacker extends XFLPBase {
+public class OneContainerOneTypePacker implements Packer {
 
 	public static final boolean VERBOSE = false;
-
-	private BaseStrategy strategy;
-
-	public OneContainerOneTypePacker() {
-		this.strategy = new HighestLowerLeft();
-	}
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		Container container = model.getContainerTypes()[0].newInstance();
+		BaseStrategy strategy = model.getParameter().getPreferredPackingStrategy().getStrategy();
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
@@ -100,10 +94,6 @@ public class OneContainerOneTypePacker extends XFLPBase {
 		for (int i = items.length - 1; i >= 0; i--) {
 			items[i].reset();
 		}
-	}
-
-	public void setStrategy(BaseStrategy strategy) {
-		this.strategy = strategy;
 	}
 
 }

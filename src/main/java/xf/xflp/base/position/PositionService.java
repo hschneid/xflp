@@ -48,14 +48,14 @@ public class PositionService {
                 if((pos.z + itemH) > container.getHeight())
                     continue;
 
-/*                boolean b1 = checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
+                /*boolean b1 = checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
                 boolean bb = checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
 
                 if(b1 != bb) {
                     System.out.println("Hier");
-                }
-*/
-                if (checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH)) {
+                }*/
+
+                if (checkOverlapping(container, item, itemW, itemL, pos, itemH)) {
                     continue;
                 }
 
@@ -71,16 +71,20 @@ public class PositionService {
         return posList;
     }
 
+    private static boolean checkOverlapping(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
+        if(container instanceof AddSpaceContainer) {
+            return checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
+        } else {
+            return checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
+        }
+    }
+
     /**
      * Checks if new item at this position will collide with other items in container.
      * true = collision, invalid
      * false = valid
      */
     private static boolean checkOverlappingWithItems(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
-        if(container instanceof AddSpaceContainer) {
-            return checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
-        }
-
         IndexedArrayList<Item> items = (IndexedArrayList<Item>) container.getItems();
 
         for (int idx = items.length() - 1; idx >= 0; idx--) {

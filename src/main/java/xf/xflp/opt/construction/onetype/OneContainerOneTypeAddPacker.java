@@ -4,7 +4,7 @@ import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.Strategy;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class OneContainerOneTypeAddPacker extends XFLPBase {
+public class OneContainerOneTypeAddPacker implements Packer {
 
 	private boolean isInit = false;
 	private ZSingleBinAddPacker packer;

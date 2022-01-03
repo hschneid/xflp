@@ -1,6 +1,6 @@
 package benchmarks
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
@@ -13,12 +13,11 @@ class BigNumberSpec extends Specification {
     XFLP service
     def random = new Random(1234)
 
-    @Ignore
     def "1000 boxes"() {
         when:
         long time = System.currentTimeMillis()
         def result
-        for (i in 0..< 100) {
+        for (i in 0..< 50) {
             fillService()
             service.executeLoadPlanning()
             result = service.getReport()
@@ -82,8 +81,8 @@ class BigNumberSpec extends Specification {
                 .setWeight(weight)
                 .setStackingWeightLimit(bearingWeight)
                 .setNbrOfAllowedStackedItems(nbrOfItemsToStacked)
-                .setStackingGroup(stackingGroup+" ")
-                .setAllowedStackingGroups(stackingGroups)
+                //.setStackingGroup(stackingGroup+" ")
+                //.setAllowedStackingGroups(stackingGroups)
                 .setImmersiveDepth(immersiveDepth)
     }
 

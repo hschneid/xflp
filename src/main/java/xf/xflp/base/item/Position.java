@@ -17,7 +17,7 @@ public class Position {
 	public int x, y, z;
 	public final PositionType type;
 
-	public Position(int idx, int x, int y, int z, PositionType type) {
+	protected Position(int idx, int x, int y, int z, PositionType type) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;

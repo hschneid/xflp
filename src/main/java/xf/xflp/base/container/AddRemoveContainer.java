@@ -600,7 +600,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	 *
 	 */
 	private Position createPosition(int x, int y, int z, PositionType type) {
-		return new Position(maxPosIdx++, x, y, z, type);
+		return Position.of(maxPosIdx++, x, y, z, type);
 	}
 
 	/**

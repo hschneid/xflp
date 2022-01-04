@@ -25,11 +25,12 @@ public class Position {
 		this.type = type;
 	}
 
-	/**
-	 * Is used to create positions for internal calculation
-	 */
-	public Position(int x, int y, int z) {
-		this(-1, x, y, z, PositionType.TMP);
+	public static Position of(int idx, int x, int y, int z, PositionType type) {
+		return new Position(idx, x, y, z, type);
+	}
+
+	public static Position of(int x, int y, int z) {
+		return new Position(-1, x, y, z, PositionType.TMP);
 	}
 
 	@Override

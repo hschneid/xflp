@@ -20,8 +20,8 @@ class WidthProportionFactorTest extends Specification {
         item2.l = 100
         item2.w = 80
         def posList = [
-                new Position(1,1, 1),
-                new RotatedPosition(new Position(1,1, 1))
+                Position.of(1,1, 1),
+                new RotatedPosition(Position.of(1,1, 1))
         ]
 
         when:
@@ -35,7 +35,7 @@ class WidthProportionFactorTest extends Specification {
     def "choose min proportion - one position"() {
         def item = new Item()
         def posList = [
-                new Position(1,1, 1)
+                Position.of(1,1, 1)
         ]
         when:
         def r = service.choose(item, container, posList)

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class AddRemoveContainer implements Container, ContainerBaseData {
 
-	private static final Position rootPos = new Position( -1, -1, -1);
+	private static final Position rootPos = Position.of( -1, -1, -1);
 
 	/* Idx of the container. There are no two containers, with same index. */
 	private int index = -1;
@@ -42,7 +42,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
-	private final Position tmpPosition = new Position(-1, -1, -1);
+	private final Position tmpPosition = Position.of(-1, -1, -1);
 	private final Set<Position> inactivePosList = new HashSet<>();
 	private final List<Position> coveredPosList = new ArrayList<>();
 

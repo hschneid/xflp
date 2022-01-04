@@ -40,7 +40,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
-	private final Position tmpPosition = new Position(-1, -1, -1);
+	private final Position tmpPosition = Position.of(-1, -1, -1);
 
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();

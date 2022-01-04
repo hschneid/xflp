@@ -16,7 +16,7 @@ public class RotatedPosition extends Position {
 	public final Position pos;
 
 	public RotatedPosition(Position pos) {
-		super(pos.x, pos.y, pos.z);
+		super(pos.idx, pos.x, pos.y, pos.z, pos.type);
 		
 		this.pos = pos;
 	}

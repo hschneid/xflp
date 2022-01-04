@@ -2,6 +2,7 @@ package xf.xflp.opt.grasp;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
 import xf.xflp.opt.XFLPBase;
@@ -21,21 +22,21 @@ import java.util.Random;
  * @author hschneid
  *
  */
-public class OneContainerRandomSearchPacker extends XFLPBase {
+public class ItemOrderRandomSearch extends XFLPBase {
 
     private final Packer packer;
 
-    private Random rand = new Random(1234);
+    private final Random rand = new Random(1234);
     private int nbrOfIterations = 2000;
 
-    public OneContainerRandomSearchPacker(Packer packer) {
+    public ItemOrderRandomSearch(Packer packer) {
         this.packer = packer;
     }
 
     @Override
     public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init Random search "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING, "Init Random search "+model.getUnplannedItems().length);
 
         Item[] bestItems = Arrays.copyOf(model.getItems(), model.getItems().length);
         int bestValue = model.getUnplannedItems().length;
@@ -51,7 +52,7 @@ public class OneContainerRandomSearchPacker extends XFLPBase {
             // Check if there are unplanned items
             if (model.getUnplannedItems().length < bestValue) {
                 bestItems = Arrays.copyOf(model.getItems(), model.getItems().length);
-                System.out.println("Better " + model.getUnplannedItems().length);
+                model.getStatusManager().fireMessage(StatusCode.RUNNING,"Better " + model.getUnplannedItems().length);
                 bestValue = model.getUnplannedItems().length;
 
                 if(model.getUnplannedItems().length == 0) {

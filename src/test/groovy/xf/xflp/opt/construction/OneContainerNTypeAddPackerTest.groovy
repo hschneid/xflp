@@ -7,6 +7,8 @@ import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
+import xf.xflp.base.monitor.DefaultStatusMonitor
+import xf.xflp.base.monitor.StatusCode
 import xf.xflp.opt.XFLPOptType
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker
 
@@ -44,7 +46,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
                 items.toArray(new Item[0]),
                 [Helper.getContainer(3,3,3),
                  Helper.getContainer(2,2,3)] as Container[],
-                new XFLPParameter()
+                new XFLPParameter(),
+                Helper.getStatusManager()
         )
 
         when:
@@ -66,7 +69,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
                 items.toArray(new Item[0]),
                 [Helper.getContainer(3,3,3),
                  Helper.getContainer(2,2,3)] as Container[],
-                new XFLPParameter()
+                new XFLPParameter(),
+                Helper.getStatusManager()
         )
 
 

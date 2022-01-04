@@ -15,7 +15,7 @@ class SingleBinOptimizedPackerSpec extends Specification {
 
     def service = new SingleBinOptimizedPacker()
 
-    def "hard but solveable"() {
+    def "hard but solvable"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 9; i++)
             items.add(Helper.getItem(2,1,1,1,4,0))
@@ -26,7 +26,8 @@ class SingleBinOptimizedPackerSpec extends Specification {
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
                 [Helper.getContainer(4,3,3)] as Container[],
-                new XFLPParameter()
+                new XFLPParameter(),
+                Helper.getStatusManager()
         )
         model.containerTypes[0].parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
 
@@ -44,7 +45,8 @@ class SingleBinOptimizedPackerSpec extends Specification {
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
                 [Helper.getContainer(4, 9, 3, 1000)] as Container[],
-                new XFLPParameter()
+                new XFLPParameter(),
+                Helper.getStatusManager()
         )
 
         when:

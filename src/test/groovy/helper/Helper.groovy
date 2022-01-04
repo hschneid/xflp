@@ -5,6 +5,8 @@ import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
 import xf.xflp.base.item.RotatedPosition
+import xf.xflp.base.monitor.DefaultStatusMonitor
+import xf.xflp.base.monitor.StatusManager
 
 class Helper {
 
@@ -93,6 +95,12 @@ class Helper {
         itemIdx++
 
         return i
+    }
+
+    static StatusManager getStatusManager() {
+        def stat = new StatusManager()
+        stat.addObserver(new DefaultStatusMonitor())
+        return stat
     }
 
     static Position findPos(Collection<Position> pList, int x, int y, int z) {

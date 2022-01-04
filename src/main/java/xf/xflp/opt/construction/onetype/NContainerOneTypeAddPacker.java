@@ -40,7 +40,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy);
+		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy, model.getStatusManager());
 
 		List<Container> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());

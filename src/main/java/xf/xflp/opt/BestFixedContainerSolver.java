@@ -6,7 +6,7 @@ import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
-import xf.xflp.opt.grasp.OneContainerRandomSearchPacker;
+import xf.xflp.opt.grasp.ItemOrderRandomSearch;
 import xf.xflp.report.LoadType;
 
 /**
@@ -33,15 +33,15 @@ public class BestFixedContainerSolver extends XFLPBase {
     public void execute(XFLPModel model) throws XFLPException {
         if(isOnlyAddingItems(model)) {
             if(model.getContainerTypes().length > 1) {
-                new OneContainerRandomSearchPacker(nTypeAddPacker).execute(model);
+                new ItemOrderRandomSearch(nTypeAddPacker).execute(model);
             } else {
-                new OneContainerRandomSearchPacker(oneTypeAddPacker).execute(model);
+                new ItemOrderRandomSearch(oneTypeAddPacker).execute(model);
             }
         } else {
             if(model.getContainerTypes().length > 1) {
                 throw new UnsupportedOperationException("Currently add/removing and multiple container types is not supported");
             } else {
-                new OneContainerRandomSearchPacker(oneTypePacker).execute(model);
+                new ItemOrderRandomSearch(oneTypePacker).execute(model);
             }
         }
     }

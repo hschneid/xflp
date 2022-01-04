@@ -135,4 +135,26 @@ class XFLPSpec extends Specification {
         rep.getContainerReports().size() == 1
         rep.getContainerReports().get(0).getPackageEvents().size() == 3
     }
+
+    def "invalid item data"() {
+        service.addContainer().setWidth(3).setLength(3).setHeight(2).setMaxWeight(10).setContainerType("ANY")
+        service.addContainer().setWidth(3).setLength(3).setHeight(2).setMaxWeight(8).setContainerType("ANY2")
+        service.addItem().setExternID("P1").setWidth(3).setLength(3).setHeight(1).setWeight(1)
+        service.addItem().setExternID("P2").setWidth(w).setLength(l).setHeight(h).setWeight(kg).setImmersiveDepth(id)
+
+        when:
+        service.executeLoadPlanning()
+        then:
+        def error = thrown(expectedException)
+        error.message.contains(expectedMessage)
+        where:
+        w | l | h | id | kg || expectedException | expectedMessage
+        0 | 1 | 1 | 1  | 1  || XFLPException | 'Width of item must be greater 0'
+        1 | 0 | 1 | 1  | 1  || XFLPException | 'Length of item must be greater 0'
+        1 | 1 | 0 | 1  | 1  || XFLPException | 'Height of item must be greater 0'
+        1 | 1 | 1 | -1 | 1  || XFLPException | 'Immersive depth must be >= 0'
+        1 | 1 | 1 | 1  | 1  || XFLPException | 'Immersive depth must not lead to negative height'
+        1 | 1 | 1 | 0  | 11 || XFLPException | 'Item is too heavy for any container'
+    }
+
 }

@@ -4,6 +4,7 @@ import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
@@ -33,8 +34,6 @@ import java.util.Map;
  *
  */
 public class OneContainerOneTypePacker implements Packer {
-
-	public static final boolean VERBOSE = false;
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
@@ -71,8 +70,7 @@ public class OneContainerOneTypePacker implements Packer {
 					container.add(item, insertPosition);
 					loadedItemMap.put(item.externalIndex, item);
 				} else {
-					if(VERBOSE)
-						System.out.println("Item "+item.index +" konnte nicht hinzugef�gt werden.");
+					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 					unplannedItemList.add(item);
 				}
 			} else {

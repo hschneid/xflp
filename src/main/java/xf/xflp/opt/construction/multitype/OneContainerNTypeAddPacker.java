@@ -34,7 +34,7 @@ public class OneContainerNTypeAddPacker implements Packer {
 		// Create one container per type
 		List<Container> containers = getContainers(model);
 		// Try to insert items in containers
-		List<Item> unplannedItems = new MultiBinAddHeuristic(strategy)
+		List<Item> unplannedItems = new MultiBinAddHeuristic(strategy, model.getStatusManager())
 				.createLoadingPlan(Arrays.asList(model.getItems()), containers);
 
 		// Put result into model

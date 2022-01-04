@@ -3,6 +3,8 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.monitor.StatusCode;
+import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
@@ -30,12 +32,12 @@ import java.util.List;
  */
 public class SingleBinAddHeuristic {
 
-	public static final boolean VERBOSE = false;
-
 	private final BaseStrategy strategy;
+	private final StatusManager statusManager;
 
-	public SingleBinAddHeuristic(Strategy s) {
+	public SingleBinAddHeuristic(Strategy s, StatusManager statusManager) {
 		this.strategy = s.getStrategy();
+		this.statusManager = statusManager;
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
@@ -62,8 +64,7 @@ public class SingleBinAddHeuristic {
 			if (insertPosition != null) {
 				container.add(item, insertPosition);
 			} else {
-				if (VERBOSE)
-					System.out.println("Item " + item.index + " konnte nicht hinzugef�gt werden.");
+				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);
 			}
 		}

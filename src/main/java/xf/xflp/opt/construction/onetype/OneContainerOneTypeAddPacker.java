@@ -31,7 +31,7 @@ public class OneContainerOneTypeAddPacker implements Packer {
 
 		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
 
-		List<Item> unplannedItemList = new SingleBinAddHeuristic(strategy)
+		List<Item> unplannedItemList = new SingleBinAddHeuristic(strategy, model.getStatusManager())
 				.createLoadingPlan(
 						Arrays.asList(model.getItems()),
 						container

@@ -4,7 +4,7 @@ import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
 
-class OneContainerRandomSearchPackerTest extends Specification {
+class ItemOrderRandomSearchTest extends Specification {
 
     def "test random search"() {
         XFLP xflp = build()

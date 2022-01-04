@@ -106,7 +106,12 @@ public class XFLP {
 		// Check phase
 		checkItems(items, containerTypeList);
 
-		return new XFLPModel(items.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
+		return new XFLPModel(
+				items.toArray(new Item[0]),
+				containerTypeList.toArray(new Container[0]),
+				parameter,
+				statusManager
+		);
 	}
 
 	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {

@@ -6,6 +6,7 @@ import util.collection.LPListMap;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.RotatedPosition;
 
 import java.util.*;
@@ -21,11 +22,6 @@ import java.util.stream.Collectors;
  * @author hschneid
  */
 public class AddContainer implements Container, ContainerBaseData {
-
-	private static final int ROOT = 0;
-	private static final int BASIC = 1;
-	private static final int EXTENDED_H = 3;
-	private static final int EXTENDED_V = 4;
 
 	/* Idx of the container. There are no two containers, with same index. */
 	private int index = -1;
@@ -269,7 +265,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	private List<Position> findHorizontalProjectedPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
 		for (Position pos : activePosList) {
-			if(pos.type == EXTENDED_H) {
+			if(pos.type == PositionType.EXTENDED_H) {
 				Item s = positionItemMap.get(pos);
 				if(pos.z == item.z && pos.x <= item.xw && s.x > item.x && pos.y >= item.y && pos.y <= item.yl)
 					posList.add(pos);
@@ -284,7 +280,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	private List<Position> findVerticalProjectedPositions(Item item) {
 		List<Position> posList = new ArrayList<>();
 		for (Position pos : activePosList) {
-			if(pos.type == EXTENDED_V) {
+			if(pos.type == PositionType.EXTENDED_V) {
 				Item s = positionItemMap.get(pos);
 
 				if(pos.z == item.z && pos.y <= item.yl && s.y > item.y && pos.x >= item.x && pos.x <= item.xw)
@@ -333,11 +329,11 @@ public class AddContainer implements Container, ContainerBaseData {
 		// 2 simple positions
 		Position verticalPosition = null, horizontalPosition = null;
 		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC);
+			verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
 			posList.add(verticalPosition);
 		}
 		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC);
+			horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
 			posList.add(horizontalPosition);
 		}
 
@@ -346,19 +342,19 @@ public class AddContainer implements Container, ContainerBaseData {
 			if(item.x > 0 && verticalPosition != null) {
 				Item leftElement = findNextLeftElement(verticalPosition);
 				int leftPos = (leftElement != null) ? leftElement.xw : 0;
-				posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H));
+				posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
 			}
 
 			if(item.y > 0 && horizontalPosition != null) {
 				Item lowerElement = findNextDeeperElement(horizontalPosition);
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
-				posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V));
+				posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
 			}
 		}
 
 		// 1 ceiling position
 		if(item.z + item.h < this.height)
-			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC));
+			posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
 
 		return posList;
 	}
@@ -400,7 +396,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private Position createPosition(int x, int y, int z, int type) {
+	private Position createPosition(int x, int y, int z, PositionType type) {
 		return new Position(maxPosIdx++, x, y, z, type);
 	}
 
@@ -441,7 +437,7 @@ public class AddContainer implements Container, ContainerBaseData {
 	 *
 	 */
 	private void init() {
-		Position start = createPosition(0, 0, 0, ROOT);
+		Position start = createPosition(0, 0, 0, PositionType.ROOT);
 		activePosList.add(start);
 	}
 

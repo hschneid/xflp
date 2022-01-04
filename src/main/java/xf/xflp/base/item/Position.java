@@ -13,26 +13,23 @@ package xf.xflp.base.item;
  */
 public class Position {
 
-	public int x, y, z;
-
 	protected final int idx;
-	public final int type;
+	public int x, y, z;
+	public final PositionType type;
 
-	public Position(int x, int y) {
-		this(-1, x, y, -1, -1);
-	}
-	public Position(int x, int y, int z) {
-		this(-1, x, y, z, -1);
-	}
-	protected Position(int idx, int x, int y, int type) {
-		this(idx, x, y, -1, type);
-	}
-	public Position(int idx, int x, int y, int z, int type) {
+	public Position(int idx, int x, int y, int z, PositionType type) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.type = type;
+	}
+
+	/**
+	 * Is used to create positions for internal calculation
+	 */
+	public Position(int x, int y, int z) {
+		this(-1, x, y, z, PositionType.TMP);
 	}
 
 	@Override

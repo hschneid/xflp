@@ -4,10 +4,7 @@ import com.google.common.collect.HashBiMap;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.fleximport.ContainerData;
-import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
-import xf.xflp.base.item.RotatedPosition;
-import xf.xflp.base.item.Space;
+import xf.xflp.base.item.*;
 import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
@@ -25,11 +22,6 @@ import java.util.stream.Collectors;
  *
  */
 public class AddSpaceContainer implements Container, ContainerBaseData {
-
-	private static final int ROOT = 0;
-	private static final int BASIC = 1;
-	private static final int EXTENDED_H = 3;
-	private static final int EXTENDED_V = 4;
 
 	/* Idx of the container. There are no two containers, with same index. */
 	private int index = -1;
@@ -324,15 +316,15 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 		// 3 basic positions
 		Position verticalPosition = null, horizontalPosition = null;
 		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, BASIC);
+			verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
 			posList.add(verticalPosition);
 		}
 		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, BASIC);
+			horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
 			posList.add(horizontalPosition);
 		}
 		if(item.z + item.h < this.height) {
-			posList.add(createPosition(item.x, item.y, item.z + item.h, BASIC));
+			posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
 		}
 
 		// 2 projected positions
@@ -342,7 +334,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				int leftPos = (leftElement != null) ? leftElement.xw : 0;
 
 				if(leftPos < item.x) {
-					posList.add(createPosition(leftPos, item.yl, item.z, EXTENDED_H));
+					posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
 				}
 			}
 
@@ -351,7 +343,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
 
 				if(lowerPos < item.y) {
-					posList.add(createPosition(item.xw, lowerPos, item.z, EXTENDED_V));
+					posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
 				}
 			}
 		}
@@ -423,7 +415,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private Position createPosition(int x, int y, int z, int type) {
+	private Position createPosition(int x, int y, int z, PositionType type) {
 		return new Position(maxPosIdx++, x, y, z, type);
 	}
 
@@ -464,7 +456,7 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	 *
 	 */
 	private void init() {
-		Position start = createPosition(0, 0, 0, ROOT);
+		Position start = createPosition(0, 0, 0, PositionType.ROOT);
 		activePosList.add(start);
 		spacePositions.put(start, Collections.singletonList(Space.of(length, width, height)));
 	}

@@ -13,8 +13,7 @@ package xf.xflp.base.item;
  */
 public class Position {
 
-	protected final int idx;
-	public int x, y, z;
+	public final int idx, x, y, z;
 	public final PositionType type;
 
 	protected Position(int idx, int x, int y, int z, PositionType type) {
@@ -37,12 +36,7 @@ public class Position {
 	public String toString() {
 		return "("+x+","+y+","+z+((this instanceof RotatedPosition) ? ",R":"")+")";
 	}
-	
-	public void setXY(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
+
 	/**
 	 * @return the x
 	 */

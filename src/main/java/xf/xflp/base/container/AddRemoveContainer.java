@@ -42,7 +42,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
-	private final Position tmpPosition = Position.of(-1, -1, -1);
 	private final Set<Position> inactivePosList = new HashSet<>();
 	private final List<Position> coveredPosList = new ArrayList<>();
 
@@ -66,13 +65,13 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
-		int width,
-		int length,
-		int height,
-		float maxWeight,
-		int containerType,
-		GroundContactRule groundContactRule,
-		float lifoImportance
+			int width,
+			int length,
+			int height,
+			float maxWeight,
+			int containerType,
+			GroundContactRule groundContactRule,
+			float lifoImportance
 	) {
 		this.width = width;
 		this.length = length;
@@ -109,28 +108,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 
 		// F�ge Element in Container ein
 		addItem(item, pos);
-
-		if(item.z == 0) {
-			// Pr�fe, ob das neue Objekt Projektionslinien schneidet
-			List<Position> projHPosList = findHorizontalProjectedPositions(item);
-			for (Position projPos : projHPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.x, s.yl);
-				Item leftItem = findNextLeftElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.x = (leftItem != null) ? leftItem.xw : 0;
-			}
-			List<Position> projVPosList = findVerticalProjectedPositions(item);
-			for (Position projPos : projVPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.xw, s.y);
-				Item lowerItem = findNextLowerElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.y = (lowerItem != null) ? lowerItem.yl : 0;
-			}
-		}
 
 		// Setze �berlagerte Positionen auf inaktiv
 		List<Position> covPosList = findCoveredPositions(item);
@@ -176,12 +153,18 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
 		for (Position pos : projectablePosHList) {
 			Item leftItem = findNextLeftElement(pos);
-			pos.x = (leftItem != null) ? leftItem.xw : 0;
+			Position newPosition = Position.of(
+					pos.idx, (leftItem != null) ? leftItem.xw : 0, pos.y, pos.z, pos.type
+			);
+			replacePosition(pos, newPosition);
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
 			Item lowerItem = findNextLowerElement(pos);
-			pos.y = (lowerItem != null) ? lowerItem.yl : 0;
+			Position newPosition = Position.of(
+					pos.idx, pos.x, ((lowerItem != null) ? lowerItem.yl : 0), pos.z, pos.type
+			);
+			replacePosition(pos, newPosition);
 		}
 
 		// L�sche die alte Position, wenn deren Elter noch aktiv ist und selbst seine Nachfolger alle weg sind
@@ -364,37 +347,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private List<Position> findHorizontalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_H) {
-				Item s = positionItemMap.get(pos);
-				if(pos.z == item.z && pos.x <= item.xw && s.x > item.x && pos.y >= item.y && pos.y <= item.yl)
-					posList.add(pos);
-			}
-		}
-		return posList;
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findVerticalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_V) {
-				Item s = positionItemMap.get(pos);
-
-				if(pos.z == item.z && pos.y <= item.yl && s.y > item.y && pos.x >= item.x && pos.x <= item.xw)
-					posList.add(pos);
-			}
-		}
-		return posList;
-	}
-
-	/**
-	 *
-	 */
 	private void insertTree(Position entry, Position ancestor) {
 		posAncestorMap.put(entry, ancestor);
 		posFollowerMap.put(ancestor, entry);
@@ -444,6 +396,43 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 			coveredPosList.remove(pos);
 			positionItemMap.remove(pos);
 		}
+	}
+
+	/**
+	 * Is used for re-projected positions during removeItem
+	 */
+	private void replacePosition(Position oldPosition, Position newPosition) {
+		if(oldPosition.type != PositionType.ROOT) {
+			posFollowerMap.put(newPosition, posFollowerMap.get(oldPosition));
+			for (Position key : posFollowerMap.keySet()) {
+				List<Position> follower = posFollowerMap.get(key);
+				if(follower != null && follower.contains(oldPosition)) {
+					follower.remove(oldPosition);
+					follower.remove(newPosition);
+				}
+			}
+
+			posAncestorMap.put(newPosition, posAncestorMap.get(oldPosition));
+			for (Map.Entry<Position, Position> e : posAncestorMap.entrySet()) {
+				if(e.getValue() == oldPosition) {
+					posAncestorMap.put(e.getKey(), newPosition);
+				}
+			}
+
+			positionItemMap.put(newPosition, positionItemMap.get(oldPosition));
+			for (Map.Entry<Item, Position> e : itemPositionMap.entrySet()) {
+				if(e.getValue() == oldPosition)
+					itemPositionMap.put(e.getKey(), newPosition);
+			}
+
+			activePosList.remove(oldPosition);
+			activePosList.add(newPosition);
+			inactivePosList.remove(oldPosition);
+			inactivePosList.add(newPosition);
+			coveredPosList.remove(oldPosition);
+			coveredPosList.add(newPosition);
+		}
+
 	}
 
 	/**
@@ -628,11 +617,11 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 				.stream()
 				.map(idx -> itemList.get(idx))
 				.filter(lowerItem -> lowerItem.zh == pos.z &&
-								lowerItem.x < pos.x + newItem.w &&
-								lowerItem.xw > pos.x &&
-								lowerItem.y < pos.y + newItem.l &&
-								lowerItem.yl > pos.y
-						)
+						lowerItem.x < pos.x + newItem.w &&
+						lowerItem.xw > pos.x &&
+						lowerItem.y < pos.y + newItem.l &&
+						lowerItem.yl > pos.y
+				)
 				.collect(Collectors.toList());
 	}
 

@@ -40,8 +40,6 @@ public class AddContainer implements Container, ContainerBaseData {
 	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
 	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
-	private final Position tmpPosition = Position.of(-1, -1, -1);
-
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
 
@@ -101,28 +99,6 @@ public class AddContainer implements Container, ContainerBaseData {
 
 		// F�ge Element in Container ein
 		addItem(item, pos);
-
-		if(item.z == 0) {
-			// Pr�fe, ob das neue Objekt Projektionslinien schneidet
-			List<Position> projHPosList = findHorizontalProjectedPositions(item);
-			for (Position projPos : projHPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.x, s.yl);
-				Item leftItem = findNextLeftElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.x = (leftItem != null) ? leftItem.xw : 0;
-			}
-			List<Position> projVPosList = findVerticalProjectedPositions(item);
-			for (Position projPos : projVPosList) {
-				Item s = positionItemMap.get(projPos);
-				tmpPosition.setXY(s.xw, s.y);
-				Item lowerItem = findNextDeeperElement(tmpPosition);
-				// Projeziere diese Position komplett neu von ihrem Objekt aus
-				// Ersetze dabei nur die x-y-Koordinaten
-				projPos.y = (lowerItem != null) ? lowerItem.yl : 0;
-			}
-		}
 
 		removeCoveredPositions(item);
 
@@ -257,37 +233,6 @@ public class AddContainer implements Container, ContainerBaseData {
 			activePosList.remove(position);
 			uniquePositionKeys.remove(position.getKey());
 		}
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findHorizontalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_H) {
-				Item s = positionItemMap.get(pos);
-				if(pos.z == item.z && pos.x <= item.xw && s.x > item.x && pos.y >= item.y && pos.y <= item.yl)
-					posList.add(pos);
-			}
-		}
-		return posList;
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findVerticalProjectedPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_V) {
-				Item s = positionItemMap.get(pos);
-
-				if(pos.z == item.z && pos.y <= item.yl && s.y > item.y && pos.x >= item.x && pos.x <= item.xw)
-					posList.add(pos);
-			}
-		}
-		return posList;
 	}
 
 	/**

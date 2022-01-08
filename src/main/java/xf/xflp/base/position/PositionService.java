@@ -165,7 +165,7 @@ public class PositionService {
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     private static int retrieveHeight(Item item, Position pos, Container container) {
-        if(pos.z == 0) {
+        if(pos.z == 0 || item.immersiveDepth == 0) {
             return item.h;
         }
 

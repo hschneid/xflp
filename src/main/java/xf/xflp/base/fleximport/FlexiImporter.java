@@ -27,9 +27,7 @@ import java.util.stream.Stream;
  * - Assiging the vehicle priority by sorting the vehicles with their capacities
  * 
  * After import collected data can be accessed XFLP suite. 
- * 
  * @author hschneid
- *
  */
 public class FlexiImporter implements Serializable {
 	private static final long serialVersionUID = -6460880073124361069L;

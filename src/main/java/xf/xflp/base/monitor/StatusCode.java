@@ -9,9 +9,7 @@ package xf.xflp.base.monitor;
  *
  *
  * Possible status codes of messages.
- * 
  * @author hschneid
- *
  */
 public enum StatusCode {
 

@@ -17,9 +17,7 @@ import xf.xflp.base.monitor.StatusManager;
  * nodeArr contains all read nodes with their attitudes.
  * The metric can only be reached through this model for
  * getting distances or times between nodes. 
- * 
  * @author hschneid
- *
  */
 public class XFLPModel {
 

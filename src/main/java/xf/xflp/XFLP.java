@@ -34,9 +34,7 @@ import java.util.List;
  * methods must be called. The execution method take all inserted data and parameters
  * and start the optimizers.
  * 
- * 
  * @author hschneid
- *
  */
 public class XFLP {
 

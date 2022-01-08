@@ -14,9 +14,7 @@ import xf.xflp.base.container.Container;
  * Summary of a values for a route.
  * 
  * Events can be added, where the values are updated directly.
- * 
  * @author hschneid
- *
  */
 public class ContainerReportSummary {
 

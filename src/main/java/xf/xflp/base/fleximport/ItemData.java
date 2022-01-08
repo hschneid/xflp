@@ -26,9 +26,7 @@ import java.io.Serializable;
  * where last set value is overwritten with only one exception:
  * It is possible to set multiple time windows. It is not possible
  * to clear the list of inserted time windows.
- * 
  * @author hschneid
- *
  */
 public class ItemData implements Serializable {
 

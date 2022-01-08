@@ -13,9 +13,7 @@ import java.util.List;
  *
  * Manages several Status Monitor objects from the user
  * and distributes the messages to the monitors.
- * 
  * @author hschneid
- *
  */
 public class StatusManager {
 

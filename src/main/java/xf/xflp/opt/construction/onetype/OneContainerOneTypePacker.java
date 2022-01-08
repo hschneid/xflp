@@ -29,9 +29,7 @@ import java.util.Map;
  * This packer puts the items in a sequence into one single container.
  * It is able to add and to remove the items with respect to their loading type (LOAD, UNLOAD).
  * There is no optimization in container allocation or item sequence.
- * 
  * @author hschneid
- *
  */
 public class OneContainerOneTypePacker implements Packer {
 

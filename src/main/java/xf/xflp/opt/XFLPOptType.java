@@ -15,9 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * This enumeration holds all for the user available optimization
  * methods.
- * 
  * @author hschneid
- *
  */
 public enum XFLPOptType {
 	

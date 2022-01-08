@@ -27,9 +27,7 @@ import java.util.List;
  * 
  * The packer considers only items which will be added to a container. The adding and removing will
  * not be provided.
- * 
  * @author hschneid
- *
  */
 public class NContainerOneTypeAddPacker extends XFLPBase {
 

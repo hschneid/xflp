@@ -10,9 +10,7 @@ import xf.xflp.exception.XFLPException;
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
  * @author hschneid
- *
  */
 public abstract class XFLPBase {
 

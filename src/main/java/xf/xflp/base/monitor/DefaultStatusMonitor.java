@@ -10,9 +10,7 @@ package xf.xflp.base.monitor;
  *
  * The default status monitor, which prints the messages to the 
  * command line.
- * 
  * @author hschneid
- *
  */
 public class DefaultStatusMonitor implements StatusMonitor {
 

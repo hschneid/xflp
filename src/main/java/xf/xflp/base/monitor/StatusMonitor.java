@@ -11,9 +11,7 @@ package xf.xflp.base.monitor;
  * Interface for Status Monitor Objects, which can be used to
  * transfer planning informations from inside the XFVRP package
  * to the user.
- * 
  * @author hschneid
- *
  */
 public interface StatusMonitor {
 

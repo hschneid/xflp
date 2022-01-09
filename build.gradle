@@ -94,11 +94,20 @@ publishing {
 
 		}
 	}
+	def usr = "ubk"
+	def passwd = "-"
+	if (project.hasProperty("ossrhUsername")) {
+		usr = project.getProperty("ossrhUsername")
+	}
+	if (project.hasProperty("ossrhPassword")) {
+		passwd = project.getProperty("ossrhPassword")
+	}
+
 	repositories {
 		maven {
 			credentials {
-				username ossrhUsername
-				password ossrhPassword
+				username usr
+				password passwd
 			}
 			if (project.version.endsWith("-SNAPSHOT")) {
 				url "https://oss.sonatype.org/content/repositories/snapshots/"

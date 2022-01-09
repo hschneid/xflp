@@ -32,7 +32,7 @@ public class Position {
 
 	@Override
 	public String toString() {
-		return "("+x+","+y+","+z+((this instanceof RotatedPosition) ? ",R":"")+")";
+		return "("+x+","+y+","+z+")";
 	}
 
 	/**

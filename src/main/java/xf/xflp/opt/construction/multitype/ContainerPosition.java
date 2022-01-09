@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionCandidate;
 
 /**
  * Copyright (c) 2012-2022 Holger Schneider
@@ -16,9 +16,9 @@ import xf.xflp.base.item.Position;
 public class ContainerPosition {
 
     private final Container container;
-    private final Position position;
+    private final PositionCandidate position;
 
-    public ContainerPosition(Container container, Position position) {
+    public ContainerPosition(Container container, PositionCandidate position) {
         this.container = container;
         this.position = position;
     }
@@ -27,7 +27,7 @@ public class ContainerPosition {
         return container;
     }
 
-    public Position getPosition() {
+    public PositionCandidate getPosition() {
         return position;
     }
 }

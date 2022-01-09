@@ -7,7 +7,10 @@ import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.StackingChecker;
-import xf.xflp.base.item.*;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.RotationType;
+import xf.xflp.base.item.Space;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +29,15 @@ public class PositionService {
     /**
      * Returns all possible and valid insert positions for this item.
      */
-    public static List<Position> getPossibleInsertPositionList(Container container, Item item) {
-        List<Position> posList = new ArrayList<>();
+    public static List<PositionCandidate> getPossibleInsertPositionList(Container container, Item item) {
+        List<PositionCandidate> candidates = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
         if(container.getLoadedWeight() + item.weight > container.getMaxWeight()) {
-            return posList;
+            return candidates;
         }
 
         // For every rotation state
@@ -57,13 +60,6 @@ public class PositionService {
                 if((pos.z + itemH) > container.getHeight())
                     continue;
 
-                /*boolean b1 = checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
-                boolean bb = checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
-
-                if(b1 != bb) {
-                    System.out.println("Hier");
-                }*/
-
                 if (checkOverlapping(container, item, itemW, itemL, pos, itemH)) {
                     continue;
                 }
@@ -73,11 +69,13 @@ public class PositionService {
                     continue;
 
                 // Create RotatedPosition if this item is rotated
-                posList.add((rotation == 0) ? pos : new RotatedPosition(pos));
+                candidates.add(
+                        PositionCandidate.of(pos, item, (rotation == 1))
+                );
             }
         }
 
-        return posList;
+        return candidates;
     }
 
     private static boolean checkOverlapping(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
@@ -165,7 +163,7 @@ public class PositionService {
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     private static int retrieveHeight(Item item, Position pos, Container container) {
-        if(pos.z == 0 || item.immersiveDepth == 0) {
+        if(pos.z == 0) {
             return item.h;
         }
 

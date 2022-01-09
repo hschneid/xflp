@@ -28,7 +28,7 @@ public interface Container {
      *
      * Returns the index of the inserted item for faster access
      */
-    int add(Item item, Position position);
+    int add(Item item, Position position, boolean isRotated);
 
     /**
      * Removes the item from container.

@@ -2,8 +2,7 @@ package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
-import xf.xflp.base.item.RotatedPosition;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
@@ -30,18 +29,18 @@ public class WidthProportionFactor extends BaseStrategy {
 	private final TouchingPerimeter fallbackStrategy = new TouchingPerimeter();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
-		if(posList == null || posList.isEmpty()) {
+	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
-		if(posList.size() == 1) {
-			return posList.get(0);
+		if(candidates.size() == 1) {
+			return candidates.get(0);
 		}
 
-		List<Position> filteredPositions = getPositionWithMinValue(
-				posList,
-				(Position p) -> getDeviationOfProportion(item, p, container)
+		List<PositionCandidate> filteredPositions = getPositionWithMinValue(
+				candidates,
+				(PositionCandidate candidate) -> getDeviationOfProportion(candidate, container)
 		);
 
 		if(filteredPositions.size() == 1) {
@@ -55,9 +54,9 @@ public class WidthProportionFactor extends BaseStrategy {
 		return fallbackStrategy.choose(item,container, filteredPositions);
 	}
 
-	float getDeviationOfProportion(Item i, Position pos, Container container) {
+	float getDeviationOfProportion(PositionCandidate candidate, Container container) {
 		int conWidth = container.getWidth();
-		int itemWidth =  (pos instanceof RotatedPosition) ? i.l : i.w;
+		int itemWidth =  (candidate.isRotated) ? candidate.item.l : candidate.item.w;
 
 		float proportion = conWidth / (float)itemWidth;
 		int bestProportion = (int) proportion;

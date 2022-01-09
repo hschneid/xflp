@@ -6,7 +6,6 @@ import xf.xflp.base.XFLPModel
 import xf.xflp.base.XFLPParameter
 import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
-import xf.xflp.base.monitor.DefaultStatusMonitor
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
 class SingleContainerPackerSpec extends Specification {

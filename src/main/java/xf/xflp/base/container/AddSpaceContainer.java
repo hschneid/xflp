@@ -4,7 +4,10 @@ import com.google.common.collect.HashBiMap;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.fleximport.ContainerData;
-import xf.xflp.base.item.*;
+import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Position;
+import xf.xflp.base.item.PositionType;
+import xf.xflp.base.item.Space;
 import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
@@ -17,9 +20,7 @@ import java.util.stream.Collectors;
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
  * @author hschneid
- *
  */
 public class AddSpaceContainer implements Container, ContainerBaseData {
 
@@ -44,8 +45,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
 
-	/* Position -> Item */
-	private final Map<Position, Item> positionItemMap = new HashMap<>();
 	/* Item -> Position */
 	private final HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
 
@@ -99,8 +98,8 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	 * - Remove covered positions
 	 */
 	@Override
-	public int add(Item item, Position pos) {
-		pos = normPosition(item, pos);
+	public int add(Item item, Position pos, boolean isRotated) {
+		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
 
@@ -118,8 +117,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 
 			activePosList.add(newPos);
 			uniquePositionKeys.add(newPos.getKey());
-			// Diese Position wurde von diesem Item erzeugt.
-			positionItemMap.put(newPos, item);
 
 			/* Create spaces
 			 * Begin with maximal space and check for each item in max-space
@@ -160,7 +157,6 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	private void removePosition(Position position) {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
-		positionItemMap.remove(position);
 		spacePositions.remove(position);
 	}
 
@@ -248,12 +244,10 @@ public class AddSpaceContainer implements Container, ContainerBaseData {
 	/**
 	 * The given position will be normed to an unrotated position.
 	 */
-	private Position normPosition(Item item, Position pos) {
+	private Position normPosition(Item item, Position pos, boolean isRotated) {
 		// Rotate if necessary
-		if(pos instanceof RotatedPosition) {
-			RotatedPosition rPos = (RotatedPosition)pos;
+		if(isRotated) {
 			item.rotate();
-			pos = rPos.pos;
 		}
 		return pos;
 	}

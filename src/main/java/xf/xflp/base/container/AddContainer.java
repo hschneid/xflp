@@ -7,7 +7,6 @@ import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
-import xf.xflp.base.item.RotatedPosition;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,8 +42,6 @@ public class AddContainer implements Container, ContainerBaseData {
 	/* Relation graph of upper and lower items */
 	private final ZItemGraph zGraph = new ZItemGraph();
 
-	/* Position -> Item */
-	private final Map<Position, Item> positionItemMap = new HashMap<>();
 	/* Item -> Position */
 	private final HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
 
@@ -94,8 +91,8 @@ public class AddContainer implements Container, ContainerBaseData {
 	 * Adds item to container and update internal data structure
 	 */
 	@Override
-	public int add(Item item, Position pos) {
-		pos = normPosition(item, pos);
+	public int add(Item item, Position pos, boolean isRotated) {
+		pos = normPosition(item, pos, isRotated);
 
 		// F�ge Element in Container ein
 		addItem(item, pos);
@@ -111,8 +108,6 @@ public class AddContainer implements Container, ContainerBaseData {
 
 			activePosList.add(newPos);
 			uniquePositionKeys.add(newPos.getKey());
-			// Diese Position wurde von diesem Item erzeugt.
-			positionItemMap.put(newPos, item);
 		}
 
 		history.add(item);
@@ -204,12 +199,10 @@ public class AddContainer implements Container, ContainerBaseData {
 	/**
 	 * The given position will be normed to an unrotated position.
 	 */
-	private Position normPosition(Item item, Position pos) {
+	private Position normPosition(Item item, Position pos, boolean isRotated) {
 		// Rotate if necessary
-		if(pos instanceof RotatedPosition) {
-			RotatedPosition rPos = (RotatedPosition)pos;
+		if(isRotated) {
 			item.rotate();
-			pos = rPos.pos;
 		}
 		return pos;
 	}

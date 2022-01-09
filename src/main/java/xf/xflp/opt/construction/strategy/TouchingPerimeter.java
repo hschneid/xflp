@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.TouchingPerimeterService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
@@ -34,19 +34,18 @@ public class TouchingPerimeter extends BaseStrategy {
 	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
+	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
-		List<Position> filteredPositions = getPositionWithMinValue(
+		List<PositionCandidate> filteredPositions = getPositionWithMinValue(
 				posList,
-				(Position p) ->
+				(PositionCandidate candidate) ->
 						// Negative to find min value
 						-TouchingPerimeterService.getTouchingPerimeter(
 								container,
-								item,
-								p,
+								candidate,
 								1,
 								true,
 								true

@@ -4,9 +4,10 @@ import xf.xflp.base.container.*
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
-import xf.xflp.base.item.RotatedPosition
 import xf.xflp.base.monitor.DefaultStatusMonitor
 import xf.xflp.base.monitor.StatusManager
+import xf.xflp.base.position.PositionCandidate
+import xf.xflp.base.position.PositionService
 
 class Helper {
 
@@ -97,22 +98,37 @@ class Helper {
         return i
     }
 
+    static void add(Container con, PositionCandidate cand) {
+        con.add(cand.item, cand.position, cand.isRotated)
+    }
+
+    static void add(Container con, Item i, int x, int y, int z) {
+        add(con, findCand(PositionService.getPossibleInsertPositionList(con, i), x, y, z))
+    }
+
     static StatusManager getStatusManager() {
         def stat = new StatusManager()
         stat.addObserver(new DefaultStatusMonitor())
         return stat
     }
 
-    static Position findPos(Collection<Position> pList, int x, int y, int z) {
-        return findPos(pList, x, y, z, false)
+    static PositionCandidate findCand(Collection<PositionCandidate> pList, int x, int y, int z) {
+        return findCand(pList, x, y, z, false)
     }
 
-    static Position findPos(Collection<Position> pList, int x, int y, int z, boolean rotated) {
-        for (Position position : pList) {
-            if(position.getX() == x && position.getY() == y && position.getZ() == z)
-                if((rotated && position instanceof RotatedPosition)
-                        || (!rotated && !(position instanceof RotatedPosition)))
-                    return position
+    static PositionCandidate findCand(Collection<PositionCandidate> candidates, int x, int y, int z, boolean rotated) {
+        for (PositionCandidate cand : candidates) {
+            if(cand.position.getX() == x && cand.position.getY() == y && cand.position.getZ() == z && cand.isRotated == rotated)
+                    return cand
+        }
+
+        return null
+    }
+
+    static Position findPos(Collection<Position> positions, int x, int y, int z) {
+        for (Position p : positions) {
+            if(p.getX() == x && p.getY() == y && p.getZ() == z)
+                return p
         }
 
         return null

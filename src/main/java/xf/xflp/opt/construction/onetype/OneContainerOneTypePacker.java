@@ -3,8 +3,8 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
 import xf.xflp.base.monitor.StatusCode;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
@@ -50,22 +50,26 @@ public class OneContainerOneTypePacker implements Packer {
 			Item item = items[i];
 
 			if(item.loadingType == LoadType.LOAD) {
-				Position insertPosition = null;
+				PositionCandidate insertPosition = null;
 
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
+					List<PositionCandidate> candidates = PositionService.getPossibleInsertPositionList(container, item);
 
-					if(!posList.isEmpty()) {
+					if(!candidates.isEmpty()) {
 						// Choose according to select strategy
-						insertPosition = strategy.choose(item, container, posList);
+						insertPosition = strategy.choose(item, container, candidates);
 					}
 				}
 
 				// Add item to container
 				if(insertPosition != null) {						
-					container.add(item, insertPosition);
+					container.add(
+							insertPosition.item,
+							insertPosition.position,
+							insertPosition.isRotated
+					);
 					loadedItemMap.put(item.externalIndex, item);
 				} else {
 					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");

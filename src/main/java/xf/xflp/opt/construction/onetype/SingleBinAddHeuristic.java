@@ -2,9 +2,9 @@ package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
@@ -47,12 +47,12 @@ public class SingleBinAddHeuristic {
 		resetItems(items);
 
 		for (Item item : items) {
-			Position insertPosition = null;
+			PositionCandidate insertPosition = null;
 
 			// Check if item is allowed to this container type
 			if (container.isItemAllowed(item)) {
 				// Fetch existing insert positions
-				List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
+				List<PositionCandidate> posList = PositionService.getPossibleInsertPositionList(container, item);
 
 				if (!posList.isEmpty()) {
 					// Choose according to select strategy
@@ -62,7 +62,7 @@ public class SingleBinAddHeuristic {
 
 			// Add item to container
 			if (insertPosition != null) {
-				container.add(item, insertPosition);
+				container.add(insertPosition.item, insertPosition.position, insertPosition.isRotated);
 			} else {
 				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);

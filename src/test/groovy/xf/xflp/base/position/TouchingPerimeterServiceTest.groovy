@@ -11,8 +11,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -25,8 +25,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -39,8 +39,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -53,8 +53,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -67,8 +67,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -81,8 +81,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -95,8 +95,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -109,8 +109,8 @@ class TouchingPerimeterServiceTest extends Specification {
 
         when:
         def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def pos = Helper.findPos(pList, 0, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i, pos, 1, true, true)
+        def pos = Helper.findCand(pList, 0, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos, 1, true, true)
 
         then:
         pos != null
@@ -123,10 +123,10 @@ class TouchingPerimeterServiceTest extends Specification {
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
         when:
-        def pos = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
-        con.add(i1, pos)
-        def pos2 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i2, pos2, 1, true, true)
+        def pos = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
+        Helper.add(con, pos)
+        def pos2 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos2, 1, true, true)
 
         then:
         pos != null
@@ -140,10 +140,10 @@ class TouchingPerimeterServiceTest extends Specification {
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
         when:
-        def pos = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
-        con.add(i1, pos)
-        def pos2 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i2, pos2, 1, true, true)
+        def pos = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
+        Helper.add(con, pos)
+        def pos2 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos2, 1, true, true)
 
         then:
         pos != null
@@ -157,13 +157,11 @@ class TouchingPerimeterServiceTest extends Specification {
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
         when:
-        def pos = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
-        con.add(i1, pos)
-        def pos2 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i2, pos2, 1, true, true)
+        Helper.add(con, i1, 0, 0, 0)
+        def pos2 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos2, 1, true, true)
 
         then:
-        pos != null
         pos2 != null
         f == 10
     }
@@ -175,12 +173,12 @@ class TouchingPerimeterServiceTest extends Specification {
         def i3 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
         when:
-        def pos = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
-        con.add(i1, pos)
-        def pos2 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
-        con.add(i2, pos2)
-        def pos3 = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 1, 0)
-        float f = TouchingPerimeterService.getTouchingPerimeter(con, i3, pos3, 1, true, true)
+        def pos = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0)
+        Helper.add(con, pos)
+        def pos2 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0)
+        Helper.add(con, pos2)
+        def pos3 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i3), 1, 1, 0)
+        float f = TouchingPerimeterService.getTouchingPerimeter(con, pos3, 1, true, true)
 
         then:
         pos != null

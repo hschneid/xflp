@@ -4,7 +4,7 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
-import xf.xflp.base.item.RotatedPosition
+import xf.xflp.base.position.PositionCandidate
 import xf.xflp.exception.XFLPException
 
 class WidthProportionFactorTest extends Specification {
@@ -20,22 +20,26 @@ class WidthProportionFactorTest extends Specification {
         item2.l = 100
         item2.w = 80
         def posList = [
-                Position.of(1,1, 1),
-                new RotatedPosition(Position.of(1,1, 1))
+                PositionCandidate.of(Position.of(1,1, 1), item, false),
+                PositionCandidate.of(Position.of(1,1, 1), item, true)
+        ]
+        def posList2 = [
+                PositionCandidate.of(Position.of(1,1, 1), item2, false),
+                PositionCandidate.of(Position.of(1,1, 1), item2, true)
         ]
 
         when:
         def result = service.choose(item, container, posList)
-        def result2 = service.choose(item2, container, posList)
+        def result2 = service.choose(item2, container, posList2)
         then:
         result == posList[1]
-        result2 == posList[0]
+        result2 == posList2[0]
     }
 
     def "choose min proportion - one position"() {
         def item = new Item()
         def posList = [
-                Position.of(1,1, 1)
+                PositionCandidate.of(Position.of(1,1, 1), item, false)
         ]
         when:
         def r = service.choose(item, container, posList)

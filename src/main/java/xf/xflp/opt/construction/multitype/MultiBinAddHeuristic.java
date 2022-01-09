@@ -2,9 +2,9 @@ package xf.xflp.opt.construction.multitype;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
@@ -34,7 +34,7 @@ public class MultiBinAddHeuristic {
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
-                insertIntoContainer(item, containerPositions);
+                insertIntoContainer(containerPositions);
             } else {
                 statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
                 unplannedItems.add(item);
@@ -47,7 +47,7 @@ public class MultiBinAddHeuristic {
     private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
         List<ContainerPosition> containerPositions = new ArrayList<>();
         for (Container container : containers) {
-            Position bestPosition = getBestInsertPosition(item, container, strategy);
+            PositionCandidate bestPosition = getBestInsertPosition(item, container, strategy);
             if(bestPosition != null) {
                 containerPositions.add(new ContainerPosition(container, bestPosition));
             }
@@ -56,11 +56,11 @@ public class MultiBinAddHeuristic {
         return containerPositions;
     }
 
-    private Position getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
+    private PositionCandidate getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
         // Check if item is allowed to this container type
         if (container.isItemAllowed(item)) {
             // Fetch existing insert positions
-            List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
+            List<PositionCandidate> posList = PositionService.getPossibleInsertPositionList(container, item);
 
             if (!posList.isEmpty()) {
                 // Choose according to select strategy
@@ -71,10 +71,14 @@ public class MultiBinAddHeuristic {
         return null;
     }
 
-    private void insertIntoContainer(Item item, List<ContainerPosition> containerPositions) {
+    private void insertIntoContainer(List<ContainerPosition> containerPositions) {
         // Simply take first - Could be improved later
         ContainerPosition containerPosition = containerPositions.get(0);
-        containerPosition.getContainer().add(item, containerPosition.getPosition());
+        containerPosition.getContainer().add(
+                containerPosition.getPosition().item,
+                containerPosition.getPosition().position,
+                containerPosition.getPosition().isRotated
+        );
     }
 
     private void resetItems(List<Item> items) {

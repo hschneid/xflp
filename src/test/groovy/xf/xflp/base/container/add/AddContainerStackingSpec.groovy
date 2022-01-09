@@ -14,11 +14,11 @@ class AddContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList.get(0))
+        Helper.add(con, pList.get(0))
 
         when:
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def found = Helper.findPos(pList2,0,0,1)
+        def found = Helper.findCand(pList2,0,0,1)
 
         then:
         pList.size() > 0
@@ -30,11 +30,11 @@ class AddContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 2, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList.get(0))
+        Helper.add(con, pList.get(0))
 
         when:
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def found = Helper.findPos(pList2,0,0,1)
+        def found = Helper.findCand(pList2,0,0,1)
 
         then:
         pList.size() > 0
@@ -47,14 +47,14 @@ class AddContainerStackingSpec extends Specification {
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList.get(0))
+        Helper.add(con, pList.get(0))
 
         when:
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def found2 = Helper.findPos(pList2,1,0,0)
-        con.add(i2, found2)
+        def found2 = Helper.findCand(pList2,1,0,0)
+        Helper.add(con, found2)
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def found3 = Helper.findPos(pList3,0,0,1)
+        def found3 = Helper.findCand(pList3,0,0,1)
 
         then:
         pList.size() > 0
@@ -70,14 +70,14 @@ class AddContainerStackingSpec extends Specification {
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 3, 10, 0)
         def pList = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList.get(0))
+        Helper.add(con, pList.get(0))
 
         when:
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def found2 = Helper.findPos(pList2,1,0,0)
-        con.add(i2, found2)
+        def found2 = Helper.findCand(pList2,1,0,0)
+        Helper.add(con, found2)
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def found3 = Helper.findPos(pList3,0,0,1)
+        def found3 = Helper.findCand(pList3,0,0,1)
 
         then:
         pList.size() > 0
@@ -92,14 +92,15 @@ class AddContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 1)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 1)
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
 
         when:
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList3, 0,0, 1) == null
+        Helper.findCand(pList3, 0,0, 1) == null
     }
 
     def "placing one item over two stacks - stacking groups are fitting"() {
@@ -107,14 +108,15 @@ class AddContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 2)
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
 
         when:
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList3, 0,0, 1) != null
+        Helper.findCand(pList3, 0,0, 1) != null
     }
 
 
@@ -127,18 +129,18 @@ class AddContainerStackingSpec extends Specification {
 
         when:
         def pList1 = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList1.get(0))
+        Helper.add(con, pList1.get(0))
 
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pos2 = Helper.findPos(pList2, 1, 0, 0)
-        con.add(i2, pos2)
+        def pos2 = Helper.findCand(pList2, 1, 0, 0)
+        Helper.add(con, pos2)
 
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pos3 = Helper.findPos(pList3, 0, 0, 1)
-        con.add(i3, pos3)
+        def pos3 = Helper.findCand(pList3, 0, 0, 1)
+        Helper.add(con, pos3)
 
         def pList4 = PositionService.getPossibleInsertPositionList(con, i4)
-        def pos4 = Helper.findPos(pList4, 0, 0, 2)
+        def pos4 = Helper.findCand(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -157,18 +159,18 @@ class AddContainerStackingSpec extends Specification {
 
         when:
         def pList1 = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList1.get(0))
+        Helper.add(con, pList1.get(0))
 
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pos2 = Helper.findPos(pList2, 1, 0, 0)
-        con.add(i2, pos2)
+        def pos2 = Helper.findCand(pList2, 1, 0, 0)
+        Helper.add(con, pos2)
 
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pos3 = Helper.findPos(pList3, 0, 0, 1)
-        con.add(i3, pos3)
+        def pos3 = Helper.findCand(pList3, 0, 0, 1)
+        Helper.add(con, pos3)
 
         def pList4 = PositionService.getPossibleInsertPositionList(con, i4)
-        def pos4 = Helper.findPos(pList4, 0, 0, 2)
+        def pos4 = Helper.findCand(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -187,18 +189,18 @@ class AddContainerStackingSpec extends Specification {
 
         when:
         def pList1 = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList1.get(0))
+        Helper.add(con, pList1.get(0))
 
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pos2 = Helper.findPos(pList2, 2, 0, 0)
-        con.add(i2, pos2)
+        def pos2 = Helper.findCand(pList2, 2, 0, 0)
+        Helper.add(con, pos2)
 
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pos3 = Helper.findPos(pList3, 0, 0, 1)
-        con.add(i3, pos3)
+        def pos3 = Helper.findCand(pList3, 0, 0, 1)
+        Helper.add(con, pos3)
 
         def pList4 = PositionService.getPossibleInsertPositionList(con, i4)
-        def pos4 = Helper.findPos(pList4, 0, 0, 2)
+        def pos4 = Helper.findCand(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -217,18 +219,18 @@ class AddContainerStackingSpec extends Specification {
 
         when:
         def pList1 = PositionService.getPossibleInsertPositionList(con, i1)
-        con.add(i1, pList1.get(0))
+        Helper.add(con, pList1.get(0))
 
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pos2 = Helper.findPos(pList2, 4, 0, 0)
-        con.add(i2, pos2)
+        def pos2 = Helper.findCand(pList2, 4, 0, 0)
+        Helper.add(con, pos2)
 
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pos3 = Helper.findPos(pList3, 0, 0, 1)
-        con.add(i3, pos3)
+        def pos3 = Helper.findCand(pList3, 0, 0, 1)
+        Helper.add(con, pos3)
 
         def pList4 = PositionService.getPossibleInsertPositionList(con, i4)
-        def pos4 = Helper.findPos(pList4, 0, 0, 2)
+        def pos4 = Helper.findCand(pList4, 0, 0, 2)
 
         then:
         pList1.size() > 0
@@ -245,12 +247,13 @@ class AddContainerStackingSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
 
         when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
         def pList = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList, 0, 0, 1, false) != null
+        Helper.findCand(pList, 0, 0, 1, false) != null
     }
 
     def "2 items not in same stacking group"() {
@@ -260,12 +263,13 @@ class AddContainerStackingSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
 
         when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
         def pList = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList, 0, 0, 1, false) == null
+        Helper.findCand(pList, 0, 0, 1, false) == null
     }
 
     def "1 item not in same stacking group"() {
@@ -275,12 +279,13 @@ class AddContainerStackingSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
 
         when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
         def pList = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList, 0, 0, 1, false) == null
+        Helper.findCand(pList, 0, 0, 1, false) == null
     }
 
     def "Items can bear multiple stacking groups"() {
@@ -290,12 +295,13 @@ class AddContainerStackingSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
 
         when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
         def pList = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList, 0, 0, 1, false) != null
+        Helper.findCand(pList, 0, 0, 1, false) != null
     }
 
     def "Items cannot bear multiple stacking groups"() {
@@ -305,12 +311,13 @@ class AddContainerStackingSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 2)
 
         when:
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
         def pList = PositionService.getPossibleInsertPositionList(con, i3)
 
         then:
-        Helper.findPos(pList, 0, 0, 1, false) == null
+        Helper.findCand(pList, 0, 0, 1, false) == null
     }
 
     def "check overlapping items"() {
@@ -319,12 +326,13 @@ class AddContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(2, 2, 1, 1, 111,0)
         def i2 = Helper.getItem(3, 1, 1, 1, 111,0 )
         def i3 = Helper.getItem(2, 1, 1, 1, 111,0 )
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0, 0, 0))
+        Helper.add(con, i1, 0, 0, 0)
+
         when:
         def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pos2 = Helper.findPos(pList2, 0, 0, 1)
+        def pos2 = Helper.findCand(pList2, 0, 0, 1)
         def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pos3 = Helper.findPos(pList3, 0, 0, 1)
+        def pos3 = Helper.findCand(pList3, 0, 0, 1)
         then:
         pos2 == null
         pos3 != null
@@ -334,18 +342,19 @@ class AddContainerStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 2
 
         Container con = Helper.getAddContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def found = Helper.findPos(pList, 0, 1, 1)
+        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
         found != null
@@ -355,18 +364,19 @@ class AddContainerStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 1
 
         Container con = Helper.getAddContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def found = Helper.findPos(pList, 0, 1, 1)
+        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
         found == null
@@ -376,20 +386,21 @@ class AddContainerStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 0
 
         Container con = Helper.getAddContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
+        def pList = PositionService.getPossibleInsertPositionList(con, i4)
 
         then:
-        pList.count {p -> p.z > 0} == 0
-        pList.count {p -> p.z == 0} > 0
+        pList.count {p -> p.position.z > 0} == 0
+        pList.count {p -> p.position.z == 0} > 0
     }
 }

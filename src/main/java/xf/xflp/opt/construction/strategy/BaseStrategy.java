@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 
 import java.util.ArrayList;
@@ -16,35 +16,37 @@ import java.util.function.Function;
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
+ * @author hschneid
  **/
 public abstract class BaseStrategy {
 
-	public abstract Position choose(Item item, Container container, List<Position> posList) throws XFLPException;
+	public abstract PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException;
 
-	protected List<Position> getPositionWithMinValue(List<Position> posList, Function<Position, Float> positionValue) {
-		if(posList == null) {
+	protected List<PositionCandidate> getPositionWithMinValue(List<PositionCandidate> candidates,
+															  Function<PositionCandidate, Float> positionValue) {
+		if(candidates == null) {
 			return new ArrayList<>();
 		}
 
-		if(posList.size() <= 1) {
-			return posList;
+		if(candidates.size() <= 1) {
+			return candidates;
 		}
 
-		float[] distances = new float[posList.size()];
+		float[] distances = new float[candidates.size()];
 		for (int i = distances.length - 1; i >= 0; i--) {
-			distances[i] = positionValue.apply(posList.get(i));
+			distances[i] = positionValue.apply(candidates.get(i));
 		}
 
 		float minValue = Float.MAX_VALUE;
-		for (int i = posList.size() - 1; i >= 0; i--) {
+		for (int i = candidates.size() - 1; i >= 0; i--) {
 			minValue = Math.min(minValue, distances[i]);
 		}
 
 		// Search all positions with max value
-		List<Position> filteredPositions = new ArrayList<>();
+		List<PositionCandidate> filteredPositions = new ArrayList<>();
 		for (int i = distances.length - 1; i >= 0; i--) {
 			if(distances[i] == minValue) {
-				filteredPositions.add(posList.get(i));
+				filteredPositions.add(candidates.get(i));
 			}
 		}
 		return filteredPositions;

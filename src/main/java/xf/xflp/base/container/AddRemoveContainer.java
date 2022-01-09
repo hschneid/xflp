@@ -7,7 +7,6 @@ import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
-import xf.xflp.base.item.RotatedPosition;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -103,8 +102,8 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	 * Adds item to container and update internal data structure
 	 */
 	@Override
-	public int add(Item item, Position pos) {
-		pos = normPosition(item, pos);
+	public int add(Item item, Position pos, boolean isRotated) {
+		pos = normPosition(item, pos, isRotated);
 
 		// F�ge Element in Container ein
 		addItem(item, pos);
@@ -251,12 +250,10 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	/**
 	 * The given position will be normed to an unrotated position.
 	 */
-	private Position normPosition(Item item, Position pos) {
+	private Position normPosition(Item item, Position pos, boolean isRotated) {
 		// Rotate if necessary
-		if(pos instanceof RotatedPosition) {
-			RotatedPosition rPos = (RotatedPosition)pos;
+		if(isRotated) {
 			item.rotate();
-			pos = rPos.pos;
 		}
 		return pos;
 	}

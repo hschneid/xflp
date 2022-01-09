@@ -47,7 +47,9 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
   - Adding new item means complex calculation/correction of spaces
   - Check, whether item fits at a certain position is reduced from O(n) to O(1)
     - For big problems the runtime improves by factor 3.
+- Refactorings of optimization types 
 - Minor refactoring of ground contact checking
+- Internal refactorings
 
 ### 0.5.0 - Performance upgrade
 - Refactoring of container code

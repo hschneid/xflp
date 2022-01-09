@@ -30,8 +30,6 @@ mainClassName = 'util.Application'
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-	// Logging
-	implementation 'org.slf4j:slf4j-api:1.7.21'
 	// Fancy collection
 	implementation 'com.google.guava:guava:28.2-jre'
 

@@ -86,7 +86,7 @@ public class SpaceService {
     }
 
     public List<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
-        List<Item> itemsInSpace = new ArrayList<>();
+        List<Item> itemsInSpace = new ArrayList<>(allItems);
         for (Item item : allItems) {
             if(isItemNotInSpace(position, space, item)) {
                 continue;

@@ -1,6 +1,10 @@
 package helper
 
-import xf.xflp.base.container.*
+
+import xf.xflp.base.container.AddRemoveContainer
+import xf.xflp.base.container.AddSpaceContainer
+import xf.xflp.base.container.Container
+import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
@@ -19,22 +23,6 @@ class Helper {
 
     static Container getContainer(int width, int length, int height, float maxWeight) {
         return new AddRemoveContainer(
-                width,
-                length,
-                height,
-                maxWeight,
-                ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.FREE,
-                0
-        )
-    }
-
-    static Container getAddContainer(int width, int length, int height) {
-        return getAddContainer(width, length, height, 999999999)
-    }
-
-    static Container getAddContainer(int width, int length, int height, float maxWeight) {
-        return new AddContainer(
                 width,
                 length,
                 height,

@@ -11,9 +11,7 @@ package xf.xflp.base.item;
  */
 public class Space {
 
-    public final int l;
-    public final int w;
-    public final int h;
+    public final int l, w, h;
 
     private Space(int l, int w, int h) {
         this.l = l;

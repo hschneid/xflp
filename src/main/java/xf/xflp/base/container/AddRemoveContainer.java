@@ -1,15 +1,11 @@
 package xf.xflp.base.container;
 
-import com.google.common.collect.HashBiMap;
-import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
-import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Copyright (c) 2012-2022 Holger Schneider
@@ -22,24 +18,9 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class AddRemoveContainer implements Container, ContainerBaseData {
+public class AddRemoveContainer extends ContainerBase {
 
 	private static final Position rootPos = Position.of( -1, -1, -1);
-
-	/* Idx of the container. There are no two containers, with same index. */
-	private int index = -1;
-
-	private final int width, height, length;
-	private final float maxWeight;
-	private final int containerType;
-	private float weight = 0;
-
-	private final IndexedArrayList<Item> itemList = new IndexedArrayList<>();
-	private final List<Position> activePosList = new ArrayList<>();
-
-	private final LPListMap<Integer, Integer> xMap = new LPListMap<>();
-	private final LPListMap<Integer, Integer> yMap = new LPListMap<>();
-	private final LPListMap<Integer, Integer> zMap = new LPListMap<>();
 
 	private final Set<Position> inactivePosList = new HashSet<>();
 	private final List<Position> coveredPosList = new ArrayList<>();
@@ -48,19 +29,8 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	private final LPListMap<Position, Position> posFollowerMap = new LPListMap<>();
 	private final Map<Position, Position> posAncestorMap = new HashMap<>();
 
-	/* Relation graph of upper and lower items */
-	private final ZItemGraph zGraph = new ZItemGraph();
-
 	/* Position -> Item */
 	private final Map<Position, Item> positionItemMap = new HashMap<>();
-	/* Item -> Position */
-	private final HashBiMap<Item, Position> itemPositionMap = HashBiMap.create();
-
-	/* History of loaded items - is relevant for creating the solution report */
-	private final List<Item> history = new ArrayList<>();
-
-	private int maxPosIdx = 0;
-	private ContainerParameter parameter = new DirectContainerParameter();
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
@@ -72,30 +42,18 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 			GroundContactRule groundContactRule,
 			float lifoImportance
 	) {
-		this.width = width;
-		this.length = length;
-		this.height = height;
-		this.maxWeight = maxWeight;
-		this.containerType = containerType;
-		parameter.add(ParameterType.GROUND_CONTACT_RULE, groundContactRule);
-		parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
+		super(width, length, height, maxWeight, containerType, groundContactRule, lifoImportance);
+		init();
+	}
 
+	public AddRemoveContainer(Container containerPrototype) {
+		super(containerPrototype);
 		init();
 	}
 
 	@Override
 	public Container newInstance() {
 		return new AddRemoveContainer(this);
-	}
-
-	public AddRemoveContainer(Container containerPrototype) {
-		this.width = containerPrototype.getWidth();
-		this.length = containerPrototype.getLength();
-		this.height = containerPrototype.getHeight();
-		this.maxWeight = containerPrototype.getMaxWeight();
-		this.containerType = containerPrototype.getContainerType();
-		this.parameter = containerPrototype.getParameter();
-		init();
 	}
 
 	/**
@@ -159,7 +117,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
-			Item lowerItem = findNextLowerElement(pos);
+			Item lowerItem = findNextDeeperElement(pos);
 			Position newPosition = Position.of(
 					pos.idx, pos.x, ((lowerItem != null) ? lowerItem.yl : 0), pos.z, pos.type
 			);
@@ -174,89 +132,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		history.add(item);
 	}
 
-	@Override
-	public boolean isItemAllowed(Item item) {
-		return
-				// If item can be loaded on any container
-				(item.allowedContainerSet.size() == 1 && item.allowedContainerSet.contains(ContainerData.DEFAULT_CONTAINER_TYPE))
-						// or only on specific ones
-						|| item.allowedContainerSet.contains(containerType);
-	}
 
-	@Override
-	public long getLoadedVolume() {
-		long sum = 0;
-		for (Item item : this.itemList)
-			if(item != null)
-				sum += item.volume;
-
-		return sum;
-	}
-
-	@Override
-	public float getLoadedWeight() {
-		float sum = 0;
-		for (Item item : this.itemList)
-			sum += (item != null) ? item.weight : 0;
-
-		return sum;
-	}
-
-	@Override
-	public List<Item> getItems() {
-		return itemList;
-	}
-
-	@Override
-	public List<Position> getActivePositions() {
-		return activePosList;
-	}
-
-	@Override
-	public List<Item> getHistory() {
-		return history;
-	}
-
-	@Override
-	public ContainerParameter getParameter() {
-		return parameter;
-	}
-
-	@Override
-	public int getWidth() {
-		return width;
-	}
-
-	@Override
-	public int getHeight() {
-		return height;
-	}
-
-	@Override
-	public int getLength() {
-		return length;
-	}
-
-	@Override
-	public float getMaxWeight() {
-		return maxWeight;
-	}
-
-	@Override
-	public int getContainerType() {
-		return containerType;
-	}
-
-	/**
-	 * The given position will be normed to an unrotated position.
-	 */
-	private Position normPosition(Item item, Position pos, boolean isRotated) {
-		// Rotate if necessary
-		if(isRotated) {
-			item.rotate();
-		}
-		return pos;
-	}
 
 	/**
 	 *
@@ -535,7 +411,7 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 			}
 
 			if(item.y > 0 && horizontalPosition != null) {
-				Item lowerElement = findNextLowerElement(horizontalPosition);
+				Item lowerElement = findNextDeeperElement(horizontalPosition);
 				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
 				posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
 			}
@@ -551,80 +427,6 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 	/**
 	 *
 	 */
-	private Item findNextLeftElement(Position pos) {
-		Item leftItem = null;
-
-		for (Item item : itemList) {
-			if(item == null || item.y > pos.y || item.yl < pos.y || item.x > pos.x || item.xw > pos.x || pos.y == item.yl)
-				continue;
-
-			if(leftItem == null || item.xw > leftItem.xw)
-				leftItem = item;
-		}
-
-		return leftItem;
-	}
-
-	/**
-	 *
-	 */
-	private Item findNextLowerElement(Position pos) {
-		Item lowerItem = null;
-
-		for (Item item : itemList) {
-			if(item == null || item.x > pos.x || item.xw < pos.x || item.y > pos.y || item.yl > pos.y || pos.x == item.xw)
-				continue;
-
-			if(lowerItem == null || item.yl > lowerItem.yl)
-				lowerItem = item;
-		}
-
-		return lowerItem;
-	}
-
-	/**
-	 *
-	 */
-	private Position createPosition(int x, int y, int z, PositionType type) {
-		return Position.of(maxPosIdx++, x, y, z, type);
-	}
-
-	/**
-	 * If it is a stacking position (z > 0), then the immersive depth of lower items
-	 * must be checked. If this is the case, then the height of given item is reduced.
-	 */
-	private int retrieveHeight(Item item, Position pos) {
-		if(pos.z == 0) {
-			return item.h;
-		}
-
-		List<Item> lowerItems = getItemsBelow(pos, item);
-		int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
-
-		int newHeight = item.h - minImmersiveDepth;
-		return (newHeight == 0) ? 1 : newHeight;
-	}
-
-	private List<Item> getItemsBelow(Position pos, Item newItem) {
-		if(!zMap.containsKey(pos.z)) {
-			return Collections.emptyList();
-		}
-
-		return zMap.get(pos.z)
-				.stream()
-				.map(idx -> itemList.get(idx))
-				.filter(lowerItem -> lowerItem.zh == pos.z &&
-						lowerItem.x < pos.x + newItem.w &&
-						lowerItem.xw > pos.x &&
-						lowerItem.y < pos.y + newItem.l &&
-						lowerItem.yl > pos.y
-				)
-				.collect(Collectors.toList());
-	}
-
-	/**
-	 *
-	 */
 	private void init() {
 		Position start = createPosition(0, 0, 0, PositionType.ROOT);
 		activePosList.add(start);
@@ -632,31 +434,5 @@ public class AddRemoveContainer implements Container, ContainerBaseData {
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle
 		// realen Positionen erben von dieser virtuellen.
 		insertTree(start, rootPos);
-	}
-
-	@Override
-	public ContainerBaseData getBaseData() {
-		return this;
-	}
-
-	@Override
-	public LPListMap<Integer, Integer> getXMap() {
-		return xMap;
-	}
-
-	@Override
-	public LPListMap<Integer, Integer> getYMap() {
-		return yMap;
-	}
-
-
-	@Override
-	public LPListMap<Integer, Integer> getZMap() {
-		return zMap;
-	}
-
-	@Override
-	public ZItemGraph getZGraph() {
-		return zGraph;
 	}
 }

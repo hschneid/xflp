@@ -152,7 +152,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (mixed wall and half-height box) AddContainer"() {
-        def con = Helper.getAddContainer(4,4,4)
+        def con = Helper.getAddSpaceContainer(4,4,4)
         def i1 = Helper.getItem(1, 4, 1, 1, 1, 0)
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 

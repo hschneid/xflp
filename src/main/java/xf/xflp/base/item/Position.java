@@ -14,7 +14,7 @@ public class Position {
 	public final int idx, x, y, z;
 	public final PositionType type;
 
-	protected Position(int idx, int x, int y, int z, PositionType type) {
+	private Position(int idx, int x, int y, int z, PositionType type) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;
@@ -27,7 +27,7 @@ public class Position {
 	}
 
 	public static Position of(int x, int y, int z) {
-		return new Position(-1, x, y, z, PositionType.TMP);
+		return of(-1, x, y, z, PositionType.TMP);
 	}
 
 	@Override

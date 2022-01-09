@@ -12,13 +12,13 @@ class ContainerImmersiveDepthSpec extends Specification {
         Container con = Helper.getContainer(2,2,20)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
 
         when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10)
-        con.add(i2, found)
+        def found = Helper.findCand(PositionService.findPositionCandidates(con, i2), 0,0, 10)
+        Helper.add(con, found)
         then:
         found != null
         check(i2, 10, 10, 20, 12)
@@ -28,12 +28,12 @@ class ContainerImmersiveDepthSpec extends Specification {
         Container con = Helper.getContainer(2,2,19)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
 
         when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10)
+        def found = Helper.findCand(PositionService.findPositionCandidates(con, i2), 0,0, 10)
         then:
         found == null
     }
@@ -42,16 +42,16 @@ class ContainerImmersiveDepthSpec extends Specification {
         Container con = Helper.getContainer(2,2,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
         i2.immersiveDepth = 1
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10))
-
         def i3 = Helper.getItem(1, 1, 11, 1, 10, 0)
 
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 0, 10)
+
         when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 20)
-        con.add(i3, found)
+        def found = Helper.findCand(PositionService.findPositionCandidates(con, i3), 0,0, 20)
+        Helper.add(con, found)
         then:
         found != null
         check(i2, 10, 10, 20, 12)
@@ -66,18 +66,18 @@ class ContainerImmersiveDepthSpec extends Specification {
         i2.immersiveDepth = 1
         def i3 = Helper.getItem(1, 1, 11, 1, 10, 0)
 
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 20))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
+        Helper.add(con, i2, 0, 0, 10)
+        Helper.add(con, i3, 0, 0, 20)
         con.remove(i3)
         con.remove(i2)
         con.remove(i1)
-        con.add(i1, PositionService.getPossibleInsertPositionList(con, i1).get(0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,0, 10))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
+        Helper.add(con, i2, 0, 0, 10)
 
         when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 20)
-        con.add(i3, found)
+        def found = Helper.findCand(PositionService.findPositionCandidates(con, i3), 0,0, 20)
+        Helper.add(con, found)
         then:
         found != null
         check(i2, 10, 10, 20, 12)
@@ -93,13 +93,13 @@ class ContainerImmersiveDepthSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 13, 1, 10, 0)
         def i4 = Helper.getItem(1, 1, 10, 1, 10, 0)
 
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0, 0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0, 0))
-        con.add(i4, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i4), 1,1, 0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+        Helper.add(con, i4, 1, 1, 0)
 
         when:
-        def found = Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,0, 10)
-        con.add(i3, found)
+        def found = Helper.findCand(PositionService.findPositionCandidates(con, i3), 0,0, 10)
+        Helper.add(con, found)
 
         then:
         found != null

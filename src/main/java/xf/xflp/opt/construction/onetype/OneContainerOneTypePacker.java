@@ -3,13 +3,13 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
+import xf.xflp.base.monitor.StatusCode;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.XFLPBase;
+import xf.xflp.opt.Packer;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.HighestLowerLeft;
-import xf.xflp.report.PackageEventType;
+import xf.xflp.report.LoadType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -29,23 +29,14 @@ import java.util.Map;
  * This packer puts the items in a sequence into one single container.
  * It is able to add and to remove the items with respect to their loading type (LOAD, UNLOAD).
  * There is no optimization in container allocation or item sequence.
- * 
  * @author hschneid
- *
  */
-public class OneContainerOneTypePacker extends XFLPBase {
-
-	public static final boolean VERBOSE = false;
-
-	private BaseStrategy strategy;
-
-	public OneContainerOneTypePacker() {
-		this.strategy = new HighestLowerLeft();
-	}
+public class OneContainerOneTypePacker implements Packer {
 
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		Container container = model.getContainerTypes()[0].newInstance();
+		BaseStrategy strategy = model.getParameter().getPreferredPackingStrategy().getStrategy();
 		
 		Map<Integer, Item> loadedItemMap = new HashMap<>();
 
@@ -58,27 +49,30 @@ public class OneContainerOneTypePacker extends XFLPBase {
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 
-			if(item.loadingType == PackageEventType.LOAD) {
-				Position insertPosition = null;
+			if(item.loadingType == LoadType.LOAD) {
+				PositionCandidate insertPosition = null;
 
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
+					List<PositionCandidate> candidates = PositionService.findPositionCandidates(container, item);
 
-					if(!posList.isEmpty()) {
+					if(!candidates.isEmpty()) {
 						// Choose according to select strategy
-						insertPosition = strategy.choose(item, container, posList);
+						insertPosition = strategy.choose(item, container, candidates);
 					}
 				}
 
 				// Add item to container
 				if(insertPosition != null) {						
-					container.add(item, insertPosition);
+					container.add(
+							insertPosition.item,
+							insertPosition.position,
+							insertPosition.isRotated
+					);
 					loadedItemMap.put(item.externalIndex, item);
 				} else {
-					if(VERBOSE)
-						System.out.println("Item "+item.index +" konnte nicht hinzugef�gt werden.");
+					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 					unplannedItemList.add(item);
 				}
 			} else {
@@ -100,10 +94,6 @@ public class OneContainerOneTypePacker extends XFLPBase {
 		for (int i = items.length - 1; i >= 0; i--) {
 			items[i].reset();
 		}
-	}
-
-	public void setStrategy(BaseStrategy strategy) {
-		this.strategy = strategy;
 	}
 
 }

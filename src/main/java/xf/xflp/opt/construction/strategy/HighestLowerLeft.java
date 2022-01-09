@@ -3,13 +3,14 @@ package xf.xflp.opt.construction.strategy;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -27,13 +28,13 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public Position choose(Item item, Container container, List<Position> posList) throws XFLPException {
-		if(posList == null || posList.isEmpty()) {
+	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
-		List<Position> filteredPositions = getPositionWithMinValue(
-				posList,
+		List<PositionCandidate> filteredPositions = getPositionWithMinValue(
+				candidates,
 				this::getDistanceZ
 		);
 
@@ -51,14 +52,20 @@ public class HighestLowerLeft extends BaseStrategy {
 		return filteredPositions.get(0);
 	}
 
-	float getDistance(Position p) {
-		if(p == null) {
+	float getDistance(PositionCandidate candidate) {
+		if(candidate == null) {
 			return Float.MAX_VALUE;
 		}
-		return (float)Math.pow((p.getX() * p.getX()) + (p.getY() * p.getY()) + (p.getZ() * p.getZ()), 0.5);
+
+		Position p = candidate.position;
+		return (float)Math.pow(
+				(p.getX() * p.getX()) +
+						(p.getY() * p.getY()) +
+						(p.getZ() * p.getZ()), 0.5
+		);
 	}
 
-	float getDistanceZ(Position p) {
-		return p == null ? Float.MAX_VALUE : (float) p.getZ() * -1;
+	float getDistanceZ(PositionCandidate p) {
+		return p == null ? Float.MAX_VALUE : (float) p.position.z * -1;
 	}
 }

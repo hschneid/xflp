@@ -2,7 +2,9 @@ package xf.xflp.opt.construction.onetype;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.Position;
+import xf.xflp.base.monitor.StatusCode;
+import xf.xflp.base.monitor.StatusManager;
+import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -28,14 +30,14 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class ZSingleBinAddPacker {
-
-	public static final boolean VERBOSE = false;
+public class SingleBinAddHeuristic {
 
 	private final BaseStrategy strategy;
+	private final StatusManager statusManager;
 
-	public ZSingleBinAddPacker(Strategy s) {
+	public SingleBinAddHeuristic(Strategy s, StatusManager statusManager) {
 		this.strategy = s.getStrategy();
+		this.statusManager = statusManager;
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
@@ -45,12 +47,12 @@ public class ZSingleBinAddPacker {
 		resetItems(items);
 
 		for (Item item : items) {
-			Position insertPosition = null;
+			PositionCandidate insertPosition = null;
 
 			// Check if item is allowed to this container type
 			if (container.isItemAllowed(item)) {
 				// Fetch existing insert positions
-				List<Position> posList = PositionService.getPossibleInsertPositionList(container, item);
+				List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
 
 				if (!posList.isEmpty()) {
 					// Choose according to select strategy
@@ -60,10 +62,9 @@ public class ZSingleBinAddPacker {
 
 			// Add item to container
 			if (insertPosition != null) {
-				container.add(item, insertPosition);
+				container.add(insertPosition.item, insertPosition.position, insertPosition.isRotated);
 			} else {
-				if (VERBOSE)
-					System.out.println("Item " + item.index + " konnte nicht hinzugef�gt werden.");
+				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);
 			}
 		}
@@ -72,6 +73,8 @@ public class ZSingleBinAddPacker {
 	}
 
 	private void resetItems(List<Item> items) {
-		items.forEach(Item::reset);
+		for (Item item : items) {
+			item.reset();
+		}
 	}
 }

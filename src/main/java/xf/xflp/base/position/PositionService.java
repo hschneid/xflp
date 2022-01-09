@@ -3,31 +3,41 @@ package xf.xflp.base.position;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.StackingChecker;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
-import xf.xflp.base.item.RotatedPosition;
 import xf.xflp.base.item.RotationType;
+import xf.xflp.base.item.Space;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Copyright (c) 2012-2022 Holger Schneider
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT License (MIT) found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @author hschneid
+ */
 public class PositionService {
 
     /**
      * Returns all possible and valid insert positions for this item.
      */
-    public static List<Position> getPossibleInsertPositionList(Container container, Item item) {
-        List<Position> posList = new ArrayList<>();
+    public static List<PositionCandidate> findPositionCandidates(Container container, Item item) {
+        List<PositionCandidate> candidates = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
         if(container.getLoadedWeight() + item.weight > container.getMaxWeight()) {
-            return posList;
+            return candidates;
         }
 
         // For every rotation state
@@ -50,7 +60,7 @@ public class PositionService {
                 if((pos.z + itemH) > container.getHeight())
                     continue;
 
-                if (checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH)) {
+                if (checkOverlapping(container, item, itemW, itemL, pos, itemH)) {
                     continue;
                 }
 
@@ -59,13 +69,28 @@ public class PositionService {
                     continue;
 
                 // Create RotatedPosition if this item is rotated
-                posList.add((rotation == 0) ? pos : new RotatedPosition(pos));
+                candidates.add(
+                        PositionCandidate.of(pos, item, (rotation == 1))
+                );
             }
         }
 
-        return posList;
+        return candidates;
     }
 
+    private static boolean checkOverlapping(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
+        if(container instanceof AddSpaceContainer) {
+            return checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
+        } else {
+            return checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
+        }
+    }
+
+    /**
+     * Checks if new item at this position will collide with other items in container.
+     * true = collision, invalid
+     * false = valid
+     */
     private static boolean checkOverlappingWithItems(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
         IndexedArrayList<Item> items = (IndexedArrayList<Item>) container.getItems();
 
@@ -90,6 +115,20 @@ public class PositionService {
             // => Ergo mache nix
         }
         return false;
+    }
+
+    private static boolean checkOverlappingWithSpaces(AddSpaceContainer container, Position pos, int itemW, int itemL, int itemH) {
+        List<Space> spaces = container.getSpace(pos);
+
+        // If item is fitting into one of the spaces, then it is okay.
+        for (Space space : spaces) {
+            // Is item fitting into space
+            if(space.l >= itemL &&
+                    space.w >= itemW &&
+                    space.h >= itemH)
+                return false;
+        }
+        return true;
     }
 
     private static boolean checkLIFO(Container container, Item otherItem, Position pos, Item newItem, int itemW) {

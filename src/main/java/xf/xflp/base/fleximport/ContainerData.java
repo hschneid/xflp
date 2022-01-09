@@ -1,7 +1,7 @@
 package xf.xflp.base.fleximport;
 
-import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.exception.XFLPException;
@@ -12,7 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -82,7 +82,7 @@ public class ContainerData implements Serializable {
 	Container create(DataManager manager, boolean isAddingAndRemovingItems) throws XFLPException {
 		Class<? extends Container> correctContainerClass = (isAddingAndRemovingItems)
 				? AddRemoveContainer.class
-				: AddContainer.class;
+				: AddSpaceContainer.class;
 
 		for (Constructor<?> constructor : correctContainerClass.getConstructors()) {
 			if(constructor.getParameterCount() == 7) {

@@ -5,7 +5,7 @@ import xf.xflp.base.item.Item;
 import java.io.Serializable;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -26,9 +26,7 @@ import java.io.Serializable;
  * where last set value is overwritten with only one exception:
  * It is possible to set multiple time windows. It is not possible
  * to clear the list of inserted time windows.
- * 
  * @author hschneid
- *
  */
 public class ItemData implements Serializable {
 

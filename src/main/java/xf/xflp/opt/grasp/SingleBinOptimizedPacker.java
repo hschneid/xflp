@@ -2,6 +2,7 @@ package xf.xflp.opt.grasp;
 
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -29,25 +30,25 @@ public class SingleBinOptimizedPacker extends XFLPBase {
     @Override
     public void execute(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Init "+model.getUnplannedItems().length);
 
-        if(model.getUnplannedItems().length > 0) {
+        /*if(model.getUnplannedItems().length > 0) {
             doBestSwap(model);
         }
         if(model.getUnplannedItems().length > 0) {
             doSwapNextLocalSearch(model);
         }
-        /*if(model.getUnplannedItems().length > 0) {
+        if(model.getUnplannedItems().length > 0) {
             doSwapLocalSearch(model);
-        }
+        }*/
         if(model.getUnplannedItems().length > 0) {
             doRelocateLocalSearch(model);
-        }*/
+        }
     }
 
     private void doBestSwap(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init Swap Next "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Init Swap Next "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 0};
@@ -57,7 +58,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
             // Pack
             packer.execute(model);
 
-            System.out.println(i + " " + model.getUnplannedItems().length);
+            model.getStatusManager().fireMessage(StatusCode.RUNNING,i + " " + model.getUnplannedItems().length);
             // Check if there are unplanned items
             if (model.getUnplannedItems().length < bestValue[0]) {
                 bestValue[0] = model.getUnplannedItems().length;
@@ -80,7 +81,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
     private void doSwapNextLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init Swap Next LS "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Init Swap Next LS "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
@@ -108,7 +109,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
     private void doSwapLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init Swap "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Init Swap "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
@@ -142,14 +143,14 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
     private void doRelocateLocalSearch(XFLPModel model) throws XFLPException {
         packer.execute(model);
-        System.out.println("Init RelocateLS "+model.getUnplannedItems().length);
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Init RelocateLS "+model.getUnplannedItems().length);
 
         Item[] items = model.getItems();
         Item[] bestItems = Arrays.copyOf(items, items.length);
         int[] bestValue = new int[]{model.getUnplannedItems().length,-1,-1, 1};
         for (int k = 0; k < 10; k++) {
 
-            System.out.println("iter "+k);
+            model.getStatusManager().fireMessage(StatusCode.RUNNING,"iter "+k);
             bestValue[3] = 1;
             while (bestValue[3] == 1) {
                 bestValue[3] = 0;
@@ -162,6 +163,9 @@ public class SingleBinOptimizedPacker extends XFLPBase {
                         move(items, i, j);
                         // Pack
                         packer.execute(model);
+
+                        model.getStatusManager().fireMessage(StatusCode.RUNNING,i+" "+j+" "+bestValue[0]);
+
                         // Check if there are unplanned items
                         if (model.getUnplannedItems().length < bestValue[0]) {
                             setBestMove(model, bestValue, i, j);
@@ -188,7 +192,6 @@ public class SingleBinOptimizedPacker extends XFLPBase {
 
             // Make random move in search space
             perturb(items);
-
         }
 
         // Reset best solution
@@ -201,7 +204,7 @@ public class SingleBinOptimizedPacker extends XFLPBase {
         bestValue[1] = value1;
         bestValue[2] = value2;
         bestValue[3] = 1;
-        System.out.println("Better " + Arrays.toString(bestValue));
+        model.getStatusManager().fireMessage(StatusCode.RUNNING,"Better " + Arrays.toString(bestValue));
     }
 
     private void perturb(Item[] items) {

@@ -8,12 +8,15 @@ class XFLPReportSpec extends Specification {
 
     def service = new XFLP()
 
+    def setup() {
+        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
+    }
+
     def "Test container id and item id allocation in result report with one container type"() {
         service.addContainer().setContainerType("CON1").setWidth(3).setLength(3).setHeight(2).setMaxWeight(10)
         service.addItem().setExternID("P1").setWidth(3).setLength(3).setHeight(1).setWeight(1)
         service.addItem().setExternID("P2").setWidth(3).setLength(2).setHeight(1).setWeight(1)
         service.addItem().setExternID("P3").setWidth(1).setLength(3).setHeight(1).setWeight(1)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_PACKER)
 
         when:
         service.executeLoadPlanning()
@@ -33,7 +36,6 @@ class XFLPReportSpec extends Specification {
         service.addItem().setExternID("P2").setWidth(2).setLength(2).setHeight(1).setWeight(1)
         service.addItem().setExternID("P3").setWidth(2).setLength(1).setHeight(2).setWeight(1)
         service.addItem().setExternID("P4").setWidth(2).setLength(1).setHeight(2).setWeight(1)
-        service.setTypeOfOptimization(XFLPOptType.DOUBLE_CONTAINER_ADD_PACKER)
 
         when:
         service.executeLoadPlanning()
@@ -53,7 +55,6 @@ class XFLPReportSpec extends Specification {
         service.addContainer().setContainerType("CON1").setWidth(1).setLength(1).setHeight(20).setMaxWeight(10)
         service.addItem().setExternID("P1").setWidth(1).setLength(1).setHeight(10).setWeight(1).setImmersiveDepth(2)
         service.addItem().setExternID("P2").setWidth(1).setLength(1).setHeight(12).setWeight(1)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_ADD_PACKER)
 
         when:
         service.executeLoadPlanning()

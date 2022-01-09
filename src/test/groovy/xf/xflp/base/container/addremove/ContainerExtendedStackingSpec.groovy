@@ -11,18 +11,19 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 2
 
         Container con = Helper.getContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def found = Helper.findPos(pList, 0, 1, 1)
+        def pList = PositionService.findPositionCandidates(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
         found != null
@@ -32,18 +33,19 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 1
 
         Container con = Helper.getContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
-        def found = Helper.findPos(pList, 0, 1, 1)
+        def pList = PositionService.findPositionCandidates(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
         found == null
@@ -53,21 +55,22 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 0
 
         Container con = Helper.getContainer(1,10,2)
-        def i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 0))
-        i = Helper.getItem(1, 2, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,2, 0))
-        i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        con.add(i, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i), 0,0, 1))
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        i = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
+        def pList = PositionService.findPositionCandidates(con, i4)
 
         then:
-        pList.count {p -> p.z > 0} == 0
-        pList.count {p -> p.z == 0} > 0
+        pList.count {p -> p.position.z > 0} == 0
+        pList.count {p -> p.position.z == 0} > 0
     }
 
 }

@@ -88,7 +88,7 @@ class SingleContainerPackerSpec extends Specification {
         items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
-    def "test with distinct stacking groups - sucessfull"() {
+    def "test with distinct stacking groups - successful"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 9; i++)
             items.add(Helper.getItem(1,1,1,1,3,1))
@@ -111,7 +111,8 @@ class SingleContainerPackerSpec extends Specification {
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
                 [Helper.getContainer(width, length, height)] as Container[],
-                new XFLPParameter()
+                new XFLPParameter(),
+                Helper.getStatusManager()
         )
         return model
     }

@@ -5,6 +5,15 @@ import xf.xflp.base.item.Position;
 
 import java.util.List;
 
+/**
+ * Copyright (c) 2012-2022 Holger Schneider
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT License (MIT) found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @author hschneid
+ */
 public interface Container {
 
     /**
@@ -19,7 +28,7 @@ public interface Container {
      *
      * Returns the index of the inserted item for faster access
      */
-    int add(Item item, Position position);
+    int add(Item item, Position position, boolean isRotated);
 
     /**
      * Removes the item from container.

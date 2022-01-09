@@ -6,15 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
  * @author hschneid
- *
  */
 public class LPReportSummary {
 
@@ -40,7 +38,7 @@ public class LPReportSummary {
 	}
 	
 	public void addUnplannedPackage(LPPackageEvent pkg) {
-		if(pkg.getType() == PackageEventType.LOAD)
+		if(pkg.getType() == LoadType.LOAD)
 			nbrOfNotLoadedPackages++;
 	}
 

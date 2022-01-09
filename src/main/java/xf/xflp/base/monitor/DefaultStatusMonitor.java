@@ -1,7 +1,7 @@
 package xf.xflp.base.monitor;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -10,9 +10,7 @@ package xf.xflp.base.monitor;
  *
  * The default status monitor, which prints the messages to the 
  * command line.
- * 
  * @author hschneid
- *
  */
 public class DefaultStatusMonitor implements StatusMonitor {
 

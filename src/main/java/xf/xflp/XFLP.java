@@ -19,7 +19,7 @@ import xf.xflp.report.LPReport;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -34,9 +34,7 @@ import java.util.List;
  * methods must be called. The execution method take all inserted data and parameters
  * and start the optimizers.
  * 
- * 
  * @author hschneid
- *
  */
 public class XFLP {
 
@@ -106,7 +104,12 @@ public class XFLP {
 		// Check phase
 		checkItems(items, containerTypeList);
 
-		return new XFLPModel(items.toArray(new Item[0]), containerTypeList.toArray(new Container[0]), parameter);
+		return new XFLPModel(
+				items.toArray(new Item[0]),
+				containerTypeList.toArray(new Container[0]),
+				parameter,
+				statusManager
+		);
 	}
 
 	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {

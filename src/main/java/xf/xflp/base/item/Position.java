@@ -1,55 +1,40 @@
 package xf.xflp.base.item;
 
 /**
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- * 
- * @author Hogo
- *
+ * @author hschneid
  */
 public class Position {
 
-	public int x, y, z;
+	public final int idx, x, y, z;
+	public final PositionType type;
 
-	protected final int idx;
-	public final int type;
-	protected final boolean isProjected;
-	
-	public Position(int x, int y) {
-		this(-1, x, y, -1, -1, false);
-	}
-	public Position(int x, int y, int z) {
-		this(-1, x, y, z, -1, false);
-	}
-	protected Position(int idx, int x, int y, int type, boolean isProjected) {
-		this(idx, x, y, -1, type, isProjected);
-	}
-	protected Position(int x, int y, int type, boolean isProjected) {
-		this(-1, x, y, -1, type, isProjected);
-	}
-	public Position(int idx, int x, int y, int z, int type, boolean isProjected) {
+	private Position(int idx, int x, int y, int z, PositionType type) {
 		this.idx = idx;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.type = type;
-		this.isProjected = isProjected;
+	}
+
+	public static Position of(int idx, int x, int y, int z, PositionType type) {
+		return new Position(idx, x, y, z, type);
+	}
+
+	public static Position of(int x, int y, int z) {
+		return of(-1, x, y, z, PositionType.TMP);
 	}
 
 	@Override
 	public String toString() {
 		return "("+x+","+y+","+z+")";
 	}
-	
-	public void setXY(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
+
 	/**
 	 * @return the x
 	 */

@@ -18,7 +18,7 @@ class LPPackageEventTest extends Specification {
         e.setWeight(99);
         e.setWeightLimit(66);
         e.setInvalid(true);
-        e.setType(PackageEventType.LOAD);
+        e.setType(LoadType.LOAD);
         e.setUsedVolumeInContainer(111);
         e.setUsedWeightInContainer(222);
         e.setNbrStacksInContainer(333);
@@ -35,7 +35,7 @@ class LPPackageEventTest extends Specification {
         e.getWeight() == 99
         e.getWeightLimit() == 66
         e.isInvalid()
-        e.getType() == PackageEventType.LOAD
+        e.getType() == LoadType.LOAD
         e.getUsedVolumeInContainer() == 111
         e.getUsedWeightInContainer() == 222
         e.getNbrStacksInContainer() == 333

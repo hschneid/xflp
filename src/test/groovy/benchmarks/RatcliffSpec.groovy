@@ -14,7 +14,7 @@ class RatcliffSpec extends Specification {
     @Ignore
     def "BR1 - 1 test"() {
         service.addContainer().setWidth(223).setLength(587).setHeight(220).setMaxWeight(10000)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_RANDOM_SEARCH)
+        service.setTypeOfOptimization(XFLPOptType.BEST_FIXED_CONTAINER_PACKER)
 
         createItem(1, 42, 26, 64, 62)
         createItem(2, 58, 52, 92, 53)
@@ -32,7 +32,7 @@ class RatcliffSpec extends Specification {
     @Ignore
     def "BR7 - 1 test"() {
         service.addContainer().setWidth(223).setLength(587).setHeight(220).setMaxWeight(10000)
-        service.setTypeOfOptimization(XFLPOptType.SINGLE_CONTAINER_RANDOM_SEARCH)
+        service.setTypeOfOptimization(XFLPOptType.BEST_FIXED_CONTAINER_PACKER)
 
         createItem(1, 76, 30, 108, 10)
         createItem(2, 43, 25, 110, 6)

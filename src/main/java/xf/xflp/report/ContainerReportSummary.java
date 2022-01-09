@@ -4,7 +4,7 @@ import xf.xflp.base.container.Container;
 
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -14,9 +14,7 @@ import xf.xflp.base.container.Container;
  * Summary of a values for a route.
  * 
  * Events can be added, where the values are updated directly.
- * 
  * @author hschneid
- *
  */
 public class ContainerReportSummary {
 
@@ -31,12 +29,12 @@ public class ContainerReportSummary {
 	}
 	
 	public void add(LPPackageEvent e) {
-		if(e.getType() == PackageEventType.LOAD) {
+		if(e.getType() == LoadType.LOAD) {
 			nbrOfLoadedPackages++;
 			// Only loaded items increase the max loaded volume/weight values
 			maxUsedVolume += e.getUsedVolumeInContainer();
 			maxUsedWeight = Math.max(maxUsedWeight, e.getUsedWeightInContainer());
-		} else if(e.getType() == PackageEventType.UNLOAD) {
+		} else if(e.getType() == LoadType.UNLOAD) {
 			nbrOfUnLoadedPackages++;
 		}
 	}

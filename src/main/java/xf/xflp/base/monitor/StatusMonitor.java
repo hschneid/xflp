@@ -1,7 +1,7 @@
 package xf.xflp.base.monitor;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -11,9 +11,7 @@ package xf.xflp.base.monitor;
  * Interface for Status Monitor Objects, which can be used to
  * transfer planning informations from inside the XFVRP package
  * to the user.
- * 
  * @author hschneid
- *
  */
 public interface StatusMonitor {
 

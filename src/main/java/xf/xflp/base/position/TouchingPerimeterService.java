@@ -3,25 +3,35 @@ package xf.xflp.base.position;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
-import xf.xflp.base.item.RotatedPosition;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Copyright (c) 2012-2022 Holger Schneider
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT License (MIT) found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @author hschneid
+ */
 public class TouchingPerimeterService {
 
     public static float getTouchingPerimeter(
             Container container,
-            Item item,
-            Position pos,
+            PositionCandidate candidate,
             int itemTouchValue,
             boolean considerWalls,
             boolean considerBaseFloor) {
+        Item item = candidate.item;
+        Position pos = candidate.position;
+
         int value = 0;
         int w = item.w;
         int l = item.l;
         int h = item.h;
-        if(pos instanceof RotatedPosition) {
+        if(candidate.isRotated) {
             w = item.l;
             l = item.w;
         }

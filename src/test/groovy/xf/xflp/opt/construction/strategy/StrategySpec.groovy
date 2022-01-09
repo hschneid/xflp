@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.item.Position
+import xf.xflp.base.position.PositionCandidate
 import xf.xflp.base.position.PositionService
 import xf.xflp.exception.XFLPException
 
@@ -20,14 +20,14 @@ class StrategySpec extends Specification {
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,1,0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+        Helper.add(con, i3, 0, 1, 0)
 
         when:
-        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceHLL.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
-        result.x == 0 && result.y == 0 && result.z == 1
+        Helper.findCand([result], 0, 0, 1) != null
     }
 
     def "HLL chooses next stack"() {
@@ -37,14 +37,14 @@ class StrategySpec extends Specification {
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 0,1,0))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 1,0,0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 1, 0)
+        Helper.add(con, i3, 1, 0, 0)
 
         when:
-        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceHLL.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
-        result.x == 1 && result.y == 1 && result.z == 0
+        Helper.findCand([result], 1, 1, 0) != null
     }
 
     def "HLL with positionList = null "() {
@@ -74,14 +74,14 @@ class StrategySpec extends Specification {
         def i3 = Helper.getItem(1,1,1,1,111,0)
         def i4 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 0,1,0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+        Helper.add(con, i3, 0, 1, 0)
 
         when:
-        def result = serviceTP.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceTP.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
-        result.x == 2 && result.y == 0 && result.z == 0
+        Helper.findCand([result], 2, 0, 0) != null
     }
 
     def "TP chooses HLL if all equal"() {
@@ -92,22 +92,22 @@ class StrategySpec extends Specification {
         def i4 = Helper.getItem(1,1,1,1,111,0)
         def i5 = Helper.getItem(1,1,1,1,111,0)
 
-        con.add(i1, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0))
-        con.add(i2, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i2), 1,0,0))
-        con.add(i3, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i3), 2,0,0))
-        con.add(i4, Helper.findPos(PositionService.getPossibleInsertPositionList(con, i4), 0,1,0))
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+        Helper.add(con, i3, 2, 0, 0)
+        Helper.add(con, i4, 0, 1, 0)
 
         when:
-        def result = serviceTP.choose(i5, con, PositionService.getPossibleInsertPositionList(con, i5))
+        def result = serviceTP.choose(i5, con, PositionService.findPositionCandidates(con, i5))
         then:
-        result.x == 0 && result.y == 0 && result.z == 1
+        Helper.findCand([result], 0, 0, 1) != null
     }
 
     def "getPositionWithMinValue - only one value"() {
         def func = {
             "1234"
-        } as Function<Position, Float>
-        def pos = Mock Position
+        } as Function<PositionCandidate, Float>
+        def pos = Mock PositionCandidate
         def posList = [pos]
         def emptyList = []
         when:

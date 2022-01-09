@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -21,9 +21,7 @@ import java.util.List;
  * a load planning solution for this specific container.
  *
  * It contains the package events: loading of an item and unloading.
- * 
  * @author hschneid
- *
  */
 public class ContainerReport implements Iterable<LPPackageEvent> {
 

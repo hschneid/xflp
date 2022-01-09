@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /** 
- * Copyright (c) 2012-2021 Holger Schneider
+ * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -27,9 +27,7 @@ import java.util.stream.Stream;
  * - Assiging the vehicle priority by sorting the vehicles with their capacities
  * 
  * After import collected data can be accessed XFLP suite. 
- * 
  * @author hschneid
- *
  */
 public class FlexiImporter implements Serializable {
 	private static final long serialVersionUID = -6460880073124361069L;

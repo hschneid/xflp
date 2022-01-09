@@ -22,7 +22,7 @@ class ContainerExtendedStackingSpec extends Specification {
         Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
         def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
@@ -44,7 +44,7 @@ class ContainerExtendedStackingSpec extends Specification {
         Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
         def found = Helper.findCand(pList, 0, 1, 1)
 
         then:
@@ -66,7 +66,7 @@ class ContainerExtendedStackingSpec extends Specification {
         Helper.add(con, i3, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
 
         then:
         pList.count {p -> p.position.z > 0} == 0

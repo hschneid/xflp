@@ -60,7 +60,7 @@ public class MultiBinAddHeuristic {
         // Check if item is allowed to this container type
         if (container.isItemAllowed(item)) {
             // Fetch existing insert positions
-            List<PositionCandidate> posList = PositionService.getPossibleInsertPositionList(container, item);
+            List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
 
             if (!posList.isEmpty()) {
                 // Choose according to select strategy

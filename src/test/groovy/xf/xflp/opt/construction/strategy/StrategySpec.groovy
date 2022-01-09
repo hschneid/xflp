@@ -25,7 +25,7 @@ class StrategySpec extends Specification {
         Helper.add(con, i3, 0, 1, 0)
 
         when:
-        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceHLL.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
         Helper.findCand([result], 0, 0, 1) != null
     }
@@ -42,7 +42,7 @@ class StrategySpec extends Specification {
         Helper.add(con, i3, 1, 0, 0)
 
         when:
-        def result = serviceHLL.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceHLL.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
         Helper.findCand([result], 1, 1, 0) != null
     }
@@ -79,7 +79,7 @@ class StrategySpec extends Specification {
         Helper.add(con, i3, 0, 1, 0)
 
         when:
-        def result = serviceTP.choose(i4, con, PositionService.getPossibleInsertPositionList(con, i4))
+        def result = serviceTP.choose(i4, con, PositionService.findPositionCandidates(con, i4))
         then:
         Helper.findCand([result], 2, 0, 0) != null
     }
@@ -98,7 +98,7 @@ class StrategySpec extends Specification {
         Helper.add(con, i4, 0, 1, 0)
 
         when:
-        def result = serviceTP.choose(i5, con, PositionService.getPossibleInsertPositionList(con, i5))
+        def result = serviceTP.choose(i5, con, PositionService.findPositionCandidates(con, i5))
         then:
         Helper.findCand([result], 0, 0, 1) != null
     }

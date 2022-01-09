@@ -29,7 +29,7 @@ public class PositionService {
     /**
      * Returns all possible and valid insert positions for this item.
      */
-    public static List<PositionCandidate> getPossibleInsertPositionList(Container container, Item item) {
+    public static List<PositionCandidate> findPositionCandidates(Container container, Item item) {
         List<PositionCandidate> candidates = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;

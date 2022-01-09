@@ -22,7 +22,7 @@ class ContainerRemoveSpec extends Specification {
         when:
         con.remove(i3)
         then:
-        Helper.findCand(PositionService.getPossibleInsertPositionList(con, i3), 1,1,0) != null
+        Helper.findCand(PositionService.findPositionCandidates(con, i3), 1,1,0) != null
         con.getLoadedVolume() == 7
         con.getItems().size() == 3
     }
@@ -49,7 +49,7 @@ class ContainerRemoveSpec extends Specification {
         when:
         con.remove(i3)
         then:
-        Helper.findCand(PositionService.getPossibleInsertPositionList(con, i3), 1,1,0) != null
+        Helper.findCand(PositionService.findPositionCandidates(con, i3), 1,1,0) != null
         con.getLoadedVolume() == 16
         con.getItems().size() == 6
     }
@@ -86,7 +86,7 @@ class ContainerRemoveSpec extends Specification {
         con.remove(i8)
         then:
         con.getLoadedWeight() == 0
-        Helper.findCand(PositionService.getPossibleInsertPositionList(con, i1), 0,0,0) != null
+        Helper.findCand(PositionService.findPositionCandidates(con, i1), 0,0,0) != null
         con.getLoadedVolume() == 0
         con.getItems().size() == 0
     }

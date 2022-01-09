@@ -103,7 +103,7 @@ class Helper {
     }
 
     static void add(Container con, Item i, int x, int y, int z) {
-        add(con, findCand(PositionService.getPossibleInsertPositionList(con, i), x, y, z))
+        add(con, findCand(PositionService.findPositionCandidates(con, i), x, y, z))
     }
 
     static StatusManager getStatusManager() {

@@ -12,7 +12,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         when:
         def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
+        def pList = PositionService.findPositionCandidates(con, i)
         def pp = Helper.findCand(pList, 0, 0, 0)
 
         then:
@@ -24,7 +24,7 @@ class AddSpaceContainerBaseSpec extends Specification {
     def "add item into empty container"() {
         def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
+        def pList = PositionService.findPositionCandidates(con, i)
 
         when:
         Helper.add(con, pList.get(0))
@@ -38,10 +38,10 @@ class AddSpaceContainerBaseSpec extends Specification {
         def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i2)
+        def pList = PositionService.findPositionCandidates(con, i2)
 
         then:
         pList.size() == 3
@@ -55,7 +55,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         def con = Helper.getAddSpaceContainer(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
 
         when:
         Helper.add(con, i2, 1, 0, 0)
@@ -70,12 +70,12 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i).get(0))
-        def pList = PositionService.getPossibleInsertPositionList(con, i2)
+        Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
+        def pList = PositionService.findPositionCandidates(con, i2)
         Helper.add(con, Helper.findCand(pList, 1, 0, 0))
 
         when:
-        pList = PositionService.getPossibleInsertPositionList(con, i3)
+        pList = PositionService.findPositionCandidates(con, i3)
         def foundPos = Helper.findCand(pList, 0, 1, 0)
         def found2 = Helper.findCand(pList, 0,0,1) != null
         Helper.add(con, foundPos)
@@ -92,12 +92,12 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
         def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i1).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
         Helper.add(con, i2, 1, 0, 0)
         Helper.add(con, i3, 0, 1, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
         def foundPos = Helper.findCand(pList, 0,0,1)
         def found2 = Helper.findCand(pList, 1, 0, 1) != null
         def found3 = Helper.findCand(pList, 0,1,1) != null
@@ -117,13 +117,13 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
         def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i5 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i1).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
         Helper.add(con, i2, 1, 0, 0)
         Helper.add(con, i3, 0, 1, 0)
         Helper.add(con, i4, 0, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i5)
+        def pList = PositionService.findPositionCandidates(con, i5)
         def foundPos = Helper.findCand(pList, 1,0,1)
         Helper.add(con, foundPos)
 
@@ -140,14 +140,14 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i4 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i5 = Helper.getItem(1, 2, 1, 1, 10, 0)
         def i6 = Helper.getItem(1, 1, 1, 1, 10, 0)
-        Helper.add(con, PositionService.getPossibleInsertPositionList(con, i).get(0))
+        Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
         Helper.add(con, i2, 1, 0, 0)
         Helper.add(con, i3, 0, 1, 0)
         Helper.add(con, i4, 0, 0, 1)
         Helper.add(con, i5, 1, 0, 1)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i6)
+        def pList = PositionService.findPositionCandidates(con, i6)
         def foundPos = Helper.findCand(pList, 0, 1, 1)
         def hasOtherPos = pList.findAll {p ->
             !(p.position.x == 0 && p.position.y == 1 && p.position.z == 1)}.size() > 0
@@ -164,7 +164,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i = Helper.getItem(2, 1, 1, 1, 10, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i)
+        def pList = PositionService.findPositionCandidates(con, i)
 
         then:
         pList.size() == 2
@@ -181,11 +181,11 @@ class AddSpaceContainerBaseSpec extends Specification {
         def i5 = Helper.getItem(1, 1, 1, 9, 10, 0)
 
         when:
-        def pList1 = PositionService.getPossibleInsertPositionList(con, i1)
-        def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
-        def pList4 = PositionService.getPossibleInsertPositionList(con, i4)
-        def pList5 = PositionService.getPossibleInsertPositionList(con, i5)
+        def pList1 = PositionService.findPositionCandidates(con, i1)
+        def pList2 = PositionService.findPositionCandidates(con, i2)
+        def pList3 = PositionService.findPositionCandidates(con, i3)
+        def pList4 = PositionService.findPositionCandidates(con, i4)
+        def pList5 = PositionService.findPositionCandidates(con, i5)
 
         then:
         pList1.size() == 0
@@ -280,11 +280,11 @@ class AddSpaceContainerBaseSpec extends Specification {
 
         when:
         def i4 = Helper.getItem(2, 1, 1, 1, 100, 0)
-        def pos4 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i4), 0, 0, 2, false)
+        def pos4 = Helper.findCand(PositionService.findPositionCandidates(con, i4), 0, 0, 2, false)
         def i5 = Helper.getItem(3, 1, 1, 1, 100, 0)
-        def pos5 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i5), 0, 0, 2, false)
+        def pos5 = Helper.findCand(PositionService.findPositionCandidates(con, i5), 0, 0, 2, false)
         def i6 = Helper.getItem(4, 1, 1, 1, 100, 0)
-        def pos6 = Helper.findCand(PositionService.getPossibleInsertPositionList(con, i6), 0, 0, 2, false)
+        def pos6 = Helper.findCand(PositionService.findPositionCandidates(con, i6), 0, 0, 2, false)
 
         then:
         pos4 == null
@@ -302,8 +302,8 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i1, 0, 0, 0)
 
         when:
-        def pList2 = PositionService.getPossibleInsertPositionList(con, i2)
-        def pList3 = PositionService.getPossibleInsertPositionList(con, i3)
+        def pList2 = PositionService.findPositionCandidates(con, i2)
+        def pList3 = PositionService.findPositionCandidates(con, i3)
 
         then:
         Helper.findCand(pList2, 1, 0, 0, true) != null
@@ -322,7 +322,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i2, 2, 0, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i3)
+        def pList = PositionService.findPositionCandidates(con, i3)
         then:
         Helper.findCand(pList, 0, 3, 0) != null
     }
@@ -348,9 +348,9 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i6, 3, 0, 0)
 
         when:
-        def pList1 = PositionService.getPossibleInsertPositionList(con, i7)
-        def pList2 = PositionService.getPossibleInsertPositionList(con, i8)
-        def pList3 = PositionService.getPossibleInsertPositionList(con, i9)
+        def pList1 = PositionService.findPositionCandidates(con, i7)
+        def pList2 = PositionService.findPositionCandidates(con, i8)
+        def pList3 = PositionService.findPositionCandidates(con, i9)
         then:
         Helper.findCand(pList1, 1, 3, 0) != null
         Helper.findCand(pList2, 1, 3, 0) == null
@@ -367,7 +367,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i2, 0, 2, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i3)
+        def pList = PositionService.findPositionCandidates(con, i3)
         then:
         Helper.findCand(pList, 2, 0, 0) != null
     }
@@ -384,7 +384,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i3, 0, 4, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
         def pos = Helper.findCand(pList, 2, 2, 0)
         then:
         pos != null
@@ -411,9 +411,9 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i6, 0, 3, 0)
 
         when:
-        def pList1 = PositionService.getPossibleInsertPositionList(con, i7)
-        def pList2 = PositionService.getPossibleInsertPositionList(con, i8)
-        def pList3 = PositionService.getPossibleInsertPositionList(con, i9)
+        def pList1 = PositionService.findPositionCandidates(con, i7)
+        def pList2 = PositionService.findPositionCandidates(con, i8)
+        def pList3 = PositionService.findPositionCandidates(con, i9)
         then:
         Helper.findCand(pList1, 3, 1,0) != null
         Helper.findCand(pList2, 3, 1,0) == null
@@ -432,7 +432,7 @@ class AddSpaceContainerBaseSpec extends Specification {
         Helper.add(con, i3, 1, 2, 0)
 
         when:
-        def pList = PositionService.getPossibleInsertPositionList(con, i4)
+        def pList = PositionService.findPositionCandidates(con, i4)
         then:
         // Normal pos
         Helper.findCand(pList, 0, 1, 0) != null

@@ -55,7 +55,7 @@ public class OneContainerOneTypePacker implements Packer {
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<PositionCandidate> candidates = PositionService.getPossibleInsertPositionList(container, item);
+					List<PositionCandidate> candidates = PositionService.findPositionCandidates(container, item);
 
 					if(!candidates.isEmpty()) {
 						// Choose according to select strategy

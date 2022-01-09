@@ -32,10 +32,6 @@ mainClassName = 'util.Application'
 dependencies {
 	// Logging
 	implementation 'org.slf4j:slf4j-api:1.7.21'
-	// GZip compressor
-	implementation 'org.apache.commons:commons-compress:1.20'
-	// Random generator
-	implementation 'colt:colt:1.2.0'
 	// Fancy collection
 	implementation 'com.google.guava:guava:28.2-jre'
 

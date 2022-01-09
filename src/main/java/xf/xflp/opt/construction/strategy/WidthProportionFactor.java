@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class WidthProportionFactor extends BaseStrategy {
 
-	private final TouchingPerimeter fallbackStrategy = new TouchingPerimeter();
+	private final BaseStrategy fallbackStrategy = new HighestLowerLeft();
 
 	@Override
 	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {

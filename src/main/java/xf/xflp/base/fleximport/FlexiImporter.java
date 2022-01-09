@@ -49,10 +49,12 @@ public class FlexiImporter implements Serializable {
 		if(lastItemData != null) {
 			dataManager.add(lastItemData);
 			itemList.add(lastItemData);
+			lastItemData = null;
 		}
 		if(lastContainerData != null) {
 			dataManager.add(lastContainerData);
 			containerList.add(lastContainerData);
+			lastContainerData = null;
 		}
 	}
 

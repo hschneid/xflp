@@ -28,13 +28,13 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException {
-		if(posList == null || posList.isEmpty()) {
+	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {
+		if(candidates == null || candidates.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		List<PositionCandidate> filteredPositions = getPositionWithMinValue(
-				posList,
+				candidates,
 				this::getDistanceZ
 		);
 
@@ -65,7 +65,7 @@ public class HighestLowerLeft extends BaseStrategy {
 		);
 	}
 
-	float getDistanceZ(Position p) {
-		return p == null ? Float.MAX_VALUE : (float) p.getZ() * -1;
+	float getDistanceZ(PositionCandidate p) {
+		return p == null ? Float.MAX_VALUE : (float) p.position.z * -1;
 	}
 }

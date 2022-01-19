@@ -142,10 +142,10 @@ public class FlexiImporter implements Serializable {
 	public List<Item> getConvertedItemList() {
 		return itemList.stream()
 				.flatMap(itemData -> {
-					Item i1 = itemData.createLoadingItem(dataManager);
+					Item item = itemData.createLoadingItem(dataManager);
 					if(itemData.getUnloadingLocation().length() > 0)
-						return Stream.of(i1, itemData.createUnLoadingItem(dataManager));
-					return Stream.of(i1);
+						return Stream.of(item, itemData.createUnLoadingItem(dataManager));
+					return Stream.of(item);
 				})
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());

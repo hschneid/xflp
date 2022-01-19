@@ -7,11 +7,10 @@ import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
+import xf.xflp.base.item.Tools;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class ContainerBase implements Container, ContainerBaseData {
 
@@ -153,28 +152,11 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
             return item.h;
         }
 
-        List<Item> lowerItems = getItemsBelow(pos, item);
+        List<Item> lowerItems = Tools.findItemsBelow(this, pos, item);
         int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
 
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
-    }
-
-    protected List<Item> getItemsBelow(Position pos, Item newItem) {
-        if(!zMap.containsKey(pos.z)) {
-            return Collections.emptyList();
-        }
-
-        return zMap.get(pos.z)
-                .stream()
-                .map(idx -> itemList.get(idx))
-                .filter(lowerItem -> lowerItem.zh == pos.z &&
-                        lowerItem.x < pos.x + newItem.w &&
-                        lowerItem.xw > pos.x &&
-                        lowerItem.y < pos.y + newItem.l &&
-                        lowerItem.yl > pos.y
-                )
-                .collect(Collectors.toList());
     }
 
     @Override

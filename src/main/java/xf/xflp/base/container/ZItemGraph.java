@@ -92,6 +92,10 @@ public class ZItemGraph {
 		return lowerList.get(item.index).lowerItemList;
 	}
 
+	public List<Item> getItemsAbove(Item item) {
+		return upperList.get(item.index);
+	}
+
 	/**
 	 * Searches for any item in Z-Graph, where the ceiling items have no further upper items
 	 * with regard to the base items of the given item
@@ -139,7 +143,7 @@ public class ZItemGraph {
 		if(item.z == 0)
 			return list;
 
-		for (int i = zList.size()- 1; i >= 0; i--) {
+		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 

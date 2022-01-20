@@ -38,12 +38,8 @@ public class StackingChecker {
 
         // Check stacking group - All lower items must have the same stacking group
         // Check ground contact - Items must fulfill certain constraints, if items must be placed on other items
-        if(!checkStackingGroupAndGroundContact(container, pos, itemW, itemL, newItem.stackingGroup))
+        if(!checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup))
             return false;
-
-        if(isInvalidStackedItemCount(container, pos, newItem)) {
-            return false;
-        }
 
         if(container instanceof LoadBearingContainer) {
             return !isInvalidLoadBearingNEW(container, pos, newItem, itemW, itemL);
@@ -57,7 +53,7 @@ public class StackingChecker {
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private static boolean checkStackingGroupAndGroundContact(Container container, Position pos, int itemW, int itemL, int stackingGroup) {
+    private static boolean checkStackingGroupAndGroundContact(Container container, Item item, Position pos, int itemW, int itemL, int stackingGroup) {
         List<Integer> zList = container.getBaseData().getZMap().get(pos.getZ());
         if(zList == null || zList.isEmpty())
             return true;
@@ -65,6 +61,7 @@ public class StackingChecker {
         int posXW = pos.getX() + itemW;
         int posYL = pos.getY() + itemL;
 
+        int nbrOfItemsBelow = 0;
         int cornerItem1, cornerItem2, cornerItem3, cornerItem4;
         boolean corner1, corner2, corner3, corner4;
         corner1 = corner2 = corner3 = corner4 = false;
@@ -76,6 +73,8 @@ public class StackingChecker {
             if(isNotBelow(pos, itemW, itemL, fi)) {
                 continue;
             }
+
+            nbrOfItemsBelow++;
 
             // AND-operation of two binary representations. If no bit fits
             // then result is zero
@@ -100,6 +99,13 @@ public class StackingChecker {
                 corner4 = true;
             }
         }
+
+        /*
+         * Check, if number of below items exceed the number of allowed stacked items.
+         * If parameter "number of allowed stacked items" is undefined, it is always valid.
+         */
+        if(nbrOfItemsBelow > item.getNbrOfAllowedStackedItems())
+            return false;
 
         boolean hasAnyGroundContact = (corner1 || corner2 || corner3 || corner4);
         boolean hasFullGroundContact = (corner1 && corner2 && corner3 && corner4);
@@ -140,20 +146,6 @@ public class StackingChecker {
             item.rotate();
 
         return isValid;
-    }
-
-    /**
-     * Check, if number of below items exceed the number of allowed stacked items.
-     * If parameter "number of allowed stacked items" is undefined, it is always valid.
-     *
-     * true, if situation is invalid
-     */
-    private static boolean isInvalidStackedItemCount(Container container, Position pos, Item item) {
-        if(item.getNbrOfAllowedStackedItems() == Item.UNDEF_PARAMETER)
-            return true;
-
-        List<Item> itemsBelow = Tools.findItemsBelow(container, pos, item);
-        return itemsBelow.size() > item.getNbrOfAllowedStackedItems();
     }
 
     /**

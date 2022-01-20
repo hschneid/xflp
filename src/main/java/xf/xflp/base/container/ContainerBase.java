@@ -42,7 +42,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     /* History of loaded items - is relevant for creating the solution report */
     protected final List<Item> history = new ArrayList<>();
 
-    /** Item index -> current bearing capacity **/
+    /** Item index - current bearing capacity **/
     protected final Map<Integer, Float> bearingCapacities = new HashMap<>();
     protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
@@ -246,7 +246,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     }
 
     /**
-     * If it is a stacking position (z > 0), then the immersive depth of lower items
+     * If it is a stacking position, then the immersive depth of lower items
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     protected int retrieveHeight(Item item, Position pos) {

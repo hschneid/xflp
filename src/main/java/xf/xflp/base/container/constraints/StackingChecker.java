@@ -24,6 +24,10 @@ import java.util.Map;
  */
 public class StackingChecker {
 
+    /**
+     * true - stacking is valid
+     * false - stacking is invalid
+     */
     public static boolean checkStackingRestrictions(
             Container container,
             Position pos,
@@ -36,10 +40,8 @@ public class StackingChecker {
 
         // Check stacking group - All lower items must have the same stacking group
         // Check ground contact - Items must fulfill certain constraints, if items must be placed on other items
-        if(!checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup))
-            return false;
-
-        return !checkInvalidLoadBearing(container, pos, newItem, itemW, itemL);
+        // checkInvalidLoadBearing
+        return checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup);
     }
 
     /**
@@ -51,14 +53,16 @@ public class StackingChecker {
         if(zList == null || zList.isEmpty())
             return true;
 
-        int posXW = pos.getX() + itemW;
-        int posYL = pos.getY() + itemL;
+        int itemXW = pos.getX() + itemW;
+        int itemYL = pos.getY() + itemL;
 
         int nbrOfItemsBelow = 0;
         int cornerItem1, cornerItem2, cornerItem3, cornerItem4;
         boolean corner1, corner2, corner3, corner4;
         corner1 = corner2 = corner3 = corner4 = false;
         cornerItem1 = cornerItem2 = cornerItem3 = cornerItem4 = -1;
+
+        Map<Integer, Float> bearingCapacities = container.getBaseData().getBearingCapacities();
 
         // Check for all lower items if stacking group restriction is valid
         for(int i = zList.size() - 1; i >= 0; i--) {
@@ -79,17 +83,24 @@ public class StackingChecker {
                 cornerItem1 = fi.externalIndex;
                 corner1 = true;
             }
-            if(posXW > fi.x && posXW <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
+            if(itemXW > fi.x && itemXW <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
                 cornerItem2 = fi.externalIndex;
                 corner2 = true;
             }
-            if(pos.getX() >= fi.x && pos.getX() <= fi.xw && posYL > fi.y && posYL <= fi.yl) {
+            if(pos.getX() >= fi.x && pos.getX() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
                 cornerItem3 = fi.externalIndex;
                 corner3 = true;
             }
-            if(posXW > fi.x && posXW <= fi.xw && posYL > fi.y && posYL <= fi.yl) {
+            if(itemXW > fi.x && itemXW <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
                 cornerItem4 = fi.externalIndex;
                 corner4 = true;
+            }
+
+            // Is bearing capacity enough?
+            float bearingCapacity = bearingCapacities.get(zList.get(i));
+            float areaRatio = Tools.getCutRatio(pos.x, pos.y, itemW, itemL, fi);
+            if(bearingCapacity - (item.getWeight() * areaRatio) < 0) {
+                return false;
             }
         }
 
@@ -100,6 +111,9 @@ public class StackingChecker {
         if(nbrOfItemsBelow > item.getNbrOfAllowedStackedItems())
             return false;
 
+        /*
+         * Check ground contact - are all corners placed on top of other items
+         */
         boolean hasAnyGroundContact = (corner1 || corner2 || corner3 || corner4);
         boolean hasFullGroundContact = (corner1 && corner2 && corner3 && corner4);
         if(container.getParameter().get(ParameterType.GROUND_CONTACT_RULE) == GroundContactRule.SINGLE) {
@@ -114,28 +128,6 @@ public class StackingChecker {
     private static boolean allEqual(int... values) {
         Arrays.sort(values);
         return values[0] == values[values.length - 1];
-    }
-
-    private static boolean checkInvalidLoadBearing(Container container, Position position, Item newItem, int itemW, int itemL) {
-        Map<Integer, Float> bearingCapacities = container.getBaseData().getBearingCapacities();
-        List<Integer> sameZItems = container.getBaseData().getZMap().get(position.z);
-        for (int i = sameZItems.size() - 1; i >= 0; i--) {
-            int lowerItemIdx = sameZItems.get(i);
-            // Is item below?
-            Item lowerItem = container.getItems().get(lowerItemIdx);
-            if(isNotBelow(position, itemW, itemL, lowerItem)) {
-                continue;
-            }
-
-            // Is bearing capacity enough?
-            float bearingCapacity = bearingCapacities.get(lowerItemIdx);
-            float areaRatio = Tools.getCutRatio(position.x, position.y, itemW, itemL, lowerItem);
-            if(bearingCapacity - (newItem.getWeight() * areaRatio) < 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static boolean isNotBelow(Position position, int itemW, int itemL, Item lowerItem) {

@@ -107,8 +107,11 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     @Override
     public float getLoadedWeight() {
         float sum = 0;
-        for (Item item : this.itemList)
+        List<Item> list = this.itemList;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            Item item = list.get(i);
             sum += (item != null) ? item.weight : 0;
+        }
 
         return sum;
     }

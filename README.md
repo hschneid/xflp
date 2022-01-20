@@ -42,7 +42,9 @@ This software is released under [MIT License] (https://opensource.org/licenses/M
 
 ## Change log
 ### 0.5.2 - Performance upgrade
-- Bearing check is improved by storing bearing capacities during container-adding. 
+- Improved bearing check by storing bearing capacities during container-adding.
+  - For big problems the runtime improves by 43%.
+- Refactored and removed old code
 
 ### 0.5.1 - Performance upgrade
 - Add spaces for faster checking of possible insert positions

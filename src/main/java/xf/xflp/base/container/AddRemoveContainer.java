@@ -1,6 +1,7 @@
 package xf.xflp.base.container;
 
 import util.collection.LPListMap;
+import xf.xflp.base.container.constraints.LoadBearingChecker2;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
@@ -18,7 +19,7 @@ import java.util.*;
  * @author hschneid
  *
  */
-public class AddRemoveContainer extends ContainerBase {
+public class AddRemoveContainer extends ContainerBase implements LoadBearingContainer {
 
 	private static final Position rootPos = Position.of( -1, -1, -1);
 
@@ -31,6 +32,10 @@ public class AddRemoveContainer extends ContainerBase {
 
 	/* Position -> Item */
 	private final Map<Position, Item> positionItemMap = new HashMap<>();
+
+	/** Item index -> current bearing capacity **/
+	private final Map<Integer, Float> bearingCapacities = new HashMap<>();
+	private final LoadBearingChecker2 loadBearingChecker2 = new LoadBearingChecker2();
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
@@ -81,9 +86,15 @@ public class AddRemoveContainer extends ContainerBase {
 			positionItemMap.put(newPos, item);
 		}
 
+		updateBearingCapacity(List.of(item));
+
 		history.add(item);
 
 		return item.index;
+	}
+
+	private void updateBearingCapacity(List<Item> items) {
+		loadBearingChecker2.update(this, items);
 	}
 
 	/**
@@ -91,7 +102,9 @@ public class AddRemoveContainer extends ContainerBase {
 	 */
 	@Override
 	public void remove(Item item) {
-		// Entferne Objekt
+		List<Item> lowerItems = zGraph.getItemsBelow(item);
+
+		// Remove item
 		removeItem(item);
 
 		Position position = itemPositionMap.remove(item);
@@ -129,10 +142,10 @@ public class AddRemoveContainer extends ContainerBase {
 		// SONST setze Position auf aktiv statt inaktiv
 		checkPosition(position);
 
+		updateBearingCapacity(lowerItems);
+
 		history.add(item);
 	}
-
-
 
 	/**
 	 *
@@ -434,5 +447,9 @@ public class AddRemoveContainer extends ContainerBase {
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle
 		// realen Positionen erben von dieser virtuellen.
 		insertTree(start, rootPos);
+	}
+
+	public Map<Integer, Float> getBearingCapacities() {
+		return bearingCapacities;
 	}
 }

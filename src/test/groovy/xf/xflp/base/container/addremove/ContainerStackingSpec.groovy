@@ -185,7 +185,7 @@ class ContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(2, 1, 1, 1, 2, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(3, 1, 1, 2, 1, 0)
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 0.999, 1, 0)
 
         when:
         def pList1 = PositionService.findPositionCandidates(con, i1)
@@ -215,7 +215,7 @@ class ContainerStackingSpec extends Specification {
         def i1 = Helper.getItem(4, 1, 1, 1, 2, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(6, 1, 1, 2, 1, 0)
-        def i4 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i4 = Helper.getItem(1, 1, 1, 0.9999, 1, 0)
 
         when:
         def pList1 = PositionService.findPositionCandidates(con, i1)

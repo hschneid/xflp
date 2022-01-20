@@ -1,9 +1,6 @@
 package xf.xflp.base.container.constraints;
 
-import xf.xflp.base.container.Container;
-import xf.xflp.base.container.GroundContactRule;
-import xf.xflp.base.container.LoadBearingContainer;
-import xf.xflp.base.container.ParameterType;
+import xf.xflp.base.container.*;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Tools;
@@ -41,12 +38,7 @@ public class StackingChecker {
         if(!checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup))
             return false;
 
-        if(container instanceof LoadBearingContainer) {
-            return !isInvalidLoadBearingNEW(container, pos, newItem, itemW, itemL);
-        } else {
-            // Check bearing capacity - All lower items can bear the additional weight
-            return checkLoadBearing(container, pos, newItem, rotation);
-        }
+        return !isInvalidLoadBearingNEW(container, pos, newItem, itemW, itemL);
     }
 
     /**

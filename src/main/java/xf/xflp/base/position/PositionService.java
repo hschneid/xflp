@@ -65,7 +65,7 @@ public class PositionService {
                 }
 
                 // Check stacking restrictions
-                if(!StackingChecker.checkStackingRestrictions(container, pos, item, itemW, itemL, rotation))
+                if(!StackingChecker.checkStackingRestrictions(container, pos, item, itemW, itemL))
                     continue;
 
                 // Create RotatedPosition if this item is rotated

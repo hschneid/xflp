@@ -1,6 +1,9 @@
 package xf.xflp.base.container.constraints;
 
-import xf.xflp.base.container.*;
+import xf.xflp.base.container.Container;
+import xf.xflp.base.container.GroundContactRule;
+import xf.xflp.base.container.LoadBearingContainer;
+import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Tools;
@@ -27,8 +30,7 @@ public class StackingChecker {
             Position pos,
             Item newItem,
             int itemW,
-            int itemL,
-            int rotation) {
+            int itemL) {
         // New item will be placed at ground. So no stacking needs to be checked.
         if (pos.getZ() == 0)
             return true;
@@ -38,7 +40,7 @@ public class StackingChecker {
         if(!checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup))
             return false;
 
-        return !isInvalidLoadBearingNEW(container, pos, newItem, itemW, itemL);
+        return !checkInvalidLoadBearing(container, pos, newItem, itemW, itemL);
     }
 
     /**
@@ -110,56 +112,12 @@ public class StackingChecker {
         return hasFullGroundContact;
     }
 
-    /**
-     * This checks the both restrictions load bearing
-     *
-     * Hereby the new item is added to container and removed afterwards
-     */
-    private static boolean checkLoadBearing(Container container, Position pos, Item item, int rotation) {
-        // Add to container
-        if(rotation == 1)
-            item.rotate();
-        item.setPosition(pos);
-        container.getItems().add(item);
-        container.getBaseData().getZGraph().add(item, container.getItems(), container.getBaseData().getZMap());
-
-        boolean isValid = true;
-
-        // Check load bearing restriction by Z-tree traversal
-        if(!checkLoadBearing(container, item)) {
-            isValid = false;
-        }
-
-        // Remove from container
-        container.getBaseData().getZGraph().remove(item);
-        item.clearPosition();
-        container.getItems().remove(item.index);
-        if(rotation == 1)
-            item.rotate();
-
-        return isValid;
-    }
-
-    /**
-     * Check the load bearing restriction
-     *
-     * New item will be placed at the position in container, then the bearing check
-     * is done by tree traversal through all touched items and then removed again from
-     * container.
-     *
-     */
-    private static boolean checkLoadBearing(Container container, Item item) {
-        List<Item> ceilItems = container.getBaseData().getZGraph().getCeilItems(item, container.getItems());
-        LoadBearingChecker lbc = new LoadBearingChecker();
-        return lbc.checkLoadBearing(ceilItems, container.getBaseData().getZGraph());
-    }
-
     private static boolean allEqual(int... values) {
         Arrays.sort(values);
         return values[0] == values[values.length - 1];
     }
 
-    private static boolean isInvalidLoadBearingNEW(Container container, Position position, Item newItem, int itemW, int itemL) {
+    private static boolean checkInvalidLoadBearing(Container container, Position position, Item newItem, int itemW, int itemL) {
         Map<Integer, Float> bearingCapacities = ((LoadBearingContainer)container).getBearingCapacities();
         List<Integer> sameZItems = container.getBaseData().getZMap().get(position.z);
         for (int i = sameZItems.size() - 1; i >= 0; i--) {

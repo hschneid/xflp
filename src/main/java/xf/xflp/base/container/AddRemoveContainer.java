@@ -51,6 +51,12 @@ public class AddRemoveContainer extends ContainerBase {
 		init();
 	}
 
+	private void init() {
+		// Die root-Position befindet sich nicht im 3D-Raum. Alle
+		// realen Positionen erben von dieser virtuellen.
+		insertTree(activePosList.get(0), rootPos);
+	}
+
 	@Override
 	public Container newInstance() {
 		return new AddRemoveContainer(this);
@@ -65,6 +71,9 @@ public class AddRemoveContainer extends ContainerBase {
 
 		// F�ge Element in Container ein
 		addItem(item, pos);
+
+		// Active position gets inactive by adding item
+		switchActive2Inactive(pos);
 
 		// Setze �berlagerte Positionen auf inaktiv
 		List<Position> covPosList = findCoveredPositions(item);
@@ -136,25 +145,6 @@ public class AddRemoveContainer extends ContainerBase {
 		updateBearingCapacity(lowerItems);
 
 		history.add(item);
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findCoveredPositions(Item item) {
-		List<Position> coveredPositionList = new ArrayList<>();
-
-		// Suche alle Einf�gepositionen ab
-		for (Position pos : activePosList) {
-			// Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
-			if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
-				coveredPositionList.add(pos);
-				// Leigt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
-			else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
-				coveredPositionList.add(pos);
-		}
-
-		return coveredPositionList;
 	}
 
 	private void switchInactive2Active(Position pos) {
@@ -339,35 +329,6 @@ public class AddRemoveContainer extends ContainerBase {
 	/**
 	 *
 	 */
-	private void addItem(Item item, Position pos) {
-		// Adjust height for immersive depth
-		item.h = retrieveHeight(item, pos);
-
-		item.setPosition(pos);
-		itemList.add(item);
-		item.containerIndex = this.index;
-
-		itemPositionMap.put(item, pos);
-
-		xMap.put(item.x, item.index);
-		xMap.put(item.xw, item.index);
-		yMap.put(item.y, item.index);
-		yMap.put(item.yl, item.index);
-		zMap.put(item.z, item.index);
-		zMap.put(item.zh, item.index);
-
-		weight += item.weight;
-
-		// Insert into Z-Graph
-		zGraph.add(item, itemList, zMap);
-
-		// Active position gets inactive by adding item
-		switchActive2Inactive(pos);
-	}
-
-	/**
-	 *
-	 */
 	private void removeItem(Item item) {
 		Integer index = item.index;
 
@@ -387,57 +348,6 @@ public class AddRemoveContainer extends ContainerBase {
 		item.h = item.origH;
 
 		item.containerIndex = -1;
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findInsertPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-
-		// 2 simple positions
-		Position verticalPosition = null, horizontalPosition = null;
-		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
-			posList.add(verticalPosition);
-		}
-		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
-			posList.add(horizontalPosition);
-		}
-
-		if(item.z == 0) {
-			// 2 projected positions
-			if(item.x > 0 && verticalPosition != null) {
-				Item leftElement = findNextLeftElement(verticalPosition);
-				int leftPos = (leftElement != null) ? leftElement.xw : 0;
-				posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
-			}
-
-			if(item.y > 0 && horizontalPosition != null) {
-				Item lowerElement = findNextDeeperElement(horizontalPosition);
-				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
-				posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
-			}
-		}
-
-		// 1 ceiling position
-		if(item.z + item.h < this.height)
-			posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
-
-		return posList;
-	}
-
-	/**
-	 *
-	 */
-	private void init() {
-		Position start = createPosition(0, 0, 0, PositionType.ROOT);
-		activePosList.add(start);
-
-		// Die root-Position befindet sich nicht im 3D-Raum. Alle
-		// realen Positionen erben von dieser virtuellen.
-		insertTree(start, rootPos);
 	}
 
 	public Map<Integer, Float> getBearingCapacities() {

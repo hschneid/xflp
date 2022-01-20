@@ -65,6 +65,8 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         this.containerType = containerType;
         parameter.add(ParameterType.GROUND_CONTACT_RULE, groundContactRule);
         parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
+
+        init();
     }
 
     public ContainerBase(Container containerPrototype) {
@@ -74,6 +76,13 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         this.maxWeight = containerPrototype.getMaxWeight();
         this.containerType = containerPrototype.getContainerType();
         this.parameter = containerPrototype.getParameter();
+
+        init();
+    }
+
+    private void init() {
+        Position start = createPosition(0, 0, 0, PositionType.ROOT);
+        activePosList.add(start);
     }
 
     @Override
@@ -102,6 +111,70 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
             sum += (item != null) ? item.weight : 0;
 
         return sum;
+    }
+
+    protected void addItem(Item item, Position pos) {
+        // Adjust height for immersive depth
+        item.h = retrieveHeight(item, pos);
+
+        item.setPosition(pos);
+        itemList.add(item);
+        item.containerIndex = this.index;
+
+        itemPositionMap.put(item, pos);
+
+        xMap.put(item.x, item.index);
+        xMap.put(item.xw, item.index);
+        yMap.put(item.y, item.index);
+        yMap.put(item.yl, item.index);
+        zMap.put(item.z, item.index);
+        zMap.put(item.zh, item.index);
+
+        weight += item.weight;
+
+        // Insert into Z-Graph
+        zGraph.add(item, itemList, zMap);
+    }
+
+    protected List<Position> findInsertPositions(Item item) {
+        List<Position> posList = new ArrayList<>();
+
+        // 3 basic positions
+        Position verticalPosition = null, horizontalPosition = null;
+        if(item.yl < this.length) {
+            verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
+            posList.add(verticalPosition);
+        }
+        if(item.xw < this.width) {
+            horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
+            posList.add(horizontalPosition);
+        }
+        if(item.z + item.h < this.height) {
+            posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
+        }
+
+        // 2 projected positions
+        if(item.z == 0) {
+            if(item.x > 0 && verticalPosition != null) {
+                Item leftElement = findNextLeftElement(verticalPosition);
+                int leftPos = (leftElement != null) ? leftElement.xw : 0;
+
+                if(leftPos < item.x) {
+                    posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
+                }
+            }
+
+            if(item.y > 0 && horizontalPosition != null) {
+                Item lowerElement = findNextDeeperElement(horizontalPosition);
+                int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
+
+                if(lowerPos < item.y) {
+                    posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
+                }
+            }
+        }
+
+        return posList;
     }
 
     /**
@@ -141,6 +214,21 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         }
 
         return lowerItem;
+    }
+
+    protected List<Position> findCoveredPositions(Item item) {
+        List<Position> coveredPositionList = new ArrayList<>();
+
+        for (Position pos : activePosList) {
+            // Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
+            if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
+                coveredPositionList.add(pos);
+                // Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
+            else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
+                coveredPositionList.add(pos);
+        }
+
+        return coveredPositionList;
     }
 
     /**

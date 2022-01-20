@@ -1,7 +1,6 @@
 package xf.xflp.base.container;
 
 import util.collection.LPListMap;
-import xf.xflp.base.container.constraints.LoadBearingChecker2;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
@@ -19,7 +18,7 @@ import java.util.*;
  * @author hschneid
  *
  */
-public class AddRemoveContainer extends ContainerBase implements LoadBearingContainer {
+public class AddRemoveContainer extends ContainerBase {
 
 	private static final Position rootPos = Position.of( -1, -1, -1);
 
@@ -32,10 +31,6 @@ public class AddRemoveContainer extends ContainerBase implements LoadBearingCont
 
 	/* Position -> Item */
 	private final Map<Position, Item> positionItemMap = new HashMap<>();
-
-	/** Item index -> current bearing capacity **/
-	private final Map<Integer, Float> bearingCapacities = new HashMap<>();
-	private final LoadBearingChecker2 loadBearingChecker2 = new LoadBearingChecker2();
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
@@ -91,10 +86,6 @@ public class AddRemoveContainer extends ContainerBase implements LoadBearingCont
 		history.add(item);
 
 		return item.index;
-	}
-
-	private void updateBearingCapacity(List<Item> items) {
-		loadBearingChecker2.update(this, items);
 	}
 
 	/**

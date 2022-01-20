@@ -2,7 +2,6 @@ package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
-import xf.xflp.base.container.LoadBearingContainer;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
@@ -118,7 +117,7 @@ public class StackingChecker {
     }
 
     private static boolean checkInvalidLoadBearing(Container container, Position position, Item newItem, int itemW, int itemL) {
-        Map<Integer, Float> bearingCapacities = ((LoadBearingContainer)container).getBearingCapacities();
+        Map<Integer, Float> bearingCapacities = container.getBaseData().getBearingCapacities();
         List<Integer> sameZItems = container.getBaseData().getZMap().get(position.z);
         for (int i = sameZItems.size() - 1; i >= 0; i--) {
             int lowerItemIdx = sameZItems.get(i);

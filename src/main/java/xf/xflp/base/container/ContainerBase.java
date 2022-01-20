@@ -3,6 +3,7 @@ package xf.xflp.base.container;
 import com.google.common.collect.HashBiMap;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
+import xf.xflp.base.container.constraints.LoadBearingChecker;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
@@ -10,7 +11,9 @@ import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.Tools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ContainerBase implements Container, ContainerBaseData {
 
@@ -38,6 +41,10 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
 
     /* History of loaded items - is relevant for creating the solution report */
     protected final List<Item> history = new ArrayList<>();
+
+    /** Item index -> current bearing capacity **/
+    protected final Map<Integer, Float> bearingCapacities = new HashMap<>();
+    protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
     protected int maxPosIdx = 0;
     protected ContainerParameter parameter = new DirectContainerParameter();
@@ -143,6 +150,10 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return Position.of(maxPosIdx++, x, y, z, type);
     }
 
+    protected void updateBearingCapacity(List<Item> items) {
+        loadBearingChecker.update(this, items);
+    }
+
     /**
      * If it is a stacking position (z > 0), then the immersive depth of lower items
      * must be checked. If this is the case, then the height of given item is reduced.
@@ -153,7 +164,13 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         }
 
         List<Item> lowerItems = Tools.findItemsBelow(this, pos, item);
-        int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
+        if(lowerItems.size() == 0)
+            return item.h;
+
+        int minImmersiveDepth = Integer.MAX_VALUE;
+        for (int i = lowerItems.size() - 1; i >= 0; i--) {
+            minImmersiveDepth = Math.min(minImmersiveDepth, lowerItems.get(i).getImmersiveDepth());
+        }
 
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
@@ -229,4 +246,8 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return zGraph;
     }
 
+    @Override
+    public Map<Integer, Float> getBearingCapacities() {
+        return bearingCapacities;
+    }
 }

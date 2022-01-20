@@ -4,7 +4,6 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.container.Container
 import xf.xflp.base.container.GroundContactRule
-import xf.xflp.base.container.LoadBearingContainer
 import xf.xflp.base.container.ParameterType
 import xf.xflp.base.position.PositionService
 
@@ -419,7 +418,7 @@ class AddSpaceContainerStackingSpec extends Specification {
 
         then:
         con.items.size() == 3
-        ((LoadBearingContainer)con).bearingCapacities.values().every {i -> i == 0}
+        con.getBaseData().getBearingCapacities().values().every {i -> i == 0}
     }
 
     def "add item in existing stack at lower level"() {
@@ -441,6 +440,6 @@ class AddSpaceContainerStackingSpec extends Specification {
 
         then:
         con.items.size() == 5
-        ((LoadBearingContainer)con).bearingCapacities.values().every {i -> i == 0}
+        con.getBaseData().getBearingCapacities().values().every {i -> i == 0}
     }
 }

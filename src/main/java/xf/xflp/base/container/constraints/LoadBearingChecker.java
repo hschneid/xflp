@@ -1,15 +1,15 @@
 package xf.xflp.base.container.constraints;
 
-import xf.xflp.base.container.LoadBearingContainer;
+import xf.xflp.base.container.ContainerBase;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadBearingChecker2 {
+public class LoadBearingChecker {
 
-    public void update(LoadBearingContainer container, List<Item> initialItems) {
+    public void update(ContainerBase container, List<Item> initialItems) {
         float[] bearingWeights = new float[container.getItems().size()];
 
         // Collect the bearing weight per item - top-down
@@ -18,7 +18,7 @@ public class LoadBearingChecker2 {
         updateBearingCapacities(floorItems, bearingWeights, container);
     }
 
-    private List<Item> collectBearingWeight(List<Item> initialItems, float[] bearingWeights, LoadBearingContainer container) {
+    private List<Item> collectBearingWeight(List<Item> initialItems, float[] bearingWeights, ContainerBase container) {
         BearingWeightQueue queue = new BearingWeightQueue(container.getItems().size());
 
         // Add all initial items to queue
@@ -72,7 +72,7 @@ public class LoadBearingChecker2 {
         for (int i = arr.length - 1; i >= 0; i--) arr[i] += avg;
     }
 
-    private void updateBearingCapacities(List<Item> floorItems, float[] bearingWeights, LoadBearingContainer container) {
+    private void updateBearingCapacities(List<Item> floorItems, float[] bearingWeights, ContainerBase container) {
         final List<Item> currentItems = new ArrayList<>(floorItems);
         final List<Item> nextItems = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class LoadBearingChecker2 {
         }
     }
 
-    private float getLowerBearingCapacity(LoadBearingContainer container, Item currentItem, List<Item> lowerItems) {
+    private float getLowerBearingCapacity(ContainerBase container, Item currentItem, List<Item> lowerItems) {
         float lowerBearingCapacity = Float.MAX_VALUE;
         for (int j = lowerItems.size() - 1; j >= 0; j--) {
             float reciprocalAreaRatio = 1f / Tools.getCutRatio(currentItem, lowerItems.get(j));

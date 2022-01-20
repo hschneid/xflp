@@ -1,6 +1,5 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.container.constraints.LoadBearingChecker2;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
@@ -18,16 +17,12 @@ import java.util.*;
  *
  * @author hschneid
  */
-public class AddSpaceContainer extends ContainerBase implements LoadBearingContainer {
+public class AddSpaceContainer extends ContainerBase {
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
 
 	private final SpaceService spaceService = new SpaceService();
-
-	/** Item index -> current bearing capacity **/
-	private final Map<Integer, Float> bearingCapacities = new HashMap<>();
-	private final LoadBearingChecker2 loadBearingChecker2 = new LoadBearingChecker2();
 
 	/* Is called by reflection */
 	public AddSpaceContainer(
@@ -110,15 +105,11 @@ public class AddSpaceContainer extends ContainerBase implements LoadBearingConta
 			}
 		}
 
-		updateBearingCapacity(item);
+		updateBearingCapacity(List.of(item));
 
 		history.add(item);
 
 		return item.index;
-	}
-
-	private void updateBearingCapacity(Item item) {
-		loadBearingChecker2.update(this, List.of(item));
 	}
 
 	private void removePosition(Position position) {
@@ -272,10 +263,5 @@ public class AddSpaceContainer extends ContainerBase implements LoadBearingConta
 
 	public List<Space> getSpace(Position pos) {
 		return spacePositions.get(pos);
-	}
-
-	@Override
-	public Map<Integer, Float> getBearingCapacities() {
-		return bearingCapacities;
 	}
 }

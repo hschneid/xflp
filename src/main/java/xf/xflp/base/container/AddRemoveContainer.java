@@ -14,7 +14,6 @@ import java.util.*;
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
  * @author hschneid
  *
  */
@@ -69,7 +68,6 @@ public class AddRemoveContainer extends ContainerBase {
 	public int add(Item item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
-		// F�ge Element in Container ein
 		addItem(item, pos);
 
 		// Active position gets inactive by adding item
@@ -80,7 +78,7 @@ public class AddRemoveContainer extends ContainerBase {
 		for (Position covPos : covPosList)
 			switchActive2Covered(covPos);
 
-		// Erzeuge neue Einf�ge-Punkte und f�ge sie in Tree ein
+		// Create new insert positions and spaces
 		List<Position> newPosList = findInsertPositions(item);
 		for (Position newPos : newPosList) {
 			activePosList.add(newPos);
@@ -348,9 +346,5 @@ public class AddRemoveContainer extends ContainerBase {
 		item.h = item.origH;
 
 		item.containerIndex = -1;
-	}
-
-	public Map<Integer, Float> getBearingCapacities() {
-		return bearingCapacities;
 	}
 }

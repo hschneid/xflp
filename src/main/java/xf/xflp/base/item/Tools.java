@@ -2,6 +2,7 @@ package xf.xflp.base.item;
 
 import xf.xflp.base.container.Container;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,15 +46,19 @@ public class Tools {
 			return Collections.emptyList();
 		}
 
-		return container.getBaseData().getZMap().get(pos.z)
-				.stream()
-				.map(idx -> container.getItems().get(idx))
-				.filter(lowerItem -> lowerItem.zh == pos.z &&
-						lowerItem.x < pos.x + newItem.w &&
-						lowerItem.xw > pos.x &&
-						lowerItem.y < pos.y + newItem.l &&
-						lowerItem.yl > pos.y
-				)
-				.collect(Collectors.toList());
+		List<Item> belowItems = new ArrayList<>();
+		List<Integer> zItems = container.getBaseData().getZMap().get(pos.z);
+		for (int i = zItems.size() - 1; i >= 0; i--) {
+			Item lowerItem = container.getItems().get(zItems.get(i));
+			if(lowerItem.zh == pos.z &&
+					lowerItem.x < pos.x + newItem.w &&
+					lowerItem.xw > pos.x &&
+					lowerItem.y < pos.y + newItem.l &&
+					lowerItem.yl > pos.y) {
+				belowItems.add(lowerItem);
+			}
+		}
+
+		return belowItems;
 	}
 }

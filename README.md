@@ -41,6 +41,9 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.5.2 - Performance upgrade
+- Bearing check is improved by storing bearing capacities during container-adding. 
+
 ### 0.5.1 - Performance upgrade
 - Add spaces for faster checking of possible insert positions
   - Each position defines a list of spaces, where items might fit into.

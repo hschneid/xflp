@@ -13,7 +13,7 @@ class BigNumberSpec extends Specification {
     XFLP service
     def random = new Random(1234)
 
-    //@Ignore
+    @Ignore
     def "1000 boxes"() {
         when:
         long time = System.currentTimeMillis()

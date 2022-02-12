@@ -2,7 +2,6 @@ package xf.xflp.base.container;
 
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
-import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.Space;
 import xf.xflp.base.space.SpaceService;
 
@@ -38,14 +37,18 @@ public class AddSpaceContainer extends ContainerBase {
 		init();
 	}
 
-	@Override
-	public Container newInstance() {
-		return new AddSpaceContainer(this);
-	}
-
 	public AddSpaceContainer(Container containerPrototype) {
 		super(containerPrototype);
 		init();
+	}
+
+	private void init() {
+		spacePositions.put(activePosList.get(0), Collections.singletonList(Space.of(length, width, height)));
+	}
+
+	@Override
+	public Container newInstance() {
+		return new AddSpaceContainer(this);
 	}
 
 	/**
@@ -58,6 +61,9 @@ public class AddSpaceContainer extends ContainerBase {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
+
+		// Active position gets inactive by adding item
+		removePosition(pos);
 
 		removeCoveredPositions(item);
 
@@ -105,6 +111,8 @@ public class AddSpaceContainer extends ContainerBase {
 			}
 		}
 
+		updateBearingCapacity(List.of(item));
+
 		history.add(item);
 
 		return item.index;
@@ -124,97 +132,10 @@ public class AddSpaceContainer extends ContainerBase {
 		throw new UnsupportedOperationException("Remove in AddContainer is not supported. Use AddRemoveContainer");
 	}
 
-	/**
-	 *
-	 */
 	private void removeCoveredPositions(Item item) {
-		List<Position> coveredPositionList = new ArrayList<>();
-
-		for (Position pos : activePosList) {
-			// Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
-			if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
-				coveredPositionList.add(pos);
-				// Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
-			else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
-				coveredPositionList.add(pos);
-		}
-
-		for (Position position : coveredPositionList) {
+		for (Position position : findCoveredPositions(item)) {
 			removePosition(position);
 		}
-	}
-
-	/**
-	 *
-	 */
-	private void addItem(Item item, Position pos) {
-		// Adjust height for immersive depth
-		item.h = retrieveHeight(item, pos);
-
-		item.setPosition(pos);
-		itemList.add(item);
-		item.containerIndex = this.index;
-
-		itemPositionMap.put(item, pos);
-
-		xMap.put(item.x, item.index);
-		xMap.put(item.xw, item.index);
-		yMap.put(item.y, item.index);
-		yMap.put(item.yl, item.index);
-		zMap.put(item.z, item.index);
-		zMap.put(item.zh, item.index);
-
-		weight += item.weight;
-
-		// Insert into Z-Graph
-		zGraph.add(item, itemList, zMap);
-
-		// Active position gets inactive by adding item
-		removePosition(pos);
-	}
-
-	/**
-	 *
-	 */
-	private List<Position> findInsertPositions(Item item) {
-		List<Position> posList = new ArrayList<>();
-
-		// 3 basic positions
-		Position verticalPosition = null, horizontalPosition = null;
-		if(item.yl < this.length) {
-			verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
-			posList.add(verticalPosition);
-		}
-		if(item.xw < this.width) {
-			horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
-			posList.add(horizontalPosition);
-		}
-		if(item.z + item.h < this.height) {
-			posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
-		}
-
-		// 2 projected positions
-		if(item.z == 0) {
-			if(item.x > 0 && verticalPosition != null) {
-				Item leftElement = findNextLeftElement(verticalPosition);
-				int leftPos = (leftElement != null) ? leftElement.xw : 0;
-
-				if(leftPos < item.x) {
-					posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
-				}
-			}
-
-			if(item.y > 0 && horizontalPosition != null) {
-				Item lowerElement = findNextDeeperElement(horizontalPosition);
-				int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
-
-				if(lowerPos < item.y) {
-					posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
-				}
-			}
-		}
-
-		return posList;
 	}
 
 	private void checkExistingSpaces(Item newItem) {
@@ -248,15 +169,6 @@ public class AddSpaceContainer extends ContainerBase {
 		for (Position removablePosition : removablePositions) {
 			removePosition(removablePosition);
 		}
-	}
-
-	/**
-	 *
-	 */
-	private void init() {
-		Position start = createPosition(0, 0, 0, PositionType.ROOT);
-		activePosList.add(start);
-		spacePositions.put(start, Collections.singletonList(Space.of(length, width, height)));
 	}
 
 	public List<Space> getSpace(Position pos) {

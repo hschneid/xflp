@@ -1,13 +1,13 @@
 package xf.xflp.base.container.constraints;
 
-import xf.xflp.base.container.ZItemGraph;
+import xf.xflp.base.container.ContainerBase;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.Tools;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-
-/** 
+/**
  * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
  *
@@ -15,108 +15,116 @@ import java.util.List;
  * LICENSE file in the root directory of this source tree.
  *
  * @author hschneid
+ *
  */
 public class LoadBearingChecker {
 
-	private float[] freeLoadBearing;
-	private float[] openWeight;
+    public void update(ContainerBase container, List<Item> initialItems) {
+        float[] bearingWeights = new float[container.getItems().size()];
 
-	/**
-	 * Checks the bearing capacity of all items in the given graph.
-	 *
-	 * The graphs orders the items according to the level in the stack.
-	 * Multiple items can be stacked on top of multiple items.
-	 * The weight of all ceiling items must be lower then the bearing capacity of the item.
-	 * If a item is placed on multiple items, the weight is splitted proportional of covered area.
-	 */
-	boolean checkLoadBearing(List<Item> ceilingItems, ZItemGraph graph) {
-		freeLoadBearing = new float[graph.size()];
-		openWeight = new float[graph.size()];
-		Arrays.fill(freeLoadBearing, -1);
-		Arrays.fill(openWeight, -1);
+        // Collect the bearing weight per item - top-down
+        List<Item> floorItems = collectBearingWeight(initialItems, bearingWeights, container);
+        // Set bearing capacity per item - bottom-up
+        updateBearingCapacities(floorItems, bearingWeights, container);
+    }
 
-		// For all ceiling items
-		for (Item ceilingItem : ceilingItems) {
-			freeLoadBearing[ceilingItem.index] = ceilingItem.stackingWeightLimit;
-			openWeight[ceilingItem.index] = ceilingItem.weight;
+    private List<Item> collectBearingWeight(List<Item> initialItems, float[] bearingWeights, ContainerBase container) {
+        BearingWeightQueue queue = new BearingWeightQueue(container.getItems().size());
 
-			if(!checkLoadBearingRecurive(ceilingItem, graph))
-				return false;
-		}
+        // Add all initial items to queue
+        for (Item initialItem : initialItems) {
+            queue.add(initialItem, container.getBaseData().getZGraph());
+        }
 
-		return true;
-	}
+        List<Item> floorItems = new ArrayList<>();
+        while(queue.hasMore()) {
+            Item item = container.getItems().get(queue.getNext());
+            queue.setProcessed(item.index);
 
-	/**
-	 * Recursive function to check the bearing restriction for the current item.
-	 * 
-	 * In same step the weight of the item and the above items are shared to the
-	 * items below of this item.
-	 * 
-	 * @param item Current item to check
-	 * @param graph The stacking graph, to get the items below
-	 * @return True if bearing restriction is hold, False if the stack is invalid for bearing restriction.
-	 */
-	@SuppressWarnings("unchecked")
-	private boolean checkLoadBearingRecurive(Item item, ZItemGraph graph) {
-		// Fetch unshared weight from items above
-		float ow = openWeight[item.index];
-		// If no weigth was shared, initialise
-		if(ow == -1) {
-			openWeight[item.index] = item.weight;
-			ow = item.weight;
-		}
+            // Fetch lower items of item
+            List<Item> lowerItems = container.getBaseData().getZGraph().getItemsBelow(item);
+            float[] weightRatios = new float[lowerItems.size()];
+            for (int i = lowerItems.size() - 1; i >= 0; i--) {
+                Item lowerItem = lowerItems.get(i);
+                // Calculate the share of bearing weights - item.weight to lower items (must be normed to 1)
+                weightRatios[i] = Tools.getCutRatio(item, lowerItem);
+                // Add lower items to queue
+                queue.add(lowerItem, container.getBaseData().getZGraph());
+            }
+            normWeightRatios(weightRatios);
 
-		// For all lower items of current item
-		List<?>[] lowerItemData = graph.getItemsBelowWithCutArea(item);
-		List<Item> lowerItems = (List<Item>) lowerItemData[0];
-		List<Float> cutArea = (List<Float>) lowerItemData[1];
-		boolean isValid = checkLoadBearingOfItem(item, ow, lowerItems, cutArea);
-		if(!isValid)
-			return false;
+            // Add bearing weight to lower Item
+            for (int i = 0; i < weightRatios.length; i++) {
+                bearingWeights[lowerItems.get(i).index] += weightRatios[i] * (item.getWeight() + bearingWeights[item.index]);
+            }
 
-		// Call this method for all item below of current item
-		for (int i = 0; i < lowerItems.size(); i++) {
-			Item lowerItem = lowerItems.get(i);
+            // Check for floor item
+            if(item.z == 0) {
+                floorItems.add(item);
+            }
+        }
 
-			// Check lower items if current item is not on floor (recursively)
-			if(lowerItem.z > 0 && !checkLoadBearingRecurive(lowerItem, graph))
-				return false;
-		}
+        return floorItems;
+    }
 
-		return true;
-	}
+    private void normWeightRatios(float[] arr) {
+        // sum
+        float sum = 0;
+        for (int i = arr.length - 1; i >= 0; i--) sum += arr[i];
+        // divide
+        float sumRest = 0;
+        for (int i = arr.length - 1; i >= 0; i--) {
+            arr[i] /= sum;
+            sumRest += arr[i];
+        }
+        // Add rest
+        float avg = (1f - sumRest) / arr.length;
+        for (int i = arr.length - 1; i >= 0; i--) arr[i] += avg;
+    }
 
-	/*
-	 * Checks the load bearing capacity for a certain item
-	 */
-	private boolean checkLoadBearingOfItem(Item item, float ow, List<Item> lowerItems, List<Float> cutArea) {
-		for (int i = 0; i < lowerItems.size(); i++) {
-			Item lowerItem = lowerItems.get(i);
+    private void updateBearingCapacities(List<Item> floorItems, float[] bearingWeights, ContainerBase container) {
+        final List<Item> currentItems = new ArrayList<>(floorItems);
+        final List<Item> nextItems = new ArrayList<>();
 
-			// Initialise lazy
-			if(openWeight[lowerItem.index] == -1)
-				openWeight[lowerItem.index] = lowerItem.weight;
-			if(freeLoadBearing[lowerItem.index] == -1)
-				freeLoadBearing[lowerItem.index] = lowerItem.stackingWeightLimit;
+        while(currentItems.size() > 0) {
 
-			// If all weight was shared, terminate
-			if(ow == 0)
-				break;
+            for (int i = currentItems.size() - 1; i >= 0; i--) {
+                Item currentItem = currentItems.get(i);
 
-			// The shared weight is relative to the common area space of touching plane
-			float moveWeight = ow * cutArea.get(i);
+                List<Item> lowerItems = container.getBaseData().getZGraph().getItemsBelow(currentItem);
+                float lowerBearingCapacity = getLowerBearingCapacity(container, currentItem, lowerItems);
+                float ownBearingCapacity = currentItem.getStackingWeightLimit() - bearingWeights[currentItem.index];
 
-			// Increase the share weight of underlying items for next iteration
-			openWeight[item.index] -= moveWeight;
-			openWeight[lowerItem.index] += moveWeight;
-			freeLoadBearing[lowerItem.index] -= moveWeight;
+                // the bearing capacity of current item is the minimum of
+                // the sum of lower bearing capacities and the own (bearing capacity - bearingWeight)
+                float currentBearingCapacity = (lowerItems.size() == 0) ?
+                        ownBearingCapacity:
+                        Math.min(lowerBearingCapacity, ownBearingCapacity);
+                container.getBearingCapacities().put(currentItem.index, currentBearingCapacity);
 
-			// Check the bearing restriction
-			if(freeLoadBearing[lowerItem.index] < 0)
-				return false;
-		}
+                // Add next items (upper items)
+                List<Item> upperItems = container.getBaseData().getZGraph().getItemsAbove(currentItem);
+                for (int j = upperItems.size() - 1; j >= 0; j--) {
+                    nextItems.add(upperItems.get(j));
+                }
+            }
 
-		return true;
-	}
+            currentItems.clear();
+            currentItems.addAll(nextItems);
+            nextItems.clear();
+        }
+    }
+
+    private float getLowerBearingCapacity(ContainerBase container, Item currentItem, List<Item> lowerItems) {
+        float lowerBearingCapacity = Float.MAX_VALUE;
+        for (int j = lowerItems.size() - 1; j >= 0; j--) {
+            float reciprocalAreaRatio = 1f / Tools.getCutRatio(currentItem, lowerItems.get(j));
+
+            lowerBearingCapacity = Math.min(
+                    lowerBearingCapacity,
+                    container.getBearingCapacities().getOrDefault(lowerItems.get(j).index, 0f) * reciprocalAreaRatio
+            );
+        }
+        return lowerBearingCapacity;
+    }
 }

@@ -52,10 +52,10 @@ public class ItemOrderRandomSearch extends XFLPBase {
             // Check if there are unplanned items
             if (model.getUnplannedItems().length < bestValue) {
                 bestItems = Arrays.copyOf(model.getItems(), model.getItems().length);
-                model.getStatusManager().fireMessage(StatusCode.RUNNING,"Better " + model.getUnplannedItems().length);
+                model.getStatusManager().fireMessage(StatusCode.RUNNING, "Better " + model.getUnplannedItems().length);
                 bestValue = model.getUnplannedItems().length;
 
-                if(model.getUnplannedItems().length == 0) {
+                if (model.getUnplannedItems().length == 0) {
                     break;
                 }
             }

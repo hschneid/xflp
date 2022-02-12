@@ -46,7 +46,7 @@ public class ItemData implements Serializable {
 	protected String stackingGroup = "default_stacking_group";
 	protected String allowedStackingGroups = "default_stacking_group";
 	protected String allowedContainerSet = "default_container_type";
-	protected int nbrOfAllowedStackedItems = Item.UNDEF_PARAMETER;
+	protected int nbrOfAllowedStackedItems = Integer.MAX_VALUE;
 	
 	protected String loadingLocation = "";
 	protected String unloadingLocation = "";

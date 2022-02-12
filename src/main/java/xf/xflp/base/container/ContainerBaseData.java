@@ -2,6 +2,8 @@ package xf.xflp.base.container;
 
 import util.collection.LPListMap;
 
+import java.util.Map;
+
 /**
  * Copyright (c) 2012-2022 Holger Schneider
  * All rights reserved.
@@ -18,4 +20,6 @@ public interface ContainerBaseData {
     LPListMap<Integer, Integer> getZMap();
 
     ZItemGraph getZGraph();
+
+    Map<Integer, Float> getBearingCapacities();
 }

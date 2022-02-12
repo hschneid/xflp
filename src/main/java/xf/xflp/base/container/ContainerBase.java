@@ -3,15 +3,17 @@ package xf.xflp.base.container;
 import com.google.common.collect.HashBiMap;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
+import xf.xflp.base.container.constraints.LoadBearingChecker;
 import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
+import xf.xflp.base.item.Tools;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public abstract class ContainerBase implements Container, ContainerBaseData {
 
@@ -40,6 +42,10 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     /* History of loaded items - is relevant for creating the solution report */
     protected final List<Item> history = new ArrayList<>();
 
+    /** Item index - current bearing capacity **/
+    protected final Map<Integer, Float> bearingCapacities = new HashMap<>();
+    protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
+
     protected int maxPosIdx = 0;
     protected ContainerParameter parameter = new DirectContainerParameter();
 
@@ -59,6 +65,8 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         this.containerType = containerType;
         parameter.add(ParameterType.GROUND_CONTACT_RULE, groundContactRule);
         parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
+
+        init();
     }
 
     public ContainerBase(Container containerPrototype) {
@@ -68,6 +76,13 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         this.maxWeight = containerPrototype.getMaxWeight();
         this.containerType = containerPrototype.getContainerType();
         this.parameter = containerPrototype.getParameter();
+
+        init();
+    }
+
+    private void init() {
+        Position start = createPosition(0, 0, 0, PositionType.ROOT);
+        activePosList.add(start);
     }
 
     @Override
@@ -92,10 +107,77 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     @Override
     public float getLoadedWeight() {
         float sum = 0;
-        for (Item item : this.itemList)
+        List<Item> list = this.itemList;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            Item item = list.get(i);
             sum += (item != null) ? item.weight : 0;
+        }
 
         return sum;
+    }
+
+    protected void addItem(Item item, Position pos) {
+        // Adjust height for immersive depth
+        item.h = retrieveHeight(item, pos);
+
+        item.setPosition(pos);
+        itemList.add(item);
+        item.containerIndex = this.index;
+
+        itemPositionMap.put(item, pos);
+
+        xMap.put(item.x, item.index);
+        xMap.put(item.xw, item.index);
+        yMap.put(item.y, item.index);
+        yMap.put(item.yl, item.index);
+        zMap.put(item.z, item.index);
+        zMap.put(item.zh, item.index);
+
+        weight += item.weight;
+
+        // Insert into Z-Graph
+        zGraph.add(item, itemList, zMap);
+    }
+
+    protected List<Position> findInsertPositions(Item item) {
+        List<Position> posList = new ArrayList<>();
+
+        // 3 basic positions
+        Position verticalPosition = null, horizontalPosition = null;
+        if(item.yl < this.length) {
+            verticalPosition = createPosition(item.x, item.yl, item.z, PositionType.BASIC);
+            posList.add(verticalPosition);
+        }
+        if(item.xw < this.width) {
+            horizontalPosition = createPosition(item.xw, item.y, item.z, PositionType.BASIC);
+            posList.add(horizontalPosition);
+        }
+        if(item.z + item.h < this.height) {
+            posList.add(createPosition(item.x, item.y, item.z + item.h, PositionType.BASIC));
+        }
+
+        // 2 projected positions
+        if(item.z == 0) {
+            if(item.x > 0 && verticalPosition != null) {
+                Item leftElement = findNextLeftElement(verticalPosition);
+                int leftPos = (leftElement != null) ? leftElement.xw : 0;
+
+                if(leftPos < item.x) {
+                    posList.add(createPosition(leftPos, item.yl, item.z, PositionType.EXTENDED_H));
+                }
+            }
+
+            if(item.y > 0 && horizontalPosition != null) {
+                Item lowerElement = findNextDeeperElement(horizontalPosition);
+                int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
+
+                if(lowerPos < item.y) {
+                    posList.add(createPosition(item.xw, lowerPos, item.z, PositionType.EXTENDED_V));
+                }
+            }
+        }
+
+        return posList;
     }
 
     /**
@@ -137,6 +219,21 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return lowerItem;
     }
 
+    protected List<Position> findCoveredPositions(Item item) {
+        List<Position> coveredPositionList = new ArrayList<>();
+
+        for (Position pos : activePosList) {
+            // Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
+            if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
+                coveredPositionList.add(pos);
+                // Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
+            else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
+                coveredPositionList.add(pos);
+        }
+
+        return coveredPositionList;
+    }
+
     /**
      *
      */
@@ -144,8 +241,12 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return Position.of(maxPosIdx++, x, y, z, type);
     }
 
+    protected void updateBearingCapacity(List<Item> items) {
+        loadBearingChecker.update(this, items);
+    }
+
     /**
-     * If it is a stacking position (z > 0), then the immersive depth of lower items
+     * If it is a stacking position, then the immersive depth of lower items
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     protected int retrieveHeight(Item item, Position pos) {
@@ -153,28 +254,17 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
             return item.h;
         }
 
-        List<Item> lowerItems = getItemsBelow(pos, item);
-        int minImmersiveDepth = lowerItems.stream().mapToInt(Item::getImmersiveDepth).min().orElse(0);
+        List<Item> lowerItems = Tools.findItemsBelow(this, pos, item);
+        if(lowerItems.size() == 0)
+            return item.h;
+
+        int minImmersiveDepth = Integer.MAX_VALUE;
+        for (int i = lowerItems.size() - 1; i >= 0; i--) {
+            minImmersiveDepth = Math.min(minImmersiveDepth, lowerItems.get(i).getImmersiveDepth());
+        }
 
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
-    }
-
-    protected List<Item> getItemsBelow(Position pos, Item newItem) {
-        if(!zMap.containsKey(pos.z)) {
-            return Collections.emptyList();
-        }
-
-        return zMap.get(pos.z)
-                .stream()
-                .map(idx -> itemList.get(idx))
-                .filter(lowerItem -> lowerItem.zh == pos.z &&
-                        lowerItem.x < pos.x + newItem.w &&
-                        lowerItem.xw > pos.x &&
-                        lowerItem.y < pos.y + newItem.l &&
-                        lowerItem.yl > pos.y
-                )
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -247,4 +337,8 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return zGraph;
     }
 
+    @Override
+    public Map<Integer, Float> getBearingCapacities() {
+        return bearingCapacities;
+    }
 }

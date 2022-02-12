@@ -92,38 +92,8 @@ public class ZItemGraph {
 		return lowerList.get(item.index).lowerItemList;
 	}
 
-	/**
-	 * Searches for any item in Z-Graph, where the ceiling items have no further upper items
-	 * with regard to the base items of the given item
-	 * 
-	 * Pre-Condition: All items, even the given one, are added into the Z-Graph
-	 */
-	public List<Item> getCeilItems(Item newItem, List<Item> itemList) {
-		boolean[] foundBase = new boolean[lowerList.size()];
-		boolean[] foundCeil = new boolean[lowerList.size()];
-
-		// Search base items (related items at the ground of container)
-		searchBaseRecursive(newItem, foundBase);
-
-		// Search ceiling items of base items
-		for (int i = 0; i < foundBase.length; i++)
-			if(foundBase[i]) 
-				searchCeilRecursive(itemList.get(i), foundCeil);
-
-		// Copy ceil items into list
-		List<Item> ceilItems = new ArrayList<>();
-		for (int i = 0; i < foundCeil.length; i++)
-			if(foundCeil[i])
-				ceilItems.add(itemList.get(i));
-
-		return ceilItems;
-	}
-
-	public List<?>[] getItemsBelowWithCutArea(Item item) {
-		return new List[] {
-				lowerList.get(item.index).lowerItemList,
-				lowerList.get(item.index).cutRatioList,
-		};
+	public List<Item> getItemsAbove(Item item) {
+		return upperList.get(item.index);
 	}
 
 	/**
@@ -139,7 +109,7 @@ public class ZItemGraph {
 		if(item.z == 0)
 			return list;
 
-		for (int i = zList.size()- 1; i >= 0; i--) {
+		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
@@ -169,31 +139,5 @@ public class ZItemGraph {
 		}
 
 		return list;
-	}
-
-	private void searchBaseRecursive(Item item, boolean[] found) {
-		if(lowerList.get(item.index) == null)
-			return;
-
-		List<Item> lowerItemList = lowerList.get(item.index).lowerItemList;
-		for (int j = 0, lowerItemListSize = lowerItemList.size(); j < lowerItemListSize; j++) {
-			Item i = lowerItemList.get(j);
-			if (i.z == 0)
-				found[i.index] = true;
-			else
-				searchBaseRecursive(i, found);
-		}
-	}
-
-	private void searchCeilRecursive(Item item, boolean[] found) {
-		if(upperList.get(item.index) == null || upperList.get(item.index).isEmpty())
-			found[item.index] = true;
-		else {
-			List<Item> get = upperList.get(item.index);
-			for (int j = 0, getSize = get.size(); j < getSize; j++) {
-				Item i = get.get(j);
-				searchCeilRecursive(i, found);
-			}
-		}
 	}
 }

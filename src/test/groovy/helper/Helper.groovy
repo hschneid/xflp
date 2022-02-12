@@ -49,15 +49,15 @@ class Helper {
         )
     }
 
-    static Item getItem(int w, int l, int h, int ww, long wC, int sG) {
+    static Item getItem(int w, int l, int h, float ww, long wC, int sG) {
         return getItem(w, l, h, ww, wC, sG, Math.max(1,sG))
     }
 
-    static Item getItem(int w, int l, int h, int ww, long wC, int sG, int allowedSG) {
-        return getItem(w, l, h, ww, wC, sG, allowedSG, -1)
+    static Item getItem(int w, int l, int h, float ww, long wC, int sG, int allowedSG) {
+        return getItem(w, l, h, ww, wC, sG, allowedSG, 9999999)
     }
 
-    static Item getItem(int w, int l, int h, int ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
+    static Item getItem(int w, int l, int h, float ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
         Set<Integer> set = new HashSet<>()
         set.add(0)
 

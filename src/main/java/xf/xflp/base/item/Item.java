@@ -7,7 +7,7 @@ import xf.xflp.report.LoadType;
 import java.util.Set;
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -83,9 +83,9 @@ public class Item implements Indexable {
 	}
 	
 	public void setPosition(Position pos) {
-		x = pos.x;
-		y = pos.y;
-		z = pos.z;
+		x = pos.x();
+		y = pos.y();
+		z = pos.z();
 		xw = x + w;
 		yl = y + l;
 		zh = z + h;

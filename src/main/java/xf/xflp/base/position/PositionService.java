@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -52,12 +52,12 @@ public class PositionService {
                 Position pos = container.getActivePositions().get(k);
 
                 // Check overlapping with walls
-                if((pos.x + itemW) > container.getWidth())
+                if((pos.x() + itemW) > container.getWidth())
                     continue;
-                if((pos.y + itemL) > container.getLength())
+                if((pos.y() + itemL) > container.getLength())
                     continue;
                 int itemH = retrieveHeight(item, pos, container);
-                if((pos.z + itemH) > container.getHeight())
+                if((pos.z() + itemH) > container.getHeight())
                     continue;
 
                 if (checkOverlapping(container, item, itemW, itemL, pos, itemH)) {
@@ -99,9 +99,9 @@ public class PositionService {
             if(otherItem == null)
                 continue;
 
-            if(otherItem.x < (pos.x + itemW) && otherItem.xw > pos.x &&
-                    otherItem.y < (pos.y + itemL) && otherItem.yl > pos.y &&
-                    otherItem.z < (pos.z + itemH) && otherItem.zh > pos.z
+            if(otherItem.x < (pos.x() + itemW) && otherItem.xw > pos.x() &&
+                    otherItem.y < (pos.y() + itemL) && otherItem.yl > pos.y() &&
+                    otherItem.z < (pos.z() + itemH) && otherItem.zh > pos.z()
             ) {
                 return true;
             }
@@ -123,9 +123,9 @@ public class PositionService {
         // If item is fitting into one of the spaces, then it is okay.
         for (Space space : spaces) {
             // Is item fitting into space
-            if(space.l >= itemL &&
-                    space.w >= itemW &&
-                    space.h >= itemH)
+            if(space.l() >= itemL &&
+                    space.w() >= itemW &&
+                    space.h() >= itemH)
                 return false;
         }
         return true;
@@ -141,7 +141,7 @@ public class PositionService {
         if(lifoImportance == 1) {
             // Liegt das Item weiter entfernt von der Ladekante als die Position
             // Liegt das Item im Entladekorridor zur Ladekante
-            if(otherItem.yl <= pos.y && otherItem.x < (pos.x + itemW) && otherItem.xw > pos.x) {
+            if(otherItem.yl <= pos.y() && otherItem.x < (pos.x() + itemW) && otherItem.xw > pos.x()) {
                 // Wenn der Entladerang des neuen Items gr��er als der
                 // Entladeran des Items ist, dann geht diese Position nicht.
                 // Das bestehende Item m�sste fr�her entladen werden, als
@@ -163,7 +163,7 @@ public class PositionService {
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     private static int retrieveHeight(Item item, Position pos, Container container) {
-        if(pos.z == 0) {
+        if(pos.z() == 0) {
             return item.h;
         }
 
@@ -175,20 +175,20 @@ public class PositionService {
     private static int getMinImmersiveDepthOfBelow(Position pos, Item newItem, Container container) {
         LPListMap<Integer, Integer> zMap = container.getBaseData().getZMap();
 
-        if(!zMap.containsKey(pos.z)) {
+        if(!zMap.containsKey(pos.z())) {
             return 0;
         }
 
         int minImmersiveDepthOfBelow = Integer.MAX_VALUE;
 
-        List<Integer> zItems = zMap.get(pos.z);
+        List<Integer> zItems = zMap.get(pos.z());
         for (int i = zItems.size() - 1; i >= 0; i--) {
             Item lowerItem = container.getItems().get(zItems.get(i));
-            if(lowerItem.zh == pos.z &&
-                    lowerItem.x < pos.x + newItem.w &&
-                    lowerItem.xw > pos.x &&
-                    lowerItem.y < pos.y + newItem.l &&
-                    lowerItem.yl > pos.y) {
+            if(lowerItem.zh == pos.z() &&
+                    lowerItem.x < pos.x() + newItem.w &&
+                    lowerItem.xw > pos.x() &&
+                    lowerItem.y < pos.y() + newItem.l &&
+                    lowerItem.yl > pos.y()) {
                 minImmersiveDepthOfBelow = Math.min(minImmersiveDepthOfBelow, lowerItem.getImmersiveDepth());
             }
         }

@@ -10,17 +10,17 @@ import xf.xflp.exception.XFLPExceptionType;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
- *
+ * <p>
  * 
  * @author hschneid
  *
  * The strategy is used in construction heuristic to choose best possible insert position.
- *
+ * <p>
  * This type of strategy chooses with maximal priority the highest and secondary the
  * most left (width) and most decent (length) position.
  *
@@ -59,13 +59,13 @@ public class HighestLowerLeft extends BaseStrategy {
 
 		Position p = candidate.position;
 		return (float)Math.pow(
-				(p.getX() * p.getX()) +
-						(p.getY() * p.getY()) +
-						(p.getZ() * p.getZ()), 0.5
+				(p.x() * p.x()) +
+						(p.y() * p.y()) +
+						(p.z() * p.z()), 0.5
 		);
 	}
 
 	float getDistanceZ(PositionCandidate p) {
-		return p == null ? Float.MAX_VALUE : (float) p.position.z * -1;
+		return p == null ? Float.MAX_VALUE : (float) p.position.z() * -1;
 	}
 }

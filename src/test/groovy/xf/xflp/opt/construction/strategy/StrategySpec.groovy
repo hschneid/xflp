@@ -2,6 +2,8 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
+import xf.xflp.base.item.Item
+import xf.xflp.base.item.Position
 import xf.xflp.base.position.PositionCandidate
 import xf.xflp.base.position.PositionService
 import xf.xflp.exception.XFLPException
@@ -107,7 +109,11 @@ class StrategySpec extends Specification {
         def func = {
             "1234"
         } as Function<PositionCandidate, Float>
-        def pos = Mock PositionCandidate
+        def pos = PositionCandidate.of(
+                Position.of(1,1,1),
+                new Item(),
+                true
+        )
         def posList = [pos]
         def emptyList = []
         when:

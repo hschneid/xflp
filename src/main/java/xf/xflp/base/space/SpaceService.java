@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -28,24 +28,24 @@ public class SpaceService {
         // New item is touching this space!
 
         // New item is over the position
-        boolean itemHovering = position.z < newItem.z;
+        boolean itemHovering = position.z() < newItem.z;
         // New item is in view range (upper right of position)
-        boolean widthLimited = position.y >= newItem.y && position.y < newItem.yl;
-        boolean lengthLimited = position.x >= newItem.x && position.x < newItem.xw;
+        boolean widthLimited = position.y() >= newItem.y && position.y() < newItem.yl;
+        boolean lengthLimited = position.x() >= newItem.x && position.x() < newItem.xw;
         boolean itemOverPosition = widthLimited && lengthLimited;
 
         List<Space> spaces = new ArrayList<>(3);
         if (itemHovering) {
             spaces.add(Space.of(
-                            space.l,
-                            space.w,
-                            (newItem.z - position.z)
+                            space.l(),
+                            space.w(),
+                            (newItem.z - position.z())
                     ));
             if(!itemOverPosition) {
                 spaces.add(Space.of(
-                                (lengthLimited) ? (newItem.y - position.y) : space.l,
-                                (widthLimited) ? (newItem.x - position.x) : space.w,
-                                space.h
+                                (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                                (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                                space.h()
                         ));
             }
         }
@@ -53,23 +53,23 @@ public class SpaceService {
         if (widthLimited || lengthLimited) {
             if(!itemHovering && !itemOverPosition) {
                 spaces.add(Space.of(
-                                (lengthLimited) ? (newItem.y - position.y) : space.l,
-                                (widthLimited) ? (newItem.x - position.x) : space.w,
-                                space.h
+                                (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                                (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                                space.h()
                         ));
             }
         }
         // New item is only partially in view range (cutting position coordinates)
         else {
             spaces.add(Space.of(
-                            newItem.y - position.y,
-                            space.w,
-                            space.h
+                            newItem.y - position.y(),
+                            space.w(),
+                            space.h()
                     ));
             spaces.add(Space.of(
-                            space.l,
-                            newItem.x - position.x,
-                            space.h
+                            space.l(),
+                            newItem.x - position.x(),
+                            space.h()
                     ));
         }
 
@@ -77,12 +77,12 @@ public class SpaceService {
     }
 
     private boolean isItemNotInSpace(Position position, Space space, Item item) {
-        return position.x + space.w <= item.x ||
-                position.y + space.l <= item.y ||
-                position.z + space.h <= item.z ||
-                position.x >= item.xw ||
-                position.y >= item.yl ||
-                position.z >= item.zh;
+        return position.x() + space.w() <= item.x ||
+                position.y() + space.l() <= item.y ||
+                position.z() + space.h() <= item.z ||
+                position.x() >= item.xw ||
+                position.y() >= item.yl ||
+                position.z() >= item.zh;
     }
 
     public List<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
@@ -107,11 +107,11 @@ public class SpaceService {
         List<Space> dominatedSpaces = new ArrayList<>();
         for (Space spaceA : spaces) {
             for (Space spaceB : spaces) {
-                if(spaceA.l == spaceB.l && spaceA.w == spaceB.w && spaceA.h > spaceB.h)
+                if(spaceA.l() == spaceB.l() && spaceA.w() == spaceB.w() && spaceA.h() > spaceB.h())
                     dominatedSpaces.add(spaceB);
-                if(spaceA.l == spaceB.l && spaceA.h == spaceB.h && spaceA.w > spaceB.w)
+                if(spaceA.l() == spaceB.l() && spaceA.h() == spaceB.h() && spaceA.w() > spaceB.w())
                     dominatedSpaces.add(spaceB);
-                if(spaceA.h == spaceB.h && spaceA.w == spaceB.w && spaceA.l > spaceB.l)
+                if(spaceA.h() == spaceB.h() && spaceA.w() == spaceB.w() && spaceA.l() > spaceB.l())
                     dominatedSpaces.add(spaceB);
             }
         }

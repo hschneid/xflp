@@ -106,7 +106,7 @@ class Helper {
 
     static PositionCandidate findCand(Collection<PositionCandidate> candidates, int x, int y, int z, boolean rotated) {
         for (PositionCandidate cand : candidates) {
-            if(cand.position.getX() == x && cand.position.getY() == y && cand.position.getZ() == z && cand.isRotated == rotated)
+            if(cand.position.x() == x && cand.position.y() == y && cand.position.z() == z && cand.isRotated == rotated)
                     return cand
         }
 
@@ -115,7 +115,7 @@ class Helper {
 
     static Position findPos(Collection<Position> positions, int x, int y, int z) {
         for (Position p : positions) {
-            if(p.getX() == x && p.getY() == y && p.getZ() == z)
+            if(p.x() == x && p.y() == y && p.z() == z)
                 return p
         }
 

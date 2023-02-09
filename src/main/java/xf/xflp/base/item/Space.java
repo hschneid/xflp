@@ -1,7 +1,7 @@
 package xf.xflp.base.item;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -9,15 +9,7 @@ package xf.xflp.base.item;
  *
  * @author hschneid
  */
-public class Space {
-
-    public final int l, w, h;
-
-    private Space(int l, int w, int h) {
-        this.l = l;
-        this.w = w;
-        this.h = h;
-    }
+public record Space(int l, int w, int h) {
 
     public static Space of(int l, int w, int h) {
         return new Space(l, w, h);

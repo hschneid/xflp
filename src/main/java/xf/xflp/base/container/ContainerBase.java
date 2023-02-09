@@ -195,7 +195,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         Item leftItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.y > pos.y || item.yl < pos.y || item.x > pos.x || item.xw > pos.x || pos.y == item.yl)
+            if(item == null || item.y > pos.y() || item.yl < pos.y() || item.x > pos.x() || item.xw > pos.x() || pos.y() == item.yl)
                 continue;
 
             if(leftItem == null || item.xw > leftItem.xw)
@@ -209,7 +209,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         Item lowerItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.x > pos.x || item.xw < pos.x || item.y > pos.y || item.yl > pos.y || pos.x == item.xw)
+            if(item == null || item.x > pos.x() || item.xw < pos.x() || item.y > pos.y() || item.yl > pos.y() || pos.x() == item.xw)
                 continue;
 
             if(lowerItem == null || item.yl > lowerItem.yl)
@@ -224,10 +224,10 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
 
         for (Position pos : activePosList) {
             // Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
-            if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
+            if(pos.z() == item.z && pos.x() >= item.x && pos.x() < item.xw && pos.y() == item.y)
                 coveredPositionList.add(pos);
                 // Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
-            else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
+            else if(pos.z() == item.z && pos.y() >= item.y && pos.y() < item.yl && pos.x() == item.x)
                 coveredPositionList.add(pos);
         }
 
@@ -250,7 +250,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     protected int retrieveHeight(Item item, Position pos) {
-        if(pos.z == 0) {
+        if(pos.z() == 0) {
             return item.h;
         }
 

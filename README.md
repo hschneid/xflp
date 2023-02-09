@@ -1,6 +1,6 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![BCH compliance](https://bettercodehub.com/edge/badge/hschneid/xflp?branch=master)](https://bettercodehub.com/)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.5.2&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.6.0&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -41,6 +41,9 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.6.0 - Update to Java 17
+- Changed xflp to Java 17. Due to use of records, xflp is not compatible with Java < 17 anymore. 
+
 ### 0.5.2 - Performance upgrade
 - Improved bearing check by storing bearing capacities during container-adding.
   - For big problems the runtime improves by 43%.

@@ -8,9 +8,9 @@ import xf.xflp.base.space.SpaceService;
 import java.util.*;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -85,9 +85,9 @@ public class AddSpaceContainer extends ContainerBase {
 			 * if smaller spaces are possible.
 			 */
 			Space maxSpace = Space.of(
-					length - newPos.y,
-					width - newPos.x,
-					height - newPos.z
+					length - newPos.y(),
+					width - newPos.x(),
+					height - newPos.z()
 			);
 			List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
 
@@ -142,9 +142,9 @@ public class AddSpaceContainer extends ContainerBase {
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x >= newItem.xw ||
-					position.y >= newItem.yl ||
-					position.z >= newItem.zh)
+			if(position.x() >= newItem.xw ||
+					position.y() >= newItem.yl ||
+					position.z() >= newItem.zh)
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();

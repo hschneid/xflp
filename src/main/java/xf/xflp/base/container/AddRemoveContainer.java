@@ -8,9 +8,9 @@ import xf.xflp.base.item.PositionType;
 import java.util.*;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -122,7 +122,7 @@ public class AddRemoveContainer extends ContainerBase {
 		for (Position pos : projectablePosHList) {
 			Item leftItem = findNextLeftElement(pos);
 			Position newPosition = Position.of(
-					pos.idx, (leftItem != null) ? leftItem.xw : 0, pos.y, pos.z, pos.type
+					pos.idx(), (leftItem != null) ? leftItem.xw : 0, pos.y(), pos.z(), pos.type()
 			);
 			replacePosition(pos, newPosition);
 		}
@@ -130,7 +130,7 @@ public class AddRemoveContainer extends ContainerBase {
 		for (Position pos : projectablePosVList) {
 			Item lowerItem = findNextDeeperElement(pos);
 			Position newPosition = Position.of(
-					pos.idx, pos.x, ((lowerItem != null) ? lowerItem.yl : 0), pos.z, pos.type
+					pos.idx(), pos.x(), ((lowerItem != null) ? lowerItem.yl : 0), pos.z(), pos.type()
 			);
 			replacePosition(pos, newPosition);
 		}
@@ -171,8 +171,8 @@ public class AddRemoveContainer extends ContainerBase {
 	private List<Position> findProjectableHorizontalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_H)
-				if(pos.x == item.xw && pos.y >= item.y && pos.y < item.yl)
+			if(pos.type() == PositionType.EXTENDED_H)
+				if(pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl)
 					list.add(pos);
 		}
 		return list;
@@ -184,8 +184,8 @@ public class AddRemoveContainer extends ContainerBase {
 	private List<Position> findProjectableVerticalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
-			if(pos.type == PositionType.EXTENDED_V)
-				if(pos.y == item.yl && pos.x >= item.x && pos.x < item.xw)
+			if(pos.type() == PositionType.EXTENDED_V)
+				if(pos.y() == item.yl && pos.x() >= item.x && pos.x() < item.xw)
 					list.add(pos);
 		}
 		return list;
@@ -197,13 +197,13 @@ public class AddRemoveContainer extends ContainerBase {
 	private List<Position> findUncoveringPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : coveredPosList) {
-			if(pos.z == item.z && pos.x == item.x && pos.y >= item.y && pos.y < item.yl)
+			if(pos.z() == item.z && pos.x() == item.x && pos.y() >= item.y && pos.y() < item.yl)
 				list.add(pos);
-			else if(pos.z == item.z && pos.x == item.xw && pos.y >= item.y && pos.y < item.yl && pos.type  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z && pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
-			else if(pos.z == item.z && pos.y == item.y && pos.x >= item.x && pos.x < item.xw)
+			else if(pos.z() == item.z && pos.y() == item.y && pos.x() >= item.x && pos.x() < item.xw)
 				list.add(pos);
-			else if(pos.z == item.z && pos.y == item.yl && pos.x >= item.x && pos.x < item.xw && pos.type == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z && pos.y() == item.yl && pos.x() >= item.x && pos.x() < item.xw && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
 		}
 		return list;
@@ -219,7 +219,6 @@ public class AddRemoveContainer extends ContainerBase {
 
 	/**
 	 * Recursive function
-	 *
 	 * Checks for a certain position, if all following positions are inactive.
 	 * If so, then these follower positions can be deleted.
 	 */
@@ -252,7 +251,7 @@ public class AddRemoveContainer extends ContainerBase {
 	 * Removes a position if it is not used as possible insert position anymore.
 	 */
 	private void removePosition(Position pos) {
-		if(pos.type != PositionType.ROOT) {
+		if(pos.type() != PositionType.ROOT) {
 			posFollowerMap.remove(pos);
 			posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
 			posAncestorMap.remove(pos);
@@ -267,7 +266,7 @@ public class AddRemoveContainer extends ContainerBase {
 	 * Is used for re-projected positions during removeItem
 	 */
 	private void replacePosition(Position oldPosition, Position newPosition) {
-		if(oldPosition.type != PositionType.ROOT) {
+		if(oldPosition.type() != PositionType.ROOT) {
 			posFollowerMap.put(newPosition, posFollowerMap.get(oldPosition));
 			for (Position key : posFollowerMap.keySet()) {
 				List<Position> follower = posFollowerMap.get(key);
@@ -315,7 +314,7 @@ public class AddRemoveContainer extends ContainerBase {
 						// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
 						&& activePosList.contains(ancestor)
 						// die Position nicht der Root ist, dann l�sche die Position
-						&& pos.type != PositionType.ROOT) {
+						&& pos.type() != PositionType.ROOT) {
 			// L�sche pos
 			removePosition(pos);
 

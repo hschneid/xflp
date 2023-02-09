@@ -24,14 +24,14 @@ public class TouchingPerimeterService {
             int itemTouchValue,
             boolean considerWalls,
             boolean considerBaseFloor) {
-        Item item = candidate.item;
-        Position pos = candidate.position;
+        Item item = candidate.item();
+        Position pos = candidate.position();
 
         int value = 0;
         int w = item.w;
         int l = item.l;
         int h = item.h;
-        if(candidate.isRotated) {
+        if(candidate.isRotated()) {
             w = item.l;
             l = item.w;
         }

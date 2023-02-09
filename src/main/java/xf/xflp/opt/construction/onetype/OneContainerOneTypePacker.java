@@ -66,9 +66,9 @@ public class OneContainerOneTypePacker implements Packer {
 				// Add item to container
 				if(insertPosition != null) {						
 					container.add(
-							insertPosition.item,
-							insertPosition.position,
-							insertPosition.isRotated
+							insertPosition.item(),
+							insertPosition.position(),
+							insertPosition.isRotated()
 					);
 					loadedItemMap.put(item.externalIndex, item);
 				} else {

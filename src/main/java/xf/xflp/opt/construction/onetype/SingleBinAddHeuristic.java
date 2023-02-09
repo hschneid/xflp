@@ -62,7 +62,7 @@ public class SingleBinAddHeuristic {
 
 			// Add item to container
 			if (insertPosition != null) {
-				container.add(insertPosition.item, insertPosition.position, insertPosition.isRotated);
+				container.add(insertPosition.item(), insertPosition.position(), insertPosition.isRotated());
 			} else {
 				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);

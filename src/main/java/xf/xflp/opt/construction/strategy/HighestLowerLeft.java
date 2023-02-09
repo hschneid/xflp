@@ -57,7 +57,7 @@ public class HighestLowerLeft extends BaseStrategy {
 			return Float.MAX_VALUE;
 		}
 
-		Position p = candidate.position;
+		Position p = candidate.position();
 		return (float)Math.pow(
 				(p.x() * p.x()) +
 						(p.y() * p.y()) +
@@ -66,6 +66,6 @@ public class HighestLowerLeft extends BaseStrategy {
 	}
 
 	float getDistanceZ(PositionCandidate p) {
-		return p == null ? Float.MAX_VALUE : (float) p.position.z() * -1;
+		return p == null ? Float.MAX_VALUE : (float) p.position().z() * -1;
 	}
 }

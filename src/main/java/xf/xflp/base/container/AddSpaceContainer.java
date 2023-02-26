@@ -16,11 +16,10 @@ import java.util.*;
  *
  * @author hschneid
  */
-public class AddSpaceContainer extends ContainerBase {
+public class AddSpaceContainer extends ContainerBase implements SpaceContainer {
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-
 	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
@@ -80,30 +79,7 @@ public class AddSpaceContainer extends ContainerBase {
 			activePosList.add(newPos);
 			uniquePositionKeys.add(newPos.getKey());
 
-			/* Create spaces
-			 * Begin with maximal space and check for each item in max-space
-			 * if smaller spaces are possible.
-			 */
-			Space maxSpace = Space.of(
-					length - newPos.y(),
-					width - newPos.x(),
-					height - newPos.z()
-			);
-			List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-
-			Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-			for (Item spaceItem : spaceItems) {
-
-				Set<Space> nextSpaces = new HashSet<>();
-				for (Space space : spaces) {
-					nextSpaces.addAll(
-							spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-					);
-				}
-				spaces = nextSpaces;
-			}
-
-			List<Space> newSpaces = spaceService.getDominatingSpaces(spaces);
+			List<Space> newSpaces = createSpaces(newPos);
 			if(newSpaces.size() > 0) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
@@ -116,6 +92,33 @@ public class AddSpaceContainer extends ContainerBase {
 		history.add(item);
 
 		return item.index;
+	}
+
+	/* Create spaces
+	 * Begin with maximal space and check for each item in max-space
+	 * if smaller spaces are possible.
+	 */
+	private List<Space> createSpaces(Position newPos) {
+		Space maxSpace = Space.of(
+				length - newPos.y(),
+				width - newPos.x(),
+				height - newPos.z()
+		);
+		List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+
+		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
+		for (Item spaceItem : spaceItems) {
+
+			Set<Space> nextSpaces = new HashSet<>();
+			for (Space space : spaces) {
+				nextSpaces.addAll(
+						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
+				);
+			}
+			spaces = nextSpaces;
+		}
+
+		return spaceService.getDominatingSpaces(spaces);
 	}
 
 	private void removePosition(Position position) {

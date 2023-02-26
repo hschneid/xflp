@@ -85,7 +85,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         activePosList.add(start);
     }
 
-    @Override
     public boolean isItemAllowed(Item item) {
         return
                 // If item can be loaded on any container
@@ -94,7 +93,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
                         || item.allowedContainerSet.contains(containerType);
     }
 
-    @Override
     public long getLoadedVolume() {
         long sum = 0;
         for (Item item : this.itemList)
@@ -104,7 +102,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return sum;
     }
 
-    @Override
     public float getLoadedWeight() {
         float sum = 0;
         List<Item> list = this.itemList;
@@ -267,77 +264,62 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
-    @Override
     public List<Item> getItems() {
         return itemList;
     }
 
-    @Override
     public List<Position> getActivePositions() {
         return activePosList;
     }
 
-    @Override
     public List<Item> getHistory() {
         return history;
     }
 
-    @Override
     public ContainerParameter getParameter() {
         return parameter;
     }
 
-    @Override
     public int getWidth() {
         return width;
     }
 
-    @Override
     public int getHeight() {
         return height;
     }
 
-    @Override
     public int getLength() {
         return length;
     }
 
-    @Override
     public float getMaxWeight() {
         return maxWeight;
     }
 
-    @Override
     public int getContainerType() {
         return containerType;
     }
 
-    @Override
     public ContainerBaseData getBaseData() {
         return this;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getXMap() {
         return xMap;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getYMap() {
         return yMap;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getZMap() {
         return zMap;
     }
 
-    @Override
     public ZItemGraph getZGraph() {
         return zGraph;
     }
 
-    @Override
     public Map<Integer, Float> getBearingCapacities() {
         return bearingCapacities;
     }

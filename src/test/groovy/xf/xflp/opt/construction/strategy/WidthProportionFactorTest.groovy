@@ -20,12 +20,12 @@ class WidthProportionFactorTest extends Specification {
         item2.l = 100
         item2.w = 80
         def posList = [
-                PositionCandidate.of(Position.of(1,1, 1), item, false),
-                PositionCandidate.of(Position.of(1,1, 1), item, true)
+                PositionCandidate.of(Position.of(0,0, 0), item, false),
+                PositionCandidate.of(Position.of(0,0, 0), item, true)
         ]
         def posList2 = [
-                PositionCandidate.of(Position.of(1,1, 1), item2, false),
-                PositionCandidate.of(Position.of(1,1, 1), item2, true)
+                PositionCandidate.of(Position.of(0,0, 0), item2, false),
+                PositionCandidate.of(Position.of(0,0, 0), item2, true)
         ]
 
         when:

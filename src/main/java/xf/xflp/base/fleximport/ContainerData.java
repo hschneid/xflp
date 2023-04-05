@@ -1,9 +1,9 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
-import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
@@ -79,7 +79,7 @@ public class ContainerData implements Serializable {
 		return containerType;
 	}
 
-	Container create(DataManager manager, boolean isAddingAndRemovingItems) throws XFLPException {
+	Container create(DataManager manager, XFLPParameter parameter, boolean isAddingAndRemovingItems) throws XFLPException {
 		Class<? extends Container> correctContainerClass = (isAddingAndRemovingItems)
 				? AddRemoveContainer.class
 				: AddSpaceContainer.class;
@@ -93,7 +93,7 @@ public class ContainerData implements Serializable {
 							height,
 							maxWeight,
 							manager.getContainerTypeIdx(containerType),
-							GroundContactRule.FREE,
+							parameter.getGroundContactRule(),
 							1
 					);
 				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {

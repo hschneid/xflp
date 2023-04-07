@@ -8,6 +8,7 @@ import xf.xflp.base.item.Space;
 import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (c) 2012-2023 Holger Schneider
@@ -108,7 +109,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 				positionItemMap.put(newPos, item);
 			} else {
 				// Die neue Position ist so geblockt, dass es keine validen Spaces gibt.
-				removePosition(newPos);
+				removeNewPosition(newPos);
 			}
 		}
 
@@ -116,6 +117,26 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 		history.add(item);
 
+		// OUTPUT
+		System.out.println("ITM\n"+itemList.stream()
+				.map(i -> "  "+i.toString())
+				.collect(Collectors.joining("\n")));
+		System.out.println("POS "+activePosList.stream()
+				.map(Position::toString)
+				.collect(Collectors.joining(",")));
+		System.out.println("INV "+inactivePosList.stream()
+				.map(Position::toString)
+				.collect(Collectors.joining(",")));
+		System.out.println("FOL\n"+posFollowerMap.keySet().stream()
+				.map(k -> "  "+k.toString()+" ->\n" +
+						posFollowerMap.get(k).stream().map(p -> "     "+p.toString()).collect(Collectors.joining("\n"))
+				)
+				.collect(Collectors.joining("\n")));
+		System.out.println("ANC\n"+posAncestorMap.keySet().stream()
+				.map(k -> "  "+k.toString()+" -> " +
+						posAncestorMap.get(k).toString())
+				.collect(Collectors.joining("\n")));
+		System.out.println("---------------");
 		return item.index;
 	}
 
@@ -192,6 +213,20 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		checkPosition(position);
 
 		updateBearingCapacity(lowerItems);
+
+		// SPACES ---------------------
+
+		// Check existing spaces
+		// If existing space was theoretical in area of old item,
+		// recreate the space/recalculate the space size
+
+		// Create new spaces at all changed positions
+		// item pos, uncovered pos, corrected proj. pos
+
+		// Check dominated spaces
+		spaceService.getDominatingSpaces(
+				spacePositions.values().stream().flatMap(Collection::stream).toList()
+		);
 
 		history.add(item);
 	}
@@ -306,6 +341,24 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			posFollowerMap.remove(pos);
 			posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
 			posAncestorMap.remove(pos);
+			activePosList.remove(pos);
+			inactivePosList.remove(pos);
+			coveredPosList.remove(pos);
+			positionItemMap.remove(pos);
+		}
+	}
+
+	/**
+	 * Removes a position if it is not used as possible insert position anymore.
+	 */
+	private void removeNewPosition(Position pos) {
+		if(pos.type() != PositionType.ROOT) {
+			if(posFollowerMap.containsKey(pos))
+				posFollowerMap.remove(pos);
+			if(posAncestorMap.containsKey(pos)) {
+				posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
+				posAncestorMap.remove(pos);
+			}
 			activePosList.remove(pos);
 			inactivePosList.remove(pos);
 			coveredPosList.remove(pos);

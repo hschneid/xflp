@@ -16,7 +16,7 @@ public record LPPackageEvent(
 		 int w,
 		 int l,
 		 int h,
-		 int stackingGrp,
+		 long stackingGrp,
 		 float weight,
 		 float weightLimit,
 		 boolean isInvalid,

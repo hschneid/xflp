@@ -99,7 +99,7 @@ public class XFLP {
 		List<Item> items = importer.getConvertedItemList();
 
 		// Container
-		List<Container> containerTypeList = importer.getConvertedContainerList(items);
+		List<Container> containerTypeList = importer.getConvertedContainerList(items, parameter);
 
 		// Check phase
 		checkItems(items, containerTypeList);

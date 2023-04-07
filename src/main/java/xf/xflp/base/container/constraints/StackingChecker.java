@@ -48,7 +48,7 @@ public class StackingChecker {
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private static boolean checkStackingGroupAndGroundContact(Container container, Item item, Position pos, int itemW, int itemL, int stackingGroup) {
+    private static boolean checkStackingGroupAndGroundContact(Container container, Item item, Position pos, int itemW, int itemL, long stackingGroup) {
         List<Integer> zList = container.getBaseData().getZMap().get(pos.z());
         if(zList == null || zList.isEmpty())
             return true;

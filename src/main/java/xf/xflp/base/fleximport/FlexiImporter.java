@@ -1,5 +1,6 @@
 package xf.xflp.base.fleximport;
 
+import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 
@@ -159,11 +160,11 @@ public class FlexiImporter implements Serializable {
 		return containerList;
 	}
 	
-	public List<Container> getConvertedContainerList(List<Item> items) {
+	public List<Container> getConvertedContainerList(List<Item> items, XFLPParameter parameter) {
 		boolean isAddingAndRemovingItems = checkForAddRemove(items);
 
 		return containerList.stream()
-				.map(con -> con.create(dataManager, isAddingAndRemovingItems))
+				.map(con -> con.create(dataManager, parameter, isAddingAndRemovingItems))
 				.collect(Collectors.toList());
 	}
 

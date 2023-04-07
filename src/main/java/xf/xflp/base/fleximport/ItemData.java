@@ -172,8 +172,9 @@ public class ItemData implements Serializable {
 	 *                       during stacking the lower and upper item dives into each other and the overall height
 	 *                       is reduced. The amount of reduced height by diving into each other is the immersive depth.
 	 */
-	public void setImmersiveDepth(int immersiveDepth) {
+	public final ItemData setImmersiveDepth(int immersiveDepth) {
 		this.immersiveDepth = immersiveDepth;
+		return this;
 	}
 
 	/////////////////////////////////////////////////////////////

@@ -23,19 +23,19 @@ public class DataManager implements Serializable {
 	private int maxItemID = 0;
 	private int maxShipmentID = 1;
 	private int maxLocationID = 0;
-	private int maxStackingGroupID = 1;
+	private long maxStackingGroupID = 1;
 	private int maxContainerTypeID = 1;
 
 	private final Map<String, Integer> itemMap = new HashMap<>();
 	private final Map<Integer, String> itemIdMap = new HashMap<>();
 	private final Map<String, Integer> shipmentMap = new HashMap<>();
 	private final Map<String, Integer> locationMap = new HashMap<>();
-	private final Map<String, Integer> stackingGroupMap = new HashMap<>();
+	private final Map<String, Long> stackingGroupMap = new HashMap<>();
 	private final Map<String, Integer> containerTypeMap = new HashMap<>();
 
 	public DataManager() {
 		containerTypeMap.put("default_container_type", 0);
-		stackingGroupMap.put("default_stacking_group", 0);
+		stackingGroupMap.put("default_stacking_group", 0L);
 		shipmentMap.put("default_shipment", 0);
 		locationMap.put("", -1);
 	}
@@ -114,8 +114,8 @@ public class DataManager implements Serializable {
 		return locationMap.get(locationID.trim().toLowerCase());
 	}
 
-	public int getStackingGroupIdx(String stackingGroup) {
-		return 1 << stackingGroupMap.get(stackingGroup.trim().toLowerCase());
+	public long getStackingGroupIdx(String stackingGroup) {
+		return 1L << stackingGroupMap.get(stackingGroup.trim().toLowerCase());
 	}
 
 	public int getContainerTypeIdx(String containerType) {
@@ -141,14 +141,14 @@ public class DataManager implements Serializable {
 		return res;
 	}
 
-	public int getStackingGroups(String allowedStackingGroups) {
-		int res = 0;
+	public long getStackingGroups(String allowedStackingGroups) {
+		long res = 0L;
 
 		String[] arr = allowedStackingGroups.split(",");
 		for (String s : arr) {
 			s = s.trim().toLowerCase();
 			if(stackingGroupMap.containsKey(s)) {
-				res += 1 << stackingGroupMap.get(s);
+				res += 1L << stackingGroupMap.get(s);
 			}
 		}
 

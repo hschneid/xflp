@@ -31,11 +31,11 @@ public class Item implements Indexable {
 	public int loadingLoc, unLoadingLoc;
 	
 	// Binary representation, where only one bit can be active
-	public int stackingGroup;
+	public long stackingGroup;
 	// Allowed container types (cooled, dangerous goods, etc.)
 	public Set<Integer> allowedContainerSet;
 	// Allowed items that can be stacked on top (binary representation)
-	public int allowedStackingGroups;
+	public long allowedStackingGroups;
 	// How many different items can be below this item, if it is stacked.
 	public int nbrOfAllowedStackedItems;
 	// height, which reduces height of upper item, when something is stacked upon.
@@ -258,11 +258,11 @@ public class Item implements Indexable {
 		this.unLoadingLoc = unLoadingLoc;
 	}
 
-	public int getStackingGroup() {
+	public long getStackingGroup() {
 		return stackingGroup;
 	}
 
-	public void setStackingGroup(int stackingGroup) {
+	public void setStackingGroup(long stackingGroup) {
 		this.stackingGroup = stackingGroup;
 	}
 
@@ -274,11 +274,11 @@ public class Item implements Indexable {
 		this.allowedContainerSet = allowedContainerSet;
 	}
 
-	public int getAllowedStackingGroups() {
+	public long getAllowedStackingGroups() {
 		return allowedStackingGroups;
 	}
 
-	public void setAllowedStackingGroups(int allowedStackingGroups) {
+	public void setAllowedStackingGroups(long allowedStackingGroups) {
 		this.allowedStackingGroups = allowedStackingGroups;
 	}
 

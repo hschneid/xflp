@@ -33,6 +33,19 @@ public class TouchingPerimeter extends BaseStrategy {
 
 	private final HighestLowerLeft fallbackStrategy = new HighestLowerLeft();
 
+	private final boolean considerWalls;
+	private final boolean considerBaseFloor;
+
+	public TouchingPerimeter() {
+		considerWalls = true;
+		considerBaseFloor = true;
+	}
+
+	public TouchingPerimeter(boolean considerWalls, boolean considerBaseFloor) {
+		this.considerWalls = considerWalls;
+		this.considerBaseFloor = considerBaseFloor;
+	}
+
 	@Override
 	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {

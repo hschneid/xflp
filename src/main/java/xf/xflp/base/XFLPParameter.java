@@ -1,5 +1,6 @@
 package xf.xflp.base;
 
+import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.opt.construction.strategy.Strategy;
 
 /**
@@ -16,6 +17,7 @@ public class XFLPParameter {
 	private int maxNbrOfContainer = 1;
 	private Strategy preferredPackingStrategy = Strategy.HIGH_LOW_LEFT;
 	private int nbrOfAllowedStackedItems = Integer.MAX_VALUE;
+	private GroundContactRule groundContactRule = GroundContactRule.FREE;
 
 	public void clear() {
 		// TODO Auto-generated method stub
@@ -71,5 +73,13 @@ public class XFLPParameter {
 	 */
 	public void setNbrOfAllowedStackedItems(int nbrOfAllowedStackedItems) {
 		this.nbrOfAllowedStackedItems = nbrOfAllowedStackedItems;
+	}
+
+	public GroundContactRule getGroundContactRule() {
+		return groundContactRule;
+	}
+
+	public void setGroundContactRule(GroundContactRule groundContactRule) {
+		this.groundContactRule = groundContactRule;
 	}
 }

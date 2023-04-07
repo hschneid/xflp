@@ -17,7 +17,7 @@ public class LPPackageEvent {
 	private int w = -1;
 	private int l = -1;
 	private int h = -1;
-	private int stackingGrp = -1;
+	private long stackingGrp = -1;
 	private float weight = -1;
 	private float weightLimit = -1;
 	private boolean isInvalid = false;
@@ -207,14 +207,14 @@ public class LPPackageEvent {
 	/**
 	 * @return the stackingGrp
 	 */
-	public final int getStackingGrp() {
+	public final long getStackingGrp() {
 		return stackingGrp;
 	}
 
 	/**
 	 * @param stackingGrp the stackingGrp to set
 	 */
-	public final void setStackingGrp(int stackingGrp) {
+	public final void setStackingGrp(long stackingGrp) {
 		this.stackingGrp = stackingGrp;
 	}
 

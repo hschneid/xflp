@@ -60,7 +60,7 @@ public class ZItemGraph {
 	 * Remove an item from Z graph
 	 */
 	public void remove(Item item) {
-		// Entferne Item aus lower items
+		// Remove Item from lower items
 		if(lowerList.get(item.index) != null) {
 			List<Item> get = lowerList.get(item.index).lowerItemList;
 			for (int i = get.size() - 1; i >= 0; i--) {

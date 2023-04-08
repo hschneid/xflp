@@ -369,4 +369,16 @@ public class Item implements Indexable {
 	public void setImmersiveDepth(int immersiveDepth) {
 		this.immersiveDepth = immersiveDepth;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Item item)) return false;
+		return index == item.index;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

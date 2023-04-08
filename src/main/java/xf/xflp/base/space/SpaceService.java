@@ -4,10 +4,7 @@ import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Copyright (c) 2012-2023 Holger Schneider
@@ -37,46 +34,46 @@ public class SpaceService {
         List<Space> spaces = new ArrayList<>(3);
         if (itemHovering) {
             spaces.add(Space.of(
-                            space.l(),
-                            space.w(),
-                            (newItem.z - position.z())
-                    ));
+                    space.l(),
+                    space.w(),
+                    (newItem.z - position.z())
+            ));
             if(!itemOverPosition) {
                 spaces.add(Space.of(
-                                (lengthLimited) ? (newItem.y - position.y()) : space.l(),
-                                (widthLimited) ? (newItem.x - position.x()) : space.w(),
-                                space.h()
-                        ));
+                        (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                        space.h()
+                ));
             }
         }
 
         if (widthLimited || lengthLimited) {
             if(!itemHovering && !itemOverPosition) {
                 spaces.add(Space.of(
-                                (lengthLimited) ? (newItem.y - position.y()) : space.l(),
-                                (widthLimited) ? (newItem.x - position.x()) : space.w(),
-                                space.h()
-                        ));
+                        (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                        space.h()
+                ));
             }
         }
         // New item is only partially in view range (cutting position coordinates)
         else {
             spaces.add(Space.of(
-                            newItem.y - position.y(),
-                            space.w(),
-                            space.h()
-                    ));
+                    newItem.y - position.y(),
+                    space.w(),
+                    space.h()
+            ));
             spaces.add(Space.of(
-                            space.l(),
-                            newItem.x - position.x(),
-                            space.h()
-                    ));
+                    space.l(),
+                    newItem.x - position.x(),
+                    space.h()
+            ));
         }
 
         return spaces;
     }
 
-    private boolean isItemNotInSpace(Position position, Space space, Item item) {
+    public boolean isItemNotInSpace(Position position, Space space, Item item) {
         return position.x() + space.w() <= item.x ||
                 position.y() + space.l() <= item.y ||
                 position.z() + space.h() <= item.z ||
@@ -85,10 +82,11 @@ public class SpaceService {
                 position.z() >= item.zh;
     }
 
-    public List<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
-        List<Item> itemsInSpace = new ArrayList<>(allItems);
+    public Set<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
+        Set<Item> itemsInSpace = new HashSet<>(allItems.size());
         for (Item item : allItems) {
-            if(isItemNotInSpace(position, space, item)) {
+            // entries can be null, because they can be removed from item list
+            if(item == null || isItemNotInSpace(position, space, item)) {
                 continue;
             }
             itemsInSpace.add(item);
@@ -120,4 +118,5 @@ public class SpaceService {
 
         return dominatingSpaces;
     }
+
 }

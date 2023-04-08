@@ -104,7 +104,7 @@ public class AddSpaceContainer extends ContainerBase implements SpaceContainer {
 				width - newPos.x(),
 				height - newPos.z()
 		);
-		List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
 
 		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
 		for (Item spaceItem : spaceItems) {

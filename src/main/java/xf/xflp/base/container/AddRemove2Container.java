@@ -80,10 +80,12 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		// Active position gets inactive by adding item
 		switchActive2Inactive(pos);
 
-		// Setze �berlagerte Positionen auf inaktiv
+		// Switch covered positions to inactive
 		List<Position> covPosList = findCoveredPositions(item);
-		for (Position covPos : covPosList)
+		for (Position covPos : covPosList) {
 			switchActive2Covered(covPos);
+			spacePositions.remove(covPos);
+		}
 
 		// Check existing spaces, if new item will shrink them
 		checkExistingSpaces(item);
@@ -108,7 +110,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 				// Diese Position wurde von diesem Item erzeugt.
 				positionItemMap.put(newPos, item);
 			} else {
-				// Die neue Position ist so geblockt, dass es keine validen Spaces gibt.
+				// The free space of the new position is so small, that the position is not valid anymore.
 				removeNewPosition(newPos);
 			}
 		}
@@ -150,7 +152,10 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 				width - newPos.x(),
 				height - newPos.z()
 		);
-		List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+		if(spaceItems.size() == 0) {
+			return List.of(maxSpace);
+		}
 
 		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
 		for (Item spaceItem : spaceItems) {
@@ -165,6 +170,10 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		}
 
 		return spaceService.getDominatingSpaces(spaces);
+	}
+
+	private void recreateSpaces(Position pos) {
+		spacePositions.put(pos, createSpaces(pos));
 	}
 
 	/**
@@ -183,11 +192,17 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 		// Setze Position wieder aktiv
 		switchInactive2Active(position);
+		recreateSpaces(position);
+
+		// SPACES ---------------------
+		checkExistingSpacesForRemovedItem(item);
 
 		// Setze alle �berdeckten Positionen auf aktiv
 		List<Position> coveredPosList = findUncoveringPositions(item);
-		for (Position pos : coveredPosList)
+		for (Position pos : coveredPosList) {
 			switchCovered2Active(pos);
+			recreateSpaces(pos);
+		}
 
 		// Projeziere alle Positionen auf der Oberfl�che des Objektes (Hori und Verti)
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
@@ -197,6 +212,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 					pos.idx(), (leftItem != null) ? leftItem.xw : 0, pos.y(), pos.z(), pos.type()
 			);
 			replacePosition(pos, newPosition);
+			recreateSpaces(newPosition);
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
@@ -205,6 +221,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 					pos.idx(), pos.x(), ((lowerItem != null) ? lowerItem.yl : 0), pos.z(), pos.type()
 			);
 			replacePosition(pos, newPosition);
+			recreateSpaces(newPosition);
 		}
 
 		// L�sche die alte Position, wenn deren Elter noch aktiv ist und selbst seine Nachfolger alle weg sind
@@ -213,15 +230,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		checkPosition(position);
 
 		updateBearingCapacity(lowerItems);
-
-		// SPACES ---------------------
-
-		// Check existing spaces
-		// If existing space was theoretical in area of old item,
-		// recreate the space/recalculate the space size
-
-		// Create new spaces at all changed positions
-		// item pos, uncovered pos, corrected proj. pos
 
 		// Check dominated spaces
 		spaceService.getDominatingSpaces(
@@ -244,6 +252,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 	private void switchActive2Inactive(Position pos) {
 		activePosList.remove(pos);
 		inactivePosList.add(pos);
+		spacePositions.remove(pos);
 	}
 
 	private void switchActive2Covered(Position pos) {
@@ -345,6 +354,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			inactivePosList.remove(pos);
 			coveredPosList.remove(pos);
 			positionItemMap.remove(pos);
+			spacePositions.remove(pos);
 		}
 	}
 
@@ -363,6 +373,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			inactivePosList.remove(pos);
 			coveredPosList.remove(pos);
 			positionItemMap.remove(pos);
+			spacePositions.remove(pos);
 		}
 	}
 
@@ -399,13 +410,13 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			inactivePosList.add(newPosition);
 			coveredPosList.remove(oldPosition);
 			coveredPosList.add(newPosition);
+
+			spacePositions.put(newPosition, spacePositions.get(oldPosition));
+			spacePositions.remove(oldPosition);
 		}
 
 	}
 
-	/**
-	 *
-	 */
 	private void checkPosition(Position pos) {
 		// Removes active unused follower-positions
 		checkTreeAndRemove2(pos);
@@ -486,5 +497,19 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 	public List<Space> getSpace(Position pos) {
 		return spacePositions.get(pos);
+	}
+
+	public void checkExistingSpacesForRemovedItem(Item item) {
+		for (Position pos : activePosList) {
+			if(!spacePositions.containsKey(pos))
+				continue;
+
+			if(item.xw > pos.x() &&
+					item.yl > pos.y() &&
+					item.zh > pos.z()) {
+				// Removed item is potentially in the range of an existing space
+				recreateSpaces(pos);
+			}
+		}
 	}
 }

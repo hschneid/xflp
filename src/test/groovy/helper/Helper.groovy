@@ -49,6 +49,10 @@ class Helper {
         )
     }
 
+    static Container getAddSpaceContainer2(int width, int length, int height) {
+        return getAddSpaceContainer2(width, length, height, Integer.MAX_VALUE)
+    }
+
     static Container getAddSpaceContainer2(int width, int length, int height, float maxWeight) {
         return new AddRemove2Container(
                 width,

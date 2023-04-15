@@ -119,8 +119,13 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 		history.add(item);
 
+		return item.index;
+	}
+
+	private void output() {
 		// OUTPUT
 		System.out.println("ITM\n"+itemList.stream()
+				.filter(Objects::nonNull)
 				.map(i -> "  "+i.toString())
 				.collect(Collectors.joining("\n")));
 		System.out.println("POS "+activePosList.stream()
@@ -139,7 +144,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 						posAncestorMap.get(k).toString())
 				.collect(Collectors.joining("\n")));
 		System.out.println("---------------");
-		return item.index;
 	}
 
 	/* Create spaces
@@ -260,9 +264,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		coveredPosList.add(pos);
 	}
 
-	/**
-	 *
-	 */
 	private List<Position> findProjectableHorizontalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
@@ -273,9 +274,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		return list;
 	}
 
-	/**
-	 *
-	 */
 	private List<Position> findProjectableVerticalPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
@@ -304,9 +302,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		return list;
 	}
 
-	/**
-	 *
-	 */
 	private void insertTree(Position entry, Position ancestor) {
 		posAncestorMap.put(entry, ancestor);
 		posFollowerMap.put(ancestor, entry);
@@ -355,6 +350,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			coveredPosList.remove(pos);
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
+			uniquePositionKeys.remove(pos.getKey());
 		}
 	}
 
@@ -374,6 +370,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 			coveredPosList.remove(pos);
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
+			uniquePositionKeys.remove(pos.getKey());
 		}
 	}
 
@@ -413,6 +410,9 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 			spacePositions.put(newPosition, spacePositions.get(oldPosition));
 			spacePositions.remove(oldPosition);
+
+			uniquePositionKeys.add(newPosition.getKey());
+			uniquePositionKeys.remove(oldPosition.getKey());
 		}
 
 	}
@@ -438,9 +438,6 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		}
 	}
 
-	/**
-	 *
-	 */
 	private void removeItem(Item item) {
 		Integer index = item.index;
 

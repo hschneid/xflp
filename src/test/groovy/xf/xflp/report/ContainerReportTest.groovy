@@ -43,7 +43,7 @@ class ContainerReportTest extends Specification {
     )
 
     def "Create an empty report"() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def containerTypeName = "C1"
 
         when:
@@ -63,7 +63,7 @@ class ContainerReportTest extends Specification {
     }
 
     def "Add a package event - load"() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def rep = new ContainerReport('C1', con)
 
         when:
@@ -80,7 +80,7 @@ class ContainerReportTest extends Specification {
     }
 
     def "Add a package event - load then unload"() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def rep = new ContainerReport('C1', con)
 
         rep.add(e)
@@ -99,7 +99,7 @@ class ContainerReportTest extends Specification {
     }
 
     def "Add a package event - only unload (virtual)"() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def rep = new ContainerReport('C1', con)
 
         when:
@@ -116,7 +116,7 @@ class ContainerReportTest extends Specification {
     }
 
     def "Add a package event - multiple loads"() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def rep = new ContainerReport('C1', con)
 
         def e2 = new LPPackageEvent(
@@ -153,7 +153,7 @@ class ContainerReportTest extends Specification {
         rep.iterator().size() == 2
     }
 
-    static Container getContainer(int width, int length, int height) {
-        return Helper.getContainer(width, length, height, 999999999)
+    static Container getAddSpaceContainer2(int width, int length, int height) {
+        return Helper.getAddSpaceContainer2(width, length, height, 999999999)
     }
 }

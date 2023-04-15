@@ -1,7 +1,6 @@
 package helper
 
 import xf.xflp.base.container.AddRemove2Container
-import xf.xflp.base.container.AddRemoveContainer
 import xf.xflp.base.container.AddSpaceContainer
 import xf.xflp.base.container.Container
 import xf.xflp.base.container.GroundContactRule
@@ -16,22 +15,6 @@ import xf.xflp.base.position.PositionService
 class Helper {
 
     static int itemIdx = 0
-
-    static Container getContainer(int width, int length, int height) {
-        return getContainer(width, length, height, 999999999)
-    }
-
-    static Container getContainer(int width, int length, int height, float maxWeight) {
-        return new AddRemoveContainer(
-                width,
-                length,
-                height,
-                maxWeight,
-                ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.FREE,
-                0
-        )
-    }
 
     static Container getAddSpaceContainer(int width, int length, int height) {
         return getAddSpaceContainer(width, length, height, 999999999)

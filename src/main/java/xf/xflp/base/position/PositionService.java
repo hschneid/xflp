@@ -2,7 +2,7 @@ package xf.xflp.base.position;
 
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
-import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.AddRemove2Container;
 import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
@@ -132,7 +132,7 @@ public class PositionService {
     }
 
     private static boolean checkLIFO(Container container, Item otherItem, Position pos, Item newItem, int itemW) {
-        if(!(container instanceof AddRemoveContainer)) {
+        if(!(container instanceof AddRemove2Container)) {
             return false;
         }
 

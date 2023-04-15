@@ -87,7 +87,7 @@ class LPReportTest extends Specification {
     }
 
     static ContainerReport getContainerReport() {
-        def con = getContainer(2,2,3)
+        def con = getAddSpaceContainer2(2,2,3)
         def rep = new ContainerReport('C1', con)
 
         def e2 = new LPPackageEvent(
@@ -115,8 +115,8 @@ class LPReportTest extends Specification {
         return rep
     }
 
-    static Container getContainer(int width, int length, int height) {
-        return Helper.getContainer(width, length, height, 999999999)
+    static Container getAddSpaceContainer2(int width, int length, int height) {
+        return Helper.getAddSpaceContainer2(width, length, height, 999999999)
     }
 
 }

@@ -1,7 +1,7 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.XFLPParameter;
-import xf.xflp.base.container.AddRemoveContainer;
+import xf.xflp.base.container.AddRemove2Container;
 import xf.xflp.base.container.AddSpaceContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.exception.XFLPException;
@@ -81,7 +81,7 @@ public class ContainerData implements Serializable {
 
 	Container create(DataManager manager, XFLPParameter parameter, boolean isAddingAndRemovingItems) throws XFLPException {
 		Class<? extends Container> correctContainerClass = (isAddingAndRemovingItems)
-				? AddRemoveContainer.class
+				? AddRemove2Container.class
 				: AddSpaceContainer.class;
 
 		for (Constructor<?> constructor : correctContainerClass.getConstructors()) {

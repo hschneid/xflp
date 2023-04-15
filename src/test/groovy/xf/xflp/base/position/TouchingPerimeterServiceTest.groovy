@@ -6,7 +6,7 @@ import spock.lang.Specification
 class TouchingPerimeterServiceTest extends Specification {
 
     def "test touching perimeter (only one wall)"() {
-        def con = Helper.getContainer(10,10,10)
+        def con = Helper.getAddSpaceContainer2(10,10,10)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -20,7 +20,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only two walls on the width)"() {
-        def con = Helper.getContainer(4,10,10)
+        def con = Helper.getAddSpaceContainer2(4,10,10)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -34,7 +34,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only two walls on the length)"() {
-        def con = Helper.getContainer(10,4,10)
+        def con = Helper.getAddSpaceContainer2(10,4,10)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -48,7 +48,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only two walls on the height)"() {
-        def con = Helper.getContainer(10,10,4)
+        def con = Helper.getAddSpaceContainer2(10,10,4)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -62,7 +62,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only three walls on the width, length)"() {
-        def con = Helper.getContainer(4,4,10)
+        def con = Helper.getAddSpaceContainer2(4,4,10)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -76,7 +76,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only three walls on the width, height)"() {
-        def con = Helper.getContainer(4,10,4)
+        def con = Helper.getAddSpaceContainer2(4,10,4)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -90,7 +90,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only three walls on the length, height)"() {
-        def con = Helper.getContainer(10,4,4)
+        def con = Helper.getAddSpaceContainer2(10,4,4)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -104,7 +104,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only all walls)"() {
-        def con = Helper.getContainer(4,4,4)
+        def con = Helper.getAddSpaceContainer2(4,4,4)
         def i = Helper.getItem(4, 4, 4, 1, 1, 0)
 
         when:
@@ -118,7 +118,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (mixed wall and box)"() {
-        def con = Helper.getContainer(4,4,4)
+        def con = Helper.getAddSpaceContainer2(4,4,4)
         def i1 = Helper.getItem(1, 4, 4, 1, 1, 0)
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
@@ -135,7 +135,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (mixed wall and half-height box) AddRemoveContainer"() {
-        def con = Helper.getContainer(4,4,4)
+        def con = Helper.getAddSpaceContainer2(4,4,4)
         def i1 = Helper.getItem(1, 4, 1, 1, 1, 0)
         def i2 = Helper.getItem(2, 2, 2, 1, 1, 0)
 
@@ -167,7 +167,7 @@ class TouchingPerimeterServiceTest extends Specification {
     }
 
     def "test touching perimeter (only box)"() {
-        def con = Helper.getContainer(4,4,4)
+        def con = Helper.getAddSpaceContainer2(4,4,4)
         def i1 = Helper.getItem(1, 4, 4, 1, 1, 0)
         def i2 = Helper.getItem(3, 1, 4, 1, 1, 0)
         def i3 = Helper.getItem(2, 2, 2, 1, 1, 0)

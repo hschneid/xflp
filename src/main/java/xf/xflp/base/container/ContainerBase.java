@@ -231,9 +231,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return coveredPositionList;
     }
 
-    /**
-     *
-     */
     protected Position createPosition(int x, int y, int z, PositionType type) {
         return Position.of(maxPosIdx++, x, y, z, type);
     }

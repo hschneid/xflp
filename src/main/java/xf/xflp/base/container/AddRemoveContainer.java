@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class AddRemoveContainer extends ContainerBase implements SpaceContainer {
+public class AddRemoveContainer extends ContainerBase implements Container {
 
 	private static final Position rootPos = Position.of( -1, -1, -1);
 

@@ -16,14 +16,14 @@ import java.util.*;
  *
  * @author hschneid
  */
-public class AddSpaceContainer extends ContainerBase implements SpaceContainer {
+public class AddContainer extends ContainerBase implements Container {
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
 	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
-	public AddSpaceContainer(
+	public AddContainer(
 			int width,
 			int length,
 			int height,
@@ -36,7 +36,7 @@ public class AddSpaceContainer extends ContainerBase implements SpaceContainer {
 		init();
 	}
 
-	public AddSpaceContainer(Container containerPrototype) {
+	public AddContainer(Container containerPrototype) {
 		super(containerPrototype);
 		init();
 	}
@@ -47,7 +47,7 @@ public class AddSpaceContainer extends ContainerBase implements SpaceContainer {
 
 	@Override
 	public Container newInstance() {
-		return new AddSpaceContainer(this);
+		return new AddContainer(this);
 	}
 
 	/**

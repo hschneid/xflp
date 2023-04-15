@@ -3,7 +3,7 @@ package xf.xflp.base.position;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.AddRemoveContainer;
-import xf.xflp.base.container.AddSpaceContainer;
+import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.StackingChecker;
@@ -79,8 +79,8 @@ public class PositionService {
     }
 
     private static boolean checkOverlapping(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
-        if(container instanceof AddSpaceContainer) {
-            return checkOverlappingWithSpaces((AddSpaceContainer) container, pos, itemW, itemL, itemH);
+        if(container instanceof AddContainer) {
+            return checkOverlappingWithSpaces((AddContainer) container, pos, itemW, itemL, itemH);
         } else {
             return checkOverlappingWithItems(container, item, itemW, itemL, pos, itemH);
         }
@@ -117,7 +117,7 @@ public class PositionService {
         return false;
     }
 
-    private static boolean checkOverlappingWithSpaces(AddSpaceContainer container, Position pos, int itemW, int itemL, int itemH) {
+    private static boolean checkOverlappingWithSpaces(AddContainer container, Position pos, int itemW, int itemL, int itemH) {
         List<Space> spaces = container.getSpace(pos);
 
         // If item is fitting into one of the spaces, then it is okay.

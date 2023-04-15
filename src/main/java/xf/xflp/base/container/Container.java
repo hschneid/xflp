@@ -2,6 +2,7 @@ package xf.xflp.base.container;
 
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.item.Space;
 
 import java.util.List;
 
@@ -101,4 +102,7 @@ public interface Container {
      * Returns internal data structures of container
      */
     ContainerBaseData getBaseData();
+
+    List<Space> getSpace(Position pos);
+
 }

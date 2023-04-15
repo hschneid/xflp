@@ -7,7 +7,7 @@ import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.container.ParameterType
 import xf.xflp.base.position.PositionService
 
-class AddSpaceContainerStackingSpec extends Specification {
+class AddContainerStackingSpec extends Specification {
 
     def "add to a double stack (not too heavy/bearing capacity)"() {
         def con = Helper.getAddSpaceContainer(3,3,3)

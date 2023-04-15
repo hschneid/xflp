@@ -6,7 +6,7 @@ import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.container.ParameterType
 import xf.xflp.base.position.PositionService
 
-class AddSpaceContainerBaseSpec extends Specification {
+class AddContainerBaseSpec extends Specification {
 
     def "find first position in empty container"() {
         when:

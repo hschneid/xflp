@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author hschneid
  *
  */
-public class AddRemove2Container extends ContainerBase implements SpaceContainer {
+public class AddRemoveContainer extends ContainerBase implements SpaceContainer {
 
 	private static final Position rootPos = Position.of( -1, -1, -1);
 
@@ -39,7 +39,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
-	public AddRemove2Container(
+	public AddRemoveContainer(
 			int width,
 			int length,
 			int height,
@@ -52,7 +52,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 		init();
 	}
 
-	public AddRemove2Container(Container containerPrototype) {
+	public AddRemoveContainer(Container containerPrototype) {
 		super(containerPrototype);
 		init();
 	}
@@ -65,7 +65,7 @@ public class AddRemove2Container extends ContainerBase implements SpaceContainer
 
 	@Override
 	public Container newInstance() {
-		return new AddRemove2Container(this);
+		return new AddRemoveContainer(this);
 	}
 
 	/**

@@ -2,13 +2,13 @@ package xf.xflp.base.container.addremove
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.container.AddRemove2Container
+import xf.xflp.base.container.AddRemoveContainer
 import xf.xflp.base.container.Container
 import xf.xflp.base.item.Position
 import xf.xflp.base.item.Space
 import xf.xflp.base.position.PositionService
 
-class AddSpaceContainerRemove2Spec extends Specification {
+class ContainerRemoveSpec extends Specification {
 
     def "remove an item - a valid item"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
@@ -52,7 +52,7 @@ class AddSpaceContainerRemove2Spec extends Specification {
         Helper.findCand(PositionService.findPositionCandidates(con, i3), 1,1,0) != null
         con.getLoadedVolume() == 9
         con.getItems().size() == 5
-        ((AddRemove2Container)con).spacePositions.find({p -> comp(p.key, 1, 1, 0)}).value.size() == 2
+        ((AddRemoveContainer)con).spacePositions.find({ p -> comp(p.key, 1, 1, 0)}).value.size() == 2
     }
 
     def "remove an item - check existing spaces"() {
@@ -78,8 +78,8 @@ class AddSpaceContainerRemove2Spec extends Specification {
         Helper.findCand(PositionService.findPositionCandidates(con, i3), 1,1,0) != null
         con.getLoadedVolume() == 7
         con.getItems().size() == 4
-        ((AddRemove2Container)con).spacePositions.find({p -> comp(p.key, 1, 1, 0)}).value.size() == 1
-        comp(((AddRemove2Container)con).spacePositions.find({p -> comp(p.key, 1, 1, 0)}).value[0], 1,2,2)
+        ((AddRemoveContainer)con).spacePositions.find({ p -> comp(p.key, 1, 1, 0)}).value.size() == 1
+        comp(((AddRemoveContainer)con).spacePositions.find({ p -> comp(p.key, 1, 1, 0)}).value[0], 1,2,2)
     }
 
     def "remove an item - an invalid item"() {
@@ -144,13 +144,13 @@ class AddSpaceContainerRemove2Spec extends Specification {
         Helper.findCand(PositionService.findPositionCandidates(con, i1), 0,0,0) != null
         con.getLoadedVolume() == 0
         con.getItems().size() == 0
-        ((AddRemove2Container)con).itemList.size() == 0
-        ((AddRemove2Container)con).activePosList.size() == 1
-        ((AddRemove2Container)con).inactivePosList.size() == 0
-        ((AddRemove2Container)con).spacePositions.size() == 1
-        comp(((AddRemove2Container)con).spacePositions.values()[0][0], 3, 3, 2)
-        !((AddRemove2Container) con).getZGraph().lowerList.any { o -> o != null }
-        !((AddRemove2Container)con).getZGraph().upperList.any { o -> o != null }
+        ((AddRemoveContainer)con).itemList.size() == 0
+        ((AddRemoveContainer)con).activePosList.size() == 1
+        ((AddRemoveContainer)con).inactivePosList.size() == 0
+        ((AddRemoveContainer)con).spacePositions.size() == 1
+        comp(((AddRemoveContainer)con).spacePositions.values()[0][0], 3, 3, 2)
+        !((AddRemoveContainer) con).getZGraph().lowerList.any { o -> o != null }
+        !((AddRemoveContainer)con).getZGraph().upperList.any { o -> o != null }
     }
 
     boolean comp(Position pos, int x, int y, int z) {

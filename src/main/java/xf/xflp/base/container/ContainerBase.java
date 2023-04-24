@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ContainerBase implements Container, ContainerBaseData {
+public abstract sealed class ContainerBase implements Container, ContainerBaseData permits AddContainer, AddRemoveContainer {
 
     /* Idx of the container. There are no two containers, with same index. */
     protected int index = -1;

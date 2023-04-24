@@ -22,8 +22,6 @@ import java.util.Set;
  */
 public class Item implements Indexable {
 
-	public static final int UNDEF_PARAMETER = -1;
-
 	public int size, volume, h, origH;
 	public int x, y, z, xw, yl, zh, w, l;
 	

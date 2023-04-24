@@ -16,7 +16,7 @@ import java.util.*;
  *
  * @author hschneid
  */
-public class AddContainer extends ContainerBase implements Container {
+public final class AddContainer extends ContainerBase implements Container {
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();

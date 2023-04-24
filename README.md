@@ -41,8 +41,10 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
-### 0.6.0 - Update to Java 17
-- Changed xflp to Java 17. Due to use of records, xflp is not compatible with Java < 17 anymore. 
+### 0.6.0 - Update to Java 17 and more
+- Changed xflp to Java 17. Due to use of records, xflp is not compatible with Java < 17 anymore.
+- Add space-based checking when items are added and removed in a container. This improves the planning performance and 
+reduces the code complexity.
 
 ### 0.5.2 - Performance upgrade
 - Improved bearing check by storing bearing capacities during container-adding.

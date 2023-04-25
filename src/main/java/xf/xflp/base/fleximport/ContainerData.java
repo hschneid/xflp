@@ -28,11 +28,11 @@ public class ContainerData implements Serializable {
 
 	public static final int DEFAULT_CONTAINER_TYPE = 0;
 
-	protected int width = Integer.MAX_VALUE;
-	protected int length = Integer.MAX_VALUE;
-	protected int height = Integer.MAX_VALUE;
-	protected float maxWeight = Float.MAX_VALUE;
-	protected String containerType = "default_container_type";
+	private int width = Integer.MAX_VALUE;
+	private int length = Integer.MAX_VALUE;
+	private int height = Integer.MAX_VALUE;
+	private float maxWeight = Float.MAX_VALUE;
+	private String containerType = "default_container_type";
 
 	/**
 	 * @param width the width to set

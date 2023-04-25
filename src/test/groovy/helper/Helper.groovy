@@ -1,9 +1,6 @@
 package helper
 
-import xf.xflp.base.container.AddContainer
-import xf.xflp.base.container.AddRemoveContainer
-import xf.xflp.base.container.Container
-import xf.xflp.base.container.GroundContactRule
+import xf.xflp.base.container.*
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
@@ -27,8 +24,10 @@ class Helper {
                 height,
                 maxWeight,
                 ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.COVERED,
-                0
+                new DirectContainerParameter(
+                        groundContactRule: GroundContactRule.COVERED,
+                        lifoImportance: 0
+                )
         )
     }
 
@@ -43,8 +42,10 @@ class Helper {
                 height,
                 maxWeight,
                 ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.COVERED,
-                0
+                new DirectContainerParameter(
+                        groundContactRule: GroundContactRule.COVERED,
+                        lifoImportance: 0
+                )
         )
     }
 

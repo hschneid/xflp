@@ -29,10 +29,9 @@ public final class AddContainer extends ContainerBase implements Container {
 			int height,
 			float maxWeight,
 			int containerType,
-			GroundContactRule groundContactRule,
-			float lifoImportance
+			ContainerParameter parameter
 	) {
-		super(width, length, height, maxWeight, containerType, groundContactRule, lifoImportance);
+		super(width, length, height, maxWeight, containerType, parameter);
 		init();
 	}
 

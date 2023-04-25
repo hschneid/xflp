@@ -1,9 +1,8 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.XFLPParameter;
-import xf.xflp.base.container.AddContainer;
-import xf.xflp.base.container.AddRemoveContainer;
-import xf.xflp.base.container.Container;
+import xf.xflp.base.container.*;
+import xf.xflp.base.container.constraints.AxleLoadParameter;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
@@ -33,6 +32,11 @@ public class ContainerData implements Serializable {
 	private int height = Integer.MAX_VALUE;
 	private float maxWeight = Float.MAX_VALUE;
 	private String containerType = "default_container_type";
+
+	// Configuration of permissible axle load
+	private float firstPermissibleAxleLoad = Float.MAX_VALUE;
+	private float secondPermissibleAxleLoad = Float.MAX_VALUE;
+	private float axleDistance = 0;
 
 	/**
 	 * @param width the width to set
@@ -70,6 +74,18 @@ public class ContainerData implements Serializable {
 		return this;
 	}
 
+	public void setFirstPermissibleAxleLoad(float firstPermissibleAxleLoad) {
+		this.firstPermissibleAxleLoad = firstPermissibleAxleLoad;
+	}
+
+	public void setSecondPermissibleAxleLoad(float secondPermissibleAxleLoad) {
+		this.secondPermissibleAxleLoad = secondPermissibleAxleLoad;
+	}
+
+	public void setAxleDistance(float axleDistance) {
+		this.axleDistance = axleDistance;
+	}
+
 	////////////////////////////////////////
 
 	/**
@@ -85,16 +101,23 @@ public class ContainerData implements Serializable {
 				: AddContainer.class;
 
 		for (Constructor<?> constructor : correctContainerClass.getConstructors()) {
-			if(constructor.getParameterCount() == 7) {
+			if(constructor.getParameterCount() == 6) {
 				try {
+
+					ContainerParameter containerParameter = new DirectContainerParameter();
+					containerParameter.add(ParameterType.GROUND_CONTACT_RULE, parameter.getGroundContactRule());
+					containerParameter.add(ParameterType.LIFO_IMPORTANCE, 1f);
+					containerParameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
+							firstPermissibleAxleLoad, secondPermissibleAxleLoad, axleDistance
+					));
+
 					return (Container) constructor.newInstance(
 							width,
 							length,
 							height,
 							maxWeight,
 							manager.getContainerTypeIdx(containerType),
-							parameter.getGroundContactRule(),
-							1
+							containerParameter
 					);
 				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 					throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, e.getMessage(), e);

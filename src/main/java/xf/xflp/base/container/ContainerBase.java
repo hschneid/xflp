@@ -47,7 +47,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
     protected int maxPosIdx = 0;
-    protected ContainerParameter parameter = new DirectContainerParameter();
+    protected final ContainerParameter parameter;
 
     protected ContainerBase(
             int width,
@@ -55,16 +55,14 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
             int height,
             float maxWeight,
             int containerType,
-            GroundContactRule groundContactRule,
-            float lifoImportance
+            ContainerParameter parameter
     ) {
         this.width = width;
         this.length = length;
         this.height = height;
         this.maxWeight = maxWeight;
         this.containerType = containerType;
-        parameter.add(ParameterType.GROUND_CONTACT_RULE, groundContactRule);
-        parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
+        this.parameter = parameter;
 
         init();
     }

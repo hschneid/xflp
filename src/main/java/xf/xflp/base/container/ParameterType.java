@@ -12,5 +12,6 @@ package xf.xflp.base.container;
 public enum ParameterType {
 
     LIFO_IMPORTANCE,
-    GROUND_CONTACT_RULE
+    GROUND_CONTACT_RULE,
+    AXLE_LOAD
 }

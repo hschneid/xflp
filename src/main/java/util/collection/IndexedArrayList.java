@@ -3,7 +3,7 @@ package util.collection;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/** 
+/**
  * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
@@ -15,7 +15,7 @@ import java.util.Collection;
  * - Entries have the index of their position in the list
  * - Adding or Removing will not shift entry positions
  * - Reuse of empty slots
- * 
+ *
  * @author hschneid
  *
  * @param <E>
@@ -28,8 +28,10 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 	private int freeIndexCursor = -1;
 	private int length = 0;
 
+	private int lastUsedIndex = 0;
+
 	/**
-	 * 
+	 *
 	 */
 	public IndexedArrayList() {
 		super();
@@ -48,10 +50,13 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 			e.setIdx(insertPos);
 			super.set(insertPos, e);
 			return true;
-		} 
-		
+		}
+
 		e.setIdx(super.size());
-		return super.add(e);
+		var added =  super.add(e);
+		if(super.size() > lastUsedIndex) lastUsedIndex = super.size();
+
+		return added;
 	}
 
 	/*
@@ -67,6 +72,8 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		}
 		e.setIdx(index);
 		super.set(index, e);
+
+		if(index > lastUsedIndex) lastUsedIndex = index;
 	}
 
 	/*
@@ -101,6 +108,8 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		e.setIdx(index);
 		super.set(index, e);
 
+		if(index > lastUsedIndex) lastUsedIndex = index;
+
 		return oldEntry;
 	}
 
@@ -126,6 +135,15 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 			this.freeIndexArr = newFreeIndexArr;
 		}
 		freeIndexArr[freeIndexCursor] = index;
+
+		if(index >= lastUsedIndex) {
+			for (int i = lastUsedIndex; i >= 0; i--) {
+				if (get(i) != null) {
+					lastUsedIndex = i;
+					break;
+				}
+			}
+		}
 
 		return e;
 	}
@@ -157,8 +175,14 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 	public int length() {
 		return super.size();
 	}
+
+	@Override
 	public int size() {
 		return length;
+	}
+
+	public int getLastUsedIndex() {
+		return lastUsedIndex;
 	}
 
 	/*
@@ -171,6 +195,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		length = 0;
 		freeIndexArr = new int[10];
 		freeIndexCursor = -1;
+		lastUsedIndex = 0;
 	}
 
 	private void expand(int nbr) {

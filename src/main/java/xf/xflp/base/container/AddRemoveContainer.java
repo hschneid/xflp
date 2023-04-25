@@ -31,7 +31,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private final LPListMap<Position, Position> posFollowerMap = new LPListMap<>();
 	private final Map<Position, Position> posAncestorMap = new HashMap<>();
 
-	/* Position -> Item */
+	/* Position -> Item - Which item is responsible, that this position was created. */
 	private final Map<Position, Item> positionItemMap = new HashMap<>();
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
@@ -118,8 +118,19 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		updateBearingCapacity(List.of(item));
 
 		history.add(item);
-
 		return item.index;
+	}
+
+	private void check() {
+		for (Map.Entry<Position, Position> e : posAncestorMap.entrySet()) {
+			if(e.getValue() == null)
+				System.out.println("MISS_ANC: " + e.getKey());
+		}
+
+		for (Position e : posFollowerMap.keySet()) {
+			if(posFollowerMap.get(e) == null)
+				System.out.println("MISS_FOL: " + e.getKey());
+		}
 	}
 
 	private void output() {
@@ -224,8 +235,10 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			Position newPosition = Position.of(
 					pos.idx(), pos.x(), ((lowerItem != null) ? lowerItem.yl : 0), pos.z(), pos.type()
 			);
-			replacePosition(pos, newPosition);
-			recreateSpaces(newPosition);
+			if(!pos.equals(newPosition)) {
+				replacePosition(pos, newPosition);
+				recreateSpaces(newPosition);
+			}
 		}
 
 		// L�sche die alte Position, wenn deren Elter noch aktiv ist und selbst seine Nachfolger alle weg sind
@@ -239,7 +252,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		spaceService.getDominatingSpaces(
 				spacePositions.values().stream().flatMap(Collection::stream).toList()
 		);
-
 		history.add(item);
 	}
 
@@ -425,7 +437,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 
 		if(
 			// Wenn die Position keine Nachfolger mehr hat, weil durch CheckTreeAndRemove gel�scht wurde und
-				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos).isEmpty())
+				(!posFollowerMap.containsKey(pos) || posFollowerMap.get(pos) == null || posFollowerMap.get(pos).isEmpty())
 						// Wenn Vorg�nger (der die Position erzeugt hat) frei ist und
 						&& activePosList.contains(ancestor)
 						// die Position nicht der Root ist, dann l�sche die Position

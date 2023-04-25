@@ -1,8 +1,8 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.XFLPParameter;
-import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.AddContainer;
+import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;

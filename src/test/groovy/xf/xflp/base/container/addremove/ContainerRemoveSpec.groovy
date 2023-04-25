@@ -182,6 +182,7 @@ class ContainerRemoveSpec extends Specification {
         unloadedItems.removeAll(loadedItems)
 
         for (i in 0..<100) {
+            println 'AAA '+i
             // Remove 1 loaded item
             var unloadItemIdx = rand.nextInt(loadedItems.size())
             var unloadItem = loadedItems[unloadItemIdx]

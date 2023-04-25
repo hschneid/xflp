@@ -2,8 +2,8 @@ package xf.xflp.base.position;
 
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
-import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.AddContainer;
+import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.StackingChecker;

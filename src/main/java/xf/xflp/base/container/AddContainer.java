@@ -88,6 +88,8 @@ public final class AddContainer extends ContainerBase implements Container {
 
 		updateBearingCapacity(List.of(item));
 
+		addToCenterOfGravity(item, pos);
+
 		history.add(item);
 
 		return item.index;

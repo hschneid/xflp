@@ -48,6 +48,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
     protected int maxPosIdx = 0;
     protected final ContainerParameter parameter;
+    protected float centerOfGravityForY = 0;
 
     protected ContainerBase(
             int width,
@@ -259,6 +260,14 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
+    protected void addToCenterOfGravity(Item item, Position pos) {
+        centerOfGravityForY += (pos.y() + (item.l / 2f)) * item.getWeight();
+    }
+
+    protected void removeFromCenterOfGravity(Item item, Position pos) {
+        centerOfGravityForY -= (pos.y() + (item.l / 2f)) * item.getWeight();
+    }
+
     public List<Item> getItems() {
         return itemList;
     }
@@ -317,5 +326,10 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
     public Map<Integer, Float> getBearingCapacities() {
         return bearingCapacities;
+    }
+
+    @Override
+    public float getCenterOfGravityForY() {
+        return centerOfGravityForY;
     }
 }

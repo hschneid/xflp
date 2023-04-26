@@ -6,6 +6,7 @@ import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
+import xf.xflp.base.container.constraints.AxleLoadChecker;
 import xf.xflp.base.container.constraints.StackingChecker;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
@@ -66,6 +67,10 @@ public class PositionService {
 
                 // Check stacking restrictions
                 if(!StackingChecker.checkStackingRestrictions(container, pos, item, itemW, itemL))
+                    continue;
+
+                // Check permissible axle load
+                if(!AxleLoadChecker.checkPermissibleAxleLoad(container, item, pos))
                     continue;
 
                 // Create RotatedPosition if this item is rotated

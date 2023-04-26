@@ -115,6 +115,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 
 		updateBearingCapacity(List.of(item));
+		addToCenterOfGravity(item, pos);
 
 		history.add(item);
 		return item.index;
@@ -202,7 +203,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 
 		Position position = itemPositionMap.remove(item);
 		if(position == null)
-			throw new ArrayIndexOutOfBoundsException("BIG FEHLER: Stack ist keiner Position zugeordnet");
+			throw new ArrayIndexOutOfBoundsException("BIG ERROR: Item is not allocated to any position");
 
 		// Setze Position wieder aktiv
 		switchInactive2Active(position);
@@ -246,6 +247,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		checkPosition(position);
 
 		updateBearingCapacity(lowerItems);
+		removeFromCenterOfGravity(item, position);
 
 		// Check dominated spaces
 		spaceService.getDominatingSpaces(

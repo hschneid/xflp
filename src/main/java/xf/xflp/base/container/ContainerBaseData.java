@@ -22,4 +22,6 @@ public interface ContainerBaseData {
     ZItemGraph getZGraph();
 
     Map<Integer, Float> getBearingCapacities();
+
+    float getCenterOfGravityForY();
 }

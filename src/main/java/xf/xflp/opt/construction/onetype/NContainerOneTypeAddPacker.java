@@ -44,19 +44,25 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 		List<Item> unpackedItems = Arrays.asList(model.getItems());
 		
 		int containerIdx = 0;
-		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx)) {
+		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx++)) {
 			// Create new container
 			Container currentContainer = createContainer(model);
 
 			// Try to pack all unplanned items into the current empty container. The order
 			// of items is untouched by this planning. Each unplanned item will be checked.
 			unpackedItems = heuristic.createLoadingPlan(unpackedItems, currentContainer);
+
+			// Escape: When no item could be loaded into container, then stop the further planning
+			if(currentContainer.getItems().size() == 0) {
+				break;
+			}
 			
 			containerList.add(currentContainer);
 		}
 		
 		// Write created containers to model. There are no unplanned items.
 		model.setContainers(containerList.toArray(new Container[0]));
+		model.setUnplannedItems(unpackedItems.toArray(new Item[0]));
 	}
 
 	private boolean hasMoreContainer(XFLPModel model, int containerIdx) {

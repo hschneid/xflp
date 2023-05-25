@@ -61,7 +61,7 @@ public class XFLPSolution {
 		// Add unplanned items to report
 		for (Item unplannedItem : model.getUnplannedItems()) {
 			LPPackageEvent e = new LPPackageEvent(
-					unplannedItem.externalIndex+"",
+					dataManager.getItemId(unplannedItem.externalIndex),
 					-1,
 					-1,
 					-1,

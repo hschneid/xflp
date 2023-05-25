@@ -51,6 +51,11 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 			// Try to pack all unplanned items into the current empty container. The order
 			// of items is untouched by this planning. Each unplanned item will be checked.
 			unpackedItems = heuristic.createLoadingPlan(unpackedItems, currentContainer);
+
+			// Escape: When no item could be loaded into container, then stop the further planning
+			if(currentContainer.getItems().size() == 0) {
+				break;
+			}
 			
 			containerList.add(currentContainer);
 		}

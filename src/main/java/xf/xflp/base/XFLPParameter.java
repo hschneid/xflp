@@ -14,7 +14,7 @@ import xf.xflp.opt.construction.strategy.Strategy;
 public class XFLPParameter {
 
 	private float lifoImportance = 0f;
-	private int maxNbrOfContainer = 1;
+	private int maxNbrOfContainer = Integer.MAX_VALUE;
 	private Strategy preferredPackingStrategy = Strategy.HIGH_LOW_LEFT;
 	private int nbrOfAllowedStackedItems = Integer.MAX_VALUE;
 	private GroundContactRule groundContactRule = GroundContactRule.FREE;

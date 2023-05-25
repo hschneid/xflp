@@ -4,7 +4,7 @@ import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.opt.construction.strategy.Strategy;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the

@@ -7,7 +7,7 @@ import xf.xflp.report.LoadType;
 import java.util.Set;
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -21,8 +21,6 @@ import java.util.Set;
  *
  */
 public class Item implements Indexable {
-
-	public static final int UNDEF_PARAMETER = -1;
 
 	public int size, volume, h, origH;
 	public int x, y, z, xw, yl, zh, w, l;
@@ -83,9 +81,9 @@ public class Item implements Indexable {
 	}
 	
 	public void setPosition(Position pos) {
-		x = pos.x;
-		y = pos.y;
-		z = pos.z;
+		x = pos.x();
+		y = pos.y();
+		z = pos.z();
 		xw = x + w;
 		yl = y + l;
 		zh = z + h;
@@ -368,5 +366,17 @@ public class Item implements Indexable {
 
 	public void setImmersiveDepth(int immersiveDepth) {
 		this.immersiveDepth = immersiveDepth;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Item item)) return false;
+		return index == item.index;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 }

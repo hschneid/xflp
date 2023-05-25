@@ -75,9 +75,9 @@ public class MultiBinAddHeuristic {
         // Simply take first - Could be improved later
         ContainerPosition containerPosition = containerPositions.get(0);
         containerPosition.getContainer().add(
-                containerPosition.getPosition().item,
-                containerPosition.getPosition().position,
-                containerPosition.getPosition().isRotated
+                containerPosition.getPosition().item(),
+                containerPosition.getPosition().position(),
+                containerPosition.getPosition().isRotated()
         );
     }
 

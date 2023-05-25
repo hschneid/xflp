@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -45,7 +45,7 @@ public class SameBaseStrategy extends BaseStrategy {
 			return sameBasePosition;
 		}
 
-		return findPosition(item, container, posList);
+		return findPosition(container, posList);
 	}
 
 	private PositionCandidate checkSameBaseStack(Item item, Container container, List<PositionCandidate> posList) {
@@ -61,11 +61,11 @@ public class SameBaseStrategy extends BaseStrategy {
 		int itemLength = Math.max(item.l, item.w);
 		int itemWidth = Math.min(item.l, item.w);
 		for (PositionCandidate pos : posList) {
-			if (pos.item.getZ() == 0)
+			if (pos.item().getZ() == 0)
 				continue;
 
 			// Search items below the position
-			List<Integer> itemIdx = container.getBaseData().getZMap().get(pos.item.getZ());
+			List<Integer> itemIdx = container.getBaseData().getZMap().get(pos.item().getZ());
 			if (itemIdx == null)
 				continue;
 
@@ -73,7 +73,7 @@ public class SameBaseStrategy extends BaseStrategy {
 				Item belowItem = container.getItems().get(idx);
 
 				// Check, if this item is directly below the position
-				if (belowItem.x == pos.item.getX() && belowItem.y == pos.item.getY() && belowItem.zh == pos.item.getZ()) {
+				if (belowItem.x == pos.item().getX() && belowItem.y == pos.item().getY() && belowItem.zh == pos.item().getZ()) {
 					// Check, if this item has same base
 					if (itemLength == Math.max(belowItem.l, belowItem.w) &&
 							itemWidth == Math.min(belowItem.l, belowItem.w)) {
@@ -105,7 +105,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return minHighLowPositions.get(0);
 	}
 
-	private PositionCandidate findPosition(Item item, Container container, List<PositionCandidate> posList) throws XFLPException {
+	private PositionCandidate findPosition(Container container, List<PositionCandidate> posList) throws XFLPException {
 		List<PositionCandidate> minHighLowPositions = getPositionWithMinValue(
 				posList,
 				highLow::getDistance

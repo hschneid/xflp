@@ -1,4 +1,4 @@
-package xf.xflp.base.container;
+package xf.xflp.base.container.constraints;
 
 /**
  * Copyright (c) 2012-2023 Holger Schneider
@@ -8,10 +8,10 @@ package xf.xflp.base.container;
  * LICENSE file in the root directory of this source tree.
  *
  * @author hschneid
+ *
  */
-public interface ContainerParameter {
-
-    void add(ParameterType type, Object value);
-
-    Object get(ParameterType type);
+public record AxleLoadParameter(
+        float firstPermissibleAxleLoad,
+        float secondPermissibleAxleLoad,
+        float axleDistance) {
 }

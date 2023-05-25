@@ -1,10 +1,6 @@
 package helper
 
-
-import xf.xflp.base.container.AddRemoveContainer
-import xf.xflp.base.container.AddSpaceContainer
-import xf.xflp.base.container.Container
-import xf.xflp.base.container.GroundContactRule
+import xf.xflp.base.container.*
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
 import xf.xflp.base.item.Position
@@ -17,35 +13,39 @@ class Helper {
 
     static int itemIdx = 0
 
-    static Container getContainer(int width, int length, int height) {
-        return getContainer(width, length, height, 999999999)
+    static Container getAddSpaceContainer(int width, int length, int height) {
+        return getAddSpaceContainer(width, length, height, 999999999)
     }
 
-    static Container getContainer(int width, int length, int height, float maxWeight) {
+    static Container getAddSpaceContainer(int width, int length, int height, float maxWeight) {
+        return new AddContainer(
+                width,
+                length,
+                height,
+                maxWeight,
+                ContainerData.DEFAULT_CONTAINER_TYPE,
+                new DirectContainerParameter(
+                        groundContactRule: GroundContactRule.COVERED,
+                        lifoImportance: 0
+                )
+        )
+    }
+
+    static Container getAddSpaceContainer2(int width, int length, int height) {
+        return getAddSpaceContainer2(width, length, height, Integer.MAX_VALUE)
+    }
+
+    static Container getAddSpaceContainer2(int width, int length, int height, float maxWeight) {
         return new AddRemoveContainer(
                 width,
                 length,
                 height,
                 maxWeight,
                 ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.FREE,
-                0
-        )
-    }
-
-    static Container getAddSpaceContainer(int width, int length, int height) {
-        return getAddSpaceContainer(width, length, height, 999999999)
-    }
-
-    static Container getAddSpaceContainer(int width, int length, int height, float maxWeight) {
-        return new AddSpaceContainer(
-                width,
-                length,
-                height,
-                maxWeight,
-                ContainerData.DEFAULT_CONTAINER_TYPE,
-                GroundContactRule.COVERED,
-                0
+                new DirectContainerParameter(
+                        groundContactRule: GroundContactRule.COVERED,
+                        lifoImportance: 0
+                )
         )
     }
 
@@ -106,7 +106,7 @@ class Helper {
 
     static PositionCandidate findCand(Collection<PositionCandidate> candidates, int x, int y, int z, boolean rotated) {
         for (PositionCandidate cand : candidates) {
-            if(cand.position.getX() == x && cand.position.getY() == y && cand.position.getZ() == z && cand.isRotated == rotated)
+            if(cand.position.x() == x && cand.position.y() == y && cand.position.z() == z && cand.isRotated == rotated)
                     return cand
         }
 
@@ -115,7 +115,7 @@ class Helper {
 
     static Position findPos(Collection<Position> positions, int x, int y, int z) {
         for (Position p : positions) {
-            if(p.getX() == x && p.getY() == y && p.getZ() == z)
+            if(p.x() == x && p.y() == y && p.z() == z)
                 return p
         }
 

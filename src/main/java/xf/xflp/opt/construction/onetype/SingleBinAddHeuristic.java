@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -62,7 +62,7 @@ public class SingleBinAddHeuristic {
 
 			// Add item to container
 			if (insertPosition != null) {
-				container.add(insertPosition.item, insertPosition.position, insertPosition.isRotated);
+				container.add(insertPosition.item(), insertPosition.position(), insertPosition.isRotated());
 			} else {
 				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
 				unplannedItemList.add(item);

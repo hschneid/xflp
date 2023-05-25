@@ -10,7 +10,7 @@ class ContainerBaseSpec extends Specification {
 
     def "find first position in empty container"() {
         when:
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.findPositionCandidates(con, i)
         def pp = Helper.findCand(pList, 0, 0, 0)
@@ -22,7 +22,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add item into empty container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.findPositionCandidates(con, i)
 
@@ -35,7 +35,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find second position in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
@@ -52,7 +52,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add second item to container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         Helper.add(con, PositionService.findPositionCandidates(con, i).get(0))
@@ -67,7 +67,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add third item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -88,7 +88,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add forth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -112,7 +112,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add fifth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -134,7 +134,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find and add sixth item in container"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 10, 0)
@@ -160,7 +160,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "find rotated insert position"() {
-        def con = Helper.getContainer(2,2,2)
+        def con = Helper.getAddSpaceContainer2(2,2,2)
         def i = Helper.getItem(2, 1, 1, 1, 10, 0)
 
         when:
@@ -173,7 +173,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "do not find insert positions for too big items"() {
-        def con = Helper.getContainer(2,2,2, 10)
+        def con = Helper.getAddSpaceContainer2(2,2,2, 10)
         def i1 = Helper.getItem(3, 1, 1, 1, 10, 0)
         def i2 = Helper.getItem(1, 3, 1, 1, 10, 0)
         def i3 = Helper.getItem(1, 1, 3, 1, 10, 0)
@@ -196,7 +196,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "add and remove items from container"() {
-        def con = Helper.getContainer(2,2,5)
+        def con = Helper.getAddSpaceContainer2(2,2,5)
         def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(1, 1, 1, 1, 100, 0)
@@ -229,7 +229,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (X axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 0)
@@ -251,7 +251,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Y axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 1, 0)
@@ -273,7 +273,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Z-X axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 0)
@@ -295,7 +295,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test covered positions (Z-Y axis)"(){
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(1, 2, 1, 1, 1, 0)
@@ -317,7 +317,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test full coverage of item ground"() {
-        def con = Helper.getContainer(5,1,3)
+        def con = Helper.getAddSpaceContainer2(5,1,3)
         con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
         def i1 = Helper.getItem(1, 1, 2, 1, 100, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -342,7 +342,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test rotation"() {
-        def con = Helper.getContainer(2,2,1)
+        def con = Helper.getAddSpaceContainer2(2,2,1)
         def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -362,7 +362,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test horizontal projection of insert position"() {
-        def con = Helper.getContainer(3, 5,2)
+        def con = Helper.getAddSpaceContainer2(3, 5,2)
         def i1 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 3, 1, 1, 100, 0)
         def i3 = Helper.getItem(3, 2, 1, 1, 100, 0)
@@ -377,7 +377,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test vertical projection of insert position"() {
-        def con = Helper.getContainer(3, 5,2)
+        def con = Helper.getAddSpaceContainer2(3, 5,2)
         def i1 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 100, 0)
         def i3 = Helper.getItem(1, 3, 1, 1, 100, 0)
@@ -392,7 +392,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "test vertical projection of insert position at other box"() {
-        def con = Helper.getContainer(4, 6,2)
+        def con = Helper.getAddSpaceContainer2(4, 6,2)
         def i1 = Helper.getItem(3, 2, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)
@@ -410,7 +410,7 @@ class ContainerBaseSpec extends Specification {
     }
 
     def "big test projected insert positions"() {
-        def con = Helper.getContainer(4, 6,2)
+        def con = Helper.getAddSpaceContainer2(4, 6,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getItem(1, 2, 1, 1, 100, 0)
         def i3 = Helper.getItem(2, 1, 1, 1, 100, 0)

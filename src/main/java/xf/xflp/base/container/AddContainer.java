@@ -8,36 +8,34 @@ import xf.xflp.base.space.SpaceService;
 import java.util.*;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
  * @author hschneid
  */
-public class AddSpaceContainer extends ContainerBase {
+public final class AddContainer extends ContainerBase implements Container {
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-
 	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
-	public AddSpaceContainer(
+	public AddContainer(
 			int width,
 			int length,
 			int height,
 			float maxWeight,
 			int containerType,
-			GroundContactRule groundContactRule,
-			float lifoImportance
+			ContainerParameter parameter
 	) {
-		super(width, length, height, maxWeight, containerType, groundContactRule, lifoImportance);
+		super(width, length, height, maxWeight, containerType, parameter);
 		init();
 	}
 
-	public AddSpaceContainer(Container containerPrototype) {
+	public AddContainer(Container containerPrototype) {
 		super(containerPrototype);
 		init();
 	}
@@ -48,7 +46,7 @@ public class AddSpaceContainer extends ContainerBase {
 
 	@Override
 	public Container newInstance() {
-		return new AddSpaceContainer(this);
+		return new AddContainer(this);
 	}
 
 	/**
@@ -80,30 +78,7 @@ public class AddSpaceContainer extends ContainerBase {
 			activePosList.add(newPos);
 			uniquePositionKeys.add(newPos.getKey());
 
-			/* Create spaces
-			 * Begin with maximal space and check for each item in max-space
-			 * if smaller spaces are possible.
-			 */
-			Space maxSpace = Space.of(
-					length - newPos.y,
-					width - newPos.x,
-					height - newPos.z
-			);
-			List<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-
-			Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-			for (Item spaceItem : spaceItems) {
-
-				Set<Space> nextSpaces = new HashSet<>();
-				for (Space space : spaces) {
-					nextSpaces.addAll(
-							spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-					);
-				}
-				spaces = nextSpaces;
-			}
-
-			List<Space> newSpaces = spaceService.getDominatingSpaces(spaces);
+			List<Space> newSpaces = createSpaces(newPos);
 			if(newSpaces.size() > 0) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
@@ -113,9 +88,38 @@ public class AddSpaceContainer extends ContainerBase {
 
 		updateBearingCapacity(List.of(item));
 
+		addToCenterOfGravity(item, pos);
+
 		history.add(item);
 
 		return item.index;
+	}
+
+	/* Create spaces
+	 * Begin with maximal space and check for each item in max-space
+	 * if smaller spaces are possible.
+	 */
+	private List<Space> createSpaces(Position newPos) {
+		Space maxSpace = Space.of(
+				length - newPos.y(),
+				width - newPos.x(),
+				height - newPos.z()
+		);
+		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+
+		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
+		for (Item spaceItem : spaceItems) {
+
+			Set<Space> nextSpaces = new HashSet<>();
+			for (Space space : spaces) {
+				nextSpaces.addAll(
+						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
+				);
+			}
+			spaces = nextSpaces;
+		}
+
+		return spaceService.getDominatingSpaces(spaces);
 	}
 
 	private void removePosition(Position position) {
@@ -142,9 +146,9 @@ public class AddSpaceContainer extends ContainerBase {
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x >= newItem.xw ||
-					position.y >= newItem.yl ||
-					position.z >= newItem.zh)
+			if(position.x() >= newItem.xw ||
+					position.y() >= newItem.yl ||
+					position.z() >= newItem.zh)
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();

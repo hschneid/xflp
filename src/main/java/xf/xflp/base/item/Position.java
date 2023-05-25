@@ -1,7 +1,7 @@
 package xf.xflp.base.item;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -9,18 +9,7 @@ package xf.xflp.base.item;
  *
  * @author hschneid
  */
-public class Position {
-
-	public final int idx, x, y, z;
-	public final PositionType type;
-
-	private Position(int idx, int x, int y, int z, PositionType type) {
-		this.idx = idx;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.type = type;
-	}
+public record Position(int idx, int x, int y, int z, PositionType type) {
 
 	public static Position of(int idx, int x, int y, int z, PositionType type) {
 		return new Position(idx, x, y, z, type);
@@ -33,28 +22,6 @@ public class Position {
 	@Override
 	public String toString() {
 		return "("+x+","+y+","+z+")";
-	}
-
-	/**
-	 * @return the x
-	 */
-	public int getX() {
-		return x;
-	}
-
-	/**
-	 * @return the y
-	 */
-	public int getY() {
-		return y;
-	}
-	
-	/**
-	 * 
-	 * @return the z
-	 */
-	public int getZ() {
-		return z;
 	}
 
 	@Override

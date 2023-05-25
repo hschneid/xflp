@@ -18,9 +18,9 @@ apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.5.2.6-RELEASE'
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+version = '0.6.0-RELEASE'
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
  
 repositories {
     mavenCentral()
@@ -33,7 +33,7 @@ dependencies {
 	// Fancy collection
 	implementation 'com.google.guava:guava:28.2-jre'
 
-	testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
+	testImplementation "org.spockframework:spock-core:2.3-groovy-4.0"
 
 	spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.11.0'
 	spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'

@@ -24,9 +24,9 @@ class XFLPReportSpec extends Specification {
         then:
         rep.getContainerReports().size() == 1
         rep.getContainerReports().findAll {conRep -> conRep.getContainerTypeName() == "CON1"}.size() == 1
-        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.getId() == "P1"} != null
-        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.getId() == "P2"} != null
-        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.getId() == "P3"} != null
+        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.id() == "P1"} != null
+        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.id() == "P2"} != null
+        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.id() == "P3"} != null
     }
 
     def "Test container id and item id allocation in result report with two container types"() {
@@ -44,10 +44,10 @@ class XFLPReportSpec extends Specification {
         rep.getContainerReports().size() == 2
         rep.getContainerReports().findAll {conRep -> conRep.getContainerTypeName() == "CON1"}.size() == 1
         rep.getContainerReports().findAll {conRep -> conRep.getContainerTypeName() == "CON2"}.size() == 1
-        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.getId() == "P1"} != null
-        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.getId() == "P2"} != null
-        rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.getId() == "P3"} != null
-        rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.getId() == "P4"} != null
+        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.id() == "P1"} != null
+        rep.getContainerReports().get(0).getPackageEvents().find {pe -> pe.id() == "P2"} != null
+        rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.id() == "P3"} != null
+        rep.getContainerReports().get(1).getPackageEvents().find {pe -> pe.id() == "P4"} != null
     }
 
 

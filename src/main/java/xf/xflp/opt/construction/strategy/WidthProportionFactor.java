@@ -9,7 +9,7 @@ import xf.xflp.exception.XFLPExceptionType;
 import java.util.List;
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -56,8 +56,8 @@ public class WidthProportionFactor extends BaseStrategy {
 
 	float getDeviationOfProportion(PositionCandidate candidate, Container container) {
 		int conWidth = container.getWidth();
-		int spaceWidth = conWidth - candidate.position.x;
-		int itemWidth =  (candidate.isRotated) ? candidate.item.l : candidate.item.w;
+		int spaceWidth = conWidth - candidate.position().x();
+		int itemWidth =  (candidate.isRotated()) ? candidate.item().l : candidate.item().w;
 
 		float proportion = spaceWidth / (float)itemWidth;
 		if(proportion < 0)

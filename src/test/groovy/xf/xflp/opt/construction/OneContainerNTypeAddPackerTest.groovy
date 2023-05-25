@@ -42,8 +42,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3),
-                 Helper.getContainer(2,2,3)] as Container[],
+                [Helper.getAddSpaceContainer2(3,3,3),
+                 Helper.getAddSpaceContainer2(2,2,3)] as Container[],
                 new XFLPParameter(),
                 Helper.getStatusManager()
         )
@@ -65,8 +65,8 @@ class OneContainerNTypeAddPackerTest extends Specification {
 
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(3,3,3),
-                 Helper.getContainer(2,2,3)] as Container[],
+                [Helper.getAddSpaceContainer2(3,3,3),
+                 Helper.getAddSpaceContainer2(2,2,3)] as Container[],
                 new XFLPParameter(),
                 Helper.getStatusManager()
         )

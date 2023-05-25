@@ -110,7 +110,7 @@ class SingleContainerPackerSpec extends Specification {
     static XFLPModel getModel(ArrayList<Item> items, width, length, height) {
         XFLPModel model = new XFLPModel(
                 items.toArray(new Item[0]),
-                [Helper.getContainer(width, length, height)] as Container[],
+                [Helper.getAddSpaceContainer2(width, length, height)] as Container[],
                 new XFLPParameter(),
                 Helper.getStatusManager()
         )

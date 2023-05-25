@@ -2,11 +2,12 @@ package xf.xflp.base.container;
 
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
+import xf.xflp.base.item.Space;
 
 import java.util.List;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -101,4 +102,7 @@ public interface Container {
      * Returns internal data structures of container
      */
     ContainerBaseData getBaseData();
+
+    List<Space> getSpace(Position pos);
+
 }

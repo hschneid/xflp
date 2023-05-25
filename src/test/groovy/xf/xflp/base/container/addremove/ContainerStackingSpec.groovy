@@ -10,7 +10,7 @@ import xf.xflp.base.position.PositionService
 class ContainerStackingSpec extends Specification {
 
     def "add to stack simple"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -26,7 +26,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "stacking is not possible"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 2, 10, 0)
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -42,7 +42,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a stack with two stack"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 10, 0)
@@ -65,7 +65,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "do not add to a stack with two stack (too heavy/bearing capacity)"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 3, 10, 0)
@@ -88,7 +88,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "placing one item over two stacks - stacking groups not fitting"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 1)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 1)
@@ -104,7 +104,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "placing one item over two stacks - stacking groups are fitting"() {
-        Container con = Helper.getContainer(2,2,2)
+        Container con = Helper.getAddSpaceContainer2(2,2,2)
         def i1 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i2 = Helper.getItem(1, 1, 1, 1, 111, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 111, 2)
@@ -121,7 +121,7 @@ class ContainerStackingSpec extends Specification {
 
 
     def "do not add to a double stack (too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(2,2,3)
+        def con = Helper.getAddSpaceContainer2(2,2,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 1, 0)
@@ -151,7 +151,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "do not add to a double stack (nearly too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(2,2,3)
+        def con = Helper.getAddSpaceContainer2(2,2,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 2, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(2, 1, 1, 2, 1, 0)
@@ -181,7 +181,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a double stack (not too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(2, 1, 1, 1, 2, 0)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(3, 1, 1, 2, 1, 0)
@@ -211,7 +211,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "add to a double stack with bigger size (not too heavy/bearing capacity)"() {
-        def con = Helper.getContainer(6,3,3)
+        def con = Helper.getAddSpaceContainer2(6,3,3)
         def i1 = Helper.getItem(4, 1, 1, 1, 2, 0)
         def i2 = Helper.getItem(2, 1, 1, 1, 1, 0)
         def i3 = Helper.getItem(6, 1, 1, 2, 1, 0)
@@ -241,7 +241,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "All items in same stacking group"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 1)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 1)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
@@ -257,7 +257,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "2 items not in same stacking group"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 2)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
@@ -273,7 +273,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "1 item not in same stacking group"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 1)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 2)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
@@ -289,7 +289,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "Items can bear multiple stacking groups"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 5)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 5)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 1)
@@ -305,7 +305,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "Items cannot bear multiple stacking groups"() {
-        def con = Helper.getContainer(3,3,3)
+        def con = Helper.getAddSpaceContainer2(3,3,3)
         def i1 = Helper.getItem(1, 1, 1, 1, 1, 5)
         def i2 = Helper.getItem(1, 1, 1, 1, 1, 5)
         def i3 = Helper.getItem(2, 1, 1, 1, 1, 2)
@@ -321,7 +321,7 @@ class ContainerStackingSpec extends Specification {
     }
 
     def "check overlapping items"() {
-        def con = Helper.getContainer(3,3,2)
+        def con = Helper.getAddSpaceContainer2(3,3,2)
         con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
         def i1 = Helper.getItem(2, 2, 1, 1, 111,0)
         def i2 = Helper.getItem(3, 1, 1, 1, 111,0 )

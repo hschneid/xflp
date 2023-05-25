@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /** 
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -60,7 +60,7 @@ public class ZItemGraph {
 	 * Remove an item from Z graph
 	 */
 	public void remove(Item item) {
-		// Entferne Item aus lower items
+		// Remove Item from lower items
 		if(lowerList.get(item.index) != null) {
 			List<Item> get = lowerList.get(item.index).lowerItemList;
 			for (int i = get.size() - 1; i >= 0; i--) {

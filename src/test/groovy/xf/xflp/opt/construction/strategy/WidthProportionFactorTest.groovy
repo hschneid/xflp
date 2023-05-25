@@ -10,7 +10,7 @@ import xf.xflp.exception.XFLPException
 class WidthProportionFactorTest extends Specification {
 
     def service = new WidthProportionFactor()
-    def container = Helper.getContainer(240, 1000, 1)
+    def container = Helper.getAddSpaceContainer2(240, 1000, 1)
 
     def "choose min proportion - one pos wins"() {
         def item = new Item()

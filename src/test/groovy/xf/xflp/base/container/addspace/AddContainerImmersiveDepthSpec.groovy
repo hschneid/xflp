@@ -6,7 +6,7 @@ import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
 import xf.xflp.base.position.PositionService
 
-class AddSpaceContainerImmersiveDepthSpec extends Specification {
+class AddContainerImmersiveDepthSpec extends Specification {
 
     def "only immersive depth, item is fitting, just adding"() {
         Container con = Helper.getAddSpaceContainer(2,2,20)

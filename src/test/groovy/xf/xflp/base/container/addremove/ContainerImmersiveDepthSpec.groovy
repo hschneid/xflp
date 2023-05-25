@@ -9,7 +9,7 @@ import xf.xflp.base.position.PositionService
 class ContainerImmersiveDepthSpec extends Specification {
 
     def "only immersive depth, item is fitting, just adding"() {
-        Container con = Helper.getContainer(2,2,20)
+        Container con = Helper.getAddSpaceContainer2(2,2,20)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
@@ -25,7 +25,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "even with immersive depth, item is not fitting"() {
-        Container con = Helper.getContainer(2,2,19)
+        Container con = Helper.getAddSpaceContainer2(2,2,19)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
@@ -39,7 +39,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "stack 3 items with immersive depth"() {
-        Container con = Helper.getContainer(2,2,30)
+        Container con = Helper.getAddSpaceContainer2(2,2,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
@@ -59,7 +59,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "add, remove and readd 3 items with immersive depth"() {
-        Container con = Helper.getContainer(2,2,30)
+        Container con = Helper.getAddSpaceContainer2(2,2,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
@@ -85,7 +85,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     }
 
     def "stack item on multiple items, with different immersive depth"() {
-        Container con = Helper.getContainer(3,3,30)
+        Container con = Helper.getAddSpaceContainer2(3,3,30)
         def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
         i1.immersiveDepth = 2
         def i2 = Helper.getItem(1, 1, 10, 1, 10, 0)

@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -41,19 +41,19 @@ public class Tools {
 	}
 
 	public static List<Item> findItemsBelow(Container container, Position pos, Item newItem) {
-		if(!container.getBaseData().getZMap().containsKey(pos.z)) {
+		if(!container.getBaseData().getZMap().containsKey(pos.z())) {
 			return Collections.emptyList();
 		}
 
 		List<Item> belowItems = new ArrayList<>();
-		List<Integer> zItems = container.getBaseData().getZMap().get(pos.z);
+		List<Integer> zItems = container.getBaseData().getZMap().get(pos.z());
 		for (int i = zItems.size() - 1; i >= 0; i--) {
 			Item lowerItem = container.getItems().get(zItems.get(i));
-			if(lowerItem.zh == pos.z &&
-					lowerItem.x < pos.x + newItem.w &&
-					lowerItem.xw > pos.x &&
-					lowerItem.y < pos.y + newItem.l &&
-					lowerItem.yl > pos.y) {
+			if(lowerItem.zh == pos.z() &&
+					lowerItem.x < pos.x() + newItem.w &&
+					lowerItem.xw > pos.x() &&
+					lowerItem.y < pos.y() + newItem.l &&
+					lowerItem.yl > pos.y()) {
 				belowItems.add(lowerItem);
 			}
 		}

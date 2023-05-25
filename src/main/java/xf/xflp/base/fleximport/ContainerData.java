@@ -1,9 +1,8 @@
 package xf.xflp.base.fleximport;
 
 import xf.xflp.base.XFLPParameter;
-import xf.xflp.base.container.AddRemoveContainer;
-import xf.xflp.base.container.AddSpaceContainer;
-import xf.xflp.base.container.Container;
+import xf.xflp.base.container.*;
+import xf.xflp.base.container.constraints.AxleLoadParameter;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
@@ -12,7 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -28,11 +27,16 @@ public class ContainerData implements Serializable {
 
 	public static final int DEFAULT_CONTAINER_TYPE = 0;
 
-	protected int width = Integer.MAX_VALUE;
-	protected int length = Integer.MAX_VALUE;
-	protected int height = Integer.MAX_VALUE;
-	protected float maxWeight = Float.MAX_VALUE;
-	protected String containerType = "default_container_type";
+	private int width = Integer.MAX_VALUE;
+	private int length = Integer.MAX_VALUE;
+	private int height = Integer.MAX_VALUE;
+	private float maxWeight = Float.MAX_VALUE;
+	private String containerType = "default_container_type";
+
+	// Configuration of permissible axle load
+	private float firstPermissibleAxleLoad = Float.MAX_VALUE;
+	private float secondPermissibleAxleLoad = Float.MAX_VALUE;
+	private float axleDistance = 0;
 
 	/**
 	 * @param width the width to set
@@ -70,6 +74,18 @@ public class ContainerData implements Serializable {
 		return this;
 	}
 
+	public void setFirstPermissibleAxleLoad(float firstPermissibleAxleLoad) {
+		this.firstPermissibleAxleLoad = firstPermissibleAxleLoad;
+	}
+
+	public void setSecondPermissibleAxleLoad(float secondPermissibleAxleLoad) {
+		this.secondPermissibleAxleLoad = secondPermissibleAxleLoad;
+	}
+
+	public void setAxleDistance(float axleDistance) {
+		this.axleDistance = axleDistance;
+	}
+
 	////////////////////////////////////////
 
 	/**
@@ -82,19 +98,26 @@ public class ContainerData implements Serializable {
 	Container create(DataManager manager, XFLPParameter parameter, boolean isAddingAndRemovingItems) throws XFLPException {
 		Class<? extends Container> correctContainerClass = (isAddingAndRemovingItems)
 				? AddRemoveContainer.class
-				: AddSpaceContainer.class;
+				: AddContainer.class;
 
 		for (Constructor<?> constructor : correctContainerClass.getConstructors()) {
-			if(constructor.getParameterCount() == 7) {
+			if(constructor.getParameterCount() == 6) {
 				try {
+
+					ContainerParameter containerParameter = new DirectContainerParameter();
+					containerParameter.add(ParameterType.GROUND_CONTACT_RULE, parameter.getGroundContactRule());
+					containerParameter.add(ParameterType.LIFO_IMPORTANCE, 1f);
+					containerParameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
+							firstPermissibleAxleLoad, secondPermissibleAxleLoad, axleDistance
+					));
+
 					return (Container) constructor.newInstance(
 							width,
 							length,
 							height,
 							maxWeight,
 							manager.getContainerTypeIdx(containerType),
-							parameter.getGroundContactRule(),
-							1
+							containerParameter
 					);
 				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 					throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, e.getMessage(), e);

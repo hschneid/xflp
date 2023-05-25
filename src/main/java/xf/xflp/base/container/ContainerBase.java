@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ContainerBase implements Container, ContainerBaseData {
+public abstract sealed class ContainerBase implements Container, ContainerBaseData permits AddContainer, AddRemoveContainer {
 
     /* Idx of the container. There are no two containers, with same index. */
     protected int index = -1;
@@ -47,7 +47,8 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
     protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
     protected int maxPosIdx = 0;
-    protected ContainerParameter parameter = new DirectContainerParameter();
+    protected final ContainerParameter parameter;
+    protected float centerOfGravityForY = 0;
 
     protected ContainerBase(
             int width,
@@ -55,16 +56,14 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
             int height,
             float maxWeight,
             int containerType,
-            GroundContactRule groundContactRule,
-            float lifoImportance
+            ContainerParameter parameter
     ) {
         this.width = width;
         this.length = length;
         this.height = height;
         this.maxWeight = maxWeight;
         this.containerType = containerType;
-        parameter.add(ParameterType.GROUND_CONTACT_RULE, groundContactRule);
-        parameter.add(ParameterType.LIFO_IMPORTANCE, lifoImportance);
+        this.parameter = parameter;
 
         init();
     }
@@ -85,7 +84,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         activePosList.add(start);
     }
 
-    @Override
     public boolean isItemAllowed(Item item) {
         return
                 // If item can be loaded on any container
@@ -94,7 +92,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
                         || item.allowedContainerSet.contains(containerType);
     }
 
-    @Override
     public long getLoadedVolume() {
         long sum = 0;
         for (Item item : this.itemList)
@@ -104,7 +101,6 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return sum;
     }
 
-    @Override
     public float getLoadedWeight() {
         float sum = 0;
         List<Item> list = this.itemList;
@@ -195,7 +191,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         Item leftItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.y > pos.y || item.yl < pos.y || item.x > pos.x || item.xw > pos.x || pos.y == item.yl)
+            if(item == null || item.y > pos.y() || item.yl < pos.y() || item.x > pos.x() || item.xw > pos.x() || pos.y() == item.yl)
                 continue;
 
             if(leftItem == null || item.xw > leftItem.xw)
@@ -209,7 +205,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         Item lowerItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.x > pos.x || item.xw < pos.x || item.y > pos.y || item.yl > pos.y || pos.x == item.xw)
+            if(item == null || item.x > pos.x() || item.xw < pos.x() || item.y > pos.y() || item.yl > pos.y() || pos.x() == item.xw)
                 continue;
 
             if(lowerItem == null || item.yl > lowerItem.yl)
@@ -224,19 +220,16 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
 
         for (Position pos : activePosList) {
             // Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
-            if(pos.z == item.z && pos.x >= item.x && pos.x < item.xw && pos.y == item.y)
+            if(pos.z() == item.z && pos.x() >= item.x && pos.x() < item.xw && pos.y() == item.y)
                 coveredPositionList.add(pos);
                 // Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
-            else if(pos.z == item.z && pos.y >= item.y && pos.y < item.yl && pos.x == item.x)
+            else if(pos.z() == item.z && pos.y() >= item.y && pos.y() < item.yl && pos.x() == item.x)
                 coveredPositionList.add(pos);
         }
 
         return coveredPositionList;
     }
 
-    /**
-     *
-     */
     protected Position createPosition(int x, int y, int z, PositionType type) {
         return Position.of(maxPosIdx++, x, y, z, type);
     }
@@ -250,7 +243,7 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
      * must be checked. If this is the case, then the height of given item is reduced.
      */
     protected int retrieveHeight(Item item, Position pos) {
-        if(pos.z == 0) {
+        if(pos.z() == 0) {
             return item.h;
         }
 
@@ -267,78 +260,76 @@ public abstract class ContainerBase implements Container, ContainerBaseData {
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
-    @Override
+    protected void addToCenterOfGravity(Item item, Position pos) {
+        centerOfGravityForY += (pos.y() + (item.l / 2f)) * item.getWeight();
+    }
+
+    protected void removeFromCenterOfGravity(Item item, Position pos) {
+        centerOfGravityForY -= (pos.y() + (item.l / 2f)) * item.getWeight();
+    }
+
     public List<Item> getItems() {
         return itemList;
     }
 
-    @Override
     public List<Position> getActivePositions() {
         return activePosList;
     }
 
-    @Override
     public List<Item> getHistory() {
         return history;
     }
 
-    @Override
     public ContainerParameter getParameter() {
         return parameter;
     }
 
-    @Override
     public int getWidth() {
         return width;
     }
 
-    @Override
     public int getHeight() {
         return height;
     }
 
-    @Override
     public int getLength() {
         return length;
     }
 
-    @Override
     public float getMaxWeight() {
         return maxWeight;
     }
 
-    @Override
     public int getContainerType() {
         return containerType;
     }
 
-    @Override
     public ContainerBaseData getBaseData() {
         return this;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getXMap() {
         return xMap;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getYMap() {
         return yMap;
     }
 
-    @Override
     public LPListMap<Integer, Integer> getZMap() {
         return zMap;
     }
 
-    @Override
     public ZItemGraph getZGraph() {
         return zGraph;
     }
 
-    @Override
     public Map<Integer, Float> getBearingCapacities() {
         return bearingCapacities;
+    }
+
+    @Override
+    public float getCenterOfGravityForY() {
+        return centerOfGravityForY;
     }
 }

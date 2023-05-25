@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Copyright (c) 2012-2022 Holger Schneider
+ * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
- *
+ * <p>
  *
  * @author hschneid
  *
@@ -35,7 +35,7 @@ public class StackingChecker {
             int itemW,
             int itemL) {
         // New item will be placed at ground. So no stacking needs to be checked.
-        if (pos.getZ() == 0)
+        if (pos.z() == 0)
             return true;
 
         // Check stacking group - All lower items must have the same stacking group
@@ -49,12 +49,12 @@ public class StackingChecker {
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
     private static boolean checkStackingGroupAndGroundContact(Container container, Item item, Position pos, int itemW, int itemL, long stackingGroup) {
-        List<Integer> zList = container.getBaseData().getZMap().get(pos.getZ());
+        List<Integer> zList = container.getBaseData().getZMap().get(pos.z());
         if(zList == null || zList.isEmpty())
             return true;
 
-        int itemXW = pos.getX() + itemW;
-        int itemYL = pos.getY() + itemL;
+        int itemXW = pos.x() + itemW;
+        int itemYL = pos.y() + itemL;
 
         int nbrOfItemsBelow = 0;
         int cornerItem1, cornerItem2, cornerItem3, cornerItem4;
@@ -79,15 +79,15 @@ public class StackingChecker {
                 return false;
             }
 
-            if(pos.getX() >= fi.x && pos.getX() <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
+            if(pos.x() >= fi.x && pos.x() <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
                 cornerItem1 = fi.externalIndex;
                 corner1 = true;
             }
-            if(itemXW > fi.x && itemXW <= fi.xw && pos.getY() >= fi.y && pos.getY() <= fi.yl) {
+            if(itemXW > fi.x && itemXW <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
                 cornerItem2 = fi.externalIndex;
                 corner2 = true;
             }
-            if(pos.getX() >= fi.x && pos.getX() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
+            if(pos.x() >= fi.x && pos.x() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
                 cornerItem3 = fi.externalIndex;
                 corner3 = true;
             }
@@ -98,7 +98,7 @@ public class StackingChecker {
 
             // Is bearing capacity enough?
             float bearingCapacity = bearingCapacities.get(zList.get(i));
-            float areaRatio = Tools.getCutRatio(pos.x, pos.y, itemW, itemL, fi);
+            float areaRatio = Tools.getCutRatio(pos.x(), pos.y(), itemW, itemL, fi);
             if(bearingCapacity - (item.getWeight() * areaRatio) < 0) {
                 return false;
             }
@@ -131,10 +131,10 @@ public class StackingChecker {
     }
 
     private static boolean isNotBelow(Position position, int itemW, int itemL, Item lowerItem) {
-        return lowerItem.zh != position.z ||
-                lowerItem.xw <= position.x ||
-                lowerItem.yl <= position.y ||
-                lowerItem.x >= position.x + itemW ||
-                lowerItem.y >= position.y + itemL;
+        return lowerItem.zh != position.z() ||
+                lowerItem.xw <= position.x() ||
+                lowerItem.yl <= position.y() ||
+                lowerItem.x >= position.x() + itemW ||
+                lowerItem.y >= position.y() + itemL;
     }
 }

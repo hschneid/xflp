@@ -6,12 +6,14 @@ import xf.xflp.base.item.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-/** 
+/**
  * Copyright (c) 2012-2023 Holger Schneider
  * All rights reserved.
  *
@@ -26,7 +28,7 @@ import java.util.stream.Stream;
  * - Easy-to-fill data objects by eliminating import methods (set/add) with static parameters
  * - Handling of vehicles (default or fleet)
  * - Assiging the vehicle priority by sorting the vehicles with their capacities
- * 
+ *
  * After import collected data can be accessed XFLP suite. 
  * @author hschneid
  */
@@ -34,7 +36,7 @@ public class FlexiImporter implements Serializable {
 	private static final long serialVersionUID = -6460880073124361069L;
 
 	private final DataManager dataManager = new DataManager();
-	
+
 	private final List<ItemData> itemList = new ArrayList<>();
 	private final List<ContainerData> containerList = new ArrayList<>();
 
@@ -57,13 +59,15 @@ public class FlexiImporter implements Serializable {
 			containerList.add(lastContainerData);
 			lastContainerData = null;
 		}
+
+		dataManager.reindexLocations();
 	}
 
 	/**
 	 * Achieve a depot data object, where user can import data in any
 	 * sequence. The call of this method means, that the last achieved
 	 * depot data object is finalized and added to the internal depot list.
-	 * 
+	 *
 	 * @return Depot data, where user can import data in any sequence
 	 */
 	public ItemData getItemData() {
@@ -81,11 +85,11 @@ public class FlexiImporter implements Serializable {
 	 * Achieve a vehicle data object, where user can import data in any
 	 * sequence. The call of this method means, that the last achieved
 	 * vehicle data object is finalized and added to the internal vehicle list.
-	 * 
+	 *
 	 * By achieving a vehicle data object, the default vehicle is put out of
 	 * vehicle list. So the default vehicle parameter have to be announced in
 	 * specific own vehicle data.
-	 * 
+	 *
 	 * @return Container data, where user can import data in any sequence
 	 */
 	public ContainerData getContainerData() {
@@ -108,7 +112,7 @@ public class FlexiImporter implements Serializable {
 
 		lastItemData = null;
 		lastContainerData = null;
-		
+
 		dataManager.clear();
 	}
 
@@ -130,7 +134,7 @@ public class FlexiImporter implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the collected depots
 	 */
 	public List<ItemData> getItemList() {
@@ -141,7 +145,7 @@ public class FlexiImporter implements Serializable {
 	 * Transform imported items into loading and unloading items
 	 */
 	public List<Item> getConvertedItemList() {
-		return itemList.stream()
+		var items = itemList.stream()
 				.flatMap(itemData -> {
 					Item item = itemData.createLoadingItem(dataManager);
 					if(itemData.getUnloadingLocation().length() > 0)
@@ -150,16 +154,36 @@ public class FlexiImporter implements Serializable {
 				})
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
+
+		var hasLocations = items.stream()
+				.flatMapToInt(item -> IntStream.of(item.loadingLoc, item.unLoadingLoc))
+				.distinct()
+				.count() > 1;
+
+		if(hasLocations) {
+			items.sort(
+					Comparator.comparing((Item i) -> (i.isLoading) ? i.loadingLoc : i.unLoadingLoc)
+							.thenComparing(Item::isLoading)
+							.thenComparing((Item i, Item j) -> {
+								if(i.isLoading && j.isLoading)
+									return j.getUnLoadingLoc() - i.getUnLoadingLoc();
+								return i.getUnLoadingLoc() - j.getUnLoadingLoc();
+							})
+							.thenComparing(Item::getIdx)
+			);
+		}
+
+		return items;
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the collected vehicles
 	 */
 	public List<ContainerData> getContainerList() {
 		return containerList;
 	}
-	
+
 	public List<Container> getConvertedContainerList(List<Item> items, XFLPParameter parameter) {
 		boolean isAddingAndRemovingItems = checkForAddRemove(items);
 

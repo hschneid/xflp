@@ -1,10 +1,7 @@
 package xf.xflp.base.fleximport;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright (c) 2012-2023 Holger Schneider
@@ -67,6 +64,7 @@ public class DataManager implements Serializable {
 	}
 
 	public void addLocation(String locationID) {
+		locationID = locationID.trim().toLowerCase();
 		if(!locationMap.containsKey(locationID))
 			locationMap.put(locationID, maxLocationID++);
 	}
@@ -179,5 +177,20 @@ public class DataManager implements Serializable {
 		itemMap.clear();
 		shipmentMap.clear();
 		shipmentMap.put("default_shipment", 0);
+	}
+
+	/**
+	 * Locations must be sorted in their naming. The ID/index is
+	 * used later to identify if a location is earlier in the routing
+	 * of the truck or later.
+	 */
+	public void reindexLocations() {
+		var locations = locationMap
+				.keySet()
+				.stream()
+				.sorted(Comparator.comparing(s -> s))
+				.toList();
+		locationMap.clear();
+		locations.forEach(this::addLocation);
 	}
 }

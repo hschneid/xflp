@@ -42,6 +42,23 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.6.1 - Fixed Location feature
+- User can set loading and unloading location for each item. This is useful during Vehicle Routing, when sequences of loading and unloading need to be checked.
+  Here was a bug in code, where locations were not sorted in correct order. This is fixed now, but there are prerequisits:
+  - The name of a location (load or unload) must correspond with the ordering in sequence.
+  - The LIFO loading constraint must be activated as it is not default.
+  - Example for infeasible solution
+  ```
+  XFLP xflp = new XFLP()
+  xflp.getParameter().setLifoImportance(1)
+
+  xflp.addItem().setExternID("P1").setLoadingLocation("Loc 1").setUnloadingLocation("Loc 3")
+  xflp.addItem().setExternID("P2").setLoadingLocation("Loc 2").setUnloadingLocation("Loc 4")
+
+  xflp.executeLoadPlanning()
+  assert xflp.getReport().getUnplannedPackages().size() > 0
+  ```
+
 ### 0.6.0 - Update to Java 17, permissible axle load and more
 - Changed xflp to Java 17. Due to use of records, xflp is not compatible with Java < 17 anymore.
 - Add space-based checking when items are added and removed in a container. This improves the planning performance and 

@@ -32,7 +32,7 @@ public class ContainerReportSummary {
 			nbrOfLoadedPackages++;
 			// Only loaded items increase the max loaded volume/weight values
 			maxUsedVolume += e.usedVolumeInContainer();
-			maxUsedWeight = Math.max(maxUsedWeight, e.usedWeightInContainer());
+			maxUsedWeight += e.usedWeightInContainer();
 		} else if(e.type() == LoadType.UNLOAD) {
 			nbrOfUnLoadedPackages++;
 		}

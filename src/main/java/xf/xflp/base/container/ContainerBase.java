@@ -112,6 +112,12 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         return sum;
     }
 
+    public void addVirtualItem(Item virtualItem) {
+        virtualItem.setPosition(Position.of(0,0,0));
+        weight += virtualItem.getWeight();
+        history.add(virtualItem);
+    }
+
     protected void addItem(Item item, Position pos) {
         // Adjust height for immersive depth
         item.h = retrieveHeight(item, pos);

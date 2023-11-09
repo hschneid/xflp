@@ -147,7 +147,7 @@ class ContainerReportTest extends Specification {
         rep.getPackageEvents().find {f -> f == e2} != null
         Math.abs(sum.getUtilization() - (e.usedVolumeInContainer() + e2.usedVolumeInContainer()) / (2 * 2 * 3)) < 0.1
         sum.getMaxUsedVolume() == (e.usedVolumeInContainer() + e2.usedVolumeInContainer())
-        sum.getMaxUsedWeight() == e2.usedWeightInContainer()
+        sum.getMaxUsedWeight() == e.usedWeightInContainer() + e2.usedWeightInContainer()
         sum.getNbrOfLoadedPackages() == 2
         sum.getNbrOfUnLoadedPackages() == 0
         rep.iterator().size() == 2

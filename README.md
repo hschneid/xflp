@@ -1,6 +1,5 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-[![BCH compliance](https://bettercodehub.com/edge/badge/hschneid/xflp?branch=master)](https://bettercodehub.com/)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.6.0&color=-)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.6.2&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -42,6 +41,8 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.6.2 - Consider virtual items
+- A virtual item has no length, width and height, but it can have a weight. This can happen, if XFLP needs to consider co-packed objects.
 ### 0.6.1 - Fixed Location feature
 - User can set loading and unloading location for each item. This is useful during Vehicle Routing, when sequences of loading and unloading need to be checked.
   Here was a bug in code, where locations were not sorted in correct order. This is fixed now, but there are prerequisits:

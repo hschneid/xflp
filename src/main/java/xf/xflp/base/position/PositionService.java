@@ -148,7 +148,7 @@ public class PositionService {
             // Liegt das Item im Entladekorridor zur Ladekante
             if(otherItem.yl <= pos.y() && otherItem.x < (pos.x() + itemW) && otherItem.xw > pos.x()) {
                 // Wenn der Entladerang des neuen Items gr��er als der
-                // Entladeran des Items ist, dann geht diese Position nicht.
+                // Entladerang des Items ist, dann geht diese Position nicht.
                 // Das bestehende Item m�sste fr�her entladen werden, als
                 // das verstellende neue Item
                 // Das Item muss fr�her entladen werden, als

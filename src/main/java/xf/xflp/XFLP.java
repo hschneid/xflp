@@ -115,15 +115,16 @@ public class XFLP {
 	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {
 		double maxWeightCapacity = containerTypeList.stream().mapToDouble(Container::getMaxWeight).max().orElse(Double.MAX_VALUE);
 		for (Item item : itemList) {
-			if(item.w == 0) {
+			var isVirtual = item.l == 0 && item.w == 0 && item.h == 0;
+			if(item.w <= 0 && !isVirtual) {
 				statusManager.fireMessage(StatusCode.ABORT, "Width of item must be greater 0 : Item " + item.externalIndex);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Width of item must be greater 0 : Item " + item.externalIndex);
 			}
-			if(item.l == 0) {
+			if(item.l <= 0 && !isVirtual) {
 				statusManager.fireMessage(StatusCode.ABORT, "Length of item must be greater 0 : Item " + item.externalIndex);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Length of item must be greater 0 : Item " + item.externalIndex);
 			}
-			if(item.h == 0) {
+			if(item.h <= 0 && !isVirtual) {
 				statusManager.fireMessage(StatusCode.ABORT, "Height of item must be greater 0 : Item " + item.externalIndex);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Height of item must be greater 0 : Item " + item.externalIndex);
 			}
@@ -131,7 +132,7 @@ public class XFLP {
 				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
 			}
-			if(item.h - item.immersiveDepth <= 0) {
+			if(item.h - item.immersiveDepth <= 0 && !isVirtual) {
 				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
 				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.h + " "+ item.immersiveDepth);
 			}

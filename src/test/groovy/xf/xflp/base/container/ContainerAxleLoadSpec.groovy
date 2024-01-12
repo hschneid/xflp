@@ -2,7 +2,6 @@ package xf.xflp.base.container
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.container.ParameterType
 import xf.xflp.base.container.constraints.AxleLoadParameter
 import xf.xflp.base.position.PositionService
 

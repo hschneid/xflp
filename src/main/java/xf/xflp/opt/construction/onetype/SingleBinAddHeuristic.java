@@ -49,12 +49,6 @@ public class SingleBinAddHeuristic {
 		for (Item item : items) {
 			PositionCandidate insertPosition = null;
 
-			// Virtual items
-			if(isVirtualItem(container, item)) {
-				container.addVirtualItem(item);
-				continue;
-			}
-
 			// Check if item is allowed to this container type
 			if (container.isItemAllowed(item)) {
 				// Fetch existing insert positions
@@ -76,12 +70,6 @@ public class SingleBinAddHeuristic {
 		}
 
 		return unplannedItemList;
-	}
-
-	private boolean isVirtualItem(Container container, Item item) {
-		return item.getL() == 0 && item.getW() == 0 && item.getH() == 0 &&
-				container.isItemAllowed(item) &&
-				(container.getLoadedWeight() + item.weight <= container.getMaxWeight());
 	}
 
 	private void resetItems(List<Item> items) {

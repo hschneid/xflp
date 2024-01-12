@@ -18,7 +18,7 @@ apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
 archivesBaseName = 'xflp'
-version = '0.6.2-RELEASE'
+version = '0.6.3-RELEASE'
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
  
@@ -31,7 +31,7 @@ mainClassName = 'util.Application'
 // In this section you declare the dependencies for your production and test code
 dependencies {
 	// Fancy collection
-	implementation 'com.google.guava:guava:28.2-jre'
+	implementation 'com.google.guava:guava:33.0.0-jre'
 
 	testImplementation "org.spockframework:spock-core:2.3-groovy-4.0"
 

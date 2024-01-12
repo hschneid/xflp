@@ -102,20 +102,16 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     public float getLoadedWeight() {
-        float sum = 0;
+        /*float sum = 0;
         List<Item> list = this.itemList;
         for (int i = list.size() - 1; i >= 0; i--) {
             Item item = list.get(i);
             sum += (item != null) ? item.weight : 0;
         }
 
-        return sum;
-    }
+        return sum;*/
 
-    public void addVirtualItem(Item virtualItem) {
-        virtualItem.setPosition(Position.of(0,0,0));
-        weight += virtualItem.getWeight();
-        history.add(virtualItem);
+        return weight;
     }
 
     protected void addItem(Item item, Position pos) {
@@ -254,7 +250,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         }
 
         List<Item> lowerItems = Tools.findItemsBelow(this, pos, item);
-        if(lowerItems.size() == 0)
+        if(lowerItems.isEmpty())
             return item.h;
 
         int minImmersiveDepth = Integer.MAX_VALUE;

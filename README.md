@@ -41,8 +41,6 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
-### 0.6.2 - Consider virtual items
-- A virtual item has no length, width and height, but it can have a weight. This can happen, if XFLP needs to consider co-packed objects.
 ### 0.6.1 - Fixed Location feature
 - User can set loading and unloading location for each item. This is useful during Vehicle Routing, when sequences of loading and unloading need to be checked.
   Here was a bug in code, where locations were not sorted in correct order. This is fixed now, but there are prerequisits:

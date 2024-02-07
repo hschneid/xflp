@@ -104,6 +104,4 @@ public interface Container {
     ContainerBaseData getBaseData();
 
     List<Space> getSpace(Position pos);
-
-    void addVirtualItem(Item item);
 }

@@ -21,7 +21,8 @@ class ContainerReportTest extends Specification {
             LoadType.LOAD,
             1,
             222,
-            333
+            333,
+            false
     )
 
     static def ee = new LPPackageEvent(
@@ -39,7 +40,8 @@ class ContainerReportTest extends Specification {
             LoadType.UNLOAD,
             1,
             222,
-            333
+            333,
+            false
     )
 
     def "Create an empty report"() {
@@ -134,7 +136,8 @@ class ContainerReportTest extends Specification {
                 LoadType.LOAD,
                 3,
                 444,
-                333
+                333,
+                false
         )
 
         when:

@@ -23,6 +23,7 @@ public record LPPackageEvent(
 		 LoadType type,
 		 float usedVolumeInContainer,
 		 float usedWeightInContainer,
-		 int nbrStacksInContainer
+		 int nbrStacksInContainer,
+		 boolean isRotatedPosition
 ) {
 }

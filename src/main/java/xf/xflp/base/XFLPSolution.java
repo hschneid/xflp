@@ -50,7 +50,8 @@ public class XFLPSolution {
 						item.loadingType,
 						item.getVolume(),
 						item.getWeight(),
-						0 // NbrOfStacks
+						0, // NbrOfStacks
+						item.isRotated()
 				);
 				cRep.add(e);
 			}
@@ -75,7 +76,8 @@ public class XFLPSolution {
 					unplannedItem.loadingType,
 					unplannedItem.getVolume(),
 					0,
-					0 // NbrOfStacks
+					0, // NbrOfStacks
+					false
 			);
 
 			rep.addUnplannedPackages(e);

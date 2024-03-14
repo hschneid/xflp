@@ -63,4 +63,17 @@ class XFLPReportSpec extends Specification {
         // Immersive depth on stacked items must be not considered
         rep.getContainerReports().get(0).getSummary().getMaxUsedVolume() == (1 * 1 * 10) * 2
     }
+
+    def "Test result report with rotated position"() {
+        service.addContainer().setContainerType("CON1").setWidth(4).setLength(2).setHeight(2).setMaxWeight(10)
+        service.addItem().setExternID("P1").setWidth(1).setLength(3).setHeight(1).setWeight(1)
+        service.addItem().setExternID("P2").setWidth(3).setLength(1).setHeight(1).setWeight(1)
+
+        when:
+        service.executeLoadPlanning()
+        def rep = service.getReport()
+        then:
+        rep.containerReports[0].packageEvents.any {i -> i.id() == "P1" && i.isRotatedPosition()}
+        rep.containerReports[0].packageEvents.any {i -> i.id() == "P2" && !i.isRotatedPosition()}
+    }
 }

@@ -21,7 +21,8 @@ class LPReportTest extends Specification {
             LoadType.LOAD,
             1,
             222,
-            333
+            333,
+            false
     )
 
     def "Create empty report"() {
@@ -105,7 +106,8 @@ class LPReportTest extends Specification {
                 LoadType.LOAD,
                 3,
                 444,
-                333
+                333,
+                false
         )
 
         rep.add(e1)

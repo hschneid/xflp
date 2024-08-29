@@ -1,5 +1,6 @@
 package xf.xflp.opt.construction.multitype;
 
+import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.monitor.StatusCode;
@@ -17,10 +18,12 @@ public class MultiBinAddHeuristic {
 
     private final BaseStrategy strategy;
     private final StatusManager statusManager;
+    private final XFLPParameter parameter;
 
-    public MultiBinAddHeuristic(Strategy s, StatusManager statusManager) {
+    public MultiBinAddHeuristic(Strategy s, StatusManager statusManager, XFLPParameter parameter) {
         this.strategy = s.getStrategy();
         this.statusManager = statusManager;
+        this.parameter = parameter;
     }
 
     public List<Item> createLoadingPlan(List<Item> items, List<Container> containers) throws XFLPException {
@@ -29,19 +32,35 @@ public class MultiBinAddHeuristic {
         // Reset eventual presets
         resetItems(items);
 
-        for (Item item : items) {
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
             List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers, strategy);
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
+                if(reachedMaxNbrOfItems(containers, parameter)) {
+                    setUnplanned(unplannedItems, items.subList(i, items.size()).toArray(new Item[0]));
+                    break;
+                }
+
                 insertIntoContainer(containerPositions);
             } else {
-                statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
-                unplannedItems.add(item);
+                setUnplanned(unplannedItems, item);
             }
         }
 
         return unplannedItems;
+    }
+
+    private boolean reachedMaxNbrOfItems(List<Container> containers, XFLPParameter parameter) {
+        return containers.stream().mapToInt(c -> c.getItems().size()).sum() >= parameter.getMaxNbrOfItems();
+    }
+
+    private void setUnplanned(List<Item> unplannedItems, Item... items) {
+        for (Item item : items) {
+            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
+            unplannedItems.add(item);
+        }
     }
 
     private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {

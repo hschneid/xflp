@@ -157,4 +157,41 @@ class XFLPSpec extends Specification {
         1 | 1 | 1 | 0  | 11 || XFLPException | 'Item is too heavy for any container'
     }
 
+    def "Parameter maxNbrOfItems is checked"() {
+        service.addContainer().setWidth(10).setLength(10).setHeight(10).setMaxWeight(1000)
+        for (i in 1..<101) {
+            service.addItem().setExternID("P"+i).setWidth(1).setLength(1).setHeight(1).setWeight(1)
+        }
+
+        // Restrict number of packages
+        when:
+        service.getParameter().setMaxNbrOfItems(23)
+        service.executeLoadPlanning()
+        def rep = service.getReport()
+
+        then:
+        rep.getContainerReports()[0].getPackageEvents().size() == 23
+        rep.getUnplannedPackages().size() == 77
+
+        // Check - all fit tightly
+        when:
+        service.getParameter().setMaxNbrOfItems(100)
+        service.executeLoadPlanning()
+        rep = service.getReport()
+
+        then:
+        rep.getContainerReports()[0].getPackageEvents().size() == 100
+        rep.getUnplannedPackages().size() == 0
+
+        // Wrong parameter value
+        when:
+        service.getParameter().setMaxNbrOfItems(0)
+        service.executeLoadPlanning()
+        rep = service.getReport()
+
+        then:
+        def error = thrown(XFLPException)
+        error.message.contains("Number of allowed items must be greater than 0")
+    }
+
 }

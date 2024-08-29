@@ -18,11 +18,9 @@ public class XFLPParameter {
 	private Strategy preferredPackingStrategy = Strategy.HIGH_LOW_LEFT;
 	private int nbrOfAllowedStackedItems = Integer.MAX_VALUE;
 	private GroundContactRule groundContactRule = GroundContactRule.FREE;
+	private int maxNbrOfItems = Integer.MAX_VALUE;
 
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void clear() {}
 
 	public float getLifoImportance() {
 		return lifoImportance;
@@ -81,5 +79,13 @@ public class XFLPParameter {
 
 	public void setGroundContactRule(GroundContactRule groundContactRule) {
 		this.groundContactRule = groundContactRule;
+	}
+
+	public int getMaxNbrOfItems() {
+		return maxNbrOfItems;
+	}
+
+	public void setMaxNbrOfItems(int maxNbrOfItems) {
+		this.maxNbrOfItems = maxNbrOfItems;
 	}
 }

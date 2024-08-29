@@ -41,6 +41,19 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.6.5 - New parameter for maximal number of items
+```
+  XFLP xflp = new XFLP()
+  xflp.getParameter().setLifoImportance(1)
+
+  xflp.addItem().setExternID("P1")
+  ...
+  xflp.addItem().setExternID("P100")
+  xflp.getParameter().setMaxNbrOfItems(23)
+
+  xflp.executeLoadPlanning()
+  assert xflp.getReport()[0].getPackageEvents().size() == 23
+  ```
 ### 0.6.1 - Fixed Location feature
 - User can set loading and unloading location for each item. This is useful during Vehicle Routing, when sequences of loading and unloading need to be checked.
   Here was a bug in code, where locations were not sorted in correct order. This is fixed now, but there are prerequisits:

@@ -1,5 +1,6 @@
 package xf.xflp.opt.construction.onetype;
 
+import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.monitor.StatusCode;
@@ -34,47 +35,65 @@ public class SingleBinAddHeuristic {
 
 	private final BaseStrategy strategy;
 	private final StatusManager statusManager;
+	private final XFLPParameter parameter;
 
-	public SingleBinAddHeuristic(Strategy s, StatusManager statusManager) {
+	public SingleBinAddHeuristic(Strategy s, StatusManager statusManager, XFLPParameter parameter) {
 		this.strategy = s.getStrategy();
 		this.statusManager = statusManager;
+		this.parameter = parameter;
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
-		List<Item> unplannedItemList = new ArrayList<>();
+		List<Item> unplannedItems = new ArrayList<>();
 
 		// Reset eventual presets
 		resetItems(items);
 
-		for (Item item : items) {
-			PositionCandidate insertPosition = null;
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            PositionCandidate insertPosition = null;
 
-			// Check if item is allowed to this container type
-			if (container.isItemAllowed(item)) {
-				// Fetch existing insert positions
-				List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
+            // Check if item is allowed to this container type
+            if (container.isItemAllowed(item)) {
+                // Fetch existing insert positions
+                List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
 
-				if (!posList.isEmpty()) {
-					// Choose according to select strategy
-					insertPosition = strategy.choose(item, container, posList);
+                if (!posList.isEmpty()) {
+                    // Choose according to select strategy
+                    insertPosition = strategy.choose(item, container, posList);
+                }
+            }
+
+            // Add item to container
+            if (insertPosition != null) {
+				if (reachedMaxNbrOfItems(container, parameter)) {
+					setUnplanned(unplannedItems, items.subList(i, items.size()).toArray(new Item[0]));
+					break;
 				}
-			}
 
-			// Add item to container
-			if (insertPosition != null) {
 				container.add(insertPosition.item(), insertPosition.position(), insertPosition.isRotated());
-			} else {
-				statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
-				unplannedItemList.add(item);
-			}
-		}
+            } else {
+                setUnplanned(unplannedItems, item);
+            }
+        }
 
-		return unplannedItemList;
+		return unplannedItems;
 	}
 
 	private void resetItems(List<Item> items) {
 		for (Item item : items) {
 			item.reset();
+		}
+	}
+
+	private boolean reachedMaxNbrOfItems(Container container, XFLPParameter parameter) {
+		return container.getItems().size() >= parameter.getMaxNbrOfItems();
+	}
+
+	private void setUnplanned(List<Item> unplannedItems, Item... items) {
+		for (Item item : items) {
+			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
+			unplannedItems.add(item);
 		}
 	}
 }

@@ -38,13 +38,13 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy, model.getStatusManager());
+		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy, model.getStatusManager(), model.getParameter());
 
 		List<Container> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());
 		
 		int containerIdx = 0;
-		while(unpackedItems.size() > 0 && hasMoreContainer(model, containerIdx++)) {
+		while(!unpackedItems.isEmpty() && hasMoreContainer(model, containerIdx++)) {
 			// Create new container
 			Container currentContainer = createContainer(model);
 
@@ -53,7 +53,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 			unpackedItems = heuristic.createLoadingPlan(unpackedItems, currentContainer);
 
 			// Escape: When no item could be loaded into container, then stop the further planning
-			if(currentContainer.getItems().size() == 0) {
+			if(currentContainer.getItems().isEmpty()) {
 				break;
 			}
 			

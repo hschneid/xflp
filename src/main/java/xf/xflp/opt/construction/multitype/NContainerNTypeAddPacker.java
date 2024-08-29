@@ -32,7 +32,7 @@ public class NContainerNTypeAddPacker implements Packer {
 	public void execute(XFLPModel model) throws XFLPException {
 
 		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-		MultiBinAddHeuristic heuristic = new MultiBinAddHeuristic(strategy, model.getStatusManager());
+		MultiBinAddHeuristic heuristic = new MultiBinAddHeuristic(strategy, model.getStatusManager(), model.getParameter());
 
 		List<Container> containers = new ArrayList<>();
 		List<Item> unplannedItems = Arrays.asList(model.getItems());

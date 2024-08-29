@@ -94,6 +94,10 @@ public class XFLP {
 			statusManager.fireMessage(StatusCode.ABORT, "No container information were set.");
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "No container information were set.");
 		}
+		if(parameter.getMaxNbrOfItems() <= 0) {
+			statusManager.fireMessage(StatusCode.ABORT, "Number of allowed items must be greater than 0.");
+			throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Number of allowed items must be greater than 0.");
+		}
 
 		// Items
 		List<Item> items = importer.getConvertedItemList();

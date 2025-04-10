@@ -4,39 +4,31 @@ buildscript {
 	}
 }
 
-plugins {
-	id "com.github.spotbugs" version "4.7.1"
-}
-
 apply plugin:'java'
 apply plugin:'groovy'
 apply plugin:'idea'
 apply plugin:'application'
 apply plugin:'maven-publish'
 apply plugin:'signing'
-apply plugin: 'com.github.spotbugs'
 
 group = "com.github.hschneid"
-archivesBaseName = 'xflp'
 version = '0.7-RELEASE'
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
  
 repositories {
     mavenCentral()
 }
-
-mainClassName = 'util.Application'
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
 	// Fancy collection
 	implementation 'com.google.guava:guava:33.0.0-jre'
 
-	testImplementation "org.spockframework:spock-core:2.3-groovy-4.0"
-
-	spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.11.0'
-	spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+	testImplementation "org.spockframework:spock-core:2.4-M5-groovy-4.0"
 }
 
 // Maven - Publish
@@ -63,7 +55,7 @@ publishing {
 
 			pom {
 				name = 'XFLP'
-				packaging 'jar'
+				packaging = 'jar'
 				// optionally artifactId can be defined here
 				description = 'Solver for realistic 3D container loading'
 				url = 'https://github.com/hschneid/xflp'
@@ -104,13 +96,13 @@ publishing {
 	repositories {
 		maven {
 			credentials {
-				username usr
-				password passwd
+				username = usr
+				password = passwd
 			}
 			if (project.version.endsWith("-SNAPSHOT")) {
-				url "https://oss.sonatype.org/content/repositories/snapshots/"
+				url = "https://oss.sonatype.org/content/repositories/snapshots/"
 			} else {
-				url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 			}
 		}
 	}
@@ -119,35 +111,3 @@ publishing {
 signing {
 	sign publishing.publications.maven
 }
-
-// Example to configure HTML report
-spotbugs {
-	ignoreFailures = true
-	// showStackTraces = false
-	// showProgress = true
-	// effort = 'default'
-	// reportLevel = 'default'
-}
-
-spotbugsMain {
-	reports {
-		html {
-			enabled = true
-			destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
-			stylesheet = 'fancy-hist.xsl'
-		}
-	}
-}
-
-spotbugsTest {
-	reports {
-		html {
-			enabled = true
-			destination = file("$buildDir/reports/spotbugs/test/spotbugs.html")
-			stylesheet = 'fancy-hist.xsl'
-		}
-	}
-}
-
-
-

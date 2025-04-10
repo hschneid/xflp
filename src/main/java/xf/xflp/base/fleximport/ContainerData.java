@@ -1,11 +1,13 @@
 package xf.xflp.base.fleximport;
 
+import util.collection.IndexedArrayList;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.*;
 import xf.xflp.base.container.constraints.AxleLoadParameter;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ContainerData implements Serializable {
 
-	private static final long serialVersionUID = -5241212560474818458L;
+	private static final long serialVersionUID = ObjectStreamClass.lookup(ContainerData.class).getSerialVersionUID();
 
 	public static final int DEFAULT_CONTAINER_TYPE = 0;
 

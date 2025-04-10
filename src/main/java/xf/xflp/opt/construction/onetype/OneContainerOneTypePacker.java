@@ -80,8 +80,10 @@ public class OneContainerOneTypePacker implements Packer {
 				// It is not checked if item was really loaded to container.
 				// Before removing the unloading item must be replaced by the loaded item object
 				// for index problems
-				if(loadedItemMap.containsKey(item.externalIndex))
-					container.remove(loadedItemMap.get(item.externalIndex));
+				var loadedItem = loadedItemMap.get(item.externalIndex);
+				if(loadedItem != null) {
+					container.remove(loadedItem);
+				}
 			}
 		}
 

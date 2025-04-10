@@ -372,12 +372,16 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 */
 	private void removeNewPosition(Position pos) {
 		if(pos.type() != PositionType.ROOT) {
-			if(posFollowerMap.containsKey(pos))
+			if(posFollowerMap.containsKey(pos)) {
 				posFollowerMap.remove(pos);
-			if(posAncestorMap.containsKey(pos)) {
-				posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
+			}
+
+			var posAncestor = posAncestorMap.get(pos);
+			if(posAncestor != null) {
+				posFollowerMap.get(posAncestor).remove(pos);
 				posAncestorMap.remove(pos);
 			}
+
 			activePosList.remove(pos);
 			inactivePosList.remove(pos);
 			coveredPosList.remove(pos);

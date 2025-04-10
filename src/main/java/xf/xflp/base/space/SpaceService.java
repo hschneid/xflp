@@ -1,5 +1,6 @@
 package xf.xflp.base.space;
 
+import com.google.common.collect.Sets;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
@@ -83,7 +84,7 @@ public class SpaceService {
     }
 
     public Set<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
-        Set<Item> itemsInSpace = new HashSet<>(allItems.size());
+        Set<Item> itemsInSpace = Sets.newHashSetWithExpectedSize(allItems.size());
         for (Item item : allItems) {
             // entries can be null, because they can be removed from item list
             if(item == null || isItemNotInSpace(position, space, item)) {

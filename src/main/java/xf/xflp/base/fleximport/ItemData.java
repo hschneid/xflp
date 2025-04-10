@@ -1,7 +1,9 @@
 package xf.xflp.base.fleximport;
 
+import util.collection.IndexedArrayList;
 import xf.xflp.base.item.Item;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 
 /** 
@@ -30,7 +32,7 @@ import java.io.Serializable;
  */
 public class ItemData implements Serializable {
 
-	private static final long serialVersionUID = -8970875565639368202L;
+	private static final long serialVersionUID = ObjectStreamClass.lookup(ItemData.class).getSerialVersionUID();
 	
 	protected String externID = "";
 	protected String shipmentID = "default_shipment";

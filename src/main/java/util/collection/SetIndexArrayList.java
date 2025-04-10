@@ -1,5 +1,6 @@
 package util.collection;
 
+import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,7 +23,7 @@ import java.util.Collection;
  */
 public class SetIndexArrayList<E> extends ArrayList<E> {
 
-	private static final long serialVersionUID = -5000228990659431148L;
+	private static final long serialVersionUID = ObjectStreamClass.lookup(SetIndexArrayList.class).getSerialVersionUID();
 
 	private int length = 0;
 	

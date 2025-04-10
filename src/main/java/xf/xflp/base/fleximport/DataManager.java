@@ -1,5 +1,8 @@
 package xf.xflp.base.fleximport;
 
+import util.collection.IndexedArrayList;
+
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.*;
 
@@ -15,7 +18,8 @@ import java.util.*;
  *
  */
 public class DataManager implements Serializable {
-	private static final long serialVersionUID = 3987431565021981666L;
+
+	private static final long serialVersionUID = ObjectStreamClass.lookup(DataManager.class).getSerialVersionUID();
 
 	private int maxItemID = 0;
 	private int maxShipmentID = 1;
@@ -145,8 +149,10 @@ public class DataManager implements Serializable {
 		String[] arr = allowedStackingGroups.split(",");
 		for (String s : arr) {
 			s = s.trim().toLowerCase();
-			if(stackingGroupMap.containsKey(s)) {
-				res += 1L << stackingGroupMap.get(s);
+
+			var stackingGroup = stackingGroupMap.get(s);
+			if(stackingGroup != null) {
+				res += 1L << stackingGroup;
 			}
 		}
 

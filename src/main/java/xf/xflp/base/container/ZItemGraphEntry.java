@@ -33,7 +33,7 @@ public class ZItemGraphEntry {
         update();
     }
 
-    public void update() {
+    public final void update() {
         float[] bCuts = new float[lowerItemList.size()];
         float sum = 0;
         for (int i = 0; i < lowerItemList.size(); i++) {

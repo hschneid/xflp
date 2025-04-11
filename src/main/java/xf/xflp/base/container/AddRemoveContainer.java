@@ -11,9 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Copyright (c) 2012-2023 Holger Schneider
+ * Copyright (c) 2012-2025 Holger Schneider
  * All rights reserved.
- * <p>
+ *
  * This source code is licensed under the MIT License (MIT) found in the
  * LICENSE file in the root directory of this source tree.
  *
@@ -372,12 +372,16 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 */
 	private void removeNewPosition(Position pos) {
 		if(pos.type() != PositionType.ROOT) {
-			if(posFollowerMap.containsKey(pos))
+			if(posFollowerMap.containsKey(pos)) {
 				posFollowerMap.remove(pos);
-			if(posAncestorMap.containsKey(pos)) {
-				posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
+			}
+
+			var posAncestor = posAncestorMap.get(pos);
+			if(posAncestor != null) {
+				posFollowerMap.get(posAncestor).remove(pos);
 				posAncestorMap.remove(pos);
 			}
+
 			activePosList.remove(pos);
 			inactivePosList.remove(pos);
 			coveredPosList.remove(pos);

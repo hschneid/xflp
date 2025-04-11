@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /** 
- * Copyright (c) 2012-2023 Holger Schneider
+ * Copyright (c) 2012-2025 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -80,8 +80,10 @@ public class OneContainerOneTypePacker implements Packer {
 				// It is not checked if item was really loaded to container.
 				// Before removing the unloading item must be replaced by the loaded item object
 				// for index problems
-				if(loadedItemMap.containsKey(item.externalIndex))
-					container.remove(loadedItemMap.get(item.externalIndex));
+				var loadedItem = loadedItemMap.get(item.externalIndex);
+				if(loadedItem != null) {
+					container.remove(loadedItem);
+				}
 			}
 		}
 

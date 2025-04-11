@@ -1,9 +1,11 @@
 package xf.xflp.base.fleximport;
 
+import util.collection.IndexedArrayList;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +16,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Copyright (c) 2012-2023 Holger Schneider
+ * Copyright (c) 2012-2025 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the
@@ -33,7 +35,8 @@ import java.util.stream.Stream;
  * @author hschneid
  */
 public class FlexiImporter implements Serializable {
-	private static final long serialVersionUID = -6460880073124361069L;
+
+	private static final long serialVersionUID = ObjectStreamClass.lookup(FlexiImporter.class).getSerialVersionUID();
 
 	private final DataManager dataManager = new DataManager();
 

@@ -4,15 +4,18 @@ buildscript {
 	}
 }
 
+plugins {
+	id "com.vanniktech.maven.publish" version "0.36.0"
+}
+
 apply plugin:'java'
 apply plugin:'groovy'
 apply plugin:'idea'
 apply plugin:'application'
-apply plugin:'maven-publish'
 apply plugin:'signing'
 
 group = "com.github.hschneid"
-version = '0.7-RELEASE'
+version = '0.7.3-RELEASE'
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -32,82 +35,36 @@ dependencies {
 }
 
 // Maven - Publish
-task javadocJar(type: Jar) {
-	archiveClassifier.set('javadoc')
-	from javadoc
-}
+mavenPublishing {
+	publishToMavenCentral()
 
-task sourcesJar(type: Jar) {
-	archiveClassifier.set("sources")
-	from sourceSets.main.allSource
-}
+	signAllPublications()
 
-task mainJar(type: Jar) {
-	with jar
-}
+	coordinates(group.toString(), name.toString(), version.toString())
 
-publishing {
-	publications {
-		maven(MavenPublication) {
-			artifact mainJar
-			artifact sourcesJar
-			artifact javadocJar
-
-			pom {
-				name = 'XFLP'
-				packaging = 'jar'
-				// optionally artifactId can be defined here
-				description = 'Solver for realistic 3D container loading'
-				url = 'https://github.com/hschneid/xflp'
-
-				scm {
-					connection = 'scm:git:git://github.com/hschneid/xflp.git'
-					developerConnection = 'scm:git:ssh://github.com/hschneid/xflp.git'
-					url = 'https://github.com/hschneid/xflp'
-				}
-
-				licenses {
-					license {
-						name = 'MIT License'
-						url = 'http://www.opensource.org/licenses/mit-license.php'
-					}
-				}
-
-				developers {
-					developer {
-						id = 'hschneid'
-						name = 'Holger Schneider'
-						email = 'holger.schneider.81@gmail.com'
-					}
-				}
-			}
-
-		}
-	}
-	def usr = "ubk"
-	def passwd = "-"
-	if (project.hasProperty("ossrhUsername")) {
-		usr = project.getProperty("ossrhUsername")
-	}
-	if (project.hasProperty("ossrhPassword")) {
-		passwd = project.getProperty("ossrhPassword")
-	}
-
-	repositories {
-		maven {
-			credentials {
-				username = usr
-				password = passwd
-			}
-			if (project.version.endsWith("-SNAPSHOT")) {
-				url = "https://oss.sonatype.org/content/repositories/snapshots/"
-			} else {
-				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+	pom {
+		name = "XFLP"
+		description = "Solver for realistic 3D container loading"
+		inceptionYear = "2020"
+		url = "https://github.com/hschneid/xflp/"
+		licenses {
+			license {
+				name = "MIT Licence"
+				url = "http://www.opensource.org/licenses/mit-license.php"
+				distribution = "http://www.opensource.org/licenses/mit-license.php"
 			}
 		}
+		developers {
+			developer {
+				id = "hschneid"
+				name = "Holger Schneider"
+				url = "https://github.com/hschneid/"
+			}
+		}
+		scm {
+			url = "https://github.com/username/mylibrary/"
+			connection = "scm:git:git://github.com/hschneid/xflp.git"
+			developerConnection = "scm:git:ssh://git@github.com/hschneid/xflp.git"
+		}
 	}
-}
-
-signing {
-	sign publishing.publications.maven
 }

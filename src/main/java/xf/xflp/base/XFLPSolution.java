@@ -8,7 +8,7 @@ import xf.xflp.report.LPPackageEvent;
 import xf.xflp.report.LPReport;
 
 /**
- * Copyright (c) 2012-2025 Holger Schneider
+ * Copyright (c) 2012-2026 Holger Schneider
  * All rights reserved.
  *
  * This source code is licensed under the MIT License (MIT) found in the

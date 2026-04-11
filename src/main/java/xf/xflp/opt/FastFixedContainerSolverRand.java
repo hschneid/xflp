@@ -3,12 +3,15 @@ package xf.xflp.opt;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import xf.xflp.report.LoadType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -28,7 +31,6 @@ import xf.xflp.report.LoadType;
  *
  * Goal: All items should be packed into a single set of container types.
  *       If items are not fitting, then they will be placed in separate list. (unplanned)
- *
  */
 public class FastFixedContainerSolverRand extends XFLPBase {
 
@@ -54,14 +56,11 @@ public class FastFixedContainerSolverRand extends XFLPBase {
 
         Container[] bestContainers = null;
         Item[] bestUnplannedItems = null;
-
-        // Initialize model for iterations
-        new OneContainerNTypeAddPacker().execute(model);
-        long bestVolume = getLoadedVolume(model);
-        // System.out.println("INIT: " + bestVolume);
+        Map<Item, ItemPlacement> bestPlacements = null;
+        long bestVolume = -1;
 
         for (int i = 0; i < N_ITERATIONS; i++) {
-            // Execute one randomized iteration
+            // Execute one randomized iteration (packer resets items and creates fresh containers)
             if (multiType) {
                 new OneContainerNTypeAddPackerRand().execute(model);
             } else {
@@ -70,19 +69,45 @@ public class FastFixedContainerSolverRand extends XFLPBase {
 
             // Calculate total loaded volume of this iteration
             long loadedVolume = getLoadedVolume(model);
-            // System.out.println("ITER "+i+" : " + loadedVolume + " : " + bestVolume);
 
             // Keep best result
             if (loadedVolume > bestVolume) {
                 bestVolume = loadedVolume;
                 bestContainers = model.getContainers();
                 bestUnplannedItems = model.getUnplannedItems();
+                // Snapshot all item placements so they can be restored after the loop
+                bestPlacements = snapshotPlacements(model.getItems());
             }
+        }
+
+        // Restore the best placement state onto the items
+        if (bestPlacements != null) {
+            restorePlacements(bestPlacements);
         }
 
         // Set the best result into model
         model.setContainers(bestContainers);
         model.setUnplannedItems(bestUnplannedItems);
+    }
+
+    /**
+     * Creates a snapshot of the current placement for every item.
+     */
+    private Map<Item, ItemPlacement> snapshotPlacements(Item[] items) {
+        Map<Item, ItemPlacement> map = new HashMap<>(items.length);
+        for (Item item : items) {
+            map.put(item, item.snapshotPlacement());
+        }
+        return map;
+    }
+
+    /**
+     * Restores previously saved placements onto the items.
+     */
+    private void restorePlacements(Map<Item, ItemPlacement> placements) {
+        for (Map.Entry<Item, ItemPlacement> entry : placements.entrySet()) {
+            entry.getKey().restorePlacement(entry.getValue());
+        }
     }
 
     private static long getLoadedVolume(XFLPModel model) {
@@ -103,5 +128,3 @@ public class FastFixedContainerSolverRand extends XFLPBase {
         return true;
     }
 }
-
-

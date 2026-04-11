@@ -22,12 +22,13 @@ import java.util.Set;
  */
 public class Item implements Indexable {
 
-	public int size, volume, h, origH;
-	public int x, y, z, xw, yl, zh, w, l;
-	
+	// --- Master data (immutable after postInit) ---
+	public int origW, origL, origH;
+	public int size, volume;
+
 	public boolean spinable, stackable;
 	public int loadingLoc, unLoadingLoc;
-	
+
 	// Binary representation, where only one bit can be active
 	public long stackingGroup;
 	// Allowed container types (cooled, dangerous goods, etc.)
@@ -41,7 +42,7 @@ public class Item implements Indexable {
 
 	public float weight;
 	public float stackingWeightLimit;
-	
+
 	/* Unique index of this item object*/
 	public int externalIndex;
 	/* Type of item: loading or unloading */
@@ -49,17 +50,20 @@ public class Item implements Indexable {
 	/* External externalIndex of this order. There can be two items
 	 * with the same order externalIndex (up- and unloading) */
 	public int orderIndex = -1;
-	/* Idx in data structure of its holding container */
-	/* -1 if its unpacked */
-	public int index = -1;
-	/* Idx of the container, where the item is packed in. */
-	/* -1 if its unpacked */
-	public int containerIndex = -1;
-	
+
 	// Defines if this item is loaded (true) or unloaded (false)
 	public boolean isLoading = false;
-	// Defines if this item was rotated (true) or not rotated (false)
+
+	// --- Mutable placement data (delegated to ItemPlacement) ---
+	private ItemPlacement placement;
+
+	// Backward-compatible public field aliases – kept in sync with placement
+	public int x, y, z, xw, yl, zh, w, l, h;
 	public boolean isRotated = false;
+	/* Idx in data structure of its holding container (-1 if unpacked) */
+	public int index = -1;
+	/* Idx of the container, where the item is packed in (-1 if unpacked) */
+	public int containerIndex = -1;
 
 	public Item() {
 		this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
@@ -67,19 +71,24 @@ public class Item implements Indexable {
 	}
 
 	public void postInit() {
+		this.origW = w;
+		this.origL = l;
+		this.origH = h;
 		this.size = w * l;
 		this.volume = h * w * l;
 		this.loadingType = (isLoading) ? LoadType.LOAD : LoadType.UNLOAD;
+		this.placement = new ItemPlacement(w, l, h);
 	}
-	
+
 	public void rotate() {
 		int tmp = w;
 		w = l;
 		l = tmp;
-		
+
 		isRotated = !isRotated;
+		syncToPlacement();
 	}
-	
+
 	public void setPosition(Position pos) {
 		x = pos.x();
 		y = pos.y();
@@ -87,34 +96,93 @@ public class Item implements Indexable {
 		xw = x + w;
 		yl = y + l;
 		zh = z + h;
+		syncToPlacement();
 	}
-	
-	/**
-	 * 
-	 */
+
 	public void clearPosition() {
 		this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
+		syncToPlacement();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
 		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w+","+l+","+h+") ["+x+", "+y+", "+z+" "+(this.isRotated?"R":"")+"]"+ " "+stackingGroup;
 	}
-	
+
 	/**
-	 * 
+	 * Resets the item to its initial (unpacked) state.
+	 * All placement data is cleared and dimensions are restored to original values.
 	 */
 	public void reset() {
+		// Restore original dimensions
+		this.w = origW;
+		this.l = origL;
+		this.h = origH;
 		clearPosition();
 		this.index = -1;
 		this.containerIndex = -1;
-		if(this.isRotated)
-			rotate();
+		this.isRotated = false;
 		this.isLoading = false;
+		if (placement != null) {
+			placement.reset(origW, origL, origH);
+		}
+	}
+
+	/**
+	 * Returns the current placement (lazy-synced from public fields).
+	 */
+	public ItemPlacement getPlacement() {
+		syncToPlacement();
+		return placement;
+	}
+
+	/**
+	 * Returns a snapshot copy of the current placement.
+	 */
+	public ItemPlacement snapshotPlacement() {
+		syncToPlacement();
+		return new ItemPlacement(placement);
+	}
+
+	/**
+	 * Restores the item's mutable fields from a previously saved placement snapshot.
+	 */
+	public void restorePlacement(ItemPlacement snapshot) {
+		this.placement = new ItemPlacement(snapshot);
+		syncFromPlacement();
+	}
+
+	/** Pushes current public fields into the placement object */
+	private void syncToPlacement() {
+		if (placement == null) return;
+		placement.x = this.x;
+		placement.y = this.y;
+		placement.z = this.z;
+		placement.xw = this.xw;
+		placement.yl = this.yl;
+		placement.zh = this.zh;
+		placement.w = this.w;
+		placement.l = this.l;
+		placement.h = this.h;
+		placement.isRotated = this.isRotated;
+		placement.index = this.index;
+		placement.containerIndex = this.containerIndex;
+	}
+
+	/** Pulls placement state back into the public fields */
+	private void syncFromPlacement() {
+		this.x = placement.x;
+		this.y = placement.y;
+		this.z = placement.z;
+		this.xw = placement.xw;
+		this.yl = placement.yl;
+		this.zh = placement.zh;
+		this.w = placement.w;
+		this.l = placement.l;
+		this.h = placement.h;
+		this.isRotated = placement.isRotated;
+		this.index = placement.index;
+		this.containerIndex = placement.containerIndex;
 	}
 
 	/*
@@ -158,6 +226,10 @@ public class Item implements Indexable {
 	public void setH(int h) {
 		this.h = h;
 		this.origH = h;
+	}
+
+	public int getOrigH() {
+		return origH;
 	}
 
 	public int getX() {

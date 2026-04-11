@@ -41,7 +41,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	}
 
 	private void init() {
-		spacePositions.put(activePosList.get(0), Collections.singletonList(Space.of(length, width, height)));
+		spacePositions.put(activePosList.getFirst(), Collections.singletonList(Space.of(length, width, height)));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public final class AddContainer extends ContainerBase implements Container {
 			uniquePositionKeys.add(newPos.getKey());
 
 			List<Space> newSpaces = createSpaces(newPos);
-			if(newSpaces.size() > 0) {
+			if(!newSpaces.isEmpty()) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
 				removePosition(newPos);
@@ -126,6 +126,7 @@ public final class AddContainer extends ContainerBase implements Container {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
 		spacePositions.remove(position);
+		immersiveDepthCache.remove(position);
 	}
 
 	/**
@@ -163,7 +164,7 @@ public final class AddContainer extends ContainerBase implements Container {
 			}
 
 			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(spaces.size() > 0) {
+			if(!spaces.isEmpty()) {
 				spacePositions.put(position, spaces);
 			} else {
 				removablePositions.add(position);

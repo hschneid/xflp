@@ -18,8 +18,9 @@ group = "com.github.hschneid"
 version = '0.7.3-RELEASE'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
  
 repositories {
@@ -32,6 +33,11 @@ dependencies {
 	implementation 'com.google.guava:guava:33.0.0-jre'
 
 	testImplementation "org.spockframework:spock-core:2.4-M5-groovy-4.0"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+	useJUnitPlatform()
 }
 
 // Maven - Publish

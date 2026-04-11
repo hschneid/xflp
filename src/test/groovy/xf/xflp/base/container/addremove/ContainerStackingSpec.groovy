@@ -339,4 +339,251 @@ class ContainerStackingSpec extends Specification {
         pos3 != null
     }
 
+    // A 2x2 item is placed on a 1x1 base, so only one corner rests on the lower item while the rest hangs freely.
+    def "GroundContactRule FREE - item with only one corner on lower item is allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+        def i1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i2 = Helper.getItem(2, 2, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i2)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found != null
+    }
+
+    // Same layout (2x2 item on 1x1 base) is tested with both rules to verify that COVERED rejects and FREE accepts partial ground contact.
+    def "GroundContactRule FREE allows partial ground contact but COVERED does not"() {
+        def conCovered = Helper.getAddSpaceContainer2(3,3,2)
+        conCovered.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.COVERED)
+        def ic1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def ic2 = Helper.getItem(2, 2, 1, 1, 111, 0)
+        Helper.add(conCovered, ic1, 0, 0, 0)
+
+        def conFree = Helper.getAddSpaceContainer2(3,3,2)
+        conFree.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+        def if1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def if2 = Helper.getItem(2, 2, 1, 1, 111, 0)
+        Helper.add(conFree, if1, 0, 0, 0)
+
+        when:
+        def pListCovered = PositionService.findPositionCandidates(conCovered, ic2)
+        def foundCovered = Helper.findCand(pListCovered, 0, 0, 1)
+
+        def pListFree = PositionService.findPositionCandidates(conFree, if2)
+        def foundFree = Helper.findCand(pListFree, 0, 0, 1)
+
+        then:
+        foundCovered == null
+        foundFree != null
+    }
+
+    // A smaller 1x1 item is placed on top of a 2x2 item, so all 4 corners rest on the same single item.
+    def "GroundContactRule SINGLE - item fully on one lower item is allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.SINGLE)
+        def i1 = Helper.getItem(2, 2, 1, 1, 111, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i2)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found != null
+    }
+
+    // A 2x1 item spans across two 1x1 items, so its corners rest on two different items which violates SINGLE.
+    def "GroundContactRule SINGLE - item on two lower items is not allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.SINGLE)
+        def i1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i3)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found == null
+    }
+
+    // A 2x1 item is placed so that 3 corners rest on a 2x2 base item but 1 corner rests on a neighboring item.
+    def "GroundContactRule SINGLE - item with 3 corners on same item and 1 corner on another is not allowed"() {
+        def con = Helper.getAddSpaceContainer2(4,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.SINGLE)
+        def i1 = Helper.getItem(2, 2, 1, 1, 111, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 111, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 2, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i3)
+        def found = Helper.findCand(pList, 1, 0, 1)
+
+        then:
+        found == null
+    }
+
+    // A 2x1 item is placed on two 1x1 items which fully cover its ground, satisfying the MULTIPLE rule.
+    def "GroundContactRule MULTIPLE - item on multiple lower items is allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.MULTIPLE)
+        def i1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i3)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found != null
+    }
+
+    // A 2x2 item is placed on a single 1x1 item, leaving 3 corners unsupported which violates the MULTIPLE rule.
+    def "GroundContactRule MULTIPLE - item without full ground contact is not allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,2)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.MULTIPLE)
+        def i1 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i2 = Helper.getItem(2, 2, 1, 1, 111, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i2)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found == null
+    }
+
+    // The lower item has a stacking weight limit of 1 and the upper item weighs exactly 1, so bearing capacity reaches exactly 0 which is still valid.
+    def "bearing capacity exactly zero is allowed"() {
+        def con = Helper.getAddSpaceContainer2(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 10, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i2)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found != null
+    }
+
+    // The lower item has a stacking weight limit of 1 but the upper item weighs 1.001, pushing bearing capacity just below 0 which is invalid.
+    def "bearing capacity just below zero is not allowed"() {
+        def con = Helper.getAddSpaceContainer2(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1.001 as float, 10, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i2)
+        def found = Helper.findCand(pList, 0, 0, 1)
+
+        then:
+        found == null
+    }
+
+    // An item placed directly on the ground (z=0) bypasses all stacking checks regardless of stacking group settings.
+    def "item at z=0 always passes stacking check"() {
+        def con = Helper.getAddSpaceContainer2(2,2,2)
+        def i1 = Helper.getItem(1, 1, 1, 1, 1, 2)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i1)
+        def found = Helper.findCand(pList, 0, 0, 0)
+
+        then:
+        found != null
+    }
+
+    // A multi-level stack is built, then a small item is placed at an intermediate level where it only partially overlaps with the item below.
+    def "GroundContactRule FREE - item partially hanging over stack is allowed"() {
+        def con = Helper.getAddSpaceContainer2(3,3,4)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+        def i1 = Helper.getItem(2, 1, 1, 1, 4, 0)
+        def i2 = Helper.getItem(1, 1, 1, 1, 2, 0)
+        def i3 = Helper.getItem(2, 1, 1, 1, 1, 0)
+        def i4 = Helper.getItem(2, 1, 1, 1, 1, 0)
+        def i5 = Helper.getItem(1, 1, 1, 1, 1, 0)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 0, 1)
+        Helper.add(con, i3, 0, 0, 2)
+        Helper.add(con, i4, 0, 0, 3)
+
+        when:
+        Helper.add(con, i5, 1, 0, 1)
+
+        then:
+        con.items.size() == 5
+    }
+
+    // An item with nbrOfAllowedStackedItems=2 is placed on top of exactly 2 items below, which is still valid.
+    def "nbrOfAllowedStackedItems exactly matching number of items below"() {
+        def nbrOfAllowedItemsBelow = 2
+
+        def con = Helper.getAddSpaceContainer2(1,10,2)
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        // The critical item - sits on exactly 2 items below
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
+
+        then:
+        found != null
+    }
+
+    // An item with nbrOfAllowedStackedItems=1 is placed on top of 2 items below, exceeding the limit by one.
+    def "nbrOfAllowedStackedItems exceeded by one"() {
+        def nbrOfAllowedItemsBelow = 1
+
+        def con = Helper.getAddSpaceContainer2(1,10,2)
+        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        // The critical item - would sit on 2 items but only 1 allowed
+        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 0, 2, 0)
+        Helper.add(con, i3, 0, 0, 1)
+
+        when:
+        def pList = PositionService.findPositionCandidates(con, i4)
+        def found = Helper.findCand(pList, 0, 1, 1)
+
+        then:
+        found == null
+    }
+
 }

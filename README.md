@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.7.5&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.7.6&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -43,6 +43,9 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.7.6
+- Added a biased randomized search heuristic, which is a variant of GRASP. It uses a random factor to choose the next insert position, which is biased towards better positions. This can lead to better solutions in some cases, but it is not guaranteed.
+
 ### 0.7.5
 - Performance updates (Code looks only a little bit uglier).
 

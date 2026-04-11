@@ -21,6 +21,7 @@ public enum XFLPOptType {
 	
 	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
 	FAST_FIXED_CONTAINER_PACKER(FastFixedContainerSolver.class),
+	FAST_FIXED_CONTAINER_PACKER_RAND(FastFixedContainerSolverRand.class),
 	BEST_FIXED_CONTAINER_PACKER(BestFixedContainerSolver.class),
 	FAST_MIN_CONTAINER_PACKER(FastMinContainerSolver.class),
 	BEST_MIN_CONTAINER_PACKER(BestMinContainerSolver.class)

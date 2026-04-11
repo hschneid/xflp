@@ -37,7 +37,7 @@ class BigNumberSpec extends Specification {
         service = new XFLP()
 
         service.addContainer().setWidth(200).setLength(100).setHeight(70).setMaxWeight(999999)
-        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
+        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER_RAND)
 
         for (int i = 0; i < 1000; i++) {
             int w = randInt(1, 40)

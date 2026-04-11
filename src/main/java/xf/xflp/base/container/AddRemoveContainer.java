@@ -59,7 +59,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private void init() {
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle
 		// realen Positionen erben von dieser virtuellen.
-		insertTree(activePosList.get(0), rootPos);
+		insertTree(activePosList.getFirst(), rootPos);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			uniquePositionKeys.add(newPos.getKey());
 
 			List<Space> newSpaces = createSpaces(newPos);
-			if(newSpaces.size() > 0) {
+			if(!newSpaces.isEmpty()) {
 				// Erzeuge wirklich die neue Position, weil es einen gültigen Space gibt
 				spacePositions.put(newPos, newSpaces);
 
@@ -168,7 +168,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 				height - newPos.z()
 		);
 		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-		if(spaceItems.size() == 0) {
+		if(spaceItems.isEmpty()) {
 			return List.of(maxSpace);
 		}
 
@@ -223,18 +223,16 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
 		for (Position pos : projectablePosHList) {
 			Item leftItem = findNextLeftElement(pos);
-			Position newPosition = Position.of(
-					pos.idx(), (leftItem != null) ? leftItem.xw : 0, pos.y(), pos.z(), pos.type()
-			);
+			int newX = (leftItem != null) ? leftItem.xw : 0;
+			Position newPosition = createPosition(pos.idx(), newX, pos.y(), pos.z(), pos.type());
 			replacePosition(pos, newPosition);
 			recreateSpaces(newPosition);
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
 			Item lowerItem = findNextDeeperElement(pos);
-			Position newPosition = Position.of(
-					pos.idx(), pos.x(), ((lowerItem != null) ? lowerItem.yl : 0), pos.z(), pos.type()
-			);
+			int newY = (lowerItem != null) ? lowerItem.yl : 0;
+			Position newPosition = createPosition(pos.idx(), pos.x(), newY, pos.z(), pos.type());
 			if(!pos.equals(newPosition)) {
 				replacePosition(pos, newPosition);
 				recreateSpaces(newPosition);
@@ -335,11 +333,11 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 					return;
 
 				// If follower has more followers, deep into and check them
-				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
+				if(posFollowerMap.containsKey(follower) && !posFollowerMap.get(follower).isEmpty())
 					checkTreeAndRemove2(follower);
 
 				// If follower has still followers after deep check, then ignore
-				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
+				if(posFollowerMap.containsKey(follower) && !posFollowerMap.get(follower).isEmpty())
 					return;
 			}
 
@@ -364,6 +362,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
+			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -388,6 +387,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
+			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -473,7 +473,42 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		weight -= item.weight;
 		item.h = item.origH;
 
+		// Recompute maxYl if necessary
+		if (item.yl >= maxYl) {
+			maxYl = 0;
+			for (int i = itemList.size() - 1; i >= 0; i--) {
+				Item it = itemList.get(i);
+				if (it != null && it.yl > maxYl) {
+					maxYl = it.yl;
+				}
+			}
+		}
+
 		item.containerIndex = -1;
+
+		// Recompute immersive depth cache for positions that were sitting on this item
+		recomputeImmersiveDepthCacheForRemovedItem(item);
+	}
+
+	/**
+	 * When an item is removed, all active/inactive/covered positions that were on its top face
+	 * need their cached immersive depth recomputed, because the removed item no longer contributes.
+	 */
+	private void recomputeImmersiveDepthCacheForRemovedItem(Item item) {
+		recomputeImmersiveDepthForPositions(item, activePosList);
+		recomputeImmersiveDepthForPositions(item, inactivePosList);
+		recomputeImmersiveDepthForPositions(item, coveredPosList);
+	}
+
+	private void recomputeImmersiveDepthForPositions(Item item, Iterable<Position> positions) {
+		int itemZh = item.zh;
+		for (Position pos : positions) {
+			if (pos.z() == itemZh &&
+					pos.x() >= item.x && pos.x() < item.xw &&
+					pos.y() >= item.y && pos.y() < item.yl) {
+				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
+			}
+		}
 	}
 
 	private void checkExistingSpaces(Item newItem) {
@@ -497,7 +532,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			}
 
 			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(spaces.size() > 0) {
+			if(!spaces.isEmpty()) {
 				spacePositions.put(position, spaces);
 			} else {
 				removablePositions.add(position);

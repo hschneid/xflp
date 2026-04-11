@@ -49,7 +49,7 @@ public class HighestLowerLeft extends BaseStrategy {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
-		return filteredPositions.get(0);
+		return filteredPositions.getFirst();
 	}
 
 	float getDistance(PositionCandidate candidate) {
@@ -58,10 +58,10 @@ public class HighestLowerLeft extends BaseStrategy {
 		}
 
 		Position p = candidate.position();
-		return (float)Math.pow(
+		return (float)Math.sqrt(
 				(p.x() * p.x()) +
 						(p.y() * p.y()) +
-						(p.z() * p.z()), 0.5
+						(p.z() * p.z())
 		);
 	}
 

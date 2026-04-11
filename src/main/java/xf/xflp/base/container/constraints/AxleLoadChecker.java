@@ -35,9 +35,7 @@ public class AxleLoadChecker {
         // Center of truck
         var centerOfTruck = axleLoadParameter.axleDistance() / 2f;
         var centerOfLoad =
-                Math.max(
-                        container.getItems().stream().mapToDouble(Item::getYl).max().orElse(0),
-                        pos.y() + item.l)
+                Math.max(container.getBaseData().getMaxYl(), pos.y() + item.l)
                         / 2f;
         var padY = Math.max(0, centerOfTruck - centerOfLoad);
 

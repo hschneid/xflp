@@ -1,7 +1,6 @@
 package xf.xflp.base.position;
 
 import util.collection.IndexedArrayList;
-import util.collection.LPListMap;
 import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
@@ -57,7 +56,9 @@ public class PositionService {
                     continue;
                 if((pos.y() + itemL) > container.getLength())
                     continue;
+
                 int itemH = retrieveHeight(item, pos, container);
+                // Check height with actual (possibly reduced by immersive depth) height
                 if((pos.z() + itemH) > container.getHeight())
                     continue;
 
@@ -126,9 +127,10 @@ public class PositionService {
         List<Space> spaces = container.getSpace(pos);
 
         // If item is fitting into one of the spaces, then it is okay.
-        for (Space space : spaces) {
+        for (int i = spaces.size() - 1; i >= 0; i--) {
+            Space space = spaces.get(i);
             // Is item fitting into space
-            if(space.l() >= itemL &&
+            if (space.l() >= itemL &&
                     space.w() >= itemW &&
                     space.h() >= itemH)
                 return false;
@@ -166,38 +168,24 @@ public class PositionService {
     /**
      * If it is a stacking position (z > 0), then the immersive depth of lower items
      * must be checked. If this is the case, then the height of given item is reduced.
+     *
+     * Uses precomputed minImmersiveDepth cache from Container. The cache value is exact
+     * for every active position because positions are always created on or within the
+     * footprint of lower items (ExtremePoint heuristic), and the cache is updated
+     * incrementally on every add/remove operation.
      */
     private static int retrieveHeight(Item item, Position pos, Container container) {
         if(pos.z() == 0) {
             return item.h;
         }
 
-        int minImmersiveDepth = getMinImmersiveDepthOfBelow(pos, item, container);
+        int minImmersiveDepth = container.getBaseData().getImmersiveDepthAtPosition(pos);
+        if(minImmersiveDepth == 0) {
+            return item.h;
+        }
+
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
-    private static int getMinImmersiveDepthOfBelow(Position pos, Item newItem, Container container) {
-        LPListMap<Integer, Integer> zMap = container.getBaseData().getZMap();
-
-        if(!zMap.containsKey(pos.z())) {
-            return 0;
-        }
-
-        int minImmersiveDepthOfBelow = Integer.MAX_VALUE;
-
-        List<Integer> zItems = zMap.get(pos.z());
-        for (int i = zItems.size() - 1; i >= 0; i--) {
-            Item lowerItem = container.getItems().get(zItems.get(i));
-            if(lowerItem.zh == pos.z() &&
-                    lowerItem.x < pos.x() + newItem.w &&
-                    lowerItem.xw > pos.x() &&
-                    lowerItem.y < pos.y() + newItem.l &&
-                    lowerItem.yl > pos.y()) {
-                minImmersiveDepthOfBelow = Math.min(minImmersiveDepthOfBelow, lowerItem.getImmersiveDepth());
-            }
-        }
-
-        return minImmersiveDepthOfBelow;
-    }
 }

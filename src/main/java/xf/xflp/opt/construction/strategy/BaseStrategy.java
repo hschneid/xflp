@@ -32,14 +32,13 @@ public abstract class BaseStrategy {
 			return candidates;
 		}
 
+		float minValue = Float.MAX_VALUE;
 		float[] distances = new float[candidates.size()];
 		for (int i = distances.length - 1; i >= 0; i--) {
 			distances[i] = positionValue.apply(candidates.get(i));
-		}
-
-		float minValue = Float.MAX_VALUE;
-		for (int i = candidates.size() - 1; i >= 0; i--) {
-			minValue = Math.min(minValue, distances[i]);
+			if(distances[i] < minValue) {
+				minValue = distances[i];
+			}
 		}
 
 		// Search all positions with max value

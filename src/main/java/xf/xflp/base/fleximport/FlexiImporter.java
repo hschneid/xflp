@@ -1,9 +1,9 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.report.LoadType;
 
 import java.io.ObjectStreamClass;
 import java.io.Serializable;
@@ -151,7 +151,7 @@ public class FlexiImporter implements Serializable {
 		var items = itemList.stream()
 				.flatMap(itemData -> {
 					Item item = itemData.createLoadingItem(dataManager);
-					if(itemData.getUnloadingLocation().length() > 0)
+					if(!itemData.getUnloadingLocation().isEmpty())
 						return Stream.of(item, itemData.createUnLoadingItem(dataManager));
 					return Stream.of(item);
 				})
@@ -197,7 +197,7 @@ public class FlexiImporter implements Serializable {
 
 	private boolean checkForAddRemove(List<Item> items) {
 		for (Item item : items) {
-			if(item.getUnLoadingLoc() != -1) {
+			if(item.getLoadingType() == LoadType.UNLOAD) {
 				return true;
 			}
 		}

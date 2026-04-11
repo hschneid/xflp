@@ -55,9 +55,13 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     protected final Map<Integer, Float> bearingCapacities = new HashMap<>();
     protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
+    /** Position -> precomputed minimum immersive depth of items below this position */
+    protected final Map<Position, Integer> immersiveDepthCache = new HashMap<>();
+
     protected int maxPosIdx = 0;
     protected final ContainerParameter parameter;
     protected float centerOfGravityForY = 0;
+    protected int maxYl = 0;
 
     protected ContainerBase(
             int width,
@@ -111,15 +115,6 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     public float getLoadedWeight() {
-        /*float sum = 0;
-        List<Item> list = this.itemList;
-        for (int i = list.size() - 1; i >= 0; i--) {
-            Item item = list.get(i);
-            sum += (item != null) ? item.weight : 0;
-        }
-
-        return sum;*/
-
         return weight;
     }
 
@@ -144,6 +139,31 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         // Insert into Z-Graph
         zGraph.add(item, itemList, zMap);
+
+        // Update immersive depth cache for positions that sit on top of the new item
+        updateImmersiveDepthCacheForItem(item);
+    }
+
+    /**
+     * Updates the immersive depth cache for all active positions that are affected
+     * by the given item. A position is affected if its z equals item.zh (position sits
+     * on the item's top face) and the position point (x, y) lies within the item's footprint.
+     */
+    protected void updateImmersiveDepthCacheForItem(Item item) {
+        maxYl = Math.max(maxYl, item.yl);
+        int itemZh = item.zh;
+        int itemDepth = item.immersiveDepth;
+
+        for (Position activePos : activePosList) {
+            if (activePos.z() == itemZh &&
+                    activePos.x() >= item.x && activePos.x() < item.xw &&
+                    activePos.y() >= item.y && activePos.y() < item.yl) {
+                var cachedImmersiveDepth = immersiveDepthCache.get(activePos);
+                if (cachedImmersiveDepth == null || itemDepth < cachedImmersiveDepth) {
+                    immersiveDepthCache.put(activePos, itemDepth);
+                }
+            }
+        }
     }
 
     protected List<Position> findInsertPositions(Item item) {
@@ -242,7 +262,52 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     protected Position createPosition(int x, int y, int z, PositionType type) {
-        return Position.of(maxPosIdx++, x, y, z, type);
+        Position pos = Position.of(maxPosIdx++, x, y, z, type);
+        immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(x, y, z));
+        return pos;
+    }
+
+    protected Position createPosition(int idx, int x, int y, int z, PositionType type) {
+        Position pos = Position.of(idx, x, y, z, type);
+        immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(x, y, z));
+        return pos;
+    }
+
+    /**
+     * Computes the minimum immersive depth of all items whose top face (zh) is at the given z,
+     * and whose footprint contains the point (x, y).
+     * This is a precomputation for the position, so that the PositionService can use it as a
+     * fast lookup instead of iterating over the zMap each time.
+     */
+    protected int computeMinImmersiveDepthAtPosition(int x, int y, int z) {
+        if (z == 0) {
+            return 0;
+        }
+
+        List<Integer> zItems = zMap.get(z);
+        if (zItems == null) {
+            return 0;
+        }
+
+        int minDepth = Integer.MAX_VALUE;
+        for (int i = zItems.size() - 1; i >= 0; i--) {
+            Item lowerItem = itemList.get(zItems.get(i));
+            if (lowerItem.zh == z &&
+                    lowerItem.x <= x &&
+                    lowerItem.xw > x &&
+                    lowerItem.y <= y &&
+                    lowerItem.yl > y) {
+                int depth = lowerItem.immersiveDepth;
+                if (depth == 0) {
+                    return 0;
+                }
+                if (depth < minDepth) {
+                    minDepth = depth;
+                }
+            }
+        }
+
+        return (minDepth == Integer.MAX_VALUE) ? 0 : minDepth;
     }
 
     protected void updateBearingCapacity(List<Item> items) {
@@ -339,8 +404,18 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         return bearingCapacities;
     }
 
+    public int getImmersiveDepthAtPosition(Position pos) {
+        var immersiveDepth = immersiveDepthCache.get(pos);
+        return (immersiveDepth != null) ? immersiveDepth : 0;
+    }
+
     @Override
     public float getCenterOfGravityForY() {
         return centerOfGravityForY;
+    }
+
+    @Override
+    public int getMaxYl() {
+        return maxYl;
     }
 }

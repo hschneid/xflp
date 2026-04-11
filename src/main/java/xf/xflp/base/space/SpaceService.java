@@ -97,27 +97,39 @@ public class SpaceService {
     }
 
     public List<Space> getDominatingSpaces(Collection<Space> spaces) {
-        List<Space> dominatingSpaces = new ArrayList<>(spaces);
-
-        if(spaces.size() == 1) {
-            return dominatingSpaces;
+        if(spaces.size() <= 1) {
+            return new ArrayList<>(spaces);
         }
 
-        List<Space> dominatedSpaces = new ArrayList<>();
-        for (Space spaceA : spaces) {
-            for (Space spaceB : spaces) {
-                if(spaceA.l() == spaceB.l() && spaceA.w() == spaceB.w() && spaceA.h() > spaceB.h())
-                    dominatedSpaces.add(spaceB);
-                if(spaceA.l() == spaceB.l() && spaceA.h() == spaceB.h() && spaceA.w() > spaceB.w())
-                    dominatedSpaces.add(spaceB);
-                if(spaceA.h() == spaceB.h() && spaceA.w() == spaceB.w() && spaceA.l() > spaceB.l())
-                    dominatedSpaces.add(spaceB);
+        // Convert to array for indexed access (avoids iterator overhead in nested loop)
+        Space[] arr = spaces.toArray(new Space[0]);
+        int n = arr.length;
+        boolean[] dominated = new boolean[n];
+
+        for (int a = 0; a < n; a++) {
+            if (dominated[a]) continue;
+            Space sa = arr[a];
+            for (int b = a + 1; b < n; b++) {
+                if (dominated[b]) continue;
+                Space sb = arr[b];
+                // A dominates B: 2 dimensions equal, 1 strictly greater
+                if (sa.l() == sb.l() && sa.w() == sb.w() && sa.h() > sb.h()) dominated[b] = true;
+                else if (sa.l() == sb.l() && sa.h() == sb.h() && sa.w() > sb.w()) dominated[b] = true;
+                else if (sa.h() == sb.h() && sa.w() == sb.w() && sa.l() > sb.l()) dominated[b] = true;
+                // B dominates A: 2 dimensions equal, 1 strictly greater
+                else if (sb.l() == sa.l() && sb.w() == sa.w() && sb.h() > sa.h()) { dominated[a] = true; break; }
+                else if (sb.l() == sa.l() && sb.h() == sa.h() && sb.w() > sa.w()) { dominated[a] = true; break; }
+                else if (sb.h() == sa.h() && sb.w() == sa.w() && sb.l() > sa.l()) { dominated[a] = true; break; }
             }
         }
 
-        dominatingSpaces.removeAll(dominatedSpaces);
-
-        return dominatingSpaces;
+        List<Space> result = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!dominated[i]) {
+                result.add(arr[i]);
+            }
+        }
+        return result;
     }
 
 }

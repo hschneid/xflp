@@ -1,6 +1,5 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.item.Item;
 
 import java.io.ObjectStreamClass;

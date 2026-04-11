@@ -1,6 +1,6 @@
 package benchmarks
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
@@ -92,7 +92,7 @@ class BigNumberSpec extends Specification {
     }
 
     String getStackingGroups() {
-        Set<String> groups = new HashSet<>();
+        Set<String> groups = new HashSet<>()
         for (i in 0..<4) {
             groups.add(randInt(1, 11) + "")
         }

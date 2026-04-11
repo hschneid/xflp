@@ -8,12 +8,8 @@ import xf.xflp.base.fleximport.ContainerData;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
-import xf.xflp.base.item.Tools;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -323,7 +319,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
             return item.h;
         }
 
-        List<Item> lowerItems = Tools.findItemsBelow(this, pos, item);
+        List<Item> lowerItems = findItemsBelow(this, pos, item);
         if(lowerItems.isEmpty())
             return item.h;
 
@@ -334,6 +330,27 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
+    }
+
+    private List<Item> findItemsBelow(Container container, Position pos, Item newItem) {
+        if(!container.getBaseData().getZMap().containsKey(pos.z())) {
+            return Collections.emptyList();
+        }
+
+        List<Item> belowItems = new ArrayList<>();
+        List<Integer> zItems = container.getBaseData().getZMap().get(pos.z());
+        for (int i = zItems.size() - 1; i >= 0; i--) {
+            Item lowerItem = container.getItems().get(zItems.get(i));
+            if(lowerItem.zh == pos.z() &&
+                    lowerItem.x < pos.x() + newItem.w &&
+                    lowerItem.xw > pos.x() &&
+                    lowerItem.y < pos.y() + newItem.l &&
+                    lowerItem.yl > pos.y()) {
+                belowItems.add(lowerItem);
+            }
+        }
+
+        return belowItems;
     }
 
     protected void addToCenterOfGravity(Item item, Position pos) {

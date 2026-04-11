@@ -1,6 +1,5 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.*;
 import xf.xflp.base.container.constraints.AxleLoadParameter;

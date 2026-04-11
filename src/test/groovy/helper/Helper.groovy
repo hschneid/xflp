@@ -121,4 +121,22 @@ class Helper {
 
         return null
     }
+
+    static Item getItemAtPosition(int x, int y, int z, int w, int l, int h) {
+        Item i = new Item()
+        i.x = x
+        i.y = y
+        i.z = z
+        i.w = w
+        i.l = l
+        i.h = h
+        i.xw = x + w
+        i.yl = y + l
+        i.zh = z + h
+        return i
+    }
+
+    static Item getItemAtPosition(int x, int y, int w, int l) {
+        return getItemAtPosition(x, y, 0, w, l, 1)
+    }
 }

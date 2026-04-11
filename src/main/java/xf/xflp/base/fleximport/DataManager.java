@@ -1,7 +1,5 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
-
 import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.util.*;

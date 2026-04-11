@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.7&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.7.5&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints
@@ -20,6 +20,8 @@ It supports:
 
 Optimization:
 * Construction heuristic
+** Extreme point
+** Space-oriented collision detection
 * GRASP heuristic
   * Swap and relocate neighborhood search
 
@@ -41,6 +43,9 @@ int nbrOfUnloadedPackages = report.getSummary().getNbrOfUnLoadedPackages();
 This software is released under [MIT License] (https://opensource.org/licenses/MIT)
 
 ## Change log
+### 0.7.5
+- Performance updates (Code looks only a little bit uglier).
+
 ### 0.7
 - Update of licence text
 - Update of Gradle and Java 21

@@ -147,9 +147,9 @@ public final class AddContainer extends ContainerBase implements Container {
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
+			if(position.x() >= newItem.xw() ||
+					position.y() >= newItem.yl() ||
+					position.z() >= newItem.zh())
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();

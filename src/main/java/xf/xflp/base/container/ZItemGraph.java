@@ -44,7 +44,7 @@ public class ZItemGraph {
 
 		// Upper
 		{
-			List<Item> upperItems = searchItemsAbove(newItem, itemList, zMap.get(newItem.zh));
+			List<Item> upperItems = searchItemsAbove(newItem, itemList, zMap.get(newItem.zh()));
 			upperList.set(newItem.index, upperItems);
 
 			// Update upper items with new lower item, which means new cut area ratio
@@ -113,9 +113,9 @@ public class ZItemGraph {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
-			if(it.zh == item.z() &&
-					it.xw > item.x() && it.x() < item.xw &&
-					it.yl > item.y() && it.y() < item.yl)
+			if(it.zh() == item.z() &&
+					it.xw() > item.x() && it.x() < item.xw() &&
+					it.yl() > item.y() && it.y() < item.yl())
 				list.add(it);
 		}
 
@@ -132,9 +132,9 @@ public class ZItemGraph {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
-			if(it.z() == item.zh &&
-					it.xw > item.x() && it.x() < item.xw &&
-					it.yl > item.y() && it.y() < item.yl)
+			if(it.z() == item.zh() &&
+					it.xw() > item.x() && it.x() < item.xw() &&
+					it.yl() > item.y() && it.y() < item.yl())
 				list.add(it);
 		}
 

@@ -125,11 +125,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         itemPositionMap.put(item, pos);
 
         xMap.put(item.x(), item.index);
-        xMap.put(item.xw, item.index);
+        xMap.put(item.xw(), item.index);
         yMap.put(item.y(), item.index);
-        yMap.put(item.yl, item.index);
+        yMap.put(item.yl(), item.index);
         zMap.put(item.z(), item.index);
-        zMap.put(item.zh, item.index);
+        zMap.put(item.zh(), item.index);
 
         weight += item.weight;
 
@@ -146,14 +146,14 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
      * on the item's top face) and the position point (x, y) lies within the item's footprint.
      */
     protected void updateImmersiveDepthCacheForItem(Item item) {
-        maxYl = Math.max(maxYl, item.yl);
-        int itemZh = item.zh;
+        maxYl = Math.max(maxYl, item.yl());
+        int itemZh = item.zh();
         int itemDepth = item.immersiveDepth;
 
         for (Position activePos : activePosList) {
             if (activePos.z() == itemZh &&
-                    activePos.x() >= item.x() && activePos.x() < item.xw &&
-                    activePos.y() >= item.y() && activePos.y() < item.yl) {
+                    activePos.x() >= item.x() && activePos.x() < item.xw() &&
+                    activePos.y() >= item.y() && activePos.y() < item.yl()) {
                 var cachedImmersiveDepth = immersiveDepthCache.get(activePos);
                 if (cachedImmersiveDepth == null || itemDepth < cachedImmersiveDepth) {
                     immersiveDepthCache.put(activePos, itemDepth);
@@ -167,12 +167,12 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         // 3 basic positions
         Position verticalPosition = null, horizontalPosition = null;
-        if(item.yl < this.length) {
-            verticalPosition = createPosition(item.x(), item.yl, item.z(), PositionType.BASIC);
+        if(item.yl() < this.length) {
+            verticalPosition = createPosition(item.x(), item.yl(), item.z(), PositionType.BASIC);
             posList.add(verticalPosition);
         }
-        if(item.xw < this.width) {
-            horizontalPosition = createPosition(item.xw, item.y(), item.z(), PositionType.BASIC);
+        if(item.xw() < this.width) {
+            horizontalPosition = createPosition(item.xw(), item.y(), item.z(), PositionType.BASIC);
             posList.add(horizontalPosition);
         }
         if(item.z() + item.h < this.height) {
@@ -183,19 +183,19 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         if(item.z() == 0) {
             if(item.x() > 0 && verticalPosition != null) {
                 Item leftElement = findNextLeftElement(verticalPosition);
-                int leftPos = (leftElement != null) ? leftElement.xw : 0;
+                int leftPos = (leftElement != null) ? leftElement.xw() : 0;
 
                 if(leftPos < item.x()) {
-                    posList.add(createPosition(leftPos, item.yl, item.z(), PositionType.EXTENDED_H));
+                    posList.add(createPosition(leftPos, item.yl(), item.z(), PositionType.EXTENDED_H));
                 }
             }
 
             if(item.y() > 0 && horizontalPosition != null) {
                 Item lowerElement = findNextDeeperElement(horizontalPosition);
-                int lowerPos = (lowerElement != null) ? lowerElement.yl : 0;
+                int lowerPos = (lowerElement != null) ? lowerElement.yl() : 0;
 
                 if(lowerPos < item.y()) {
-                    posList.add(createPosition(item.xw, lowerPos, item.z(), PositionType.EXTENDED_V));
+                    posList.add(createPosition(item.xw(), lowerPos, item.z(), PositionType.EXTENDED_V));
                 }
             }
         }
@@ -218,10 +218,10 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         Item leftItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.y() > pos.y() || item.yl < pos.y() || item.x() > pos.x() || item.xw > pos.x() || pos.y() == item.yl)
+            if(item == null || item.y() > pos.y() || item.yl() < pos.y() || item.x() > pos.x() || item.xw() > pos.x() || pos.y() == item.yl())
                 continue;
 
-            if(leftItem == null || item.xw > leftItem.xw)
+            if(leftItem == null || item.xw() > leftItem.xw())
                 leftItem = item;
         }
 
@@ -232,10 +232,10 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         Item lowerItem = null;
 
         for (Item item : itemList) {
-            if(item == null || item.x() > pos.x() || item.xw < pos.x() || item.y() > pos.y() || item.yl > pos.y() || pos.x() == item.xw)
+            if(item == null || item.x() > pos.x() || item.xw() < pos.x() || item.y() > pos.y() || item.yl() > pos.y() || pos.x() == item.xw())
                 continue;
 
-            if(lowerItem == null || item.yl > lowerItem.yl)
+            if(lowerItem == null || item.yl() > lowerItem.yl())
                 lowerItem = item;
         }
 
@@ -247,10 +247,10 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         for (Position pos : activePosList) {
             // Liegt eine Position auf der unteren Kante des Objekts, ist sie �berdeckt.
-            if(pos.z() == item.z() && pos.x() >= item.x() && pos.x() < item.xw && pos.y() == item.y())
+            if(pos.z() == item.z() && pos.x() >= item.x() && pos.x() < item.xw() && pos.y() == item.y())
                 coveredPositionList.add(pos);
                 // Liegt eine Position auf der linken Kante des Objekts, ist sie �berdeckt.
-            else if(pos.z() == item.z() && pos.y() >= item.y() && pos.y() < item.yl && pos.x() == item.x())
+            else if(pos.z() == item.z() && pos.y() >= item.y() && pos.y() < item.yl() && pos.x() == item.x())
                 coveredPositionList.add(pos);
         }
 
@@ -288,11 +288,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         int minDepth = Integer.MAX_VALUE;
         for (int i = zItems.size() - 1; i >= 0; i--) {
             Item lowerItem = itemList.get(zItems.get(i));
-            if (lowerItem.zh == z &&
+            if (lowerItem.zh() == z &&
                     lowerItem.x() <= x &&
-                    lowerItem.xw > x &&
+                    lowerItem.xw() > x &&
                     lowerItem.y() <= y &&
-                    lowerItem.yl > y) {
+                    lowerItem.yl() > y) {
                 int depth = lowerItem.immersiveDepth;
                 if (depth == 0) {
                     return 0;
@@ -341,11 +341,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         List<Integer> zItems = container.getBaseData().getZMap().get(pos.z());
         for (int i = zItems.size() - 1; i >= 0; i--) {
             Item lowerItem = container.getItems().get(zItems.get(i));
-            if(lowerItem.zh == pos.z() &&
+            if(lowerItem.zh() == pos.z() &&
                     lowerItem.x() < pos.x() + newItem.w &&
-                    lowerItem.xw > pos.x() &&
+                    lowerItem.xw() > pos.x() &&
                     lowerItem.y() < pos.y() + newItem.l &&
-                    lowerItem.yl > pos.y()) {
+                    lowerItem.yl() > pos.y()) {
                 belowItems.add(lowerItem);
             }
         }

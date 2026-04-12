@@ -28,8 +28,8 @@ public class SpaceService {
         // New item is over the position
         boolean itemHovering = position.z() < newItem.z();
         // New item is in view range (upper right of position)
-        boolean widthLimited = position.y() >= newItem.y() && position.y() < newItem.yl;
-        boolean lengthLimited = position.x() >= newItem.x() && position.x() < newItem.xw;
+        boolean widthLimited = position.y() >= newItem.y() && position.y() < newItem.yl();
+        boolean lengthLimited = position.x() >= newItem.x() && position.x() < newItem.xw();
         boolean itemOverPosition = widthLimited && lengthLimited;
 
         List<Space> spaces = new ArrayList<>(3);
@@ -78,9 +78,9 @@ public class SpaceService {
         return position.x() + space.w() <= item.x() ||
                 position.y() + space.l() <= item.y() ||
                 position.z() + space.h() <= item.z() ||
-                position.x() >= item.xw ||
-                position.y() >= item.yl ||
-                position.z() >= item.zh;
+                position.x() >= item.xw() ||
+                position.y() >= item.yl() ||
+                position.z() >= item.zh();
     }
 
     public Set<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {

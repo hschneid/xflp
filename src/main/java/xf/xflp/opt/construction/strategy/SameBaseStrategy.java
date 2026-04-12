@@ -73,7 +73,7 @@ public class SameBaseStrategy extends BaseStrategy {
 				Item belowItem = container.getItems().get(idx);
 
 				// Check, if this item is directly below the position
-				if (belowItem.x() == pos.item().x() && belowItem.y() == pos.item().getY() && belowItem.zh == pos.item().getZ()) {
+				if (belowItem.x() == pos.item().x() && belowItem.y() == pos.item().getY() && belowItem.zh() == pos.item().getZ()) {
 					// Check, if this item has same base
 					if (itemLength == Math.max(belowItem.l, belowItem.w) &&
 							itemWidth == Math.min(belowItem.l, belowItem.w)) {

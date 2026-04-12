@@ -223,7 +223,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
 		for (Position pos : projectablePosHList) {
 			Item leftItem = findNextLeftElement(pos);
-			int newX = (leftItem != null) ? leftItem.xw : 0;
+			int newX = (leftItem != null) ? leftItem.xw() : 0;
 			Position newPosition = createPosition(pos.idx(), newX, pos.y(), pos.z(), pos.type());
 			replacePosition(pos, newPosition);
 			recreateSpaces(newPosition);
@@ -231,7 +231,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
 			Item lowerItem = findNextDeeperElement(pos);
-			int newY = (lowerItem != null) ? lowerItem.yl : 0;
+			int newY = (lowerItem != null) ? lowerItem.yl() : 0;
 			Position newPosition = createPosition(pos.idx(), pos.x(), newY, pos.z(), pos.type());
 			if(!pos.equals(newPosition)) {
 				replacePosition(pos, newPosition);
@@ -279,7 +279,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_H)
-				if(pos.x() == item.xw && pos.y() >= item.y() && pos.y() < item.yl)
+				if(pos.x() == item.xw() && pos.y() >= item.y() && pos.y() < item.yl())
 					list.add(pos);
 		}
 		return list;
@@ -289,7 +289,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_V)
-				if(pos.y() == item.yl && pos.x() >= item.x() && pos.x() < item.xw)
+				if(pos.y() == item.yl() && pos.x() >= item.x() && pos.x() < item.xw())
 					list.add(pos);
 		}
 		return list;
@@ -301,13 +301,13 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private List<Position> findUncoveringPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : coveredPosList) {
-			if(pos.z() == item.z() && pos.x() == item.x() && pos.y() >= item.y() && pos.y() < item.yl)
+			if(pos.z() == item.z() && pos.x() == item.x() && pos.y() >= item.y() && pos.y() < item.yl())
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.x() == item.xw && pos.y() >= item.y() && pos.y() < item.yl && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z() && pos.x() == item.xw() && pos.y() >= item.y() && pos.y() < item.yl() && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.y() == item.y() && pos.x() >= item.x() && pos.x() < item.xw)
+			else if(pos.z() == item.z() && pos.y() == item.y() && pos.x() >= item.x() && pos.x() < item.xw())
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.y() == item.yl && pos.x() >= item.x() && pos.x() < item.xw && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z() && pos.y() == item.yl() && pos.x() >= item.x() && pos.x() < item.xw() && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
 		}
 		return list;
@@ -464,22 +464,22 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		itemList.remove(item.index);
 
 		xMap.get(item.x()).remove(index);
-		xMap.get(item.xw).remove(index);
+		xMap.get(item.xw()).remove(index);
 		yMap.get(item.y()).remove(index);
-		yMap.get(item.yl).remove(index);
+		yMap.get(item.yl()).remove(index);
 		zMap.get(item.z()).remove(index);
-		zMap.get(item.zh).remove(index);
+		zMap.get(item.zh()).remove(index);
 
 		weight -= item.weight;
 		item.h = item.origH;
 
 		// Recompute maxYl if necessary
-		if (item.yl >= maxYl) {
+		if (item.yl() >= maxYl) {
 			maxYl = 0;
 			for (int i = itemList.size() - 1; i >= 0; i--) {
 				Item it = itemList.get(i);
-				if (it != null && it.yl > maxYl) {
-					maxYl = it.yl;
+				if (it != null && it.yl() > maxYl) {
+					maxYl = it.yl();
 				}
 			}
 		}
@@ -501,11 +501,11 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	}
 
 	private void recomputeImmersiveDepthForPositions(Item item, Iterable<Position> positions) {
-		int itemZh = item.zh;
+		int itemZh = item.zh();
 		for (Position pos : positions) {
 			if (pos.z() == itemZh &&
-					pos.x() >= item.x() && pos.x() < item.xw &&
-					pos.y() >= item.y() && pos.y() < item.yl) {
+					pos.x() >= item.x() && pos.x() < item.xw() &&
+					pos.y() >= item.y() && pos.y() < item.yl()) {
 				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
 			}
 		}
@@ -515,9 +515,9 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
+			if(position.x() >= newItem.xw() ||
+					position.y() >= newItem.yl() ||
+					position.z() >= newItem.zh())
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();
@@ -553,9 +553,9 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			if(!spacePositions.containsKey(pos))
 				continue;
 
-			if(item.xw > pos.x() &&
-					item.yl > pos.y() &&
-					item.zh > pos.z()) {
+			if(item.xw() > pos.x() &&
+					item.yl() > pos.y() &&
+					item.zh() > pos.z()) {
 				// Removed item is potentially in the range of an existing space
 				recreateSpaces(pos);
 			}

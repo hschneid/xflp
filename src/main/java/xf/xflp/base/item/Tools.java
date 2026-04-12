@@ -28,8 +28,8 @@ public class Tools {
 	 * @return cut area size / root area size
 	 */
 	public static float getCutRatio(int x, int y, int w, int l, Item cutItem) {
-		float xx = Math.min(cutItem.xw, x + w) - Math.max(cutItem.x(), x);
-		float yy = Math.min(cutItem.yl, y + l) - Math.max(cutItem.y(), y);
+		float xx = Math.min(cutItem.xw(), x + w) - Math.max(cutItem.x(), x);
+		float yy = Math.min(cutItem.yl(), y + l) - Math.max(cutItem.y(), y);
 
 		return (xx * yy) / (w * l);
 	}

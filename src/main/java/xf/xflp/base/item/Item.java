@@ -58,7 +58,7 @@ public class Item implements Indexable {
 	private ItemPlacement placement;
 
 	// Backward-compatible public field aliases – kept in sync with placement
-	public int xw, yl, zh, w, l, h;
+	public int w, l, h;
 	public boolean isRotated = false;
 	/* Idx in data structure of its holding container (-1 if unpacked) */
 	public int index = -1;
@@ -66,7 +66,6 @@ public class Item implements Indexable {
 	public int containerIndex = -1;
 
 	public Item() {
-		this.xw = this.yl = this.zh = -1;
 		this.stackable = true;
 	}
 
@@ -93,14 +92,14 @@ public class Item implements Indexable {
 		placement.x = pos.x();
 		placement.y = pos.y();
 		placement.z = pos.z();
-		xw = x() + w;
-		yl = y() + l;
-		zh = z() + h;
+		placement.xw = x() + w;
+		placement.yl = y() + l;
+		placement.zh = z() + h;
 		syncToPlacement();
 	}
 
 	public void clearPosition() {
-		this.xw = this.yl = this.zh = -1;
+		placement.x = placement.y = placement.z = placement.xw = placement.yl = placement.zh = -1;
 		syncToPlacement();
 	}
 
@@ -129,14 +128,6 @@ public class Item implements Indexable {
 	}
 
 	/**
-	 * Returns the current placement (lazy-synced from public fields).
-	 */
-	public ItemPlacement getPlacement() {
-		syncToPlacement();
-		return placement;
-	}
-
-	/**
 	 * Returns a snapshot copy of the current placement.
 	 */
 	public ItemPlacement snapshotPlacement() {
@@ -155,9 +146,6 @@ public class Item implements Indexable {
 	/** Pushes current public fields into the placement object */
 	private void syncToPlacement() {
 		if (placement == null) return;
-		placement.xw = this.xw;
-		placement.yl = this.yl;
-		placement.zh = this.zh;
 		placement.w = this.w;
 		placement.l = this.l;
 		placement.h = this.h;
@@ -168,9 +156,6 @@ public class Item implements Indexable {
 
 	/** Pulls placement state back into the public fields */
 	private void syncFromPlacement() {
-		this.xw = placement.xw;
-		this.yl = placement.yl;
-		this.zh = placement.zh;
 		this.w = placement.w;
 		this.l = placement.l;
 		this.h = placement.h;
@@ -262,28 +247,40 @@ public class Item implements Indexable {
 		this.placement.z = z;
 	}
 
+	public int xw() {
+		return placement.xw;
+	}
+
 	public int getXw() {
-		return xw;
+		return placement.xw;
 	}
 
 	public void setXw(int xw) {
-		this.xw = xw;
+		this.placement.xw = xw;
+	}
+
+	public int yl() {
+		return placement.yl;
 	}
 
 	public int getYl() {
-		return yl;
+		return placement.yl;
 	}
 
 	public void setYl(int yl) {
-		this.yl = yl;
+		this.placement.yl = yl;
+	}
+
+	public int zh() {
+		return placement.zh;
 	}
 
 	public int getZh() {
-		return zh;
+		return placement.zh;
 	}
 
 	public void setZh(int zh) {
-		this.zh = zh;
+		this.placement.zh = zh;
 	}
 
 	public int getW() {

@@ -1,6 +1,6 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Tools;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import java.util.List;
  */
 public class ZItemGraphEntry {
 
-    public final Item item;
-    public final List<Item> lowerItemList;
+    public final ItemPlacement item;
+    public final List<ItemPlacement> lowerItemList;
     public final List<Float> cutRatioList;
     public final Object[] itemRatioArr;
 
-    public ZItemGraphEntry(Item item, List<Item> lowerItemList) {
+    public ZItemGraphEntry(ItemPlacement item, List<ItemPlacement> lowerItemList) {
         this.item = item;
         this.cutRatioList = new ArrayList<>();
         this.lowerItemList = lowerItemList;

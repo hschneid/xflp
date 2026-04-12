@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.multitype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
@@ -43,7 +44,8 @@ public class MultiBinAddHeuristic {
 
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers, strategy);
+            ItemPlacement placedItem = new ItemPlacement(item);
+            List<ContainerPosition> containerPositions = getBestContainerPositions(placedItem, containers, strategy);
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
@@ -67,12 +69,12 @@ public class MultiBinAddHeuristic {
 
     private void setUnplanned(List<Item> unplannedItems, Item... items) {
         for (Item item : items) {
-            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index() + " could not be added.");
+            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex + " could not be added.");
             unplannedItems.add(item);
         }
     }
 
-    private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
+    private List<ContainerPosition> getBestContainerPositions(ItemPlacement item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
         List<ContainerPosition> containerPositions = new ArrayList<>();
         for (Container container : containers) {
             PositionCandidate bestPosition = getBestInsertPosition(item, container, strategy);
@@ -84,9 +86,9 @@ public class MultiBinAddHeuristic {
         return containerPositions;
     }
 
-    private PositionCandidate getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
+    private PositionCandidate getBestInsertPosition(ItemPlacement item, Container container, BaseStrategy strategy) throws XFLPException {
         // Check if item is allowed to this container type
-        if (container.isItemAllowed(item)) {
+        if (container.isItemAllowed(item.getItem())) {
             // Fetch existing insert positions
             List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
 
@@ -101,7 +103,7 @@ public class MultiBinAddHeuristic {
 
     private void insertIntoContainer(List<ContainerPosition> containerPositions) {
         // Simply take first - Could be improved later
-        ContainerPosition containerPosition = containerPositions.get(0);
+        ContainerPosition containerPosition = containerPositions.getFirst();
         containerPosition.getContainer().add(
                 containerPosition.getPosition().item(),
                 containerPosition.getPosition().position(),

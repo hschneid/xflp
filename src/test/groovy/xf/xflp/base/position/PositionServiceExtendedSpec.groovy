@@ -9,7 +9,7 @@ class PositionServiceExtendedSpec extends Specification {
     // A square item (w == l) should not produce a rotated candidate because rotation would be identical.
     def "square item does not produce rotated candidate"() {
         def con = Helper.getAddSpaceContainer2(4,4,2)
-        def i1 = Helper.getItem(2, 2, 1, 1, 100, 0)
+        def i1 = Helper.getPlacedItem(2, 2, 1, 1, 100, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -22,8 +22,8 @@ class PositionServiceExtendedSpec extends Specification {
     // A non-spinable item should never produce a rotated candidate.
     def "non-spinable item does not produce rotated candidate"() {
         def con = Helper.getAddSpaceContainer2(4,4,2)
-        def i1 = Helper.getItem(2, 1, 1, 1, 100, 0)
-        i1.spinable = false
+        def i1 = Helper.getPlacedItem(2, 1, 1, 1, 100, 0)
+        i1.item.spinable = false
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -35,7 +35,7 @@ class PositionServiceExtendedSpec extends Specification {
     // An item exceeding the container max weight should not have any valid position.
     def "item exceeds container max weight - no positions"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3, 10)
-        def i1 = Helper.getItem(1, 1, 1, 11, 100, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 11, 100, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -47,8 +47,8 @@ class PositionServiceExtendedSpec extends Specification {
     // Two items together exceeding container max weight - second item should have no position.
     def "two items together exceed container max weight"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3, 10)
-        def i1 = Helper.getItem(1, 1, 1, 6, 100, 0)
-        def i2 = Helper.getItem(1, 1, 1, 5, 100, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 6, 100, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 5, 100, 0)
 
         Helper.add(con, i1, 0, 0, 0)
 
@@ -62,7 +62,7 @@ class PositionServiceExtendedSpec extends Specification {
     // An item that exactly matches the container max weight should still be valid.
     def "item exactly matches container max weight"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3, 10)
-        def i1 = Helper.getItem(1, 1, 1, 10, 100, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 10, 100, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -74,8 +74,8 @@ class PositionServiceExtendedSpec extends Specification {
     // An item too wide for the container should have no valid position.
     def "item too wide for container"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3)
-        def i1 = Helper.getItem(4, 1, 1, 1, 100, 0)
-        i1.spinable = false
+        def i1 = Helper.getPlacedItem(4, 1, 1, 1, 100, 0)
+        i1.item.spinable = false
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -87,7 +87,7 @@ class PositionServiceExtendedSpec extends Specification {
     // An item too tall for the container should have no valid position.
     def "item too tall for container"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3)
-        def i1 = Helper.getItem(1, 1, 4, 1, 100, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 4, 1, 100, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -102,16 +102,16 @@ class PositionServiceExtendedSpec extends Specification {
         con.parameter.add(ParameterType.LIFO_IMPORTANCE, 1.0f as float)
 
         // i1: loads at loc 0, unloads at loc 1 (earlier unload)
-        def i1 = Helper.getItem(3, 2, 1, 1, 100, 0)
-        i1.setLoadingLoc(0)
-        i1.setUnLoadingLoc(1)
+        def i1 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
+        i1.item.setLoadingLoc(0)
+        i1.item.setUnLoadingLoc(1)
         Helper.add(con, i1, 0, 0, 0)
 
         // i2: loads at loc 0, unloads at loc 5 (later unload)
         // Should not be blocked because it unloads later than i1
-        def i2 = Helper.getItem(3, 2, 1, 1, 100, 0)
-        i2.setLoadingLoc(0)
-        i2.setUnLoadingLoc(5)
+        def i2 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
+        i2.item.setLoadingLoc(0)
+        i2.item.setUnLoadingLoc(5)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i2)
@@ -126,14 +126,14 @@ class PositionServiceExtendedSpec extends Specification {
         def con = Helper.getAddSpaceContainer2(3, 10, 1)
         con.parameter.add(ParameterType.LIFO_IMPORTANCE, 0.0f as float)
 
-        def i1 = Helper.getItem(3, 2, 1, 1, 100, 0)
-        i1.setLoadingLoc(0)
-        i1.setUnLoadingLoc(1)
+        def i1 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
+        i1.item.setLoadingLoc(0)
+        i1.item.setUnLoadingLoc(1)
         Helper.add(con, i1, 0, 0, 0)
 
-        def i2 = Helper.getItem(3, 2, 1, 1, 100, 0)
-        i2.setLoadingLoc(0)
-        i2.setUnLoadingLoc(5)
+        def i2 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
+        i2.item.setLoadingLoc(0)
+        i2.item.setUnLoadingLoc(5)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i2)

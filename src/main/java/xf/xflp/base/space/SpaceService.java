@@ -1,7 +1,7 @@
 package xf.xflp.base.space;
 
 import com.google.common.collect.Sets;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class SpaceService {
 
-    public List<Space> createSpacesAtPosition(Position position, Space space, Item newItem) {
+    public List<Space> createSpacesAtPosition(Position position, Space space, ItemPlacement newItem) {
         // Are position and space out of reach for newItem
         if (isItemNotInSpace(position, space, newItem))
             return Collections.singletonList(space);
@@ -26,10 +26,10 @@ public class SpaceService {
         // New item is touching this space!
 
         // New item is over the position
-        boolean itemHovering = position.z() < newItem.z();
+        boolean itemHovering = position.z() < newItem.z;
         // New item is in view range (upper right of position)
-        boolean widthLimited = position.y() >= newItem.y() && position.y() < newItem.yl();
-        boolean lengthLimited = position.x() >= newItem.x() && position.x() < newItem.xw();
+        boolean widthLimited = position.y() >= newItem.y && position.y() < newItem.yl;
+        boolean lengthLimited = position.x() >= newItem.x && position.x() < newItem.xw;
         boolean itemOverPosition = widthLimited && lengthLimited;
 
         List<Space> spaces = new ArrayList<>(3);
@@ -37,12 +37,12 @@ public class SpaceService {
             spaces.add(Space.of(
                     space.l(),
                     space.w(),
-                    (newItem.z() - position.z())
+                    (newItem.z - position.z())
             ));
             if(!itemOverPosition) {
                 spaces.add(Space.of(
-                        (lengthLimited) ? (newItem.y() - position.y()) : space.l(),
-                        (widthLimited) ? (newItem.x() - position.x()) : space.w(),
+                        (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
                         space.h()
                 ));
             }
@@ -51,8 +51,8 @@ public class SpaceService {
         if (widthLimited || lengthLimited) {
             if(!itemHovering && !itemOverPosition) {
                 spaces.add(Space.of(
-                        (lengthLimited) ? (newItem.y() - position.y()) : space.l(),
-                        (widthLimited) ? (newItem.x() - position.x()) : space.w(),
+                        (lengthLimited) ? (newItem.y - position.y()) : space.l(),
+                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
                         space.h()
                 ));
             }
@@ -60,13 +60,13 @@ public class SpaceService {
         // New item is only partially in view range (cutting position coordinates)
         else {
             spaces.add(Space.of(
-                    newItem.y() - position.y(),
+                    newItem.y - position.y(),
                     space.w(),
                     space.h()
             ));
             spaces.add(Space.of(
                     space.l(),
-                    newItem.x() - position.x(),
+                    newItem.x - position.x(),
                     space.h()
             ));
         }
@@ -74,18 +74,18 @@ public class SpaceService {
         return spaces;
     }
 
-    public boolean isItemNotInSpace(Position position, Space space, Item item) {
-        return position.x() + space.w() <= item.x() ||
-                position.y() + space.l() <= item.y() ||
-                position.z() + space.h() <= item.z() ||
-                position.x() >= item.xw() ||
-                position.y() >= item.yl() ||
-                position.z() >= item.zh();
+    public boolean isItemNotInSpace(Position position, Space space, ItemPlacement item) {
+        return position.x() + space.w() <= item.x ||
+                position.y() + space.l() <= item.y ||
+                position.z() + space.h() <= item.z ||
+                position.x() >= item.xw ||
+                position.y() >= item.yl ||
+                position.z() >= item.zh;
     }
 
-    public Set<Item> getItemsInSpace(Position position, Space space, List<Item> allItems) {
-        Set<Item> itemsInSpace = Sets.newHashSetWithExpectedSize(allItems.size());
-        for (Item item : allItems) {
+    public Set<ItemPlacement> getItemsInSpace(Position position, Space space, List<ItemPlacement> allItems) {
+        Set<ItemPlacement> itemsInSpace = Sets.newHashSetWithExpectedSize(allItems.size());
+        for (ItemPlacement item : allItems) {
             // entries can be null, because they can be removed from item list
             if(item == null || isItemNotInSpace(position, space, item)) {
                 continue;

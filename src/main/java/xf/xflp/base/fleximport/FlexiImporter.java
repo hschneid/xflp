@@ -172,7 +172,7 @@ public class FlexiImporter implements Serializable {
 									return j.getUnLoadingLoc() - i.getUnLoadingLoc();
 								return i.getUnLoadingLoc() - j.getUnLoadingLoc();
 							})
-							.thenComparing(Item::getIdx)
+							.thenComparing(Item::getExternalIndex)
 			);
 		}
 

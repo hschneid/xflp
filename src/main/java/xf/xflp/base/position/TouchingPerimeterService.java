@@ -1,7 +1,7 @@
 package xf.xflp.base.position;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 
 import java.util.List;
@@ -23,16 +23,16 @@ public class TouchingPerimeterService {
             int itemTouchValue,
             boolean considerWalls,
             boolean considerBaseFloor) {
-        Item item = candidate.item();
+        ItemPlacement item = candidate.item();
         Position pos = candidate.position();
 
         int value = 0;
-        int w = item.w();
-        int l = item.l();
-        int h = item.h();
+        int w = item.w;
+        int l = item.l;
+        int h = item.h;
         if(candidate.isRotated()) {
-            w = item.l();
-            l = item.w();
+            w = item.l;
+            l = item.w;
         }
 
         int posX = pos.x();
@@ -95,12 +95,12 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            Item i = container.getItems().get(itemIndices.get(j));
-            if (i.xw() == posX || i.x() == xw) {
-                if (i.y() > yl || i.yl() < posY) continue;
-                if (i.z() > zh || i.zh() < posZ) continue;
-                int yLength = Math.min(yl, i.yl()) - Math.max(i.y(), posY);
-                int zLength = Math.min(zh, i.zh()) - Math.max(i.z(), posZ);
+            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            if (i.xw == posX || i.x == xw) {
+                if (i.y > yl || i.yl < posY) continue;
+                if (i.z > zh || i.zh < posZ) continue;
+                int yLength = Math.min(yl, i.yl) - Math.max(i.y, posY);
+                int zLength = Math.min(zh, i.zh) - Math.max(i.z, posZ);
                 val += yLength * zLength * itemTouchValue;
             }
         }
@@ -113,12 +113,12 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            Item i = container.getItems().get(itemIndices.get(j));
-            if (i.yl() == posY || i.y() == yl) {
-                if (i.x() > xw || i.xw() < posX) continue;
-                if (i.z() > zh || i.zh() < posZ) continue;
-                int xLength = Math.min(xw, i.xw()) - Math.max(i.x(), posX);
-                int zLength = Math.min(zh, i.zh()) - Math.max(i.z(), posZ);
+            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            if (i.yl == posY || i.y == yl) {
+                if (i.x > xw || i.xw < posX) continue;
+                if (i.z > zh || i.zh < posZ) continue;
+                int xLength = Math.min(xw, i.xw) - Math.max(i.x, posX);
+                int zLength = Math.min(zh, i.zh) - Math.max(i.z, posZ);
                 val += xLength * zLength * itemTouchValue;
             }
         }
@@ -131,12 +131,12 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            Item i = container.getItems().get(itemIndices.get(j));
-            if (i.zh() == posZ || i.z() == zh) {
-                if (i.y() > yl || i.yl() < posY) continue;
-                if (i.x() > xw || i.xw() < posX) continue;
-                int yLength = Math.min(yl, i.yl()) - Math.max(i.y(), posY);
-                int xLength = Math.min(xw, i.xw()) - Math.max(i.x(), posX);
+            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            if (i.zh == posZ || i.z == zh) {
+                if (i.y > yl || i.yl < posY) continue;
+                if (i.x > xw || i.xw < posX) continue;
+                int yLength = Math.min(yl, i.yl) - Math.max(i.y, posY);
+                int xLength = Math.min(xw, i.xw) - Math.max(i.x, posX);
                 val += yLength * xLength * itemTouchValue;
             }
         }

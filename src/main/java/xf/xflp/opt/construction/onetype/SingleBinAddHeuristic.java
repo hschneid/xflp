@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
@@ -51,16 +52,17 @@ public class SingleBinAddHeuristic {
 
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
+			ItemPlacement placedItem = new ItemPlacement(item);
             PositionCandidate insertPosition = null;
 
             // Check if item is allowed to this container type
             if (container.isItemAllowed(item)) {
-                // Fetch existing insert positions
-                List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
+                // Fetch existing insert position condidates
+                List<PositionCandidate> posList = PositionService.findPositionCandidates(container, placedItem);
 
                 if (!posList.isEmpty()) {
                     // Choose according to select strategy
-                    insertPosition = strategy.choose(item, container, posList);
+                    insertPosition = strategy.choose(placedItem, container, posList);
                 }
             }
 
@@ -92,7 +94,7 @@ public class SingleBinAddHeuristic {
 
 	private void setUnplanned(List<Item> unplannedItems, Item... items) {
 		for (Item item : items) {
-			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index() + " could not be added.");
+			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex + " could not be added.");
 			unplannedItems.add(item);
 		}
 	}

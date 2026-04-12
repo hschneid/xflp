@@ -11,11 +11,11 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 2
 
         Container con = Helper.getAddSpaceContainer2(1,10,2)
-        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getPlacedItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 2, 0)
@@ -33,11 +33,11 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 1
 
         Container con = Helper.getAddSpaceContainer2(1,10,2)
-        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getPlacedItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 2, 0)
@@ -55,11 +55,11 @@ class ContainerExtendedStackingSpec extends Specification {
         def nbrOfAllowedItemsBelow = 0
 
         Container con = Helper.getAddSpaceContainer2(1,10,2)
-        def i1 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i2 = Helper.getItem(1, 2, 1, 1, 10, 0)
-        def i3 = Helper.getItem(1, 1, 1, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        def i3 = Helper.getPlacedItem(1, 1, 1, 1, 10, 0)
         // The critical item
-        def i4 = Helper.getItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0, 1, nbrOfAllowedItemsBelow)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 2, 0)

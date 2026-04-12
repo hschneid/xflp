@@ -1,7 +1,6 @@
 package xf.xflp.base.item;
 
 
-import util.collection.Indexable;
 import xf.xflp.report.LoadType;
 
 import java.util.Set;
@@ -20,7 +19,7 @@ import java.util.Set;
  * @author hschneid
  *
  */
-public class Item implements Indexable {
+public class Item {
 
 	// --- Master data (immutable after postInit) ---
 	public int origW, origL, origH;
@@ -53,40 +52,15 @@ public class Item implements Indexable {
 	// Defines if this item is loaded (true) or unloaded (false)
 	public boolean isLoading = false;
 
-	// --- Mutable placement data (delegated to ItemPlacement) ---
-	private ItemPlacement placement;
-
 	public Item() {}
 
 	public void postInit() {
-		this.placement = new ItemPlacement(this.origW, this.origL, this.origH);
 		this.loadingType = (isLoading) ? LoadType.LOAD : LoadType.UNLOAD;
-	}
-
-	public void rotate() {
-		int tmp = w();
-		setW(l());
-		setL(tmp);
-
-		placement.isRotated = !placement.isRotated;
-	}
-
-	public void setPosition(Position pos) {
-		placement.x = pos.x();
-		placement.y = pos.y();
-		placement.z = pos.z();
-		placement.xw = x() + w();
-		placement.yl = y() + l();
-		placement.zh = z() + h();
-	}
-
-	public void clearPosition() {
-		placement.x = placement.y = placement.z = placement.xw = placement.yl = placement.zh = -1;
 	}
 
 	@Override
 	public String toString() {
-		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w()+","+l()+","+h()+") ["+x()+", "+y()+", "+z()+" "+(placement.isRotated?"R":"")+"]"+ " "+stackingGroup;
+		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+origW+","+origL+","+origH+")  "+stackingGroup;
 	}
 
 	/**
@@ -95,163 +69,15 @@ public class Item implements Indexable {
 	 */
 	public void reset() {
 		// Restore original dimensions
-		placement.w = origW;
-		placement.l = origL;
-		placement.h = origH;
-		clearPosition();
-		placement.index = -1;
-		placement.containerIndex = -1;
-		placement.isRotated = false;
 		this.isLoading = false;
-		placement.reset(origW, origL, origH);
-	}
-
-	/**
-	 * Returns a snapshot copy of the current placement.
-	 */
-	public ItemPlacement snapshotPlacement() {
-		return new ItemPlacement(placement);
-	}
-
-	/**
-	 * Restores the item's mutable fields from a previously saved placement snapshot.
-	 */
-	public void restorePlacement(ItemPlacement snapshot) {
-		this.placement = new ItemPlacement(snapshot);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see util.collection.Indexable#getIdx()
-	 */
-	@Override
-	public int getIdx() {
-		return placement.index;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see util.collection.Indexable#setIdx(int)
-	 */
-	@Override
-	public void setIdx(int idx) {
-		placement.index = idx;
 	}
 
 	public int getVolume() {
-		return w() * l() * h();
+		return origW * origL * origH;
 	}
 
 	public int getOrigH() {
 		return origH;
-	}
-
-	public int x() {
-		return placement.x;
-	}
-
-	public int getX() {
-		return placement.x;
-	}
-
-	public void setX(int x) {
-		this.placement.x = x;
-	}
-
-	public int y() {
-		return placement.y;
-	}
-
-	public int getY() {
-		return placement.y;
-	}
-
-	public void setY(int y) {
-		this.placement.y = y;
-	}
-
-	public int z() {
-		return placement.z;
-	}
-
-	public int getZ() {
-		return placement.z;
-	}
-
-	public void setZ(int z) {
-		this.placement.z = z;
-	}
-
-	public int xw() {
-		return placement.xw;
-	}
-
-	public int getXw() {
-		return placement.xw;
-	}
-
-	public void setXw(int xw) {
-		this.placement.xw = xw;
-	}
-
-	public int yl() {
-		return placement.yl;
-	}
-
-	public int getYl() {
-		return placement.yl;
-	}
-
-	public void setYl(int yl) {
-		this.placement.yl = yl;
-	}
-
-	public int zh() {
-		return placement.zh;
-	}
-
-	public int getZh() {
-		return placement.zh;
-	}
-
-	public void setZh(int zh) {
-		this.placement.zh = zh;
-	}
-
-	public int w() {
-		return placement.w;
-	}
-
-	public int getW() {
-		return placement.w;
-	}
-
-	public void setW(int w) {
-		this.placement.w = w;
-	}
-
-	public int l() {
-		return placement.l;
-	}
-
-	public int getL() {
-		return placement.l;
-	}
-
-	public void setL(int l) {
-		this.placement.l = l;
-	}
-
-	public int h() {
-		return placement.h;
-	}
-
-	public int getH() {
-		return placement.h;
-	}
-
-	public void setH(int h) {
-		this.placement.h = h;
 	}
 
 	public void setOrigW(int width) {
@@ -264,26 +90,6 @@ public class Item implements Indexable {
 
 	public void setOrigH(int h) {
 		this.origH = h;
-	}
-
-	public boolean isSpinable() {
-		return spinable;
-	}
-
-	public void setSpinable(boolean spinable) {
-		this.spinable = spinable;
-	}
-
-	public boolean isStackable() {
-		return stackable;
-	}
-
-	public void setStackable(boolean stackable) {
-		this.stackable = stackable;
-	}
-
-	public int getLoadingLoc() {
-		return loadingLoc;
 	}
 
 	public void setLoadingLoc(int loadingLoc) {
@@ -304,10 +110,6 @@ public class Item implements Indexable {
 
 	public void setStackingGroup(long stackingGroup) {
 		this.stackingGroup = stackingGroup;
-	}
-
-	public Set<Integer> getAllowedContainerSet() {
-		return allowedContainerSet;
 	}
 
 	public void setAllowedContainerSet(Set<Integer> allowedContainerSet) {
@@ -350,36 +152,8 @@ public class Item implements Indexable {
 		return loadingType;
 	}
 
-	public void setLoadingType(LoadType loadingType) {
-		this.loadingType = loadingType;
-	}
-
-	public int getOrderIndex() {
-		return orderIndex;
-	}
-
 	public void setOrderIndex(int orderIndex) {
 		this.orderIndex = orderIndex;
-	}
-
-	public int index() {
-		return placement.index;
-	}
-
-	public int getIndex() {
-		return placement.index;
-	}
-
-	public void setIndex(int index) {
-		placement.index = index;
-	}
-
-	public int getContainerIndex() {
-		return placement.containerIndex;
-	}
-
-	public void setContainerIndex(int containerIndex) {
-		placement.containerIndex = containerIndex;
 	}
 
 	public boolean isLoading() {
@@ -388,14 +162,6 @@ public class Item implements Indexable {
 
 	public void setLoading(boolean loading) {
 		isLoading = loading;
-	}
-
-	public boolean isRotated() {
-		return placement.isRotated;
-	}
-
-	public void setRotated(boolean rotated) {
-		placement.isRotated = rotated;
 	}
 
 	public int getNbrOfAllowedStackedItems() {
@@ -418,7 +184,7 @@ public class Item implements Indexable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Item item)) return false;
-		return placement.index == item.placement.index;
+		return externalIndex == item.externalIndex;
 	}
 
 	@Override

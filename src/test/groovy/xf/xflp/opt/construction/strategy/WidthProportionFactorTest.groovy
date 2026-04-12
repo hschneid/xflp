@@ -2,7 +2,6 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.item.Item
 import xf.xflp.base.item.ItemPlacement
 import xf.xflp.base.item.Position
 import xf.xflp.base.position.PositionCandidate
@@ -14,8 +13,8 @@ class WidthProportionFactorTest extends Specification {
     def container = Helper.getAddSpaceContainer2(240, 1000, 1)
 
     def "choose min proportion - one pos wins"() {
-        def item = Helper.getItem(100, 120, 1, 1, 0, 0)
-        def item2 = Helper.getItem(80, 100, 1, 1, 0, 0)
+        def item = Helper.getPlacedItem(100, 120, 1, 1, 0, 0)
+        def item2 = Helper.getPlacedItem(80, 100, 1, 1, 0, 0)
 
         def posList = [
                 PositionCandidate.of(Position.of(0,0, 0), item, false),
@@ -35,7 +34,7 @@ class WidthProportionFactorTest extends Specification {
     }
 
     def "choose min proportion - one position"() {
-        def item = new Item()
+        def item = new ItemPlacement(1,1,1)
         def posList = [
                 PositionCandidate.of(Position.of(1,1, 1), item, false)
         ]
@@ -46,7 +45,7 @@ class WidthProportionFactorTest extends Specification {
     }
 
     def "choose min proportion - zero positions"() {
-        def item = new Item()
+        def item = new ItemPlacement(1,1,1)
         when:
         service.choose(item, container, [])
         then:

@@ -13,7 +13,7 @@ class SpaceServiceTest extends Specification {
     def "createSpacesAtPosition - item not in space returns original space"() {
         def pos = Position.of(0, 0, 0)
         def space = Space.of(5, 5, 5)
-        def item = Helper.getItemAtPosition(6, 6, 0, 1, 1, 1)
+        def item = Helper.getPlacedItemAtPos(6, 6, 0, 1, 1, 1)
 
         when:
         def result = service.createSpacesAtPosition(pos, space, item)
@@ -27,7 +27,7 @@ class SpaceServiceTest extends Specification {
     def "createSpacesAtPosition - item hovering above position creates height-limited space"() {
         def pos = Position.of(0, 0, 0)
         def space = Space.of(5, 5, 5)
-        def item = Helper.getItemAtPosition(0, 0, 2, 1, 1, 1)
+        def item = Helper.getPlacedItemAtPos(0, 0, 2, 1, 1, 1)
 
         when:
         def result = service.createSpacesAtPosition(pos, space, item)
@@ -41,7 +41,7 @@ class SpaceServiceTest extends Specification {
     def "isItemNotInSpace - item completely outside x returns true"() {
         def pos = Position.of(0, 0, 0)
         def space = Space.of(3, 3, 3)
-        def item = Helper.getItemAtPosition(4, 0, 0, 1, 1, 1)
+        def item = Helper.getPlacedItemAtPos(4, 0, 0, 1, 1, 1)
 
         when:
         def result = service.isItemNotInSpace(pos, space, item)
@@ -54,7 +54,7 @@ class SpaceServiceTest extends Specification {
     def "isItemNotInSpace - item inside space returns false"() {
         def pos = Position.of(0, 0, 0)
         def space = Space.of(3, 3, 3)
-        def item = Helper.getItemAtPosition(1, 1, 1, 1, 1, 1)
+        def item = Helper.getPlacedItemAtPos(1, 1, 1, 1, 1, 1)
 
         when:
         def result = service.isItemNotInSpace(pos, space, item)

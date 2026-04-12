@@ -1,7 +1,7 @@
 package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.ZItemGraph;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,22 +33,22 @@ public class BearingWeightQueue {
      *
      * The given item means as processed.
      */
-    public void add(Item newItem, ZItemGraph graph) {
-        List<Item> uppers = graph.getItemsAbove(newItem);
+    public void add(ItemPlacement newItem, ZItemGraph graph) {
+        List<ItemPlacement> uppers = graph.getItemsAbove(newItem);
         int[] upperIdx = new int[uppers.size()];
         for (int i = upperIdx.length - 1; i >= 0; i--) {
-            Item upperItem = uppers.get(i);
-            upperIdx[i] = upperItem.index();
+            ItemPlacement upperItem = uppers.get(i);
+            upperIdx[i] = upperItem.index;
 
             // If unprocessed upper items were found,
             // add them to queue instead of this item
-            if(!isProcessed[upperItem.index()]) {
+            if(!isProcessed[upperItem.index]) {
                 add(upperItem, graph);
                 return;
             }
         }
 
-        upperItems.put(newItem.index(), upperIdx);
+        upperItems.put(newItem.index, upperIdx);
     }
 
     /**

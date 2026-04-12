@@ -3,7 +3,7 @@ package xf.xflp.base.container.constraints;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.base.container.ParameterType;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Tools;
 
@@ -31,7 +31,7 @@ public class StackingChecker {
     public static boolean checkStackingRestrictions(
             Container container,
             Position pos,
-            Item newItem,
+            ItemPlacement newItem,
             int itemW,
             int itemL) {
         // New item will be placed at ground. So no stacking needs to be checked.
@@ -41,14 +41,14 @@ public class StackingChecker {
         // Check stacking group - All lower items must have the same stacking group
         // Check ground contact - Items must fulfill certain constraints, if items must be placed on other items
         // checkInvalidLoadBearing
-        return checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL, newItem.stackingGroup);
+        return checkStackingGroupAndGroundContact(container, newItem, pos, itemW, itemL);
     }
 
     /**
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private static boolean checkStackingGroupAndGroundContact(Container container, Item item, Position pos, int itemW, int itemL, long stackingGroup) {
+    private static boolean checkStackingGroupAndGroundContact(Container container, ItemPlacement item, Position pos, int itemW, int itemL) {
         List<Integer> zList = container.getBaseData().getZMap().get(pos.z());
         if(zList == null || zList.isEmpty())
             return true;
@@ -66,7 +66,7 @@ public class StackingChecker {
 
         // Check for all lower items if stacking group restriction is valid
         for(int i = zList.size() - 1; i >= 0; i--) {
-            Item fi = container.getItems().get(zList.get(i));
+            ItemPlacement fi = container.getItems().get(zList.get(i));
             if(isNotBelow(pos, itemW, itemL, fi)) {
                 continue;
             }
@@ -75,31 +75,31 @@ public class StackingChecker {
 
             // AND-operation of two binary representations. If no bit fits
             // then result is zero
-            if((fi.allowedStackingGroups & stackingGroup) == 0) {
+            if((fi.getItem().allowedStackingGroups & item.getItem().stackingGroup) == 0) {
                 return false;
             }
 
-            if(pos.x() >= fi.x() && pos.x() <= fi.xw() && pos.y() >= fi.y() && pos.y() <= fi.yl()) {
-                cornerItem1 = fi.externalIndex;
+            if(pos.x() >= fi.x && pos.x() <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
+                cornerItem1 = fi.getItem().externalIndex;
                 corner1 = true;
             }
-            if(itemXW > fi.x() && itemXW <= fi.xw() && pos.y() >= fi.y() && pos.y() <= fi.yl()) {
-                cornerItem2 = fi.externalIndex;
+            if(itemXW > fi.x && itemXW <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
+                cornerItem2 = fi.getItem().externalIndex;
                 corner2 = true;
             }
-            if(pos.x() >= fi.x() && pos.x() <= fi.xw() && itemYL > fi.y() && itemYL <= fi.yl()) {
-                cornerItem3 = fi.externalIndex;
+            if(pos.x() >= fi.x && pos.x() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
+                cornerItem3 = fi.getItem().externalIndex;
                 corner3 = true;
             }
-            if(itemXW > fi.x() && itemXW <= fi.xw() && itemYL > fi.y() && itemYL <= fi.yl()) {
-                cornerItem4 = fi.externalIndex;
+            if(itemXW > fi.x && itemXW <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
+                cornerItem4 = fi.getItem().externalIndex;
                 corner4 = true;
             }
 
             // Is bearing capacity enough?
             float bearingCapacity = bearingCapacities.get(zList.get(i));
             float areaRatio = Tools.getCutRatio(pos.x(), pos.y(), itemW, itemL, fi);
-            if(bearingCapacity - (item.getWeight() * areaRatio) < 0) {
+            if(bearingCapacity - (item.getItem().getWeight() * areaRatio) < 0) {
                 return false;
             }
         }
@@ -108,7 +108,7 @@ public class StackingChecker {
          * Check, if number of below items exceed the number of allowed stacked items.
          * If parameter "number of allowed stacked items" is undefined, it is always valid.
          */
-        if(nbrOfItemsBelow > item.getNbrOfAllowedStackedItems())
+        if(nbrOfItemsBelow > item.getItem().getNbrOfAllowedStackedItems())
             return false;
 
         /*
@@ -130,11 +130,11 @@ public class StackingChecker {
         return values[0] == values[values.length - 1];
     }
 
-    private static boolean isNotBelow(Position position, int itemW, int itemL, Item lowerItem) {
-        return lowerItem.zh() != position.z() ||
-                lowerItem.xw() <= position.x() ||
-                lowerItem.yl() <= position.y() ||
-                lowerItem.x() >= position.x() + itemW ||
-                lowerItem.y() >= position.y() + itemL;
+    private static boolean isNotBelow(Position position, int itemW, int itemL, ItemPlacement lowerItem) {
+        return lowerItem.zh != position.z() ||
+                lowerItem.xw <= position.x() ||
+                lowerItem.yl <= position.y() ||
+                lowerItem.x >= position.x() + itemW ||
+                lowerItem.y >= position.y() + itemL;
     }
 }

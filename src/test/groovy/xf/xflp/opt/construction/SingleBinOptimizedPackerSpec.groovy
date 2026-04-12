@@ -35,7 +35,8 @@ class SingleBinOptimizedPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.unplannedItems.size() == 0
+        model.containers[0].items.size() == items.size()
     }
 
     @Ignore

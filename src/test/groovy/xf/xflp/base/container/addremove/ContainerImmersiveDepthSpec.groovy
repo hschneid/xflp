@@ -3,18 +3,18 @@ package xf.xflp.base.container.addremove
 import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.container.Container
-import xf.xflp.base.item.Item
+import xf.xflp.base.item.ItemPlacement
 import xf.xflp.base.position.PositionService
 
 class ContainerImmersiveDepthSpec extends Specification {
 
     def "only immersive depth, item is fitting, just adding"() {
         Container con = Helper.getAddSpaceContainer2(2,2,20)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
+        def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i1.item.immersiveDepth = 2
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
-        def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
 
         when:
         def found = Helper.findCand(PositionService.findPositionCandidates(con, i2), 0,0, 10)
@@ -26,11 +26,11 @@ class ContainerImmersiveDepthSpec extends Specification {
 
     def "even with immersive depth, item is not fitting"() {
         Container con = Helper.getAddSpaceContainer2(2,2,19)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
+        def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i1.item.immersiveDepth = 2
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
-        def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
 
         when:
         def found = Helper.findCand(PositionService.findPositionCandidates(con, i2), 0,0, 10)
@@ -40,11 +40,11 @@ class ContainerImmersiveDepthSpec extends Specification {
 
     def "stack 3 items with immersive depth"() {
         Container con = Helper.getAddSpaceContainer2(2,2,30)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
-        def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
-        i2.immersiveDepth = 1
-        def i3 = Helper.getItem(1, 1, 11, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i1.item.immersiveDepth = 2
+        def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
+        i2.item.immersiveDepth = 1
+        def i3 = Helper.getPlacedItem(1, 1, 11, 1, 10, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 0, 10)
@@ -60,11 +60,11 @@ class ContainerImmersiveDepthSpec extends Specification {
 
     def "add, remove and readd 3 items with immersive depth"() {
         Container con = Helper.getAddSpaceContainer2(2,2,30)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
-        def i2 = Helper.getItem(1, 1, 12, 1, 10, 0)
-        i2.immersiveDepth = 1
-        def i3 = Helper.getItem(1, 1, 11, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i1.item.immersiveDepth = 2
+        def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
+        i2.item.immersiveDepth = 1
+        def i3 = Helper.getPlacedItem(1, 1, 11, 1, 10, 0)
 
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
         Helper.add(con, i2, 0, 0, 10)
@@ -86,12 +86,12 @@ class ContainerImmersiveDepthSpec extends Specification {
 
     def "stack item on multiple items, with different immersive depth"() {
         Container con = Helper.getAddSpaceContainer2(3,3,30)
-        def i1 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i1.immersiveDepth = 2
-        def i2 = Helper.getItem(1, 1, 10, 1, 10, 0)
-        i2.immersiveDepth = 1
-        def i3 = Helper.getItem(2, 1, 13, 1, 10, 0)
-        def i4 = Helper.getItem(1, 1, 10, 1, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i1.item.immersiveDepth = 2
+        def i2 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
+        i2.item.immersiveDepth = 1
+        def i3 = Helper.getPlacedItem(2, 1, 13, 1, 10, 0)
+        def i4 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 1, 0, 0)
@@ -106,11 +106,11 @@ class ContainerImmersiveDepthSpec extends Specification {
         check(i3, 12, 10, 22, 13)
     }
 
-    static void check(Item item, int h, int z, int zh, int origH) {
+    static void check(ItemPlacement item, int h, int z, int zh, int origH) {
         assert item.h == h
         assert item.z == z
         assert item.zh == zh
-        assert item.origH == origH
+        assert item.item.origH == origH
     }
 
 }

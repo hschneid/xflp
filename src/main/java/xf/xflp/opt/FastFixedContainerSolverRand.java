@@ -10,7 +10,6 @@ import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import xf.xflp.report.LoadType;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -75,39 +74,12 @@ public class FastFixedContainerSolverRand extends XFLPBase {
                 bestVolume = loadedVolume;
                 bestContainers = model.getContainers();
                 bestUnplannedItems = model.getUnplannedItems();
-                // Snapshot all item placements so they can be restored after the loop
-                bestPlacements = snapshotPlacements(model.getItems());
             }
-        }
-
-        // Restore the best placement state onto the items
-        if (bestPlacements != null) {
-            restorePlacements(bestPlacements);
         }
 
         // Set the best result into model
         model.setContainers(bestContainers);
         model.setUnplannedItems(bestUnplannedItems);
-    }
-
-    /**
-     * Creates a snapshot of the current placement for every item.
-     */
-    private Map<Item, ItemPlacement> snapshotPlacements(Item[] items) {
-        Map<Item, ItemPlacement> map = new HashMap<>(items.length);
-        for (Item item : items) {
-            map.put(item, item.snapshotPlacement());
-        }
-        return map;
-    }
-
-    /**
-     * Restores previously saved placements onto the items.
-     */
-    private void restorePlacements(Map<Item, ItemPlacement> placements) {
-        for (Map.Entry<Item, ItemPlacement> entry : placements.entrySet()) {
-            entry.getKey().restorePlacement(entry.getValue());
-        }
     }
 
     private static long getLoadedVolume(XFLPModel model) {

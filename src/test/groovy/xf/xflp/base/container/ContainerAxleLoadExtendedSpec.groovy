@@ -10,7 +10,7 @@ class ContainerAxleLoadExtendedSpec extends Specification {
     // When no axle load parameter is set, all positions should be valid.
     def "no axle load parameter - all positions valid"() {
         def con = Helper.getAddSpaceContainer(1,10,1)
-        def i1 = Helper.getItem(1, 5, 1, 1000, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 5, 1, 1000, 10, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -26,7 +26,7 @@ class ContainerAxleLoadExtendedSpec extends Specification {
         con.parameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
                 100, 100, 0
         ))
-        def i1 = Helper.getItem(1, 5, 1, 1000, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 5, 1, 1000, 10, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -42,7 +42,7 @@ class ContainerAxleLoadExtendedSpec extends Specification {
         con.parameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
                 500, 500, 10
         ))
-        def i1 = Helper.getItem(1, 10, 1, 1000, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 10, 1, 1000, 10, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -58,9 +58,9 @@ class ContainerAxleLoadExtendedSpec extends Specification {
         con.parameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
                 1000, 2000, 8
         ))
-        def i1 = Helper.getItem(1, 1, 1, 300, 2, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 300, 2, 0)
         Helper.add(con, i1, 0, 0, 0)
-        def i2 = Helper.getItem(1, 1, 1, 300, 1, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 300, 1, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i2)
@@ -76,13 +76,13 @@ class ContainerAxleLoadExtendedSpec extends Specification {
         con.parameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
                 1000, 2000, 8
         ))
-        def i1 = Helper.getItem(1, 1, 1, 600, 2, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 600, 2, 0)
         Helper.add(con, i1, 0, 0, 0)
-        def i2 = Helper.getItem(1, 1, 1, 300, 1, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 300, 1, 0)
         Helper.add(con, i2, 0, 1, 0)
-        def i3 = Helper.getItem(1, 2, 1, 300, 1, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 300, 1, 0)
         Helper.add(con, i3, 0, 2, 0)
-        def i4 = Helper.getItem(1, 6, 1, 1300, 1, 0)
+        def i4 = Helper.getPlacedItem(1, 6, 1, 1300, 1, 0)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i4)
@@ -98,9 +98,9 @@ class ContainerAxleLoadExtendedSpec extends Specification {
         con.parameter.add(ParameterType.AXLE_LOAD, new AxleLoadParameter(
                 500, 500, 10
         ))
-        def i1 = Helper.getItem(1, 1, 1, 300, 10, 0)
-        def i2 = Helper.getItem(1, 1, 1, 300, 10, 0)
-        def i3 = Helper.getItem(1, 1, 1, 500, 10, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 300, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 300, 10, 0)
+        def i3 = Helper.getPlacedItem(1, 1, 1, 500, 10, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 1, 0)

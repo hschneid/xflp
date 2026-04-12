@@ -23,8 +23,8 @@ class MaxWidthAreaServiceTest extends Specification {
         def con = Helper.getAddSpaceContainer2(3, 3, 1)
         def emptyArea = service.getMaxEmptyArea(con)
 
-        def i1 = Helper.getItem(1, 1, 1, 1, 100, 0)
-        def i2 = Helper.getItem(1, 1, 1, 1, 100, 0)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 1, 100, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 1, 100, 0)
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 1, 0, 0)
 
@@ -40,7 +40,7 @@ class MaxWidthAreaServiceTest extends Specification {
     // A completely filled container has no active positions left, so the area should be 0.
     def "full container - no active positions returns zero"() {
         def con = Helper.getAddSpaceContainer2(2, 2, 1)
-        def i1 = Helper.getItem(2, 2, 1, 1, 100, 0)
+        def i1 = Helper.getPlacedItem(2, 2, 1, 1, 100, 0)
         Helper.add(con, i1, 0, 0, 0)
 
         when:

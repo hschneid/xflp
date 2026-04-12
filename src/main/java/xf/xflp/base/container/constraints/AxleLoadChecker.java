@@ -2,7 +2,7 @@ package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 
 /**
@@ -25,23 +25,24 @@ public class AxleLoadChecker {
      *   true, if item is valid at this position. Or if there is no axle load parameter.
      *   false, if item is invalid at this position.
      */
-    public static boolean checkPermissibleAxleLoad(Container container, Item item, Position pos) {
+    public static boolean checkPermissibleAxleLoad(Container container, ItemPlacement item, Position pos) {
         var axleLoadParameter = (AxleLoadParameter) container.getParameter().get(ParameterType.AXLE_LOAD);
         if(axleLoadParameter == null || axleLoadParameter.axleDistance() == 0)
             return true;
 
-        var totalWeight = container.getLoadedWeight() + item.getWeight();
+        var weightOfItem = item.getItem().getWeight();
+        var totalWeight = container.getLoadedWeight() + weightOfItem;
 
         // Center of truck
         var centerOfTruck = axleLoadParameter.axleDistance() / 2f;
         var centerOfLoad =
-                Math.max(container.getBaseData().getMaxYl(), pos.y() + item.l())
+                Math.max(container.getBaseData().getMaxYl(), pos.y() + item.l)
                         / 2f;
         var padY = Math.max(0, centerOfTruck - centerOfLoad);
 
         // Get current center of gravity for y(length), which is the direction of axles.
         var currentCenterOfGravityForY = container.getBaseData().getCenterOfGravityForY();
-        var newCenterOfGravityForY = (currentCenterOfGravityForY + ((pos.y() + (item.l() / 2f)) * item.getWeight())) / totalWeight;
+        var newCenterOfGravityForY = (currentCenterOfGravityForY + ((pos.y() + (item.l / 2f)) * weightOfItem)) / totalWeight;
 
         // Major formular to calculate the load at one of the 2 axles
         var loadAtSecondAxle = (totalWeight * (newCenterOfGravityForY + padY)) / axleLoadParameter.axleDistance();

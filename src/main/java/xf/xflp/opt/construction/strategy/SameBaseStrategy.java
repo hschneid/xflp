@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
@@ -34,7 +34,7 @@ public class SameBaseStrategy extends BaseStrategy {
 	private final WidthProportionFactor widthProportion = new WidthProportionFactor();
 
 	@Override
-	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException {
+	public PositionCandidate choose(ItemPlacement item, Container container, List<PositionCandidate> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
@@ -48,7 +48,7 @@ public class SameBaseStrategy extends BaseStrategy {
 		return findPosition(container, posList);
 	}
 
-	private PositionCandidate checkSameBaseStack(Item item, Container container, List<PositionCandidate> posList) {
+	private PositionCandidate checkSameBaseStack(ItemPlacement item, Container container, List<PositionCandidate> posList) {
 		List<PositionCandidate> sameBasePositions = new ArrayList<>(posList.size());
 		List<PositionCandidate> smallerBasePositions = new ArrayList<>(posList.size());
 
@@ -57,29 +57,29 @@ public class SameBaseStrategy extends BaseStrategy {
 		return chooseBasePosition(sameBasePositions, smallerBasePositions);
 	}
 
-	private void findBasePositions(Item item, Container container, List<PositionCandidate> posList, List<PositionCandidate> sameBasePositions, List<PositionCandidate> smallerBasePositions) {
-		int itemLength = Math.max(item.l(), item.w());
-		int itemWidth = Math.min(item.l(), item.w());
+	private void findBasePositions(ItemPlacement item, Container container, List<PositionCandidate> posList, List<PositionCandidate> sameBasePositions, List<PositionCandidate> smallerBasePositions) {
+		int itemLength = Math.max(item.l, item.w);
+		int itemWidth = Math.min(item.l, item.w);
 		for (PositionCandidate pos : posList) {
-			if (pos.item().getZ() == 0)
+			if (pos.item().z == 0)
 				continue;
 
 			// Search items below the position
-			List<Integer> itemIdx = container.getBaseData().getZMap().get(pos.item().getZ());
+			List<Integer> itemIdx = container.getBaseData().getZMap().get(pos.item().z);
 			if (itemIdx == null)
 				continue;
 
 			for (Integer idx : itemIdx) {
-				Item belowItem = container.getItems().get(idx);
+				ItemPlacement belowItem = container.getItems().get(idx);
 
 				// Check, if this item is directly below the position
-				if (belowItem.x() == pos.item().x() && belowItem.y() == pos.item().getY() && belowItem.zh() == pos.item().getZ()) {
+				if (belowItem.x == pos.item().x && belowItem.y == pos.item().y && belowItem.zh == pos.item().z) {
 					// Check, if this item has same base
-					if (itemLength == Math.max(belowItem.l(), belowItem.w()) &&
-							itemWidth == Math.min(belowItem.l(), belowItem.w())) {
+					if (itemLength == Math.max(belowItem.l, belowItem.w) &&
+							itemWidth == Math.min(belowItem.l, belowItem.w)) {
 						sameBasePositions.add(pos);
-					} else if (itemLength <= Math.max(belowItem.l(), belowItem.w()) &&
-							itemWidth <= Math.min(belowItem.l(), belowItem.w())) {
+					} else if (itemLength <= Math.max(belowItem.l, belowItem.w) &&
+							itemWidth <= Math.min(belowItem.l, belowItem.w)) {
 						smallerBasePositions.add(pos);
 					}
 				}

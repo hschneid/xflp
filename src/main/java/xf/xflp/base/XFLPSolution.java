@@ -3,6 +3,7 @@ package xf.xflp.base;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.DataManager;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.report.ContainerReport;
 import xf.xflp.report.LPPackageEvent;
 import xf.xflp.report.LPReport;
@@ -34,24 +35,24 @@ public class XFLPSolution {
 			String containerTypeName = dataManager.getContainerTypeName(con.getContainerType());
 			ContainerReport cRep = new ContainerReport(containerTypeName, con);
 
-			for (Item item : con.getHistory()) {
+			for (ItemPlacement item : con.getHistory()) {
 				LPPackageEvent e = new LPPackageEvent(
-						dataManager.getItemId(item.externalIndex),
-						item.x(),
-						item.y(),
-						item.z(),
-						item.w(),
-						item.l(),
-						item.h(),
-						item.stackingGroup,
-						item.weight,
-						item.stackingWeightLimit,
+						dataManager.getItemId(item.getItem().externalIndex),
+						item.x,
+						item.y,
+						item.z,
+						item.w,
+						item.l,
+						item.h,
+						item.getItem().stackingGroup,
+						item.getItem().weight,
+						item.getItem().stackingWeightLimit,
 						false, // isInvalid
-						item.loadingType,
+						item.getItem().loadingType,
 						item.getVolume(),
-						item.getWeight(),
+						item.getItem().getWeight(),
 						0, // NbrOfStacks
-						item.isRotated()
+						item.isRotated
 				);
 				cRep.add(e);
 			}
@@ -66,9 +67,9 @@ public class XFLPSolution {
 					-1,
 					-1,
 					-1,
-					unplannedItem.w(),
-					unplannedItem.l(),
-					unplannedItem.h(),
+					unplannedItem.origW,
+					unplannedItem.origL,
+					unplannedItem.origH,
 					unplannedItem.stackingGroup,
 					unplannedItem.weight,
 					unplannedItem.stackingWeightLimit,

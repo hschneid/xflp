@@ -1,6 +1,6 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 import xf.xflp.base.space.SpaceService;
@@ -55,7 +55,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	 * - Remove covered positions
 	 */
 	@Override
-	public int add(Item item, Position pos, boolean isRotated) {
+	public int add(ItemPlacement item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
@@ -92,7 +92,7 @@ public final class AddContainer extends ContainerBase implements Container {
 
 		history.add(item);
 
-		return item.index();
+		return item.index;
 	}
 
 	/* Create spaces
@@ -105,10 +105,10 @@ public final class AddContainer extends ContainerBase implements Container {
 				width - newPos.x(),
 				height - newPos.z()
 		);
-		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+		Set<ItemPlacement> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
 
 		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (Item spaceItem : spaceItems) {
+		for (ItemPlacement spaceItem : spaceItems) {
 
 			Set<Space> nextSpaces = new HashSet<>();
 			for (Space space : spaces) {
@@ -133,23 +133,23 @@ public final class AddContainer extends ContainerBase implements Container {
 	 * Remove item from container and update internal data structure
 	 */
 	@Override
-	public void remove(Item item) {
+	public void remove(ItemPlacement item) {
 		throw new UnsupportedOperationException("Remove in AddContainer is not supported. Use AddRemoveContainer");
 	}
 
-	private void removeCoveredPositions(Item item) {
+	private void removeCoveredPositions(ItemPlacement item) {
 		for (Position position : findCoveredPositions(item)) {
 			removePosition(position);
 		}
 	}
 
-	private void checkExistingSpaces(Item newItem) {
+	private void checkExistingSpaces(ItemPlacement newItem) {
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw() ||
-					position.y() >= newItem.yl() ||
-					position.z() >= newItem.zh())
+			if(position.x() >= newItem.xw ||
+					position.y() >= newItem.yl ||
+					position.z() >= newItem.zh)
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();

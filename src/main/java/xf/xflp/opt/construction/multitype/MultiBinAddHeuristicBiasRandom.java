@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.multitype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
@@ -63,8 +64,9 @@ public class MultiBinAddHeuristicBiasRandom {
             // Pick an item index using geometric distribution (biased towards front)
             int pickedIndex = nextGeometricIndex(remainingItems.size());
             Item item = remainingItems.remove(pickedIndex);
+            ItemPlacement itemPlacement = new ItemPlacement(item);
 
-            List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers, strategy);
+            List<ContainerPosition> containerPositions = getBestContainerPositions(itemPlacement, containers, strategy);
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
@@ -105,12 +107,12 @@ public class MultiBinAddHeuristicBiasRandom {
 
     private void setUnplanned(List<Item> unplannedItems, Item... items) {
         for (Item item : items) {
-            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index() + " could not be added.");
+            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex + " could not be added.");
             unplannedItems.add(item);
         }
     }
 
-    private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
+    private List<ContainerPosition> getBestContainerPositions(ItemPlacement item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
         List<ContainerPosition> containerPositions = new ArrayList<>();
         for (Container container : containers) {
             PositionCandidate bestPosition = getBestInsertPosition(item, container, strategy);
@@ -121,8 +123,8 @@ public class MultiBinAddHeuristicBiasRandom {
         return containerPositions;
     }
 
-    private PositionCandidate getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
-        if (container.isItemAllowed(item)) {
+    private PositionCandidate getBestInsertPosition(ItemPlacement item, Container container, BaseStrategy strategy) throws XFLPException {
+        if (container.isItemAllowed(item.getItem())) {
             List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
             if (!posList.isEmpty()) {
                 return strategy.choose(item, container, posList);
@@ -132,7 +134,7 @@ public class MultiBinAddHeuristicBiasRandom {
     }
 
     private void insertIntoContainer(List<ContainerPosition> containerPositions) {
-        ContainerPosition containerPosition = containerPositions.get(0);
+        ContainerPosition containerPosition = containerPositions.getFirst();
         containerPosition.getContainer().add(
                 containerPosition.getPosition().item(),
                 containerPosition.getPosition().position(),

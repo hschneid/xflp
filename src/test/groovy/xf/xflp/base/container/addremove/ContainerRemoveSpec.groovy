@@ -4,7 +4,7 @@ import helper.Helper
 import spock.lang.Specification
 import xf.xflp.base.container.AddRemoveContainer
 import xf.xflp.base.container.Container
-import xf.xflp.base.item.Item
+import xf.xflp.base.item.ItemPlacement
 import xf.xflp.base.item.Position
 import xf.xflp.base.item.Space
 import xf.xflp.base.position.PositionService
@@ -15,10 +15,10 @@ class ContainerRemoveSpec extends Specification {
 
     def "remove an item - a valid item"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
-        def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
-        def i2 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i4 = Helper.getItem(1, 2, 1, 1, 111, 0)
+        def i1 = Helper.getPlacedItem(3, 1, 1, 1, 111, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 1, 0)
@@ -35,12 +35,12 @@ class ContainerRemoveSpec extends Specification {
 
     def "remove an item - create new spaces at removed item pos"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
-        def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
-        def i21 = Helper.getItem(1, 1, 1, 1, 111, 0)
-        def i22 = Helper.getItem(1, 1, 1, 1, 111, 0)
-        def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i4 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i5 = Helper.getItem(2, 1, 1, 1, 111, 0)
+        def i1 = Helper.getPlacedItem(3, 1, 1, 1, 111, 0)
+        def i21 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i22 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i5 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i21, 0, 1, 0)
@@ -60,12 +60,12 @@ class ContainerRemoveSpec extends Specification {
 
     def "remove an item - check existing spaces"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
-        def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
-        def i21 = Helper.getItem(1, 1, 1, 1, 111, 0)
-        def i22 = Helper.getItem(1, 1, 1, 1, 111, 0)
-        def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i4 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i5 = Helper.getItem(2, 1, 1, 1, 111, 0)
+        def i1 = Helper.getPlacedItem(3, 1, 1, 1, 111, 0)
+        def i21 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i22 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i5 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i21, 0, 1, 0)
@@ -87,14 +87,14 @@ class ContainerRemoveSpec extends Specification {
 
     def "remove an item - an invalid item"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
-        def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
-        def i2 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i4 = Helper.getItem(1, 2, 1, 1, 111, 0)
+        def i1 = Helper.getPlacedItem(3, 1, 1, 1, 111, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
 
-        def i5 = Helper.getItem(2, 2, 1, 1, 111, 0)
-        def i6 = Helper.getItem(1, 3, 1, 1, 111, 0)
-        def i7 = Helper.getItem(2, 1, 1, 1, 111, 0)
+        def i5 = Helper.getPlacedItem(2, 2, 1, 1, 111, 0)
+        def i6 = Helper.getPlacedItem(1, 3, 1, 1, 111, 0)
+        def i7 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 1, 0)
@@ -114,15 +114,15 @@ class ContainerRemoveSpec extends Specification {
 
     def "remove everything one by one"() {
         Container con = Helper.getAddSpaceContainer2(3,3,2, Integer.MAX_VALUE)
-        def i1 = Helper.getItem(3, 1, 1, 1, 111, 0)
-        def i2 = Helper.getItem(2, 1, 1, 1, 111, 0)
-        def i3 = Helper.getItem(1, 2, 1, 1, 111, 0)
-        def i4 = Helper.getItem(1, 1, 1, 1, 111, 0)
-        def i5 = Helper.getItem(1, 1, 1, 1, 111, 0)
+        def i1 = Helper.getPlacedItem(3, 1, 1, 1, 111, 0)
+        def i2 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i5 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
 
-        def i6 = Helper.getItem(2, 2, 1, 1, 111, 0)
-        def i7 = Helper.getItem(1, 3, 1, 1, 111, 0)
-        def i8 = Helper.getItem(2, 1, 1, 1, 111, 0)
+        def i6 = Helper.getPlacedItem(2, 2, 1, 1, 111, 0)
+        def i7 = Helper.getPlacedItem(1, 3, 1, 1, 111, 0)
+        def i8 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 1, 0)
@@ -159,19 +159,19 @@ class ContainerRemoveSpec extends Specification {
     def "randomly add and remove items"() {
         Container con = Helper.getAddSpaceContainer2(10,10,4, Integer.MAX_VALUE)
 
-        var unloadedItems = [] as List<Item>
-        var loadedItems = [] as List<Item>
+        var unloadedItems = [] as List<ItemPlacement>
+        var loadedItems = [] as List<ItemPlacement>
         for (i in 0..< 10) {
-            unloadedItems.add(Helper.getItem(2, 1, 1, 1, 111, 0))
-            unloadedItems.add(Helper.getItem(1, 1, 1, 1, 111, 0))
-            unloadedItems.add(Helper.getItem(1, 1, 2, 1, 111, 0))
+            unloadedItems.add(Helper.getPlacedItem(2, 1, 1, 1, 111, 0))
+            unloadedItems.add(Helper.getPlacedItem(1, 1, 1, 1, 111, 0))
+            unloadedItems.add(Helper.getPlacedItem(1, 1, 2, 1, 111, 0))
         }
         unloadedItems.shuffle(rand)
 
         when:
 
         // Load as much as possible
-        for (Item i : unloadedItems) {
+        for (ItemPlacement i : unloadedItems) {
             var posList = PositionService.findPositionCandidates(con, i)
             if(posList.size() > 0) {
                 var pos = posList[0]
@@ -189,14 +189,14 @@ class ContainerRemoveSpec extends Specification {
             con.remove(unloadItem)
             
             // Try to add at least 1 item
-            for (Item loadItem : unloadedItems) {
+            for (ItemPlacement loadItem : unloadedItems) {
                 var posList = PositionService.findPositionCandidates(con, loadItem)
                 if(posList.size() > 0) {
                     var pos = posList[0]
                     con.add(loadItem, pos.position(), pos.rotated)
                     unloadedItems.remove(loadItem)
                     loadedItems.add(loadItem)
-                    break;
+                    break
                 }
             }
 

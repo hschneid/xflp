@@ -1,7 +1,7 @@
 package xf.xflp.base.container;
 
 import util.collection.LPListMap;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.Space;
@@ -32,7 +32,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private final Map<Position, Position> posAncestorMap = new HashMap<>();
 
 	/* Position -> Item - Which item is responsible, that this position was created. */
-	private final Map<Position, Item> positionItemMap = new HashMap<>();
+	private final Map<Position, ItemPlacement> positionItemMap = new HashMap<>();
 
 	private final Set<String> uniquePositionKeys = new HashSet<>();
 	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
@@ -71,7 +71,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 * Adds item to container and update internal data structure
 	 */
 	@Override
-	public int add(Item item, Position pos, boolean isRotated) {
+	public int add(ItemPlacement item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
@@ -118,7 +118,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		addToCenterOfGravity(item, pos);
 
 		history.add(item);
-		return item.index();
+		return item.index;
 	}
 
 	private void check() {
@@ -137,7 +137,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		// OUTPUT
 		System.out.println("ITM\n"+itemList.stream()
 				.filter(Objects::nonNull)
-				.map(i -> "  "+i.toString())
+				.map(i -> "  "+ i)
 				.collect(Collectors.joining("\n")));
 		System.out.println("POS "+activePosList.stream()
 				.map(Position::toString)
@@ -167,13 +167,13 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 				width - newPos.x(),
 				height - newPos.z()
 		);
-		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+		Set<ItemPlacement> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
 		if(spaceItems.isEmpty()) {
 			return List.of(maxSpace);
 		}
 
 		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (Item spaceItem : spaceItems) {
+		for (ItemPlacement spaceItem : spaceItems) {
 
 			Set<Space> nextSpaces = new HashSet<>();
 			for (Space space : spaces) {
@@ -195,8 +195,8 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 * Remove item from container and update internal data structure
 	 */
 	@Override
-	public void remove(Item item) {
-		List<Item> lowerItems = zGraph.getItemsBelow(item);
+	public void remove(ItemPlacement item) {
+		List<ItemPlacement> lowerItems = zGraph.getItemsBelow(item);
 
 		// Remove item
 		removeItem(item);
@@ -222,16 +222,16 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		// Projeziere alle Positionen auf der Oberfl�che des Objektes (Hori und Verti)
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
 		for (Position pos : projectablePosHList) {
-			Item leftItem = findNextLeftElement(pos);
-			int newX = (leftItem != null) ? leftItem.xw() : 0;
+			ItemPlacement leftItem = findNextLeftElement(pos);
+			int newX = (leftItem != null) ? leftItem.xw : 0;
 			Position newPosition = createPosition(pos.idx(), newX, pos.y(), pos.z(), pos.type());
 			replacePosition(pos, newPosition);
 			recreateSpaces(newPosition);
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
-			Item lowerItem = findNextDeeperElement(pos);
-			int newY = (lowerItem != null) ? lowerItem.yl() : 0;
+			ItemPlacement lowerItem = findNextDeeperElement(pos);
+			int newY = (lowerItem != null) ? lowerItem.yl : 0;
 			Position newPosition = createPosition(pos.idx(), pos.x(), newY, pos.z(), pos.type());
 			if(!pos.equals(newPosition)) {
 				replacePosition(pos, newPosition);
@@ -275,21 +275,21 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		coveredPosList.add(pos);
 	}
 
-	private List<Position> findProjectableHorizontalPositions(Item item) {
+	private List<Position> findProjectableHorizontalPositions(ItemPlacement item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_H)
-				if(pos.x() == item.xw() && pos.y() >= item.y() && pos.y() < item.yl())
+				if(pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl)
 					list.add(pos);
 		}
 		return list;
 	}
 
-	private List<Position> findProjectableVerticalPositions(Item item) {
+	private List<Position> findProjectableVerticalPositions(ItemPlacement item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_V)
-				if(pos.y() == item.yl() && pos.x() >= item.x() && pos.x() < item.xw())
+				if(pos.y() == item.yl && pos.x() >= item.x && pos.x() < item.xw)
 					list.add(pos);
 		}
 		return list;
@@ -298,16 +298,16 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	/**
 	 * Search inactive positions, which got uncovered through removal of an item.
 	 */
-	private List<Position> findUncoveringPositions(Item item) {
+	private List<Position> findUncoveringPositions(ItemPlacement item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : coveredPosList) {
-			if(pos.z() == item.z() && pos.x() == item.x() && pos.y() >= item.y() && pos.y() < item.yl())
+			if(pos.z() == item.z && pos.x() == item.x && pos.y() >= item.y && pos.y() < item.yl)
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.x() == item.xw() && pos.y() >= item.y() && pos.y() < item.yl() && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z && pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.y() == item.y() && pos.x() >= item.x() && pos.x() < item.xw())
+			else if(pos.z() == item.z && pos.y() == item.y && pos.x() >= item.x && pos.x() < item.xw)
 				list.add(pos);
-			else if(pos.z() == item.z() && pos.y() == item.yl() && pos.x() >= item.x() && pos.x() < item.xw() && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z && pos.y() == item.yl && pos.x() >= item.x && pos.x() < item.xw && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
 		}
 		return list;
@@ -413,7 +413,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			}
 
 			positionItemMap.put(newPosition, positionItemMap.get(oldPosition));
-			for (Map.Entry<Item, Position> e : itemPositionMap.entrySet()) {
+			for (Map.Entry<ItemPlacement, Position> e : itemPositionMap.entrySet()) {
 				if(e.getValue() == oldPosition)
 					itemPositionMap.put(e.getKey(), newPosition);
 			}
@@ -455,36 +455,36 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 	}
 
-	private void removeItem(Item item) {
-		Integer index = item.index();
+	private void removeItem(ItemPlacement item) {
+		Integer index = item.index;
 
 		// Delete from Z-Graph
 		zGraph.remove(item);
 
-		itemList.remove(item.index());
+		itemList.remove(item.index);
 
-		xMap.get(item.x()).remove(index);
-		xMap.get(item.xw()).remove(index);
-		yMap.get(item.y()).remove(index);
-		yMap.get(item.yl()).remove(index);
-		zMap.get(item.z()).remove(index);
-		zMap.get(item.zh()).remove(index);
+		xMap.get(item.x).remove(index);
+		xMap.get(item.xw).remove(index);
+		yMap.get(item.y).remove(index);
+		yMap.get(item.yl).remove(index);
+		zMap.get(item.z).remove(index);
+		zMap.get(item.zh).remove(index);
 
-		weight -= item.weight;
-		item.setH(item.origH);
+		weight -= item.getItem().weight;
+		item.h = item.getItem().origH;
 
 		// Recompute maxYl if necessary
-		if (item.yl() >= maxYl) {
+		if (item.yl >= maxYl) {
 			maxYl = 0;
 			for (int i = itemList.size() - 1; i >= 0; i--) {
-				Item it = itemList.get(i);
-				if (it != null && it.yl() > maxYl) {
-					maxYl = it.yl();
+				ItemPlacement it = itemList.get(i);
+				if (it != null && it.yl> maxYl) {
+					maxYl = it.yl;
 				}
 			}
 		}
 
-		item.setContainerIndex(-1);
+		item.containerIndex = -1;
 
 		// Recompute immersive depth cache for positions that were sitting on this item
 		recomputeImmersiveDepthCacheForRemovedItem(item);
@@ -494,30 +494,30 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 * When an item is removed, all active/inactive/covered positions that were on its top face
 	 * need their cached immersive depth recomputed, because the removed item no longer contributes.
 	 */
-	private void recomputeImmersiveDepthCacheForRemovedItem(Item item) {
+	private void recomputeImmersiveDepthCacheForRemovedItem(ItemPlacement item) {
 		recomputeImmersiveDepthForPositions(item, activePosList);
 		recomputeImmersiveDepthForPositions(item, inactivePosList);
 		recomputeImmersiveDepthForPositions(item, coveredPosList);
 	}
 
-	private void recomputeImmersiveDepthForPositions(Item item, Iterable<Position> positions) {
-		int itemZh = item.zh();
+	private void recomputeImmersiveDepthForPositions(ItemPlacement item, Iterable<Position> positions) {
+		int itemZh = item.zh;
 		for (Position pos : positions) {
 			if (pos.z() == itemZh &&
-					pos.x() >= item.x() && pos.x() < item.xw() &&
-					pos.y() >= item.y() && pos.y() < item.yl()) {
+					pos.x() >= item.x && pos.x() < item.xw &&
+					pos.y() >= item.y && pos.y() < item.yl) {
 				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
 			}
 		}
 	}
 
-	private void checkExistingSpaces(Item newItem) {
+	private void checkExistingSpaces(ItemPlacement newItem) {
 		List<Position> removablePositions = new ArrayList<>();
 		for (Position position : activePosList) {
 			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw() ||
-					position.y() >= newItem.yl() ||
-					position.z() >= newItem.zh())
+			if(position.x() >= newItem.xw ||
+					position.y() >= newItem.yl ||
+					position.z() >= newItem.zh)
 				continue;
 
 			Set<Space> newSpaces = new HashSet<>();
@@ -548,14 +548,14 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		return spacePositions.get(pos);
 	}
 
-	public void checkExistingSpacesForRemovedItem(Item item) {
+	public void checkExistingSpacesForRemovedItem(ItemPlacement item) {
 		for (Position pos : activePosList) {
 			if(!spacePositions.containsKey(pos))
 				continue;
 
-			if(item.xw() > pos.x() &&
-					item.yl() > pos.y() &&
-					item.zh() > pos.z()) {
+			if(item.xw > pos.x() &&
+					item.yl > pos.y() &&
+					item.zh > pos.z()) {
 				// Removed item is potentially in the range of an existing space
 				recreateSpaces(pos);
 			}

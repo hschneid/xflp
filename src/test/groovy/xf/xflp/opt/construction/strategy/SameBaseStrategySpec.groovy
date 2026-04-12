@@ -12,9 +12,9 @@ class SameBaseStrategySpec extends Specification {
     // When two items of the same base are stacked, the strategy should prefer the position on top of the matching base.
     def "same base item is placed on matching stack"() {
         def con = Helper.getAddSpaceContainer2(4,4,3)
-        def i1 = Helper.getItem(2,2,1,1,111,0)
-        def i2 = Helper.getItem(1,1,1,1,111,0)
-        def i3 = Helper.getItem(2,2,1,1,111,0)
+        def i1 = Helper.getPlacedItem(2,2,1,1,111,0)
+        def i2 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i3 = Helper.getPlacedItem(2,2,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 2, 0, 0)
@@ -32,8 +32,8 @@ class SameBaseStrategySpec extends Specification {
     def "no matching base - falls back to default strategy"() {
         def con = Helper.getAddSpaceContainer2(4,4,3)
         // Place a 1x1 item at ground - the new 2x2 item has a different base
-        def i1 = Helper.getItem(1,1,1,1,111,0)
-        def i2 = Helper.getItem(2,2,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i2 = Helper.getPlacedItem(2,2,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
 
@@ -50,7 +50,7 @@ class SameBaseStrategySpec extends Specification {
     // An empty position list should throw an exception.
     def "empty position list throws exception"() {
         def con = Helper.getAddSpaceContainer2(4,4,3)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         service.choose(i1, con, [])
@@ -62,7 +62,7 @@ class SameBaseStrategySpec extends Specification {
     // A null position list should throw an exception.
     def "null position list throws exception"() {
         def con = Helper.getAddSpaceContainer2(4,4,3)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         service.choose(i1, con, null)

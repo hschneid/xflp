@@ -8,6 +8,8 @@ import xf.xflp.base.container.Container
 import xf.xflp.base.item.Item
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker
 
+import java.util.stream.Collectors
+
 class SingleContainerPackerSpec extends Specification {
 
     def service = new OneContainerOneTypePacker()
@@ -23,10 +25,10 @@ class SingleContainerPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.containers[0].getItems().find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
-    def "test only adding - one to many"() {
+    def "test only adding - one item is too many, rst fits"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 28; i++)
             items.add(Helper.getItem(1,1,1,1,3,0))
@@ -37,7 +39,10 @@ class SingleContainerPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.findAll {i -> i.x == -1 || i.y == -1 || i.z == -1}.size() == 1
+        def plannedIds = model.containers[0].getItems().stream()
+            .map {i -> i.item.externalIndex}
+            .collect(Collectors.toSet()) as Set<Integer>
+        items.count{i -> !plannedIds.contains(i.externalIndex)} == 1
     }
 
     def "test with rotation - successfully"() {
@@ -51,7 +56,7 @@ class SingleContainerPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.containers[0].getItems().find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
     def "test with rotation and different sizes - too hard"() {
@@ -68,7 +73,7 @@ class SingleContainerPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} != null
+        model.containers[0].getItems().size() < items.size()
     }
 
     def "test with rotation and different sizes - sorted by size - sucessfull"() {
@@ -78,14 +83,14 @@ class SingleContainerPackerSpec extends Specification {
         for (int i = 0; i < 18; i++)
             items.add(Helper.getItem(1,1,1,1,3,0))
 
-        items.sort({i,j -> (j.w*j.l) - (i.w*i.l)})
+        items.sort({i,j -> (j.origW * j.origL) - (i.origW * i.origL)})
         XFLPModel model = getModel(items, 4, 3, 3)
 
         when:
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.containers[0].getItems().find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
     def "test with distinct stacking groups - successful"() {
@@ -104,7 +109,7 @@ class SingleContainerPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.containers[0].getItems().find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
     }
 
     static XFLPModel getModel(ArrayList<Item> items, width, length, height) {

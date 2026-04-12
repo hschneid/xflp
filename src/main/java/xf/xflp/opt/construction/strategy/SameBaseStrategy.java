@@ -73,7 +73,7 @@ public class SameBaseStrategy extends BaseStrategy {
 				Item belowItem = container.getItems().get(idx);
 
 				// Check, if this item is directly below the position
-				if (belowItem.x == pos.item().getX() && belowItem.y == pos.item().getY() && belowItem.zh == pos.item().getZ()) {
+				if (belowItem.x() == pos.item().getX() && belowItem.y == pos.item().getY() && belowItem.zh == pos.item().getZ()) {
 					// Check, if this item has same base
 					if (itemLength == Math.max(belowItem.l, belowItem.w) &&
 							itemWidth == Math.min(belowItem.l, belowItem.w)) {
@@ -88,8 +88,8 @@ public class SameBaseStrategy extends BaseStrategy {
 	}
 
 	private PositionCandidate chooseBasePosition(List<PositionCandidate> sameBasePositions, List<PositionCandidate> smallerBasePositions) {
-		List<PositionCandidate> foundPositions = (sameBasePositions.size() > 0) ? sameBasePositions : smallerBasePositions;
-		if (foundPositions.size() == 0) {
+		List<PositionCandidate> foundPositions = (!sameBasePositions.isEmpty()) ? sameBasePositions : smallerBasePositions;
+		if (foundPositions.isEmpty()) {
 			return null;
 		}
 
@@ -98,11 +98,11 @@ public class SameBaseStrategy extends BaseStrategy {
 				highLow::getDistance
 		);
 
-		if (minHighLowPositions.size() == 0) {
+		if (minHighLowPositions.isEmpty()) {
 			return null;
 		}
 
-		return minHighLowPositions.get(0);
+		return minHighLowPositions.getFirst();
 	}
 
 	private PositionCandidate findPosition(Container container, List<PositionCandidate> posList) throws XFLPException {
@@ -120,6 +120,6 @@ public class SameBaseStrategy extends BaseStrategy {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
-		return filteredPositions.get(0);
+		return filteredPositions.getFirst();
 	}
 }

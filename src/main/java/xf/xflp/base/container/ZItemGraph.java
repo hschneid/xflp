@@ -114,7 +114,7 @@ public class ZItemGraph {
 			Item it = itemList.get(zItemIdx);
 
 			if(it.zh == item.z && 
-					it.xw > item.x && it.x < item.xw && 
+					it.xw > item.x() && it.x() < item.xw &&
 					it.yl > item.y && it.y < item.yl)
 				list.add(it);
 		}
@@ -133,7 +133,7 @@ public class ZItemGraph {
 			Item it = itemList.get(zItemIdx);
 
 			if(it.z == item.zh && 
-					it.xw > item.x && it.x < item.xw && 
+					it.xw > item.x() && it.x() < item.xw &&
 					it.yl > item.y && it.y < item.yl)
 				list.add(it);
 		}

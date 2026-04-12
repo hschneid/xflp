@@ -29,7 +29,7 @@ public class SpaceService {
         boolean itemHovering = position.z() < newItem.z;
         // New item is in view range (upper right of position)
         boolean widthLimited = position.y() >= newItem.y && position.y() < newItem.yl;
-        boolean lengthLimited = position.x() >= newItem.x && position.x() < newItem.xw;
+        boolean lengthLimited = position.x() >= newItem.x() && position.x() < newItem.xw;
         boolean itemOverPosition = widthLimited && lengthLimited;
 
         List<Space> spaces = new ArrayList<>(3);
@@ -42,7 +42,7 @@ public class SpaceService {
             if(!itemOverPosition) {
                 spaces.add(Space.of(
                         (lengthLimited) ? (newItem.y - position.y()) : space.l(),
-                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                        (widthLimited) ? (newItem.x() - position.x()) : space.w(),
                         space.h()
                 ));
             }
@@ -52,7 +52,7 @@ public class SpaceService {
             if(!itemHovering && !itemOverPosition) {
                 spaces.add(Space.of(
                         (lengthLimited) ? (newItem.y - position.y()) : space.l(),
-                        (widthLimited) ? (newItem.x - position.x()) : space.w(),
+                        (widthLimited) ? (newItem.x() - position.x()) : space.w(),
                         space.h()
                 ));
             }
@@ -66,7 +66,7 @@ public class SpaceService {
             ));
             spaces.add(Space.of(
                     space.l(),
-                    newItem.x - position.x(),
+                    newItem.x() - position.x(),
                     space.h()
             ));
         }
@@ -75,7 +75,7 @@ public class SpaceService {
     }
 
     public boolean isItemNotInSpace(Position position, Space space, Item item) {
-        return position.x() + space.w() <= item.x ||
+        return position.x() + space.w() <= item.x() ||
                 position.y() + space.l() <= item.y ||
                 position.z() + space.h() <= item.z ||
                 position.x() >= item.xw ||

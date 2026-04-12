@@ -3,6 +3,7 @@ package helper
 import xf.xflp.base.container.*
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
+import xf.xflp.base.item.ItemPlacement
 import xf.xflp.base.item.Position
 import xf.xflp.base.monitor.DefaultStatusMonitor
 import xf.xflp.base.monitor.StatusManager
@@ -124,6 +125,7 @@ class Helper {
 
     static Item getItemAtPosition(int x, int y, int z, int w, int l, int h) {
         Item i = new Item()
+        i.placement = new ItemPlacement(w,l,h);
         i.x = x
         i.y = y
         i.z = z

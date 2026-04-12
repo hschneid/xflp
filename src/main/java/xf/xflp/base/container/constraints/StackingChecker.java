@@ -79,19 +79,19 @@ public class StackingChecker {
                 return false;
             }
 
-            if(pos.x() >= fi.x && pos.x() <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
+            if(pos.x() >= fi.x() && pos.x() <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
                 cornerItem1 = fi.externalIndex;
                 corner1 = true;
             }
-            if(itemXW > fi.x && itemXW <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
+            if(itemXW > fi.x() && itemXW <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
                 cornerItem2 = fi.externalIndex;
                 corner2 = true;
             }
-            if(pos.x() >= fi.x && pos.x() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
+            if(pos.x() >= fi.x() && pos.x() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
                 cornerItem3 = fi.externalIndex;
                 corner3 = true;
             }
-            if(itemXW > fi.x && itemXW <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
+            if(itemXW > fi.x() && itemXW <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
                 cornerItem4 = fi.externalIndex;
                 corner4 = true;
             }
@@ -134,7 +134,7 @@ public class StackingChecker {
         return lowerItem.zh != position.z() ||
                 lowerItem.xw <= position.x() ||
                 lowerItem.yl <= position.y() ||
-                lowerItem.x >= position.x() + itemW ||
+                lowerItem.x() >= position.x() + itemW ||
                 lowerItem.y >= position.y() + itemL;
     }
 }

@@ -37,7 +37,7 @@ public class XFLPSolution {
 			for (Item item : con.getHistory()) {
 				LPPackageEvent e = new LPPackageEvent(
 						dataManager.getItemId(item.externalIndex),
-						item.x,
+						item.x(),
 						item.y,
 						item.z,
 						item.w,

@@ -57,12 +57,9 @@ public class Item implements Indexable {
 	private ItemPlacement placement;
 
 	// Backward-compatible public field aliases – kept in sync with placement
-
-	public boolean isRotated = false;
+	// public boolean isRotated = false;
 	/* Idx in data structure of its holding container (-1 if unpacked) */
 	public int index = -1;
-	/* Idx of the container, where the item is packed in (-1 if unpacked) */
-	// public int containerIndex = -1;
 
 	public Item() {}
 
@@ -76,7 +73,7 @@ public class Item implements Indexable {
 		setW(l());
 		setL(tmp);
 
-		isRotated = !isRotated;
+		placement.isRotated = !placement.isRotated;
 		syncToPlacement();
 	}
 
@@ -97,7 +94,7 @@ public class Item implements Indexable {
 
 	@Override
 	public String toString() {
-		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w()+","+l()+","+h()+") ["+x()+", "+y()+", "+z()+" "+(this.isRotated?"R":"")+"]"+ " "+stackingGroup;
+		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w()+","+l()+","+h()+") ["+x()+", "+y()+", "+z()+" "+(placement.isRotated?"R":"")+"]"+ " "+stackingGroup;
 	}
 
 	/**
@@ -112,7 +109,7 @@ public class Item implements Indexable {
 		clearPosition();
 		this.index = -1;
 		placement.containerIndex = -1;
-		this.isRotated = false;
+		placement.isRotated = false;
 		this.isLoading = false;
 		placement.reset(origW, origL, origH);
 	}
@@ -136,13 +133,11 @@ public class Item implements Indexable {
 	/** Pushes current public fields into the placement object */
 	private void syncToPlacement() {
 		if (placement == null) return;
-		placement.isRotated = this.isRotated;
 		placement.index = this.index;
 	}
 
 	/** Pulls placement state back into the public fields */
 	private void syncFromPlacement() {
-		this.isRotated = placement.isRotated;
 		this.index = placement.index;
 	}
 
@@ -413,11 +408,11 @@ public class Item implements Indexable {
 	}
 
 	public boolean isRotated() {
-		return isRotated;
+		return placement.isRotated;
 	}
 
 	public void setRotated(boolean rotated) {
-		isRotated = rotated;
+		placement.isRotated = rotated;
 	}
 
 	public int getNbrOfAllowedStackedItems() {

@@ -38,8 +38,8 @@ public class XFLPSolution {
 				LPPackageEvent e = new LPPackageEvent(
 						dataManager.getItemId(item.externalIndex),
 						item.x(),
-						item.y,
-						item.z,
+						item.y(),
+						item.z(),
 						item.w,
 						item.l,
 						item.h,

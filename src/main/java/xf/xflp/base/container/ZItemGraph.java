@@ -30,7 +30,7 @@ public class ZItemGraph {
 	public void add(Item newItem, List<Item> itemList, LPListMap<Integer, Integer> zMap) {
 		// Lower
 		{
-			List<Item> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z));
+			List<Item> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z()));
 			ZItemGraphEntry e = new ZItemGraphEntry(newItem, lowerItems);
 			lowerList.set(newItem.index, e);
 
@@ -106,16 +106,16 @@ public class ZItemGraph {
 	private List<Item> searchItemsBelow(Item item, List<Item> itemList, List<Integer> zList) {
 		List<Item> list = new ArrayList<>();
 
-		if(item.z == 0)
+		if(item.z() == 0)
 			return list;
 
 		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
-			if(it.zh == item.z && 
+			if(it.zh == item.z() &&
 					it.xw > item.x() && it.x() < item.xw &&
-					it.yl > item.y && it.y < item.yl)
+					it.yl > item.y() && it.y() < item.yl)
 				list.add(it);
 		}
 
@@ -132,9 +132,9 @@ public class ZItemGraph {
 			int zItemIdx = zList.get(i);
 			Item it = itemList.get(zItemIdx);
 
-			if(it.z == item.zh && 
+			if(it.z() == item.zh &&
 					it.xw > item.x() && it.x() < item.xw &&
-					it.yl > item.y && it.y < item.yl)
+					it.yl > item.y() && it.y() < item.yl)
 				list.add(it);
 		}
 

@@ -106,8 +106,8 @@ public class PositionService {
                 continue;
 
             if(otherItem.x() < (pos.x() + itemW) && otherItem.xw > pos.x() &&
-                    otherItem.y < (pos.y() + itemL) && otherItem.yl > pos.y() &&
-                    otherItem.z < (pos.z() + itemH) && otherItem.zh > pos.z()
+                    otherItem.y() < (pos.y() + itemL) && otherItem.yl > pos.y() &&
+                    otherItem.z() < (pos.z() + itemH) && otherItem.zh > pos.z()
             ) {
                 return true;
             }

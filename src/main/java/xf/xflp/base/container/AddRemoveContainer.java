@@ -279,7 +279,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_H)
-				if(pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl)
+				if(pos.x() == item.xw && pos.y() >= item.y() && pos.y() < item.yl)
 					list.add(pos);
 		}
 		return list;
@@ -301,13 +301,13 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private List<Position> findUncoveringPositions(Item item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : coveredPosList) {
-			if(pos.z() == item.z && pos.x() == item.x() && pos.y() >= item.y && pos.y() < item.yl)
+			if(pos.z() == item.z() && pos.x() == item.x() && pos.y() >= item.y() && pos.y() < item.yl)
 				list.add(pos);
-			else if(pos.z() == item.z && pos.x() == item.xw && pos.y() >= item.y && pos.y() < item.yl && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z() && pos.x() == item.xw && pos.y() >= item.y() && pos.y() < item.yl && pos.type()  == PositionType.EXTENDED_H && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
-			else if(pos.z() == item.z && pos.y() == item.y && pos.x() >= item.x() && pos.x() < item.xw)
+			else if(pos.z() == item.z() && pos.y() == item.y() && pos.x() >= item.x() && pos.x() < item.xw)
 				list.add(pos);
-			else if(pos.z() == item.z && pos.y() == item.yl && pos.x() >= item.x() && pos.x() < item.xw && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
+			else if(pos.z() == item.z() && pos.y() == item.yl && pos.x() >= item.x() && pos.x() < item.xw && pos.type() == PositionType.EXTENDED_V && !itemPositionMap.inverse().containsKey(pos))
 				list.add(pos);
 		}
 		return list;
@@ -465,9 +465,9 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 
 		xMap.get(item.x()).remove(index);
 		xMap.get(item.xw).remove(index);
-		yMap.get(item.y).remove(index);
+		yMap.get(item.y()).remove(index);
 		yMap.get(item.yl).remove(index);
-		zMap.get(item.z).remove(index);
+		zMap.get(item.z()).remove(index);
 		zMap.get(item.zh).remove(index);
 
 		weight -= item.weight;
@@ -505,7 +505,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		for (Position pos : positions) {
 			if (pos.z() == itemZh &&
 					pos.x() >= item.x() && pos.x() < item.xw &&
-					pos.y() >= item.y && pos.y() < item.yl) {
+					pos.y() >= item.y() && pos.y() < item.yl) {
 				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
 			}
 		}

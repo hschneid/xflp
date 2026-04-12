@@ -60,7 +60,7 @@ public class LoadBearingChecker {
             }
 
             // Check for floor item
-            if(item.z == 0) {
+            if(item.z() == 0) {
                 floorItems.add(item);
             }
         }

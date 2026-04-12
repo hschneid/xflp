@@ -97,10 +97,10 @@ public class TouchingPerimeterService {
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
             Item i = container.getItems().get(itemIndices.get(j));
             if (i.xw == posX || i.x() == xw) {
-                if (i.y > yl || i.yl < posY) continue;
-                if (i.z > zh || i.zh < posZ) continue;
-                int yLength = Math.min(yl, i.yl) - Math.max(i.y, posY);
-                int zLength = Math.min(zh, i.zh) - Math.max(i.z, posZ);
+                if (i.y() > yl || i.yl < posY) continue;
+                if (i.z() > zh || i.zh < posZ) continue;
+                int yLength = Math.min(yl, i.yl) - Math.max(i.y(), posY);
+                int zLength = Math.min(zh, i.zh) - Math.max(i.z(), posZ);
                 val += yLength * zLength * itemTouchValue;
             }
         }
@@ -114,11 +114,11 @@ public class TouchingPerimeterService {
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
             Item i = container.getItems().get(itemIndices.get(j));
-            if (i.yl == posY || i.y == yl) {
+            if (i.yl == posY || i.y() == yl) {
                 if (i.x() > xw || i.xw < posX) continue;
-                if (i.z > zh || i.zh < posZ) continue;
+                if (i.z() > zh || i.zh < posZ) continue;
                 int xLength = Math.min(xw, i.xw) - Math.max(i.x(), posX);
-                int zLength = Math.min(zh, i.zh) - Math.max(i.z, posZ);
+                int zLength = Math.min(zh, i.zh) - Math.max(i.z(), posZ);
                 val += xLength * zLength * itemTouchValue;
             }
         }
@@ -132,10 +132,10 @@ public class TouchingPerimeterService {
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
             Item i = container.getItems().get(itemIndices.get(j));
-            if (i.zh == posZ || i.z == zh) {
-                if (i.y > yl || i.yl < posY) continue;
+            if (i.zh == posZ || i.z() == zh) {
+                if (i.y() > yl || i.yl < posY) continue;
                 if (i.x() > xw || i.xw < posX) continue;
-                int yLength = Math.min(yl, i.yl) - Math.max(i.y, posY);
+                int yLength = Math.min(yl, i.yl) - Math.max(i.y(), posY);
                 int xLength = Math.min(xw, i.xw) - Math.max(i.x(), posX);
                 val += yLength * xLength * itemTouchValue;
             }

@@ -105,7 +105,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         long sum = 0;
         for (Item item : this.itemList)
             if(item != null)
-                sum += item.volume;
+                sum += item.getVolume();
 
         return sum;
     }

@@ -24,7 +24,6 @@ public class Item implements Indexable {
 
 	// --- Master data (immutable after postInit) ---
 	public int origW, origL, origH;
-	public int size, volume;
 
 	public boolean spinable, stackable;
 	public int loadingLoc, unLoadingLoc;
@@ -71,8 +70,6 @@ public class Item implements Indexable {
 
 	public void postInit() {
 		this.placement = new ItemPlacement(this.origW, this.origL, this.origH);
-		this.size = w() * l();
-		this.volume = h() * w() * l();
 		this.loadingType = (isLoading) ? LoadType.LOAD : LoadType.UNLOAD;
 	}
 
@@ -173,20 +170,8 @@ public class Item implements Indexable {
 		this.index = idx;
 	}
 
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
 	public int getVolume() {
 		return w() * l() * h();
-	}
-
-	public void setVolume(int volume) {
-		this.volume = volume;
 	}
 
 	public int getOrigH() {

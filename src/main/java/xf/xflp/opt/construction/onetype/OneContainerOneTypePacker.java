@@ -72,7 +72,7 @@ public class OneContainerOneTypePacker implements Packer {
 					);
 					loadedItemMap.put(item.externalIndex, item);
 				} else {
-					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
+					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index() + " could not be added.");
 					unplannedItemList.add(item);
 				}
 			} else {

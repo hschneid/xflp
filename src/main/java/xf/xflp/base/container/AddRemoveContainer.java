@@ -118,7 +118,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		addToCenterOfGravity(item, pos);
 
 		history.add(item);
-		return item.index;
+		return item.index();
 	}
 
 	private void check() {
@@ -456,12 +456,12 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	}
 
 	private void removeItem(Item item) {
-		Integer index = item.index;
+		Integer index = item.index();
 
 		// Delete from Z-Graph
 		zGraph.remove(item);
 
-		itemList.remove(item.index);
+		itemList.remove(item.index());
 
 		xMap.get(item.x()).remove(index);
 		xMap.get(item.xw()).remove(index);

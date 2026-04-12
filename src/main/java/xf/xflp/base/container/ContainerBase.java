@@ -124,12 +124,12 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         itemPositionMap.put(item, pos);
 
-        xMap.put(item.x(), item.index);
-        xMap.put(item.xw(), item.index);
-        yMap.put(item.y(), item.index);
-        yMap.put(item.yl(), item.index);
-        zMap.put(item.z(), item.index);
-        zMap.put(item.zh(), item.index);
+        xMap.put(item.x(), item.index());
+        xMap.put(item.xw(), item.index());
+        yMap.put(item.y(), item.index());
+        yMap.put(item.yl(), item.index());
+        zMap.put(item.z(), item.index());
+        zMap.put(item.zh(), item.index());
 
         weight += item.weight;
 

@@ -56,11 +56,6 @@ public class Item implements Indexable {
 	// --- Mutable placement data (delegated to ItemPlacement) ---
 	private ItemPlacement placement;
 
-	// Backward-compatible public field aliases – kept in sync with placement
-	// public boolean isRotated = false;
-	/* Idx in data structure of its holding container (-1 if unpacked) */
-	public int index = -1;
-
 	public Item() {}
 
 	public void postInit() {
@@ -74,7 +69,6 @@ public class Item implements Indexable {
 		setL(tmp);
 
 		placement.isRotated = !placement.isRotated;
-		syncToPlacement();
 	}
 
 	public void setPosition(Position pos) {
@@ -84,12 +78,10 @@ public class Item implements Indexable {
 		placement.xw = x() + w();
 		placement.yl = y() + l();
 		placement.zh = z() + h();
-		syncToPlacement();
 	}
 
 	public void clearPosition() {
 		placement.x = placement.y = placement.z = placement.xw = placement.yl = placement.zh = -1;
-		syncToPlacement();
 	}
 
 	@Override
@@ -107,7 +99,7 @@ public class Item implements Indexable {
 		placement.l = origL;
 		placement.h = origH;
 		clearPosition();
-		this.index = -1;
+		placement.index = -1;
 		placement.containerIndex = -1;
 		placement.isRotated = false;
 		this.isLoading = false;
@@ -118,7 +110,6 @@ public class Item implements Indexable {
 	 * Returns a snapshot copy of the current placement.
 	 */
 	public ItemPlacement snapshotPlacement() {
-		syncToPlacement();
 		return new ItemPlacement(placement);
 	}
 
@@ -127,18 +118,6 @@ public class Item implements Indexable {
 	 */
 	public void restorePlacement(ItemPlacement snapshot) {
 		this.placement = new ItemPlacement(snapshot);
-		syncFromPlacement();
-	}
-
-	/** Pushes current public fields into the placement object */
-	private void syncToPlacement() {
-		if (placement == null) return;
-		placement.index = this.index;
-	}
-
-	/** Pulls placement state back into the public fields */
-	private void syncFromPlacement() {
-		this.index = placement.index;
 	}
 
 	/*
@@ -147,7 +126,7 @@ public class Item implements Indexable {
 	 */
 	@Override
 	public int getIdx() {
-		return index;
+		return placement.index;
 	}
 	
 	/*
@@ -156,7 +135,7 @@ public class Item implements Indexable {
 	 */
 	@Override
 	public void setIdx(int idx) {
-		this.index = idx;
+		placement.index = idx;
 	}
 
 	public int getVolume() {
@@ -383,12 +362,16 @@ public class Item implements Indexable {
 		this.orderIndex = orderIndex;
 	}
 
+	public int index() {
+		return placement.index;
+	}
+
 	public int getIndex() {
-		return index;
+		return placement.index;
 	}
 
 	public void setIndex(int index) {
-		this.index = index;
+		placement.index = index;
 	}
 
 	public int getContainerIndex() {
@@ -435,7 +418,7 @@ public class Item implements Indexable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Item item)) return false;
-		return index == item.index;
+		return placement.index == item.placement.index;
 	}
 
 	@Override

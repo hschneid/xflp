@@ -105,7 +105,7 @@ public class MultiBinAddHeuristicBiasRandom {
 
     private void setUnplanned(List<Item> unplannedItems, Item... items) {
         for (Item item : items) {
-            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
+            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index() + " could not be added.");
             unplannedItems.add(item);
         }
     }

@@ -32,24 +32,24 @@ public class ZItemGraph {
 		{
 			List<Item> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z()));
 			ZItemGraphEntry e = new ZItemGraphEntry(newItem, lowerItems);
-			lowerList.set(newItem.index, e);
+			lowerList.set(newItem.index(), e);
 
 			// Update of lower items with new upper item
 			for (Item lowerItem : lowerItems) {
-				if(upperList.get(lowerItem.index) == null)
-					upperList.set(lowerItem.index, new ArrayList<>());
-				upperList.get(lowerItem.index).add(newItem);
+				if(upperList.get(lowerItem.index()) == null)
+					upperList.set(lowerItem.index(), new ArrayList<>());
+				upperList.get(lowerItem.index()).add(newItem);
 			}
 		}
 
 		// Upper
 		{
 			List<Item> upperItems = searchItemsAbove(newItem, itemList, zMap.get(newItem.zh()));
-			upperList.set(newItem.index, upperItems);
+			upperList.set(newItem.index(), upperItems);
 
 			// Update upper items with new lower item, which means new cut area ratio
 			for (Item upperItem : upperItems) {
-				ZItemGraphEntry e = lowerList.get(upperItem.index);
+				ZItemGraphEntry e = lowerList.get(upperItem.index());
 				e.lowerItemList.add(newItem);
 				e.update();
 			}
@@ -61,27 +61,27 @@ public class ZItemGraph {
 	 */
 	public void remove(Item item) {
 		// Remove Item from lower items
-		if(lowerList.get(item.index) != null) {
-			List<Item> get = lowerList.get(item.index).lowerItemList;
+		if(lowerList.get(item.index()) != null) {
+			List<Item> get = lowerList.get(item.index()).lowerItemList;
 			for (int i = get.size() - 1; i >= 0; i--) {
 				Item lowerItem = get.get(i);
-				upperList.get(lowerItem.index).remove(item);
+				upperList.get(lowerItem.index()).remove(item);
 			}
 		}
 
 		// Entferne Item aus upper items
-		if(upperList.get(item.index) != null) {
-			List<Item> get = upperList.get(item.index);
+		if(upperList.get(item.index()) != null) {
+			List<Item> get = upperList.get(item.index());
 			for (int i = get.size() - 1; i >= 0; i--) {
 				Item upperItem = get.get(i);
-				lowerList.get(upperItem.index).lowerItemList.remove(item);
+				lowerList.get(upperItem.index()).lowerItemList.remove(item);
 			}
 		}
 
 		// Entferne lowerList-Eintrag
-		lowerList.remove(item.index);
+		lowerList.remove(item.index());
 		// Entferne upperList-Eintrag
-		upperList.remove(item.index);
+		upperList.remove(item.index());
 	}
 
 	public int size() {
@@ -89,11 +89,11 @@ public class ZItemGraph {
 	}
 
 	public List<Item> getItemsBelow(Item item) {
-		return lowerList.get(item.index).lowerItemList;
+		return lowerList.get(item.index()).lowerItemList;
 	}
 
 	public List<Item> getItemsAbove(Item item) {
-		return upperList.get(item.index);
+		return upperList.get(item.index());
 	}
 
 	/**

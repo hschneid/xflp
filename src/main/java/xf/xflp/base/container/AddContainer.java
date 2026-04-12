@@ -92,7 +92,7 @@ public final class AddContainer extends ContainerBase implements Container {
 
 		history.add(item);
 
-		return item.index;
+		return item.index();
 	}
 
 	/* Create spaces

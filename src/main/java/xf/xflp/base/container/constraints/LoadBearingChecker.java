@@ -40,7 +40,7 @@ public class LoadBearingChecker {
         List<Item> floorItems = new ArrayList<>();
         while(queue.hasMore()) {
             Item item = container.getItems().get(queue.getNext());
-            queue.setProcessed(item.index);
+            queue.setProcessed(item.index());
 
             // Fetch lower items of item
             List<Item> lowerItems = container.getBaseData().getZGraph().getItemsBelow(item);
@@ -56,7 +56,7 @@ public class LoadBearingChecker {
 
             // Add bearing weight to lower Item
             for (int i = 0; i < weightRatios.length; i++) {
-                bearingWeights[lowerItems.get(i).index] += weightRatios[i] * (item.getWeight() + bearingWeights[item.index]);
+                bearingWeights[lowerItems.get(i).index()] += weightRatios[i] * (item.getWeight() + bearingWeights[item.index()]);
             }
 
             // Check for floor item
@@ -87,21 +87,21 @@ public class LoadBearingChecker {
         final List<Item> currentItems = new ArrayList<>(floorItems);
         final List<Item> nextItems = new ArrayList<>();
 
-        while(currentItems.size() > 0) {
+        while(!currentItems.isEmpty()) {
 
             for (int i = currentItems.size() - 1; i >= 0; i--) {
                 Item currentItem = currentItems.get(i);
 
                 List<Item> lowerItems = container.getBaseData().getZGraph().getItemsBelow(currentItem);
                 float lowerBearingCapacity = getLowerBearingCapacity(container, currentItem, lowerItems);
-                float ownBearingCapacity = currentItem.getStackingWeightLimit() - bearingWeights[currentItem.index];
+                float ownBearingCapacity = currentItem.getStackingWeightLimit() - bearingWeights[currentItem.index()];
 
                 // the bearing capacity of current item is the minimum of
                 // the sum of lower bearing capacities and the own (bearing capacity - bearingWeight)
-                float currentBearingCapacity = (lowerItems.size() == 0) ?
+                float currentBearingCapacity = (lowerItems.isEmpty()) ?
                         ownBearingCapacity:
                         Math.min(lowerBearingCapacity, ownBearingCapacity);
-                container.getBearingCapacities().put(currentItem.index, currentBearingCapacity);
+                container.getBearingCapacities().put(currentItem.index(), currentBearingCapacity);
 
                 // Add next items (upper items)
                 List<Item> upperItems = container.getBaseData().getZGraph().getItemsAbove(currentItem);
@@ -123,7 +123,7 @@ public class LoadBearingChecker {
 
             lowerBearingCapacity = Math.min(
                     lowerBearingCapacity,
-                    container.getBearingCapacities().getOrDefault(lowerItems.get(j).index, 0f) * reciprocalAreaRatio
+                    container.getBearingCapacities().getOrDefault(lowerItems.get(j).index(), 0f) * reciprocalAreaRatio
             );
         }
         return lowerBearingCapacity;

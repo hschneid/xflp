@@ -38,17 +38,17 @@ public class BearingWeightQueue {
         int[] upperIdx = new int[uppers.size()];
         for (int i = upperIdx.length - 1; i >= 0; i--) {
             Item upperItem = uppers.get(i);
-            upperIdx[i] = upperItem.index;
+            upperIdx[i] = upperItem.index();
 
             // If unprocessed upper items were found,
             // add them to queue instead of this item
-            if(!isProcessed[upperItem.index]) {
+            if(!isProcessed[upperItem.index()]) {
                 add(upperItem, graph);
                 return;
             }
         }
 
-        upperItems.put(newItem.index, upperIdx);
+        upperItems.put(newItem.index(), upperIdx);
     }
 
     /**
@@ -65,7 +65,7 @@ public class BearingWeightQueue {
     }
 
     public boolean hasMore() {
-        return upperItems.size() > 0;
+        return !upperItems.isEmpty();
     }
 
     private boolean areAllProcessed(int itemIdx) {

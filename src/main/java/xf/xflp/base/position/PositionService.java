@@ -32,7 +32,7 @@ public class PositionService {
     public static List<PositionCandidate> findPositionCandidates(Container container, Item item) {
         List<PositionCandidate> candidates = new ArrayList<>();
 
-        int itemW = item.w, itemL = item.l;
+        int itemW = item.w(), itemL = item.l();
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
@@ -43,8 +43,8 @@ public class PositionService {
         // For every rotation state
         for (int rotation = 0; rotation <= getRotationType(item).getRotationType(); rotation++) {
             if(rotation > 0) {
-                itemW = item.l;
-                itemL = item.w;
+                itemW = item.l();
+                itemL = item.w();
             }
 
             // For every active position
@@ -162,7 +162,7 @@ public class PositionService {
     }
 
     private static RotationType getRotationType(Item item) {
-        return (item.spinable && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
+        return (item.spinable && item.w() != item.l()) ? RotationType.SPINNABLE : RotationType.FIX;
     }
 
     /**
@@ -176,15 +176,15 @@ public class PositionService {
      */
     private static int retrieveHeight(Item item, Position pos, Container container) {
         if(pos.z() == 0) {
-            return item.h;
+            return item.h();
         }
 
         int minImmersiveDepth = container.getBaseData().getImmersiveDepthAtPosition(pos);
         if(minImmersiveDepth == 0) {
-            return item.h;
+            return item.h();
         }
 
-        int newHeight = item.h - minImmersiveDepth;
+        int newHeight = item.h() - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
     }
 

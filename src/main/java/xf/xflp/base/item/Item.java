@@ -58,7 +58,7 @@ public class Item implements Indexable {
 	private ItemPlacement placement;
 
 	// Backward-compatible public field aliases – kept in sync with placement
-	public int w, l, h;
+
 	public boolean isRotated = false;
 	/* Idx in data structure of its holding container (-1 if unpacked) */
 	public int index = -1;
@@ -70,19 +70,16 @@ public class Item implements Indexable {
 	}
 
 	public void postInit() {
-		this.origW = w;
-		this.origL = l;
-		this.origH = h;
-		this.size = w * l;
-		this.volume = h * w * l;
+		this.placement = new ItemPlacement(this.origW, this.origL, this.origH);
+		this.size = w() * l();
+		this.volume = h() * w() * l();
 		this.loadingType = (isLoading) ? LoadType.LOAD : LoadType.UNLOAD;
-		this.placement = new ItemPlacement(w, l, h);
 	}
 
 	public void rotate() {
-		int tmp = w;
-		w = l;
-		l = tmp;
+		int tmp = w();
+		setW(l());
+		setL(tmp);
 
 		isRotated = !isRotated;
 		syncToPlacement();
@@ -92,9 +89,9 @@ public class Item implements Indexable {
 		placement.x = pos.x();
 		placement.y = pos.y();
 		placement.z = pos.z();
-		placement.xw = x() + w;
-		placement.yl = y() + l;
-		placement.zh = z() + h;
+		placement.xw = x() + w();
+		placement.yl = y() + l();
+		placement.zh = z() + h();
 		syncToPlacement();
 	}
 
@@ -105,7 +102,7 @@ public class Item implements Indexable {
 
 	@Override
 	public String toString() {
-		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w+","+l+","+h+") ["+x()+", "+y()+", "+z()+" "+(this.isRotated?"R":"")+"]"+ " "+stackingGroup;
+		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+w()+","+l()+","+h()+") ["+x()+", "+y()+", "+z()+" "+(this.isRotated?"R":"")+"]"+ " "+stackingGroup;
 	}
 
 	/**
@@ -114,9 +111,9 @@ public class Item implements Indexable {
 	 */
 	public void reset() {
 		// Restore original dimensions
-		this.w = origW;
-		this.l = origL;
-		this.h = origH;
+		placement.w = origW;
+		placement.l = origL;
+		placement.h = origH;
 		clearPosition();
 		this.index = -1;
 		this.containerIndex = -1;
@@ -146,9 +143,6 @@ public class Item implements Indexable {
 	/** Pushes current public fields into the placement object */
 	private void syncToPlacement() {
 		if (placement == null) return;
-		placement.w = this.w;
-		placement.l = this.l;
-		placement.h = this.h;
 		placement.isRotated = this.isRotated;
 		placement.index = this.index;
 		placement.containerIndex = this.containerIndex;
@@ -156,9 +150,6 @@ public class Item implements Indexable {
 
 	/** Pulls placement state back into the public fields */
 	private void syncFromPlacement() {
-		this.w = placement.w;
-		this.l = placement.l;
-		this.h = placement.h;
 		this.isRotated = placement.isRotated;
 		this.index = placement.index;
 		this.containerIndex = placement.containerIndex;
@@ -191,20 +182,11 @@ public class Item implements Indexable {
 	}
 
 	public int getVolume() {
-		return w * l * h;
+		return w() * l() * h();
 	}
 
 	public void setVolume(int volume) {
 		this.volume = volume;
-	}
-
-	public int getH() {
-		return h;
-	}
-
-	public void setH(int h) {
-		this.h = h;
-		this.origH = h;
 	}
 
 	public int getOrigH() {
@@ -283,20 +265,52 @@ public class Item implements Indexable {
 		this.placement.zh = zh;
 	}
 
+	public int w() {
+		return placement.w;
+	}
+
 	public int getW() {
-		return w;
+		return placement.w;
 	}
 
 	public void setW(int w) {
-		this.w = w;
+		this.placement.w = w;
+	}
+
+	public int l() {
+		return placement.l;
 	}
 
 	public int getL() {
-		return l;
+		return placement.l;
 	}
 
 	public void setL(int l) {
-		this.l = l;
+		this.placement.l = l;
+	}
+
+	public int h() {
+		return placement.h;
+	}
+
+	public int getH() {
+		return placement.h;
+	}
+
+	public void setH(int h) {
+		this.placement.h = h;
+	}
+
+	public void setOrigW(int width) {
+		this.origW = width;
+	}
+
+	public void setOrigL(int length) {
+		this.origL = length;
+	}
+
+	public void setOrigH(int h) {
+		this.origH = h;
 	}
 
 	public boolean isSpinable() {

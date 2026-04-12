@@ -300,9 +300,9 @@ public class ItemData implements Serializable {
 		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
 		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
 		i.setUnLoadingLoc(manager.getLocationIdx(unloadingLocation));
-		i.setW(width);
-		i.setL(length);
-		i.setH(height);
+		i.setOrigW(width);
+		i.setOrigL(length);
+		i.setOrigH(height);
 		i.setWeight(weight);
 		i.setStackingWeightLimit(stackingWeightLimit);
 		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));

@@ -63,14 +63,13 @@ class Helper {
         set.add(0)
 
         Item i = new Item()
-
         i.setExternalIndex(itemIdx)
         i.setOrderIndex(itemIdx)
         i.setLoadingLoc(itemIdx)
         i.setUnLoadingLoc(itemIdx + 1)
-        i.setW(w)
-        i.setL(l)
-        i.setH(h)
+        i.setOrigW(w)
+        i.setOrigL(l)
+        i.setOrigH(h)
         i.setWeight(ww)
         i.setStackingWeightLimit(wC)
         i.setAllowedContainerSet(set)

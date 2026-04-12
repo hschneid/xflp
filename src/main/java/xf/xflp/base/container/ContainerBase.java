@@ -116,7 +116,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
     protected void addItem(Item item, Position pos) {
         // Adjust height for immersive depth
-        item.h = retrieveHeight(item, pos);
+        item.setH(retrieveHeight(item, pos));
 
         item.setPosition(pos);
         itemList.add(item);
@@ -175,8 +175,8 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
             horizontalPosition = createPosition(item.xw(), item.y(), item.z(), PositionType.BASIC);
             posList.add(horizontalPosition);
         }
-        if(item.z() + item.h < this.height) {
-            posList.add(createPosition(item.x(), item.y(), item.z() + item.h, PositionType.BASIC));
+        if(item.z() + item.h() < this.height) {
+            posList.add(createPosition(item.x(), item.y(), item.z() + item.h(), PositionType.BASIC));
         }
 
         // 2 projected positions
@@ -316,19 +316,19 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
      */
     protected int retrieveHeight(Item item, Position pos) {
         if(pos.z() == 0) {
-            return item.h;
+            return item.h();
         }
 
         List<Item> lowerItems = findItemsBelow(this, pos, item);
         if(lowerItems.isEmpty())
-            return item.h;
+            return item.h();
 
         int minImmersiveDepth = Integer.MAX_VALUE;
         for (int i = lowerItems.size() - 1; i >= 0; i--) {
             minImmersiveDepth = Math.min(minImmersiveDepth, lowerItems.get(i).getImmersiveDepth());
         }
 
-        int newHeight = item.h - minImmersiveDepth;
+        int newHeight = item.h() - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
@@ -342,9 +342,9 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         for (int i = zItems.size() - 1; i >= 0; i--) {
             Item lowerItem = container.getItems().get(zItems.get(i));
             if(lowerItem.zh() == pos.z() &&
-                    lowerItem.x() < pos.x() + newItem.w &&
+                    lowerItem.x() < pos.x() + newItem.w() &&
                     lowerItem.xw() > pos.x() &&
-                    lowerItem.y() < pos.y() + newItem.l &&
+                    lowerItem.y() < pos.y() + newItem.l() &&
                     lowerItem.yl() > pos.y()) {
                 belowItems.add(lowerItem);
             }
@@ -354,11 +354,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     protected void addToCenterOfGravity(Item item, Position pos) {
-        centerOfGravityForY += (pos.y() + (item.l / 2f)) * item.getWeight();
+        centerOfGravityForY += (pos.y() + (item.l() / 2f)) * item.getWeight();
     }
 
     protected void removeFromCenterOfGravity(Item item, Position pos) {
-        centerOfGravityForY -= (pos.y() + (item.l / 2f)) * item.getWeight();
+        centerOfGravityForY -= (pos.y() + (item.l() / 2f)) * item.getWeight();
     }
 
     public List<Item> getItems() {

@@ -17,7 +17,7 @@ public class Tools {
 	 */
 	public static float getCutRatio(Item rootItem, Item cutItem) {
 		return getCutRatio(
-				rootItem.x(), rootItem.y(), rootItem.w, rootItem.l,
+				rootItem.x(), rootItem.y(), rootItem.w(), rootItem.l(),
 				cutItem
 		);
 	}

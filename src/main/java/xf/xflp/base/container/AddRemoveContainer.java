@@ -471,7 +471,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		zMap.get(item.zh()).remove(index);
 
 		weight -= item.weight;
-		item.h = item.origH;
+		item.setH(item.origH);
 
 		// Recompute maxYl if necessary
 		if (item.yl() >= maxYl) {

@@ -57,7 +57,7 @@ public class WidthProportionFactor extends BaseStrategy {
 	float getDeviationOfProportion(PositionCandidate candidate, Container container) {
 		int conWidth = container.getWidth();
 		int spaceWidth = conWidth - candidate.position().x();
-		int itemWidth =  (candidate.isRotated()) ? candidate.item().l : candidate.item().w;
+		int itemWidth =  (candidate.isRotated()) ? candidate.item().l() : candidate.item().w();
 
 		float proportion = spaceWidth / (float)itemWidth;
 		if(proportion < 0)

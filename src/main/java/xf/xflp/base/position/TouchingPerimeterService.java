@@ -27,12 +27,12 @@ public class TouchingPerimeterService {
         Position pos = candidate.position();
 
         int value = 0;
-        int w = item.w;
-        int l = item.l;
-        int h = item.h;
+        int w = item.w();
+        int l = item.l();
+        int h = item.h();
         if(candidate.isRotated()) {
-            w = item.l;
-            l = item.w;
+            w = item.l();
+            l = item.w();
         }
 
         int posX = pos.x();

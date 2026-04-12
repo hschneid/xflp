@@ -58,8 +58,8 @@ public class SameBaseStrategy extends BaseStrategy {
 	}
 
 	private void findBasePositions(Item item, Container container, List<PositionCandidate> posList, List<PositionCandidate> sameBasePositions, List<PositionCandidate> smallerBasePositions) {
-		int itemLength = Math.max(item.l, item.w);
-		int itemWidth = Math.min(item.l, item.w);
+		int itemLength = Math.max(item.l(), item.w());
+		int itemWidth = Math.min(item.l(), item.w());
 		for (PositionCandidate pos : posList) {
 			if (pos.item().getZ() == 0)
 				continue;
@@ -75,11 +75,11 @@ public class SameBaseStrategy extends BaseStrategy {
 				// Check, if this item is directly below the position
 				if (belowItem.x() == pos.item().x() && belowItem.y() == pos.item().getY() && belowItem.zh() == pos.item().getZ()) {
 					// Check, if this item has same base
-					if (itemLength == Math.max(belowItem.l, belowItem.w) &&
-							itemWidth == Math.min(belowItem.l, belowItem.w)) {
+					if (itemLength == Math.max(belowItem.l(), belowItem.w()) &&
+							itemWidth == Math.min(belowItem.l(), belowItem.w())) {
 						sameBasePositions.add(pos);
-					} else if (itemLength <= Math.max(belowItem.l, belowItem.w) &&
-							itemWidth <= Math.min(belowItem.l, belowItem.w)) {
+					} else if (itemLength <= Math.max(belowItem.l(), belowItem.w()) &&
+							itemWidth <= Math.min(belowItem.l(), belowItem.w())) {
 						smallerBasePositions.add(pos);
 					}
 				}

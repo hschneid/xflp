@@ -35,13 +35,13 @@ public class AxleLoadChecker {
         // Center of truck
         var centerOfTruck = axleLoadParameter.axleDistance() / 2f;
         var centerOfLoad =
-                Math.max(container.getBaseData().getMaxYl(), pos.y() + item.l)
+                Math.max(container.getBaseData().getMaxYl(), pos.y() + item.l())
                         / 2f;
         var padY = Math.max(0, centerOfTruck - centerOfLoad);
 
         // Get current center of gravity for y(length), which is the direction of axles.
         var currentCenterOfGravityForY = container.getBaseData().getCenterOfGravityForY();
-        var newCenterOfGravityForY = (currentCenterOfGravityForY + ((pos.y() + (item.l / 2f)) * item.getWeight())) / totalWeight;
+        var newCenterOfGravityForY = (currentCenterOfGravityForY + ((pos.y() + (item.l() / 2f)) * item.getWeight())) / totalWeight;
 
         // Major formular to calculate the load at one of the 2 axles
         var loadAtSecondAxle = (totalWeight * (newCenterOfGravityForY + padY)) / axleLoadParameter.axleDistance();

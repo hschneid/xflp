@@ -120,7 +120,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
         item.setPosition(pos);
         itemList.add(item);
-        item.containerIndex = this.index;
+        item.setContainerIndex(this.index);
 
         itemPositionMap.put(item, pos);
 

@@ -25,7 +25,7 @@ public class Item implements Indexable {
 	// --- Master data (immutable after postInit) ---
 	public int origW, origL, origH;
 
-	public boolean spinable, stackable;
+	public boolean spinable, stackable = true;
 	public int loadingLoc, unLoadingLoc;
 
 	// Binary representation, where only one bit can be active
@@ -62,11 +62,9 @@ public class Item implements Indexable {
 	/* Idx in data structure of its holding container (-1 if unpacked) */
 	public int index = -1;
 	/* Idx of the container, where the item is packed in (-1 if unpacked) */
-	public int containerIndex = -1;
+	// public int containerIndex = -1;
 
-	public Item() {
-		this.stackable = true;
-	}
+	public Item() {}
 
 	public void postInit() {
 		this.placement = new ItemPlacement(this.origW, this.origL, this.origH);
@@ -113,12 +111,10 @@ public class Item implements Indexable {
 		placement.h = origH;
 		clearPosition();
 		this.index = -1;
-		this.containerIndex = -1;
+		placement.containerIndex = -1;
 		this.isRotated = false;
 		this.isLoading = false;
-		if (placement != null) {
-			placement.reset(origW, origL, origH);
-		}
+		placement.reset(origW, origL, origH);
 	}
 
 	/**
@@ -142,14 +138,12 @@ public class Item implements Indexable {
 		if (placement == null) return;
 		placement.isRotated = this.isRotated;
 		placement.index = this.index;
-		placement.containerIndex = this.containerIndex;
 	}
 
 	/** Pulls placement state back into the public fields */
 	private void syncFromPlacement() {
 		this.isRotated = placement.isRotated;
 		this.index = placement.index;
-		this.containerIndex = placement.containerIndex;
 	}
 
 	/*
@@ -403,11 +397,11 @@ public class Item implements Indexable {
 	}
 
 	public int getContainerIndex() {
-		return containerIndex;
+		return placement.containerIndex;
 	}
 
 	public void setContainerIndex(int containerIndex) {
-		this.containerIndex = containerIndex;
+		placement.containerIndex = containerIndex;
 	}
 
 	public boolean isLoading() {

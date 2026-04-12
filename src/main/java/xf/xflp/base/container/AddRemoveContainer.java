@@ -484,7 +484,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			}
 		}
 
-		item.containerIndex = -1;
+		item.setContainerIndex(-1);
 
 		// Recompute immersive depth cache for positions that were sitting on this item
 		recomputeImmersiveDepthCacheForRemovedItem(item);

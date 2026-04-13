@@ -43,16 +43,16 @@ public class SingleBinAddHeuristicBiasRandom {
 	private final Random random;
 	private final double beta;
 
-	public SingleBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter) {
-		this(s, statusManager, parameter, new Random(1234), DEFAULT_BETA);
+	public SingleBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter, Random random) {
+		this(s, statusManager, parameter, random, DEFAULT_BETA);
 	}
 
 	public SingleBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter, Random random, double beta) {
 		this.strategy = s.getStrategy();
 		this.statusManager = statusManager;
 		this.parameter = parameter;
-		this.random = random;
 		this.beta = beta;
+		this.random = random;
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {

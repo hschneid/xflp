@@ -191,4 +191,8 @@ public class Item {
 	public int hashCode() {
 		return super.hashCode();
 	}
+
+	public void setSpinable(boolean spinable) {
+		this.spinable = spinable;
+	}
 }

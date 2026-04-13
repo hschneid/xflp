@@ -31,7 +31,7 @@ public class OneContainerOneTypeAddPackerRand implements Packer {
 
 		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
 
-		List<Item> unplannedItemList = new SingleBinAddHeuristicBiasRandom(strategy, model.getStatusManager(), model.getParameter())
+		List<Item> unplannedItemList = new SingleBinAddHeuristicBiasRandom(strategy, model.getStatusManager(), model.getParameter(), model.getRandom())
 				.createLoadingPlan(
 						Arrays.asList(model.getItems()),
 						container

@@ -3,14 +3,13 @@ package xf.xflp.opt;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.exception.XFLPException;
+import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPackerRand;
+import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
 import xf.xflp.report.LoadType;
-
-import java.util.Map;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -53,10 +52,19 @@ public class FastFixedContainerSolverRand extends XFLPBase {
     private void executeGrasp(XFLPModel model) throws XFLPException {
         boolean multiType = model.getContainerTypes().length > 1;
 
-        Container[] bestContainers = null;
-        Item[] bestUnplannedItems = null;
-        Map<Item, ItemPlacement> bestPlacements = null;
-        long bestVolume = -1;
+        Container[] bestContainers;
+        Item[] bestUnplannedItems;
+
+        if (multiType) {
+            new OneContainerNTypeAddPacker().execute(model);
+        } else {
+            new OneContainerOneTypeAddPacker().execute(model);
+        }
+        long bestVolume = getLoadedVolume(model);
+        bestContainers = model.getContainers();
+        bestUnplannedItems = model.getUnplannedItems();
+
+        //System.out.println("INIT  - " + bestVolume);
 
         for (int i = 0; i < N_ITERATIONS; i++) {
             // Execute one randomized iteration (packer resets items and creates fresh containers)
@@ -68,6 +76,7 @@ public class FastFixedContainerSolverRand extends XFLPBase {
 
             // Calculate total loaded volume of this iteration
             long loadedVolume = getLoadedVolume(model);
+            //System.out.println("ITER " + i + " - " + loadedVolume + " - " + bestVolume);
 
             // Keep best result
             if (loadedVolume > bestVolume) {

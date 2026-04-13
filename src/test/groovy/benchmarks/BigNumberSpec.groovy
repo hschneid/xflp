@@ -1,6 +1,6 @@
 package benchmarks
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
@@ -13,7 +13,7 @@ class BigNumberSpec extends Specification {
     XFLP service
     def random = new Random(1234)
 
-    @Ignore
+    // @Ignore
     def "1000 boxes"() {
         when:
         long time = System.currentTimeMillis()
@@ -37,7 +37,7 @@ class BigNumberSpec extends Specification {
         service = new XFLP()
 
         service.addContainer().setWidth(200).setLength(100).setHeight(70).setMaxWeight(999999)
-        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER_RAND)
+        service.setTypeOfOptimization(XFLPOptType.FAST_FIXED_CONTAINER_PACKER)
 
         for (int i = 0; i < 1000; i++) {
             int w = randInt(1, 40)

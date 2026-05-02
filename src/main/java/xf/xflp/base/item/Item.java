@@ -27,16 +27,26 @@ public record Item(
 	boolean stackable,
 	int loadingLoc,
 	int unLoadingLoc,
+	// Binary representation, where only one bit can be active
 	long stackingGroup,
+	// Allowed container types (cooled, dangerous goods, etc.)
 	Set<Integer> allowedContainerSet,
+	// Allowed items that can be stacked on top (binary representation)
 	long allowedStackingGroups,
+	// How many different items can be below this item, if it is stacked.
 	int nbrOfAllowedStackedItems,
+	// height, which reduces height of upper item, when something is stacked upon.
 	int immersiveDepth,
 	float weight,
 	float stackingWeightLimit,
+	/* Unique index of this item object */
 	int externalIndex,
+	/* Type of item: loading or unloading */
 	LoadType loadingType,
+	/* External index of this order. There can be two items
+	 * with the same order index (up- and unloading) */
 	int orderIndex,
+	// Defines if this item is loaded (true) or unloaded (false)
 	boolean isLoading
 ) {
 

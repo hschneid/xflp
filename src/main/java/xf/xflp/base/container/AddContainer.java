@@ -3,7 +3,6 @@ package xf.xflp.base.container;
 import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
-import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
 
@@ -17,10 +16,6 @@ import java.util.*;
  * @author hschneid
  */
 public final class AddContainer extends ContainerBase implements Container {
-
-	private final Set<String> uniquePositionKeys = new HashSet<>();
-	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
 	public AddContainer(
@@ -61,7 +56,7 @@ public final class AddContainer extends ContainerBase implements Container {
 		addItem(item, pos);
 
 		// Active position gets inactive by adding item
-		removePosition(pos);
+		removeSpacePosition(pos);
 
 		removeCoveredPositions(item);
 
@@ -82,7 +77,7 @@ public final class AddContainer extends ContainerBase implements Container {
 			if(!newSpaces.isEmpty()) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
-				removePosition(newPos);
+				removeSpacePosition(newPos);
 			}
 		}
 
@@ -95,34 +90,8 @@ public final class AddContainer extends ContainerBase implements Container {
 		return item.index;
 	}
 
-	/* Create spaces
-	 * Begin with maximal space and check for each item in max-space
-	 * if smaller spaces are possible.
-	 */
-	private List<Space> createSpaces(Position newPos) {
-		Space maxSpace = Space.of(
-				length - newPos.y(),
-				width - newPos.x(),
-				height - newPos.z()
-		);
-		Set<ItemPlacement> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-
-		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (ItemPlacement spaceItem : spaceItems) {
-
-			Set<Space> nextSpaces = new HashSet<>();
-			for (Space space : spaces) {
-				nextSpaces.addAll(
-						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-				);
-			}
-			spaces = nextSpaces;
-		}
-
-		return spaceService.getDominatingSpaces(spaces);
-	}
-
-	private void removePosition(Position position) {
+	@Override
+	protected void removeSpacePosition(Position position) {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
 		spacePositions.remove(position);
@@ -139,44 +108,7 @@ public final class AddContainer extends ContainerBase implements Container {
 
 	private void removeCoveredPositions(ItemPlacement item) {
 		for (Position position : findCoveredPositions(item)) {
-			removePosition(position);
+			removeSpacePosition(position);
 		}
-	}
-
-	private void checkExistingSpaces(ItemPlacement newItem) {
-		List<Position> removablePositions = new ArrayList<>();
-		for (Position position : activePosList) {
-			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
-				continue;
-
-			Set<Space> newSpaces = new HashSet<>();
-			for (Space space : spacePositions.get(position)) {
-				newSpaces.addAll(
-						spaceService.createSpacesAtPosition(
-								position,
-								space,
-								newItem
-						)
-				);
-			}
-
-			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(!spaces.isEmpty()) {
-				spacePositions.put(position, spaces);
-			} else {
-				removablePositions.add(position);
-			}
-		}
-
-		for (Position removablePosition : removablePositions) {
-			removePosition(removablePosition);
-		}
-	}
-
-	public List<Space> getSpace(Position pos) {
-		return spacePositions.get(pos);
 	}
 }

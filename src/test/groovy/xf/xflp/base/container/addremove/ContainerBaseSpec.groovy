@@ -409,6 +409,121 @@ class ContainerBaseSpec extends Specification {
         pos != null
     }
 
+    def "test add and remove restores original state"() {
+        def con = Helper.getAddSpaceContainer2(3,3,3)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 2, 1, 10, 0)
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
+        when:
+        def descBefore = con.getStateDescription()
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        Helper.add(con, i3, 0, 0, 1)
+        con.remove(i3)
+        def descAfter = con.getStateDescription()
+
+        then:
+        def before = removeHistory(descBefore)
+        def after = removeHistory(descAfter)
+        before == after
+    }
+
+    private static String removeHistory(String desc) {
+        return desc.replaceAll(/(?s)  history:\n(    - .*\n)*/, "")
+    }
+
+    def "test remove cleans up all internal data structures"() {
+        def con = Helper.getAddSpaceContainer2(3,3,3)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+        def i1 = Helper.getPlacedItem(1, 1, 1, 1, 10, 0)
+        def i2 = Helper.getPlacedItem(1, 2, 2, 1, 10, 0)
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 1, 0, 0)
+
+        def i3 = Helper.getPlacedItem(1, 2, 1, 1, 10, 0)
+        Helper.add(con, i3, 0, 0, 1)
+        def i3Index = i3.index
+
+        when:
+        con.remove(i3)
+
+        then:
+        // Item darf nicht mehr in der itemList sein
+        con.getItems().get(i3Index) == null
+
+        // Item darf nicht mehr in der itemPositionMap sein
+        !con.itemPositionMap.containsKey(i3)
+
+        // Item-Index darf nicht mehr in xMap, yMap, zMap vorkommen
+        !containsValue(con.xMap, i3Index)
+        !containsValue(con.yMap, i3Index)
+        !containsValue(con.zMap, i3Index)
+
+        // Item darf nicht mehr im zGraph sein
+        con.baseData.zGraph.getItemsAbove(i1).every { it != i3 }
+
+        // Gewicht muss wieder dem Zustand vor dem Add entsprechen
+        con.weight == i1.item.weight + i2.item.weight
+    }
+
+    def "test add-remove-add cycle with index reuse and findPositionCandidates"() {
+        given: "Ein Container mit gestapelten Items"
+        def con = Helper.getAddSpaceContainer2(10, 10, 4)
+        con.parameter.add(ParameterType.GROUND_CONTACT_RULE, GroundContactRule.FREE)
+
+        def i1 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
+        def i2 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def i3 = Helper.getPlacedItem(2, 1, 1, 1, 111, 0)
+        def i4 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+
+        // Füge Items hinzu, auch gestapelt
+        Helper.add(con, i1, 0, 0, 0)
+        Helper.add(con, i2, 2, 0, 0)
+        Helper.add(con, i3, 0, 0, 1)  // auf i1
+        Helper.add(con, i4, 2, 0, 1)  // auf i2
+
+        when: "Entferne ein unteres Item, füge ein neues hinzu, suche Positionen"
+        con.remove(i4)
+        con.remove(i2)
+
+        // Neues Item hinzufügen an die frei gewordene Position
+        def i5 = Helper.getPlacedItem(1, 1, 2, 1, 111, 0)
+        def posList = PositionService.findPositionCandidates(con, i5)
+        def pos = posList.size() > 0 ? posList[0] : null
+        if (pos != null) {
+            con.add(i5, pos.position, pos.isRotated)
+        }
+
+        // Noch ein Item entfernen und dann Positionen suchen
+        con.remove(i3)
+
+        def i6 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def posList2 = PositionService.findPositionCandidates(con, i6)
+
+        // Füge i6 hinzu und suche erneut
+        if (posList2.size() > 0) {
+            con.add(i6, posList2[0].position, posList2[0].isRotated)
+        }
+
+        def i7 = Helper.getPlacedItem(1, 1, 1, 1, 111, 0)
+        def posList3 = PositionService.findPositionCandidates(con, i7)
+
+        then: "Keine NPE - alle findPositionCandidates Aufrufe funktionieren korrekt"
+        noExceptionThrown()
+        posList2 != null
+        posList3 != null
+    }
+
+    private static boolean containsValue(def lpListMap, int value) {
+        for (def key : lpListMap.keySet()) {
+            def list = lpListMap.get(key)
+            if (list != null && list.contains(value)) return true
+        }
+        return false
+    }
+
     def "big test projected insert positions"() {
         def con = Helper.getAddSpaceContainer2(4, 6,2)
         def i1 = Helper.getPlacedItem(1, 1, 1, 1, 100, 0)

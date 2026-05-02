@@ -9,6 +9,8 @@ import xf.xflp.base.item.Item;
 import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
+import xf.xflp.base.item.Space;
+import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
 
@@ -55,6 +57,10 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     /** Position -> precomputed minimum immersive depth of items below this position */
     protected final Map<Position, Integer> immersiveDepthCache = new HashMap<>();
 
+    protected final Set<String> uniquePositionKeys = new HashSet<>();
+    protected final Map<Position, List<Space>> spacePositions = new HashMap<>();
+    protected final SpaceService spaceService = new SpaceService();
+
     protected int maxPosIdx = 0;
     protected final ContainerParameter parameter;
     protected float centerOfGravityForY = 0;
@@ -92,6 +98,80 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     private void init() {
         Position start = createPosition(0, 0, 0, PositionType.ROOT);
         activePosList.add(start);
+    }
+
+    /**
+     * Removes a position from space tracking. Subclasses implement additional cleanup.
+     */
+    protected abstract void removeSpacePosition(Position pos);
+
+    public List<Space> getSpace(Position pos) {
+        return spacePositions.get(pos);
+    }
+
+    /* Create spaces
+     * Begin with maximal space and check for each item in max-space
+     * if smaller spaces are possible.
+     */
+    protected List<Space> createSpaces(Position newPos) {
+        Space maxSpace = Space.of(
+                length - newPos.y(),
+                width - newPos.x(),
+                height - newPos.z()
+        );
+        Set<ItemPlacement> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
+        if (spaceItems.isEmpty()) {
+            return List.of(maxSpace);
+        }
+
+        Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
+        for (ItemPlacement spaceItem : spaceItems) {
+            Set<Space> nextSpaces = new HashSet<>();
+            for (Space space : spaces) {
+                nextSpaces.addAll(
+                        spaceService.createSpacesAtPosition(newPos, space, spaceItem)
+                );
+            }
+            spaces = nextSpaces;
+        }
+
+        return spaceService.getDominatingSpaces(spaces);
+    }
+
+    protected void checkExistingSpaces(ItemPlacement newItem) {
+        List<Position> removablePositions = new ArrayList<>();
+        for (Position position : activePosList) {
+            if (position.x() >= newItem.xw ||
+                    position.y() >= newItem.yl ||
+                    position.z() >= newItem.zh)
+                continue;
+
+            Set<Space> newSpaces = new HashSet<>();
+            for (Space space : spacePositions.get(position)) {
+                newSpaces.addAll(
+                        spaceService.createSpacesAtPosition(
+                                position,
+                                space,
+                                newItem
+                        )
+                );
+            }
+
+            List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
+            if (!spaces.isEmpty()) {
+                spacePositions.put(position, spaces);
+            } else {
+                removablePositions.add(position);
+            }
+        }
+
+        for (Position removablePosition : removablePositions) {
+            removeSpacePosition(removablePosition);
+        }
+    }
+
+    protected void recreateSpaces(Position pos) {
+        spacePositions.put(pos, createSpaces(pos));
     }
 
     public boolean isItemAllowed(Item item) {

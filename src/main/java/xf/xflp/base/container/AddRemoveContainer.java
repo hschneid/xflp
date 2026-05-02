@@ -5,7 +5,6 @@ import xf.xflp.base.item.ItemPlacement;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.Space;
-import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,9 +33,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	/* Position -> Item - Which item is responsible, that this position was created. */
 	private final Map<Position, ItemPlacement> positionItemMap = new HashMap<>();
 
-	private final Set<String> uniquePositionKeys = new HashSet<>();
-	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
@@ -157,39 +153,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		System.out.println("---------------");
 	}
 
-	/* Create spaces
-	 * Begin with maximal space and check for each item in max-space
-	 * if smaller spaces are possible.
-	 */
-	private List<Space> createSpaces(Position newPos) {
-		Space maxSpace = Space.of(
-				length - newPos.y(),
-				width - newPos.x(),
-				height - newPos.z()
-		);
-		Set<ItemPlacement> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-		if(spaceItems.isEmpty()) {
-			return List.of(maxSpace);
-		}
-
-		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (ItemPlacement spaceItem : spaceItems) {
-
-			Set<Space> nextSpaces = new HashSet<>();
-			for (Space space : spaces) {
-				nextSpaces.addAll(
-						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-				);
-			}
-			spaces = nextSpaces;
-		}
-
-		return spaceService.getDominatingSpaces(spaces);
-	}
-
-	private void recreateSpaces(Position pos) {
-		spacePositions.put(pos, createSpaces(pos));
-	}
 
 	/**
 	 * Remove item from container and update internal data structure
@@ -346,6 +309,11 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			for (Position follower: followerList)
 				removePosition(follower);
 		}
+	}
+
+	@Override
+	protected void removeSpacePosition(Position pos) {
+		removePosition(pos);
 	}
 
 	/**
@@ -511,41 +479,200 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 	}
 
-	private void checkExistingSpaces(ItemPlacement newItem) {
-		List<Position> removablePositions = new ArrayList<>();
-		for (Position position : activePosList) {
-			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
-				continue;
 
-			Set<Space> newSpaces = new HashSet<>();
-			for (Space space : spacePositions.get(position)) {
-				newSpaces.addAll(
-						spaceService.createSpacesAtPosition(
-								position,
-								space,
-								newItem
-						)
-				);
-			}
+	/**
+	 * Returns a comprehensive string describing the full internal state of this container.
+	 * Useful for comparing two containers for exact equality during tests.
+	 */
+	public String getStateDescription() {
+		StringBuilder sb = new StringBuilder();
 
-			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(!spaces.isEmpty()) {
-				spacePositions.put(position, spaces);
+		sb.append("container:\n");
+		sb.append("  index: ").append(index).append('\n');
+		sb.append("  width: ").append(width).append('\n');
+		sb.append("  length: ").append(length).append('\n');
+		sb.append("  height: ").append(height).append('\n');
+		sb.append("  maxWeight: ").append(maxWeight).append('\n');
+		sb.append("  containerType: ").append(containerType).append('\n');
+		sb.append("  weight: ").append(weight).append('\n');
+		sb.append("  centerOfGravityForY: ").append(centerOfGravityForY).append('\n');
+		sb.append("  maxYl: ").append(maxYl).append('\n');
+
+		// Items
+		sb.append("  items:\n");
+		for (int i = 0; i < itemList.size(); i++) {
+			ItemPlacement ip = itemList.get(i);
+			if (ip == null) {
+				sb.append("    - null\n");
 			} else {
-				removablePositions.add(position);
+				appendItemPlacement(sb, "    - ", ip);
 			}
 		}
 
-		for (Position removablePosition : removablePositions) {
-			removePosition(removablePosition);
+		// Active positions
+		sb.append("  activePositions:\n");
+		activePosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Inactive positions
+		sb.append("  inactivePositions:\n");
+		inactivePosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Covered positions
+		sb.append("  coveredPositions:\n");
+		coveredPosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Item-Position mapping
+		sb.append("  itemPositionMap:\n");
+		itemPositionMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().index))
+				.forEach(e -> {
+					sb.append("    - itemIdx: ").append(e.getKey().index).append('\n');
+					sb.append("      position: {idx: ").append(e.getValue().idx())
+							.append(", x: ").append(e.getValue().x())
+							.append(", y: ").append(e.getValue().y())
+							.append(", z: ").append(e.getValue().z())
+							.append(", type: ").append(e.getValue().type())
+							.append("}\n");
+				});
+
+		// Position follower map
+		sb.append("  posFollowerMap:\n");
+		posFollowerMap.keySet().stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.filter(k -> posFollowerMap.get(k) != null && !posFollowerMap.get(k).isEmpty())
+				.forEach(k -> {
+					sb.append("    - parent: {idx: ").append(k.idx())
+							.append(", x: ").append(k.x())
+							.append(", y: ").append(k.y())
+							.append(", z: ").append(k.z())
+							.append("}\n");
+					List<Position> followers = posFollowerMap.get(k);
+					sb.append("      followers:\n");
+					followers.stream()
+							.sorted(Comparator.comparingInt(Position::idx))
+							.forEach(f -> sb.append("        - {idx: ").append(f.idx())
+									.append(", x: ").append(f.x())
+									.append(", y: ").append(f.y())
+									.append(", z: ").append(f.z())
+									.append(", type: ").append(f.type())
+									.append("}\n"));
+				});
+
+		// Position ancestor map
+		sb.append("  posAncestorMap:\n");
+		posAncestorMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> sb.append("    - position: {idx: ").append(e.getKey().idx())
+						.append(", x: ").append(e.getKey().x())
+						.append(", y: ").append(e.getKey().y())
+						.append(", z: ").append(e.getKey().z())
+						.append("} -> ancestor: {idx: ").append(e.getValue().idx())
+						.append(", x: ").append(e.getValue().x())
+						.append(", y: ").append(e.getValue().y())
+						.append(", z: ").append(e.getValue().z())
+						.append("}\n"));
+
+		// Position-Item map
+		sb.append("  positionItemMap:\n");
+		positionItemMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> {
+					sb.append("    - position: {idx: ").append(e.getKey().idx())
+							.append(", x: ").append(e.getKey().x())
+							.append(", y: ").append(e.getKey().y())
+							.append(", z: ").append(e.getKey().z())
+							.append("}\n");
+					sb.append("      itemIdx: ").append(e.getValue().index).append('\n');
+				});
+
+		// Unique position keys
+		sb.append("  uniquePositionKeys:\n");
+		new TreeSet<>(uniquePositionKeys).forEach(k -> sb.append("    - \"").append(k).append("\"\n"));
+
+		// Space positions
+		sb.append("  spacePositions:\n");
+		spacePositions.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> {
+					sb.append("    - position: {idx: ").append(e.getKey().idx())
+							.append(", x: ").append(e.getKey().x())
+							.append(", y: ").append(e.getKey().y())
+							.append(", z: ").append(e.getKey().z())
+							.append("}\n");
+					sb.append("      spaces:\n");
+					e.getValue().forEach(s -> sb.append("        - {l: ").append(s.l())
+							.append(", w: ").append(s.w())
+							.append(", h: ").append(s.h())
+							.append("}\n"));
+				});
+
+		// X/Y/Z Maps
+		appendIntMap(sb, "xMap", xMap);
+		appendIntMap(sb, "yMap", yMap);
+		appendIntMap(sb, "zMap", zMap);
+
+		// Bearing capacities (only for items currently in container)
+		sb.append("  bearingCapacities:\n");
+		new TreeMap<>(bearingCapacities).forEach((k, v) -> {
+			if (k >= 0 && k < itemList.length() && itemList.get(k) != null) {
+				sb.append("    ").append(k).append(": ").append(v).append('\n');
+			}
+		});
+
+		// Immersive depth cache
+		sb.append("  immersiveDepthCache:\n");
+		immersiveDepthCache.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> sb.append("    - position: {idx: ").append(e.getKey().idx())
+						.append(", x: ").append(e.getKey().x())
+						.append(", y: ").append(e.getKey().y())
+						.append(", z: ").append(e.getKey().z())
+						.append("} -> ").append(e.getValue())
+						.append('\n'));
+
+		// History
+		sb.append("  history:\n");
+		for (int i = 0; i < history.size(); i++) {
+			appendItemPlacement(sb, "    - ", history.get(i));
 		}
+
+		return sb.toString();
 	}
 
-	public List<Space> getSpace(Position pos) {
-		return spacePositions.get(pos);
+	private void appendItemPlacement(StringBuilder sb, String prefix, ItemPlacement ip) {
+		if (ip == null) {
+			sb.append(prefix).append("null\n");
+			return;
+		}
+		sb.append(prefix).append("idx: ").append(ip.index)
+				.append(", pos: [").append(ip.x).append(", ").append(ip.y).append(", ").append(ip.z)
+				.append("], end: [").append(ip.xw).append(", ").append(ip.yl).append(", ").append(ip.zh)
+				.append("], dim: [").append(ip.w).append(", ").append(ip.l).append(", ").append(ip.h)
+				.append("], rot: ").append(ip.isRotated)
+				.append(", cIdx: ").append(ip.containerIndex)
+				.append(", item: ").append(ip.getItem() != null ? ip.getItem().externalIndex : "null")
+				.append('\n');
+	}
+
+	private void appendPosition(StringBuilder sb, String prefix, Position p) {
+		sb.append(prefix).append("{idx: ").append(p.idx())
+				.append(", x: ").append(p.x())
+				.append(", y: ").append(p.y())
+				.append(", z: ").append(p.z())
+				.append(", type: ").append(p.type())
+				.append("}\n");
+	}
+
+	private void appendIntMap(StringBuilder sb, String name, LPListMap<Integer, Integer> map) {
+		sb.append("  ").append(name).append(":\n");
+		map.keySet().stream().sorted().forEach(k ->
+				sb.append("    ").append(k).append(": ").append(map.get(k)).append('\n'));
 	}
 
 	public void checkExistingSpacesForRemovedItem(ItemPlacement item) {

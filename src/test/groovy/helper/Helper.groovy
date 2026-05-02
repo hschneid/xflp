@@ -95,7 +95,7 @@ class Helper {
     }
 
     static PlacedItem getPlacedItem(int w, int l, int h, float ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
-        return new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems));
+        return new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems))
     }
 
     static PlacedItem getPlacedItemAtPos(int x, int y, int w, int l) {
@@ -107,7 +107,7 @@ class Helper {
     }
 
     static PlacedItem getPlacedItemAtPos(int x, int y, int z, int w, int l, int h, float ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
-        def ip = new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems));
+        def ip = new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems))
         ip.setPosition(Position.of(x, y, z))
 
         return ip
@@ -148,20 +148,4 @@ class Helper {
 
         return null
     }
-
-    static Item getItemAtPosition(int x, int y, int z, int w, int l, int h) {
-        Item i = new Item()
-        i.placement = new PlacedItem(w,l,h);
-        i.x = x
-        i.y = y
-        i.z = z
-        i.w = w
-        i.l = l
-        i.h = h
-        i.xw = x + w
-        i.yl = y + l
-        i.zh = z + h
-        return i
-    }
-
 }

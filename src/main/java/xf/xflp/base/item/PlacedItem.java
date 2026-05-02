@@ -106,23 +106,6 @@ public class PlacedItem implements Indexable {
         return w * l * h;
     }
 
-    /**
-     * Resets placement to its initial (unpacked) state.
-     *
-     * @param origW original width from item master data
-     * @param origL original length from item master data
-     * @param origH original height from item master data
-     */
-    public void reset(int origW, int origL, int origH) {
-        this.x = this.y = this.z = this.xw = this.yl = this.zh = -1;
-        this.w = origW;
-        this.l = origL;
-        this.h = origH;
-        this.isRotated = false;
-        this.index = -1;
-        this.containerIndex = -1;
-    }
-
     @Override
     public int getIdx() {
         return index;

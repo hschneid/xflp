@@ -3,7 +3,7 @@ package xf.xflp.opt.construction.multitype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
@@ -64,9 +64,9 @@ public class MultiBinAddHeuristicBiasRandom {
             // Pick an item index using geometric distribution (biased towards front)
             int pickedIndex = nextGeometricIndex(remainingItems.size());
             Item item = remainingItems.remove(pickedIndex);
-            ItemPlacement itemPlacement = new ItemPlacement(item);
+            PlacedItem placedItem = new PlacedItem(item);
 
-            List<ContainerPosition> containerPositions = getBestContainerPositions(itemPlacement, containers, strategy);
+            List<ContainerPosition> containerPositions = getBestContainerPositions(placedItem, containers, strategy);
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
@@ -112,7 +112,7 @@ public class MultiBinAddHeuristicBiasRandom {
         }
     }
 
-    private List<ContainerPosition> getBestContainerPositions(ItemPlacement item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
+    private List<ContainerPosition> getBestContainerPositions(PlacedItem item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
         List<ContainerPosition> containerPositions = new ArrayList<>();
         for (Container container : containers) {
             PositionCandidate bestPosition = getBestInsertPosition(item, container, strategy);
@@ -123,7 +123,7 @@ public class MultiBinAddHeuristicBiasRandom {
         return containerPositions;
     }
 
-    private PositionCandidate getBestInsertPosition(ItemPlacement item, Container container, BaseStrategy strategy) throws XFLPException {
+    private PositionCandidate getBestInsertPosition(PlacedItem item, Container container, BaseStrategy strategy) throws XFLPException {
         if (container.isItemAllowed(item.getItem())) {
             List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
             if (!posList.isEmpty()) {

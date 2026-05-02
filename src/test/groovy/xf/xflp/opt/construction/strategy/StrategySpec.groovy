@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.item.ItemPlacement
+import xf.xflp.base.item.PlacedItem
 import xf.xflp.base.item.Position
 import xf.xflp.base.position.PositionCandidate
 import xf.xflp.base.position.PositionService
@@ -111,7 +111,7 @@ class StrategySpec extends Specification {
         } as Function<PositionCandidate, Float>
         def pos = PositionCandidate.of(
                 Position.of(1,1,1),
-                new ItemPlacement(0,0,0),
+                new PlacedItem(0,0,0),
                 true
         )
         def posList = [pos]

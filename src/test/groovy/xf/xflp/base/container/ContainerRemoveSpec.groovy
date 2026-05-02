@@ -2,7 +2,7 @@ package xf.xflp.base.container
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.item.ItemPlacement
+import xf.xflp.base.item.PlacedItem
 import xf.xflp.base.item.Position
 import xf.xflp.base.item.Space
 import xf.xflp.base.position.PositionService
@@ -157,8 +157,8 @@ class ContainerRemoveSpec extends Specification {
     def "randomly add and remove items"() {
         Container con = Helper.getAddSpaceContainer2(10,10,4, Integer.MAX_VALUE)
 
-        var unloadedItems = [] as List<ItemPlacement>
-        var loadedItems = [] as List<ItemPlacement>
+        var unloadedItems = [] as List<PlacedItem>
+        var loadedItems = [] as List<PlacedItem>
         for (i in 0..< 10) {
             unloadedItems.add(Helper.getPlacedItem(2, 1, 1, 1, 111, 0))
             unloadedItems.add(Helper.getPlacedItem(1, 1, 1, 1, 111, 0))
@@ -169,7 +169,7 @@ class ContainerRemoveSpec extends Specification {
         when:
 
         // Load as much as possible
-        for (ItemPlacement i : unloadedItems) {
+        for (PlacedItem i : unloadedItems) {
             var posList = PositionService.findPositionCandidates(con, i)
             if(posList.size() > 0) {
                 var pos = posList[0]
@@ -187,7 +187,7 @@ class ContainerRemoveSpec extends Specification {
             con.remove(unloadItem)
             
             // Try to add at least 1 item
-            for (ItemPlacement loadItem : unloadedItems) {
+            for (PlacedItem loadItem : unloadedItems) {
                 var posList = PositionService.findPositionCandidates(con, loadItem)
                 if(posList.size() > 0) {
                     var pos = posList[0]

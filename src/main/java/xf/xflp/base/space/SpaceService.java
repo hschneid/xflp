@@ -1,7 +1,7 @@
 package xf.xflp.base.space;
 
 import com.google.common.collect.Sets;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class SpaceService {
 
-    public List<Space> createSpacesAtPosition(Position position, Space space, ItemPlacement newItem) {
+    public List<Space> createSpacesAtPosition(Position position, Space space, PlacedItem newItem) {
         // Are position and space out of reach for newItem
         if (isItemNotInSpace(position, space, newItem))
             return Collections.singletonList(space);
@@ -74,7 +74,7 @@ public class SpaceService {
         return spaces;
     }
 
-    public boolean isItemNotInSpace(Position position, Space space, ItemPlacement item) {
+    public boolean isItemNotInSpace(Position position, Space space, PlacedItem item) {
         return position.x() + space.w() <= item.x ||
                 position.y() + space.l() <= item.y ||
                 position.z() + space.h() <= item.z ||
@@ -83,9 +83,9 @@ public class SpaceService {
                 position.z() >= item.zh;
     }
 
-    public Set<ItemPlacement> getItemsInSpace(Position position, Space space, List<ItemPlacement> allItems) {
-        Set<ItemPlacement> itemsInSpace = Sets.newHashSetWithExpectedSize(allItems.size());
-        for (ItemPlacement item : allItems) {
+    public Set<PlacedItem> getItemsInSpace(Position position, Space space, List<PlacedItem> allItems) {
+        Set<PlacedItem> itemsInSpace = Sets.newHashSetWithExpectedSize(allItems.size());
+        for (PlacedItem item : allItems) {
             // entries can be null, because they can be removed from item list
             if(item == null || isItemNotInSpace(position, space, item)) {
                 continue;

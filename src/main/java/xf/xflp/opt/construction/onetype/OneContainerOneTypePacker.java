@@ -3,7 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
@@ -39,7 +39,7 @@ public class OneContainerOneTypePacker implements Packer {
 		Container container = model.getContainerTypes()[0].newInstance();
 		BaseStrategy strategy = model.getParameter().getPreferredPackingStrategy().getStrategy();
 		
-		Map<Integer, ItemPlacement> loadedItemMap = new HashMap<>();
+		Map<Integer, PlacedItem> loadedItemMap = new HashMap<>();
 
 		List<Item> unplannedItemList = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class OneContainerOneTypePacker implements Packer {
 		resetItems(items);
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
-			ItemPlacement placedItem = new ItemPlacement(item);
+			PlacedItem placedItem = new PlacedItem(item);
 
 			if(item.loadingType == LoadType.LOAD) {
 				PositionCandidate insertPosition = null;

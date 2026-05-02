@@ -18,7 +18,7 @@ import util.collection.Indexable;
  *
  * @author hschneid
  */
-public class ItemPlacement implements Indexable {
+public class PlacedItem implements Indexable {
 
     private final Item item;
 
@@ -49,7 +49,7 @@ public class ItemPlacement implements Indexable {
     /**
      * Regular way of creating a new placement, when heuristic wants to place an item for the first time.
      */
-    public ItemPlacement(Item item) {
+    public PlacedItem(Item item) {
         this.item = item;
         this.w = item.origW;
         this.l = item.origL;
@@ -59,7 +59,7 @@ public class ItemPlacement implements Indexable {
     /**
      * Creates a new empty placement initialised with the item's original dimensions.
      */
-    public ItemPlacement(int w, int l, int h) {
+    public PlacedItem(int w, int l, int h) {
         this.w = w;
         this.l = l;
         this.h = h;
@@ -69,7 +69,7 @@ public class ItemPlacement implements Indexable {
     /**
      * Creates a deep copy of an existing placement.
      */
-    public ItemPlacement(ItemPlacement other) {
+    public PlacedItem(PlacedItem other) {
         this.x = other.x;
         this.y = other.y;
         this.z = other.z;

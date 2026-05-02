@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.TouchingPerimeterService;
 import xf.xflp.exception.XFLPException;
@@ -47,7 +47,7 @@ public class TouchingPerimeter extends BaseStrategy {
 	}
 
 	@Override
-	public PositionCandidate choose(ItemPlacement item, Container container, List<PositionCandidate> posList) throws XFLPException {
+	public PositionCandidate choose(PlacedItem item, Container container, List<PositionCandidate> posList) throws XFLPException {
 		if(posList == null || posList.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}

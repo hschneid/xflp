@@ -3,7 +3,7 @@ package xf.xflp.base;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.fleximport.DataManager;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.report.ContainerReport;
 import xf.xflp.report.LPPackageEvent;
 import xf.xflp.report.LPReport;
@@ -35,7 +35,7 @@ public class XFLPSolution {
 			String containerTypeName = dataManager.getContainerTypeName(con.getContainerType());
 			ContainerReport cRep = new ContainerReport(containerTypeName, con);
 
-			for (ItemPlacement item : con.getHistory()) {
+			for (PlacedItem item : con.getHistory()) {
 				LPPackageEvent e = new LPPackageEvent(
 						dataManager.getItemId(item.getItem().externalIndex),
 						item.x,

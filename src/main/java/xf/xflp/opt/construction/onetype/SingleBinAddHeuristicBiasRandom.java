@@ -3,7 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
@@ -67,7 +67,7 @@ public class SingleBinAddHeuristicBiasRandom {
 			// Pick an item index using geometric distribution (biased towards front)
 			int pickedIndex = nextGeometricIndex(remainingItems.size());
 			Item item = remainingItems.remove(pickedIndex);
-			ItemPlacement placedItem = new ItemPlacement(item);
+			PlacedItem placedItem = new PlacedItem(item);
 
 			PositionCandidate insertPosition = null;
 

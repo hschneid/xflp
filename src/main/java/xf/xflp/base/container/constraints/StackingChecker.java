@@ -3,7 +3,7 @@ package xf.xflp.base.container.constraints;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.GroundContactRule;
 import xf.xflp.base.container.ParameterType;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Tools;
 
@@ -31,7 +31,7 @@ public class StackingChecker {
     public static boolean checkStackingRestrictions(
             Container container,
             Position pos,
-            ItemPlacement newItem,
+            PlacedItem newItem,
             int itemW,
             int itemL) {
         // New item will be placed at ground. So no stacking needs to be checked.
@@ -48,7 +48,7 @@ public class StackingChecker {
      * Checks whether the new item is placed on top of remaining items. It is tested
      * that all 4 corners of the new item have at least one current item directly below that item.
      */
-    private static boolean checkStackingGroupAndGroundContact(Container container, ItemPlacement item, Position pos, int itemW, int itemL) {
+    private static boolean checkStackingGroupAndGroundContact(Container container, PlacedItem item, Position pos, int itemW, int itemL) {
         List<Integer> zList = container.getBaseData().getZMap().get(pos.z());
         if(zList == null || zList.isEmpty())
             return true;
@@ -66,7 +66,7 @@ public class StackingChecker {
 
         // Check for all lower items if stacking group restriction is valid
         for(int i = zList.size() - 1; i >= 0; i--) {
-            ItemPlacement fi = container.getItems().get(zList.get(i));
+            PlacedItem fi = container.getItems().get(zList.get(i));
             if(isNotBelow(pos, itemW, itemL, fi)) {
                 continue;
             }
@@ -130,7 +130,7 @@ public class StackingChecker {
         return values[0] == values[values.length - 1];
     }
 
-    private static boolean isNotBelow(Position position, int itemW, int itemL, ItemPlacement lowerItem) {
+    private static boolean isNotBelow(Position position, int itemW, int itemL, PlacedItem lowerItem) {
         return lowerItem.zh != position.z() ||
                 lowerItem.xw <= position.x() ||
                 lowerItem.yl <= position.y() ||

@@ -2,7 +2,7 @@ package xf.xflp.base.container;
 
 import util.collection.LPListMap;
 import util.collection.SetIndexArrayList;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +20,22 @@ import java.util.List;
 public class ZItemGraph {
 
 	private final SetIndexArrayList<ZItemGraphEntry> lowerList = new SetIndexArrayList<>();
-	private final SetIndexArrayList<List<ItemPlacement>> upperList = new SetIndexArrayList<>();
+	private final SetIndexArrayList<List<PlacedItem>> upperList = new SetIndexArrayList<>();
 
 	/**
 	 * Adds a new item into Z-Graph. Due to linkage to internal data structure,
 	 * the effort of adding is O(n+m)
 	 *
 	 */
-	public void add(ItemPlacement newItem, List<ItemPlacement> itemList, LPListMap<Integer, Integer> zMap) {
+	public void add(PlacedItem newItem, List<PlacedItem> itemList, LPListMap<Integer, Integer> zMap) {
 		// Lower
 		{
-			List<ItemPlacement> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z));
+			List<PlacedItem> lowerItems = searchItemsBelow(newItem, itemList, zMap.get(newItem.z));
 			ZItemGraphEntry e = new ZItemGraphEntry(newItem, lowerItems);
 			lowerList.set(newItem.index, e);
 
 			// Update of lower items with new upper item
-			for (ItemPlacement lowerItem : lowerItems) {
+			for (PlacedItem lowerItem : lowerItems) {
 				if(upperList.get(lowerItem.index) == null)
 					upperList.set(lowerItem.index, new ArrayList<>());
 				upperList.get(lowerItem.index).add(newItem);
@@ -44,11 +44,11 @@ public class ZItemGraph {
 
 		// Upper
 		{
-			List<ItemPlacement> upperItems = searchItemsAbove(newItem, itemList, zMap.get(newItem.zh));
+			List<PlacedItem> upperItems = searchItemsAbove(newItem, itemList, zMap.get(newItem.zh));
 			upperList.set(newItem.index, upperItems);
 
 			// Update upper items with new lower item, which means new cut area ratio
-			for (ItemPlacement upperItem : upperItems) {
+			for (PlacedItem upperItem : upperItems) {
 				ZItemGraphEntry e = lowerList.get(upperItem.index);
 				e.lowerItemList.add(newItem);
 				e.update();
@@ -59,21 +59,21 @@ public class ZItemGraph {
 	/*
 	 * Remove an item from Z graph
 	 */
-	public void remove(ItemPlacement item) {
+	public void remove(PlacedItem item) {
 		// Remove Item from lower items
 		if(lowerList.get(item.index) != null) {
-			List<ItemPlacement> get = lowerList.get(item.index).lowerItemList;
+			List<PlacedItem> get = lowerList.get(item.index).lowerItemList;
 			for (int i = get.size() - 1; i >= 0; i--) {
-				ItemPlacement lowerItem = get.get(i);
+				PlacedItem lowerItem = get.get(i);
 				upperList.get(lowerItem.index).remove(item);
 			}
 		}
 
 		// Entferne Item aus upper items
 		if(upperList.get(item.index) != null) {
-			List<ItemPlacement> get = upperList.get(item.index);
+			List<PlacedItem> get = upperList.get(item.index);
 			for (int i = get.size() - 1; i >= 0; i--) {
-				ItemPlacement upperItem = get.get(i);
+				PlacedItem upperItem = get.get(i);
 				lowerList.get(upperItem.index).lowerItemList.remove(item);
 			}
 		}
@@ -88,11 +88,11 @@ public class ZItemGraph {
 		return upperList.size();
 	}
 
-	public List<ItemPlacement> getItemsBelow(ItemPlacement item) {
+	public List<PlacedItem> getItemsBelow(PlacedItem item) {
 		return lowerList.get(item.index).lowerItemList;
 	}
 
-	public List<ItemPlacement> getItemsAbove(ItemPlacement item) {
+	public List<PlacedItem> getItemsAbove(PlacedItem item) {
 		return upperList.get(item.index);
 	}
 
@@ -103,15 +103,15 @@ public class ZItemGraph {
 	 * @param zList List of all item indices where zh = item.z
 	 * @return List of all items below new item
 	 */
-	private List<ItemPlacement> searchItemsBelow(ItemPlacement item, List<ItemPlacement> itemList, List<Integer> zList) {
-		List<ItemPlacement> list = new ArrayList<>();
+	private List<PlacedItem> searchItemsBelow(PlacedItem item, List<PlacedItem> itemList, List<Integer> zList) {
+		List<PlacedItem> list = new ArrayList<>();
 
 		if(item.z == 0)
 			return list;
 
 		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
-			ItemPlacement it = itemList.get(zItemIdx);
+			PlacedItem it = itemList.get(zItemIdx);
 
 			if(it.zh == item.z &&
 					it.xw > item.x && it.x < item.xw &&
@@ -122,15 +122,15 @@ public class ZItemGraph {
 		return list;
 	}
 
-	private List<ItemPlacement> searchItemsAbove(ItemPlacement item, List<ItemPlacement> itemList, List<Integer> zList) {
-		List<ItemPlacement> list = new ArrayList<>();
+	private List<PlacedItem> searchItemsAbove(PlacedItem item, List<PlacedItem> itemList, List<Integer> zList) {
+		List<PlacedItem> list = new ArrayList<>();
 
 		if(zList == null)
 			return list;
 
 		for (int i = zList.size() - 1; i >= 0; i--) {
 			int zItemIdx = zList.get(i);
-			ItemPlacement it = itemList.get(zItemIdx);
+			PlacedItem it = itemList.get(zItemIdx);
 
 			if(it.z == item.zh &&
 					it.xw > item.x && it.x < item.xw &&

@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 
@@ -20,7 +20,7 @@ import java.util.function.Function;
  **/
 public abstract class BaseStrategy {
 
-	public abstract PositionCandidate choose(ItemPlacement item, Container container, List<PositionCandidate> posList) throws XFLPException;
+	public abstract PositionCandidate choose(PlacedItem item, Container container, List<PositionCandidate> posList) throws XFLPException;
 
 	protected List<PositionCandidate> getPositionWithMinValue(List<PositionCandidate> candidates,
 															  Function<PositionCandidate, Float> positionValue) {

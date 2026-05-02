@@ -2,7 +2,7 @@ package xf.xflp.base.container.constraints;
 
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 
 /**
@@ -25,7 +25,7 @@ public class AxleLoadChecker {
      *   true, if item is valid at this position. Or if there is no axle load parameter.
      *   false, if item is invalid at this position.
      */
-    public static boolean checkPermissibleAxleLoad(Container container, ItemPlacement item, Position pos) {
+    public static boolean checkPermissibleAxleLoad(Container container, PlacedItem item, Position pos) {
         var axleLoadParameter = (AxleLoadParameter) container.getParameter().get(ParameterType.AXLE_LOAD);
         if(axleLoadParameter == null || axleLoadParameter.axleDistance() == 0)
             return true;

@@ -7,7 +7,7 @@ import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.AxleLoadChecker;
 import xf.xflp.base.container.constraints.StackingChecker;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.RotationType;
 import xf.xflp.base.item.Space;
@@ -29,7 +29,7 @@ public class PositionService {
     /**
      * Returns all possible and valid insert positions for this item.
      */
-    public static List<PositionCandidate> findPositionCandidates(Container container, ItemPlacement item) {
+    public static List<PositionCandidate> findPositionCandidates(Container container, PlacedItem item) {
         List<PositionCandidate> candidates = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;
@@ -84,7 +84,7 @@ public class PositionService {
         return candidates;
     }
 
-    private static boolean checkOverlapping(Container container, ItemPlacement item, int itemW, int itemL, Position pos, int itemH) {
+    private static boolean checkOverlapping(Container container, PlacedItem item, int itemW, int itemL, Position pos, int itemH) {
         if(container instanceof AddContainer) {
             return checkOverlappingWithSpaces((AddContainer) container, pos, itemW, itemL, itemH);
         } else {
@@ -97,11 +97,11 @@ public class PositionService {
      * true = collision, invalid
      * false = valid
      */
-    private static boolean checkOverlappingWithItems(Container container, ItemPlacement item, int itemW, int itemL, Position pos, int itemH) {
-        IndexedArrayList<ItemPlacement> items = (IndexedArrayList<ItemPlacement>) container.getItems();
+    private static boolean checkOverlappingWithItems(Container container, PlacedItem item, int itemW, int itemL, Position pos, int itemH) {
+        IndexedArrayList<PlacedItem> items = (IndexedArrayList<PlacedItem>) container.getItems();
 
         for (int idx = items.length() - 1; idx >= 0; idx--) {
-            ItemPlacement otherItem = items.get(idx);
+            PlacedItem otherItem = items.get(idx);
             if(otherItem == null)
                 continue;
 
@@ -138,7 +138,7 @@ public class PositionService {
         return true;
     }
 
-    private static boolean checkLIFO(Container container, ItemPlacement otherItem, Position pos, ItemPlacement newItem, int itemW) {
+    private static boolean checkLIFO(Container container, PlacedItem otherItem, Position pos, PlacedItem newItem, int itemW) {
         if(!(container instanceof AddRemoveContainer)) {
             return false;
         }
@@ -161,7 +161,7 @@ public class PositionService {
         return false;
     }
 
-    private static RotationType getRotationType(ItemPlacement item) {
+    private static RotationType getRotationType(PlacedItem item) {
         return (item.getItem().spinable && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
     }
 
@@ -174,7 +174,7 @@ public class PositionService {
      * footprint of lower items (ExtremePoint heuristic), and the cache is updated
      * incrementally on every add/remove operation.
      */
-    private static int retrieveHeight(ItemPlacement item, Position pos, Container container) {
+    private static int retrieveHeight(PlacedItem item, Position pos, Container container) {
         if(pos.z() == 0) {
             return item.h;
         }

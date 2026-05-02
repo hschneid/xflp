@@ -1,7 +1,7 @@
 package xf.xflp.base.container;
 
 import xf.xflp.base.item.Item;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
@@ -30,24 +30,24 @@ public interface Container {
      *
      * Returns the index of the inserted item for faster access
      */
-    int add(ItemPlacement item, Position position, boolean isRotated);
+    int add(PlacedItem item, Position position, boolean isRotated);
 
     /**
      * Removes the item from container.
      * Uncovered positions will be freed.
      */
-    void remove(ItemPlacement item);
+    void remove(PlacedItem item);
 
     /**
      * Returns the already inserted items of this container
      */
-    List<ItemPlacement> getItems();
+    List<PlacedItem> getItems();
 
     /**
      * History when and how a certain item is loaded or unloaded
      * This is relevant for creating the solution report
      **/
-    List<ItemPlacement> getHistory();
+    List<PlacedItem> getHistory();
 
     /**
      * Check if the given item is allowed to be placed at this container

@@ -1,6 +1,6 @@
 package xf.xflp.base.position;
 
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 
 /**
@@ -16,11 +16,11 @@ import xf.xflp.base.item.Position;
  */
 public record PositionCandidate (
         Position position,
-        ItemPlacement item,
+        PlacedItem item,
         boolean isRotated
 ){
 
-    public static PositionCandidate of(Position position, ItemPlacement item, boolean isRotated) {
+    public static PositionCandidate of(Position position, PlacedItem item, boolean isRotated) {
         return new PositionCandidate(position, item, isRotated);
     }
 }

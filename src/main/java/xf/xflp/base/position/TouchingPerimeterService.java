@@ -1,7 +1,7 @@
 package xf.xflp.base.position;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class TouchingPerimeterService {
             int itemTouchValue,
             boolean considerWalls,
             boolean considerBaseFloor) {
-        ItemPlacement item = candidate.item();
+        PlacedItem item = candidate.item();
         Position pos = candidate.position();
 
         int value = 0;
@@ -95,7 +95,7 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            PlacedItem i = container.getItems().get(itemIndices.get(j));
             if (i.xw == posX || i.x == xw) {
                 if (i.y > yl || i.yl < posY) continue;
                 if (i.z > zh || i.zh < posZ) continue;
@@ -113,7 +113,7 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            PlacedItem i = container.getItems().get(itemIndices.get(j));
             if (i.yl == posY || i.y == yl) {
                 if (i.x > xw || i.xw < posX) continue;
                 if (i.z > zh || i.zh < posZ) continue;
@@ -131,7 +131,7 @@ public class TouchingPerimeterService {
         if (itemIndices == null) return 0;
         int val = 0;
         for (int j = itemIndices.size() - 1; j >= 0; j--) {
-            ItemPlacement i = container.getItems().get(itemIndices.get(j));
+            PlacedItem i = container.getItems().get(itemIndices.get(j));
             if (i.zh == posZ || i.z == zh) {
                 if (i.y > yl || i.yl < posY) continue;
                 if (i.x > xw || i.xw < posX) continue;

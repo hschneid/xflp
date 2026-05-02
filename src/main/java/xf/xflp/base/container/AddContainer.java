@@ -1,6 +1,6 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.item.ItemPlacement;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
@@ -50,7 +50,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	 * - Remove covered positions
 	 */
 	@Override
-	public int add(ItemPlacement item, Position pos, boolean isRotated) {
+	public int add(PlacedItem item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
@@ -102,11 +102,11 @@ public final class AddContainer extends ContainerBase implements Container {
 	 * Remove item from container and update internal data structure
 	 */
 	@Override
-	public void remove(ItemPlacement item) {
+	public void remove(PlacedItem item) {
 		throw new UnsupportedOperationException("Remove in AddContainer is not supported. Use AddRemoveContainer");
 	}
 
-	private void removeCoveredPositions(ItemPlacement item) {
+	private void removeCoveredPositions(PlacedItem item) {
 		for (Position position : findCoveredPositions(item)) {
 			removePosition(position);
 		}

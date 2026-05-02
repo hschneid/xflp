@@ -3,7 +3,7 @@ package xf.xflp.base.container
 import helper.Helper
 import spock.lang.Specification
 import spock.lang.Unroll
-import xf.xflp.base.item.ItemPlacement
+import xf.xflp.base.item.PlacedItem
 import xf.xflp.base.position.PositionService
 
 /**
@@ -158,7 +158,7 @@ class ContainerImmersiveDepthSpec extends Specification {
     //  Helper
     // ------------------------------------------------------------------
 
-    static void check(ItemPlacement item, int h, int z, int zh, int origH) {
+    static void check(PlacedItem item, int h, int z, int zh, int origH) {
         assert item.h == h
         assert item.z == z
         assert item.zh == zh

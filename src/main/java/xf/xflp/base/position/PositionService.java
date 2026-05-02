@@ -36,7 +36,7 @@ public class PositionService {
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
-        if(container.getLoadedWeight() + item.getItem().weight > container.getMaxWeight()) {
+        if(container.getLoadedWeight() + item.getItem().weight() > container.getMaxWeight()) {
             return candidates;
         }
 
@@ -155,14 +155,14 @@ public class PositionService {
                 // das verstellende neue Item
                 // Das Item muss fr�her entladen werden, als
                 // das neue Item, was laut LIFO nicht sein darf.
-                return newItem.getItem().unLoadingLoc > otherItem.getItem().unLoadingLoc;
+                return newItem.getItem().unLoadingLoc() > otherItem.getItem().unLoadingLoc();
             }
         }
         return false;
     }
 
     private static RotationType getRotationType(PlacedItem item) {
-        return (item.getItem().spinable && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
+        return (item.getItem().spinable() && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
     }
 
     /**

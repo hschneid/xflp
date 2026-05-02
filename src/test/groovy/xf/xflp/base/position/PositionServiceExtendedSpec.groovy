@@ -23,7 +23,7 @@ class PositionServiceExtendedSpec extends Specification {
     def "non-spinable item does not produce rotated candidate"() {
         def con = Helper.getAddSpaceContainer2(4,4,2)
         def i1 = Helper.getPlacedItem(2, 1, 1, 1, 100, 0)
-        i1.item.spinable = false
+        i1.item = i1.item.withSpinable(false)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -75,7 +75,7 @@ class PositionServiceExtendedSpec extends Specification {
     def "item too wide for container"() {
         def con = Helper.getAddSpaceContainer2(3, 3, 3)
         def i1 = Helper.getPlacedItem(4, 1, 1, 1, 100, 0)
-        i1.item.spinable = false
+        i1.item = i1.item.withSpinable(false)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i1)
@@ -103,15 +103,13 @@ class PositionServiceExtendedSpec extends Specification {
 
         // i1: loads at loc 0, unloads at loc 1 (earlier unload)
         def i1 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
-        i1.item.setLoadingLoc(0)
-        i1.item.setUnLoadingLoc(1)
+        i1.item = i1.item.withLoadingLoc(0).withUnLoadingLoc(1)
         Helper.add(con, i1, 0, 0, 0)
 
         // i2: loads at loc 0, unloads at loc 5 (later unload)
         // Should not be blocked because it unloads later than i1
         def i2 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
-        i2.item.setLoadingLoc(0)
-        i2.item.setUnLoadingLoc(5)
+        i2.item = i2.item.withLoadingLoc(0).withUnLoadingLoc(5)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i2)
@@ -127,13 +125,11 @@ class PositionServiceExtendedSpec extends Specification {
         con.parameter.add(ParameterType.LIFO_IMPORTANCE, 0.0f as float)
 
         def i1 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
-        i1.item.setLoadingLoc(0)
-        i1.item.setUnLoadingLoc(1)
+        i1.item = i1.item.withLoadingLoc(0).withUnLoadingLoc(1)
         Helper.add(con, i1, 0, 0, 0)
 
         def i2 = Helper.getPlacedItem(3, 2, 1, 1, 100, 0)
-        i2.item.setLoadingLoc(0)
-        i2.item.setUnLoadingLoc(5)
+        i2.item = i2.item.withLoadingLoc(0).withUnLoadingLoc(5)
 
         when:
         def pList = PositionService.findPositionCandidates(con, i2)

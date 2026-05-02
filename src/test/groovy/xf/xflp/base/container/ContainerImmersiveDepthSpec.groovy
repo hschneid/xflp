@@ -32,7 +32,7 @@ class ContainerImmersiveDepthSpec extends Specification {
         given:
         Container con = createContainer(type, 2, 2, 20)
         def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i1.item.immersiveDepth = 2
+        i1.item = i1.item.withImmersiveDepth(2)
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
         def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
@@ -54,7 +54,7 @@ class ContainerImmersiveDepthSpec extends Specification {
         given:
         Container con = createContainer(type, 2, 2, 19)
         def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i1.item.immersiveDepth = 2
+        i1.item = i1.item.withImmersiveDepth(2)
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))
 
         def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
@@ -74,9 +74,9 @@ class ContainerImmersiveDepthSpec extends Specification {
         given:
         Container con = createContainer(type, 2, 2, 30)
         def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i1.item.immersiveDepth = 2
+        i1.item = i1.item.withImmersiveDepth(2)
         def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
-        i2.item.immersiveDepth = 1
+        i2.item = i2.item.withImmersiveDepth(1)
         def i3 = Helper.getPlacedItem(1, 1, 11, 1, 10, 0)
 
         Helper.add(con, i1, 0, 0, 0)
@@ -100,9 +100,9 @@ class ContainerImmersiveDepthSpec extends Specification {
         given:
         Container con = createContainer(type, 3, 3, 30)
         def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i1.item.immersiveDepth = 2
+        i1.item = i1.item.withImmersiveDepth(2)
         def i2 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i2.item.immersiveDepth = 1
+        i2.item = i2.item.withImmersiveDepth(1)
         def i3 = Helper.getPlacedItem(2, 1, 13, 1, 10, 0)
         def i4 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
 
@@ -130,9 +130,9 @@ class ContainerImmersiveDepthSpec extends Specification {
         given:
         Container con = Helper.getAddSpaceContainer2(2, 2, 30)
         def i1 = Helper.getPlacedItem(1, 1, 10, 1, 10, 0)
-        i1.item.immersiveDepth = 2
+        i1.item = i1.item.withImmersiveDepth(2)
         def i2 = Helper.getPlacedItem(1, 1, 12, 1, 10, 0)
-        i2.item.immersiveDepth = 1
+        i2.item = i2.item.withImmersiveDepth(1)
         def i3 = Helper.getPlacedItem(1, 1, 11, 1, 10, 0)
 
         Helper.add(con, PositionService.findPositionCandidates(con, i1).get(0))

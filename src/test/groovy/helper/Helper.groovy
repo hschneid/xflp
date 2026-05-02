@@ -62,28 +62,20 @@ class Helper {
         Set<Integer> set = new HashSet<>()
         set.add(0)
 
-        Item i = new Item()
-        i.setExternalIndex(itemIdx)
-        i.setOrderIndex(itemIdx)
-        i.setLoadingLoc(itemIdx)
-        i.setUnLoadingLoc(itemIdx + 1)
-        i.setOrigW(w)
-        i.setOrigL(l)
-        i.setOrigH(h)
-        i.setWeight(ww)
-        i.setStackingWeightLimit(wC)
-        i.setAllowedContainerSet(set)
-        i.setStackingGroup(Math.max(1,sG))
-        i.setStackingGroup(Math.max(1,sG))
-        i.setAllowedStackingGroups(allowedSG)
-        i.setNbrOfAllowedStackedItems(nbrAllowedStackItems)
-        i.setSpinable(true)
-        i.setLoading(true)
-        i.postInit()
-
+        def idx = itemIdx
         itemIdx++
 
-        return i
+        return new Item(
+                w, l, h,
+                true, true,
+                idx, idx + 1,
+                Math.max(1, sG) as long, set,
+                allowedSG as long, nbrAllowedStackItems,
+                0,
+                ww, wC as float,
+                idx, idx,
+                true
+        )
     }
 
     static PlacedItem getPlacedItem(int w, int l, int h, float ww, long wC, int sG) {

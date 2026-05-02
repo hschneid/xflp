@@ -177,9 +177,9 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     public boolean isItemAllowed(Item item) {
         return
                 // If item can be loaded on any container
-                (item.allowedContainerSet.size() == 1 && item.allowedContainerSet.contains(ContainerData.DEFAULT_CONTAINER_TYPE))
+                (item.allowedContainerSet().size() == 1 && item.allowedContainerSet().contains(ContainerData.DEFAULT_CONTAINER_TYPE))
                         // or only on specific ones
-                        || item.allowedContainerSet.contains(containerType);
+                        || item.allowedContainerSet().contains(containerType);
     }
 
     public long getLoadedVolume() {
@@ -212,7 +212,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         zMap.put(item.z, item.index);
         zMap.put(item.zh, item.index);
 
-        weight += item.getItem().weight;
+        weight += item.getItem().weight();
 
         // Insert into Z-Graph
         zGraph.add(item, itemList, zMap);
@@ -229,7 +229,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     protected void updateImmersiveDepthCacheForItem(PlacedItem item) {
         maxYl = Math.max(maxYl, item.yl);
         int itemZh = item.zh;
-        int itemDepth = item.getItem().immersiveDepth;
+        int itemDepth = item.getItem().immersiveDepth();
 
         for (Position activePos : activePosList) {
             if (activePos.z() == itemZh &&
@@ -374,7 +374,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
                     lowerItem.xw > x &&
                     lowerItem.y <= y &&
                     lowerItem.yl > y) {
-                int depth = lowerItem.getItem().immersiveDepth;
+                int depth = lowerItem.getItem().immersiveDepth();
                 if (depth == 0) {
                     return 0;
                 }

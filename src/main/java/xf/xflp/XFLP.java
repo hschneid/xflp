@@ -119,29 +119,29 @@ public class XFLP {
 	private void checkItems(List<Item> itemList, List<Container> containerTypeList) {
 		double maxWeightCapacity = containerTypeList.stream().mapToDouble(Container::getMaxWeight).max().orElse(Double.MAX_VALUE);
 		for (Item item : itemList) {
-			if(item.origW <= 0) {
-				statusManager.fireMessage(StatusCode.ABORT, "Width of item must be greater 0 : Item " + item.externalIndex);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Width of item must be greater 0 : Item " + item.externalIndex);
+			if(item.origW() <= 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Width of item must be greater 0 : Item " + item.externalIndex());
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Width of item must be greater 0 : Item " + item.externalIndex());
 			}
-			if(item.origL <= 0) {
-				statusManager.fireMessage(StatusCode.ABORT, "Length of item must be greater 0 : Item " + item.externalIndex);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Length of item must be greater 0 : Item " + item.externalIndex);
+			if(item.origL() <= 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Length of item must be greater 0 : Item " + item.externalIndex());
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Length of item must be greater 0 : Item " + item.externalIndex());
 			}
-			if(item.origH <= 0) {
-				statusManager.fireMessage(StatusCode.ABORT, "Height of item must be greater 0 : Item " + item.externalIndex);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Height of item must be greater 0 : Item " + item.externalIndex);
+			if(item.origH() <= 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Height of item must be greater 0 : Item " + item.externalIndex());
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Height of item must be greater 0 : Item " + item.externalIndex());
 			}
-			if(item.immersiveDepth < 0) {
-				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must be >= 0. Item " + item.externalIndex + " " + item.immersiveDepth);
+			if(item.immersiveDepth() < 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must be >= 0. Item " + item.externalIndex() + " " + item.immersiveDepth());
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must be >= 0. Item " + item.externalIndex() + " " + item.immersiveDepth());
 			}
-			if(item.origH - item.immersiveDepth <= 0) {
-				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.origH + " "+ item.immersiveDepth);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must not lead to negative height : Item " + item.externalIndex + " " + item.origH + " "+ item.immersiveDepth);
+			if(item.origH() - item.immersiveDepth() <= 0) {
+				statusManager.fireMessage(StatusCode.ABORT, "Immersive depth must not lead to negative height : Item " + item.externalIndex() + " " + item.origH() + " "+ item.immersiveDepth());
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Immersive depth must not lead to negative height : Item " + item.externalIndex() + " " + item.origH() + " "+ item.immersiveDepth());
 			}
-			if(item.weight > maxWeightCapacity) {
-				statusManager.fireMessage(StatusCode.ABORT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
-				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Item is too heavy for any container. Item " + item.externalIndex + " item weight: " + item.weight + " max weight: " + maxWeightCapacity);
+			if(item.weight() > maxWeightCapacity) {
+				statusManager.fireMessage(StatusCode.ABORT, "Item is too heavy for any container. Item " + item.externalIndex() + " item weight: " + item.weight() + " max weight: " + maxWeightCapacity);
+				throw new XFLPException(XFLPExceptionType.ILLEGAL_INPUT, "Item is too heavy for any container. Item " + item.externalIndex() + " item weight: " + item.weight() + " max weight: " + maxWeightCapacity);
 			}
 		}
 	}

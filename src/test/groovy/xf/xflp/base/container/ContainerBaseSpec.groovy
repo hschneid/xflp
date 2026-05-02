@@ -154,7 +154,7 @@ class ContainerBaseSpec extends Specification {
         def i1 = Helper.getPlacedItem(1, 1, 1, 1, 100, 0)
         def i2 = Helper.getPlacedItem(2, 1, 1, 1, 100, 0)
         def i3 = Helper.getPlacedItem(2, 1, 1, 1, 100, 0)
-        i3.item.spinable = false
+        i3.item = i3.item.withSpinable(false)
         Helper.add(con, i1, 0, 0, 0)
 
         when:

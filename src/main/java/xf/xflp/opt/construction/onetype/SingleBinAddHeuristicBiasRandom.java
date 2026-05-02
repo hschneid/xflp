@@ -127,7 +127,7 @@ public class SingleBinAddHeuristicBiasRandom {
 
 	private void setUnplanned(List<Item> unplannedItems, Item... items) {
 		for (Item item : items) {
-			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex + " could not be added.");
+			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
 			unplannedItems.add(item);
 		}
 	}

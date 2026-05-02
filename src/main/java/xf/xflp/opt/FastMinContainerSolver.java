@@ -47,7 +47,7 @@ public class FastMinContainerSolver extends XFLPBase {
 
     private boolean isOnlyAddingItems(XFLPModel model) {
         for (Item item : model.getItems()) {
-            if(item.loadingType == LoadType.UNLOAD) {
+            if(item.loadingType() == LoadType.UNLOAD) {
                 return false;
             }
         }

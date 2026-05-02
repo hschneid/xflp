@@ -434,8 +434,8 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		zMap.get(item.z).remove(index);
 		zMap.get(item.zh).remove(index);
 
-		weight -= item.getItem().weight;
-		item.h = item.getItem().origH;
+		weight -= item.getItem().weight();
+		item.h = item.getItem().origH();
 
 		// Recompute maxYl if necessary
 		if (item.yl >= maxYl) {
@@ -652,7 +652,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 				.append("], dim: [").append(ip.w).append(", ").append(ip.l).append(", ").append(ip.h)
 				.append("], rot: ").append(ip.isRotated)
 				.append(", cIdx: ").append(ip.containerIndex)
-				.append(", item: ").append(ip.getItem() != null ? ip.getItem().externalIndex : "null")
+				.append(", item: ").append(ip.getItem() != null ? ip.getItem().externalIndex() : "null")
 				.append('\n');
 	}
 

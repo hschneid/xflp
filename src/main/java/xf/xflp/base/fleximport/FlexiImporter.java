@@ -159,16 +159,16 @@ public class FlexiImporter implements Serializable {
 				.collect(Collectors.toList());
 
 		var hasLocations = items.stream()
-				.flatMapToInt(item -> IntStream.of(item.loadingLoc, item.unLoadingLoc))
+				.flatMapToInt(item -> IntStream.of(item.loadingLoc(), item.unLoadingLoc()))
 				.distinct()
 				.count() > 1;
 
 		if(hasLocations) {
 			items.sort(
-					Comparator.comparing((Item i) -> (i.isLoading) ? i.loadingLoc : i.unLoadingLoc)
+					Comparator.comparing((Item i) -> (i.isLoading()) ? i.loadingLoc() : i.unLoadingLoc())
 							.thenComparing(Item::isLoading)
 							.thenComparing((Item i, Item j) -> {
-								if(i.isLoading && j.isLoading)
+								if(i.isLoading() && j.isLoading())
 									return j.getUnLoadingLoc() - i.getUnLoadingLoc();
 								return i.getUnLoadingLoc() - j.getUnLoadingLoc();
 							})

@@ -75,24 +75,24 @@ public class StackingChecker {
 
             // AND-operation of two binary representations. If no bit fits
             // then result is zero
-            if((fi.getItem().allowedStackingGroups & item.getItem().stackingGroup) == 0) {
+            if((fi.getItem().allowedStackingGroups() & item.getItem().stackingGroup()) == 0) {
                 return false;
             }
 
             if(pos.x() >= fi.x && pos.x() <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
-                cornerItem1 = fi.getItem().externalIndex;
+                cornerItem1 = fi.getItem().externalIndex();
                 corner1 = true;
             }
             if(itemXW > fi.x && itemXW <= fi.xw && pos.y() >= fi.y && pos.y() <= fi.yl) {
-                cornerItem2 = fi.getItem().externalIndex;
+                cornerItem2 = fi.getItem().externalIndex();
                 corner2 = true;
             }
             if(pos.x() >= fi.x && pos.x() <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
-                cornerItem3 = fi.getItem().externalIndex;
+                cornerItem3 = fi.getItem().externalIndex();
                 corner3 = true;
             }
             if(itemXW > fi.x && itemXW <= fi.xw && itemYL > fi.y && itemYL <= fi.yl) {
-                cornerItem4 = fi.getItem().externalIndex;
+                cornerItem4 = fi.getItem().externalIndex();
                 corner4 = true;
             }
 

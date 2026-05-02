@@ -20,7 +20,7 @@ import util.collection.Indexable;
  */
 public class PlacedItem implements Indexable {
 
-    private final Item item;
+    private Item item;
 
     /** Placed position coordinates */
     public int x = -1;
@@ -51,9 +51,9 @@ public class PlacedItem implements Indexable {
      */
     public PlacedItem(Item item) {
         this.item = item;
-        this.w = item.origW;
-        this.l = item.origL;
-        this.h = item.origH;
+        this.w = item.origW();
+        this.l = item.origL();
+        this.h = item.origH();
     }
 
     /**
@@ -119,5 +119,8 @@ public class PlacedItem implements Indexable {
     public Item getItem() {
         return item;
     }
-}
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+}

@@ -50,7 +50,7 @@ public class OneContainerOneTypePacker implements Packer {
 			Item item = items[i];
 			PlacedItem placedItem = new PlacedItem(item);
 
-			if(item.loadingType == LoadType.LOAD) {
+			if(item.loadingType() == LoadType.LOAD) {
 				PositionCandidate insertPosition = null;
 
 				// Check if item is allowed to this container type
@@ -71,9 +71,9 @@ public class OneContainerOneTypePacker implements Packer {
 							insertPosition.position(),
 							insertPosition.isRotated()
 					);
-					loadedItemMap.put(item.externalIndex, placedItem);
+					loadedItemMap.put(item.externalIndex(), placedItem);
 				} else {
-					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex + " could not be added.");
+					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
 					unplannedItemList.add(item);
 				}
 			} else {
@@ -81,7 +81,7 @@ public class OneContainerOneTypePacker implements Packer {
 				// It is not checked if item was really loaded to container.
 				// Before removing the unloading item must be replaced by the loaded item object
 				// for index problems
-				var loadedItem = loadedItemMap.get(item.externalIndex);
+				var loadedItem = loadedItemMap.get(item.externalIndex());
 				if(loadedItem != null) {
 					container.remove(loadedItem);
 				}

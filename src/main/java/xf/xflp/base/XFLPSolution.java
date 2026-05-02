@@ -37,18 +37,18 @@ public class XFLPSolution {
 
 			for (PlacedItem item : con.getHistory()) {
 				LPPackageEvent e = new LPPackageEvent(
-						dataManager.getItemId(item.getItem().externalIndex),
+						dataManager.getItemId(item.getItem().externalIndex()),
 						item.x,
 						item.y,
 						item.z,
 						item.w,
 						item.l,
 						item.h,
-						item.getItem().stackingGroup,
-						item.getItem().weight,
-						item.getItem().stackingWeightLimit,
+						item.getItem().stackingGroup(),
+						item.getItem().weight(),
+						item.getItem().stackingWeightLimit(),
 						false, // isInvalid
-						item.getItem().loadingType,
+						item.getItem().loadingType(),
 						item.getVolume(),
 						item.getItem().getWeight(),
 						0, // NbrOfStacks
@@ -63,18 +63,18 @@ public class XFLPSolution {
 		// Add unplanned items to report
 		for (Item unplannedItem : model.getUnplannedItems()) {
 			LPPackageEvent e = new LPPackageEvent(
-					dataManager.getItemId(unplannedItem.externalIndex),
+					dataManager.getItemId(unplannedItem.externalIndex()),
 					-1,
 					-1,
 					-1,
-					unplannedItem.origW,
-					unplannedItem.origL,
-					unplannedItem.origH,
-					unplannedItem.stackingGroup,
-					unplannedItem.weight,
-					unplannedItem.stackingWeightLimit,
+					unplannedItem.origW(),
+					unplannedItem.origL(),
+					unplannedItem.origH(),
+					unplannedItem.stackingGroup(),
+					unplannedItem.weight(),
+					unplannedItem.stackingWeightLimit(),
 					false, // isInvalid
-					unplannedItem.loadingType,
+					unplannedItem.loadingType(),
 					unplannedItem.getVolume(),
 					0,
 					0, // NbrOfStacks

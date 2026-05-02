@@ -103,7 +103,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     /**
      * Removes a position from space tracking. Subclasses implement additional cleanup.
      */
-    protected abstract void removeSpacePosition(Position pos);
+    protected abstract void removePosition(Position pos);
 
     public List<Space> getSpace(Position pos) {
         return spacePositions.get(pos);
@@ -166,7 +166,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         }
 
         for (Position removablePosition : removablePositions) {
-            removeSpacePosition(removablePosition);
+            removePosition(removablePosition);
         }
     }
 

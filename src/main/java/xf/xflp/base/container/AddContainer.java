@@ -56,7 +56,7 @@ public final class AddContainer extends ContainerBase implements Container {
 		addItem(item, pos);
 
 		// Active position gets inactive by adding item
-		removeSpacePosition(pos);
+		removePosition(pos);
 
 		removeCoveredPositions(item);
 
@@ -77,7 +77,7 @@ public final class AddContainer extends ContainerBase implements Container {
 			if(!newSpaces.isEmpty()) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
-				removeSpacePosition(newPos);
+				removePosition(newPos);
 			}
 		}
 
@@ -91,7 +91,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	}
 
 	@Override
-	protected void removeSpacePosition(Position position) {
+	protected void removePosition(Position position) {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
 		spacePositions.remove(position);
@@ -108,7 +108,7 @@ public final class AddContainer extends ContainerBase implements Container {
 
 	private void removeCoveredPositions(ItemPlacement item) {
 		for (Position position : findCoveredPositions(item)) {
-			removeSpacePosition(position);
+			removePosition(position);
 		}
 	}
 }

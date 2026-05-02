@@ -311,15 +311,11 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 	}
 
-	@Override
-	protected void removeSpacePosition(Position pos) {
-		removePosition(pos);
-	}
-
 	/**
 	 * Removes a position if it is not used as possible insert position anymore.
 	 */
-	private void removePosition(Position pos) {
+	@Override
+	protected void removePosition(Position pos) {
 		if(pos.type() != PositionType.ROOT) {
 			posFollowerMap.remove(pos);
 			posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);

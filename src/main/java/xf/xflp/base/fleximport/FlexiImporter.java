@@ -6,6 +6,7 @@ import xf.xflp.base.item.Item;
 import xf.xflp.report.LoadType;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,7 +37,8 @@ import java.util.stream.Stream;
  */
 public class FlexiImporter implements Serializable {
 
-	private static final long serialVersionUID = ObjectStreamClass.lookup(FlexiImporter.class).getSerialVersionUID();
+	@Serial
+    private static final long serialVersionUID = ObjectStreamClass.lookup(FlexiImporter.class).getSerialVersionUID();
 
 	private final DataManager dataManager = new DataManager();
 

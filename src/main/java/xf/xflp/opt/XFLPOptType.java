@@ -2,7 +2,6 @@ package xf.xflp.opt;
 
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
-import xf.xflp.opt.grasp.SingleBinOptimizedPacker;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,14 +17,10 @@ import java.lang.reflect.InvocationTargetException;
  * @author hschneid
  */
 public enum XFLPOptType {
-	
-	SINGLE_CONTAINER_OPTIMIZER(SingleBinOptimizedPacker.class),
+
 	FAST_FIXED_CONTAINER_PACKER(FastFixedContainerSolver.class),
-	FAST_FIXED_CONTAINER_PACKER_RAND(FastFixedContainerSolverRand.class),
-	BEST_FIXED_CONTAINER_PACKER(BestFixedContainerSolver.class),
-	FAST_MIN_CONTAINER_PACKER(FastMinContainerSolver.class),
-	BEST_MIN_CONTAINER_PACKER(BestMinContainerSolver.class)
-	;
+	FAST_FIXED_CONTAINER_PACKER_RAND(FastFixedContainerRandomizedSolver.class),
+	FAST_MIN_CONTAINER_PACKER(FastMinContainerSolver.class);
 	
 	private final Class<? extends XFLPBase> clazz;
 

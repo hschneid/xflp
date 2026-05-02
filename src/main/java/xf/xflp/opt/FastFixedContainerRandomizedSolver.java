@@ -7,9 +7,9 @@ import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
-import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPackerRand;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
-import xf.xflp.report.LoadType;
+import xf.xflp.opt.construction.onetype.SingleBinAddHeuristic;
+import xf.xflp.opt.construction.onetype.SingleBinAddHeuristicBiasRandom;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -30,7 +30,7 @@ import xf.xflp.report.LoadType;
  * Goal: All items should be packed into a single set of container types.
  *       If items are not fitting, then they will be placed in separate list. (unplanned)
  */
-public class FastFixedContainerSolverRand extends XFLPBase {
+public class FastFixedContainerRandomizedSolver extends XFLPBase {
 
     private static final int N_ITERATIONS = 10;
 
@@ -55,24 +55,21 @@ public class FastFixedContainerSolverRand extends XFLPBase {
         Container[] bestContainers;
         Item[] bestUnplannedItems;
 
-        if (multiType) {
-            new OneContainerNTypeAddPacker().execute(model);
-        } else {
-            new OneContainerOneTypeAddPacker().execute(model);
-        }
+        executeLoadPlanningStatic(model, multiType);
         long bestVolume = getLoadedVolume(model);
         bestContainers = model.getContainers();
         bestUnplannedItems = model.getUnplannedItems();
+
+        // Early exit, when everything fits
+        if(model.getUnplannedItems().length == 0) {
+            return;
+        }
 
         //System.out.println("INIT  - " + bestVolume);
 
         for (int i = 0; i < N_ITERATIONS; i++) {
             // Execute one randomized iteration (packer resets items and creates fresh containers)
-            if (multiType) {
-                new OneContainerNTypeAddPackerRand().execute(model);
-            } else {
-                new OneContainerOneTypeAddPackerRand().execute(model);
-            }
+            executeLoadPlanningRandomized(model, multiType);
 
             // Calculate total loaded volume of this iteration
             long loadedVolume = getLoadedVolume(model);
@@ -91,21 +88,27 @@ public class FastFixedContainerSolverRand extends XFLPBase {
         model.setUnplannedItems(bestUnplannedItems);
     }
 
+    private static void executeLoadPlanningStatic(XFLPModel model, boolean multiType) {
+        if (multiType) {
+            new OneContainerNTypeAddPacker().execute(model);
+        } else {
+            new OneContainerOneTypeAddPacker(new SingleBinAddHeuristic(model)).execute(model);
+        }
+    }
+
+    private static void executeLoadPlanningRandomized(XFLPModel model, boolean multiType) {
+        if (multiType) {
+            new OneContainerNTypeAddPackerRand().execute(model);
+        } else {
+            new OneContainerOneTypeAddPacker(new SingleBinAddHeuristicBiasRandom(model)).execute(model);
+        }
+    }
+
     private static long getLoadedVolume(XFLPModel model) {
         long loadedVolume = 0;
         for (Container c : model.getContainers()) {
             loadedVolume += c.getLoadedVolume();
         }
         return loadedVolume;
-    }
-
-    private boolean isOnlyAddingItems(XFLPModel model) {
-        for (Item item : model.getItems()) {
-            if(item.loadingType() == LoadType.UNLOAD) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

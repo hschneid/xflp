@@ -4,11 +4,11 @@ import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.PlacedItem;
-import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
+import xf.xflp.opt.construction.BaseHeuristic;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -29,13 +29,10 @@ import java.util.Random;
  *
  * @author hschneid
  */
-public class MultiBinAddHeuristicBiasRandom {
+public class MultiBinAddHeuristicBiasRandom extends BaseHeuristic {
 
     private static final double DEFAULT_BETA = 0.3;
 
-    private final BaseStrategy strategy;
-    private final StatusManager statusManager;
-    private final XFLPParameter parameter;
     private final Random random;
     private final double beta;
 
@@ -44,9 +41,7 @@ public class MultiBinAddHeuristicBiasRandom {
     }
 
     public MultiBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter, Random random, double beta) {
-        this.strategy = s.getStrategy();
-        this.statusManager = statusManager;
-        this.parameter = parameter;
+        super(s, statusManager, parameter);
         this.random = random;
         this.beta = beta;
     }
@@ -100,13 +95,6 @@ public class MultiBinAddHeuristicBiasRandom {
 
     private boolean reachedMaxNbrOfItems(List<Container> containers, XFLPParameter parameter) {
         return containers.stream().mapToInt(c -> c.getItems().size()).sum() >= parameter.getMaxNbrOfItems();
-    }
-
-    private void setUnplanned(List<Item> unplannedItems, Item... items) {
-        for (Item item : items) {
-            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
-            unplannedItems.add(item);
-        }
     }
 
     private List<ContainerPosition> getBestContainerPositions(PlacedItem item, List<Container> containers, BaseStrategy strategy) throws XFLPException {

@@ -1,12 +1,11 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.multitype.OneContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypeAddPacker;
 import xf.xflp.opt.construction.onetype.OneContainerOneTypePacker;
-import xf.xflp.report.LoadType;
+import xf.xflp.opt.construction.onetype.SingleBinAddHeuristic;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -28,7 +27,6 @@ import xf.xflp.report.LoadType;
 public class FastFixedContainerSolver extends XFLPBase {
 
     private final OneContainerOneTypePacker oneTypePacker = new OneContainerOneTypePacker();
-    private final OneContainerOneTypeAddPacker oneTypeAddPacker = new OneContainerOneTypeAddPacker();
     private final OneContainerNTypeAddPacker nTypeAddPacker = new OneContainerNTypeAddPacker();
 
     @Override
@@ -37,7 +35,7 @@ public class FastFixedContainerSolver extends XFLPBase {
             if(model.getContainerTypes().length > 1) {
                 nTypeAddPacker.execute(model);
             } else {
-                oneTypeAddPacker.execute(model);
+                new OneContainerOneTypeAddPacker(new SingleBinAddHeuristic(model)).execute(model);
             }
         } else {
             if(model.getContainerTypes().length > 1) {
@@ -46,15 +44,5 @@ public class FastFixedContainerSolver extends XFLPBase {
                 oneTypePacker.execute(model);
             }
         }
-    }
-
-    private boolean isOnlyAddingItems(XFLPModel model) {
-        for (Item item : model.getItems()) {
-            if(item.loadingType() == LoadType.UNLOAD) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

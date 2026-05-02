@@ -5,7 +5,6 @@ import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.Packer;
-import xf.xflp.opt.construction.strategy.Strategy;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,13 +24,17 @@ import java.util.List;
  */
 public class OneContainerOneTypeAddPacker implements Packer {
 
+	private final Heuristic heuristic;
+
+	public OneContainerOneTypeAddPacker(Heuristic heuristic) {
+		this.heuristic = heuristic;
+	}
+
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
 		Container container = model.getContainerTypes()[0].newInstance();
 
-		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-
-		List<Item> unplannedItemList = new SingleBinAddHeuristic(strategy, model.getStatusManager(), model.getParameter())
+		List<Item> unplannedItemList = heuristic
 				.createLoadingPlan(
 						Arrays.asList(model.getItems()),
 						container

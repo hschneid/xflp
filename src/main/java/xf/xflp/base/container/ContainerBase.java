@@ -5,11 +5,7 @@ import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.constraints.LoadBearingChecker;
 import xf.xflp.base.fleximport.ContainerData;
-import xf.xflp.base.item.Item;
-import xf.xflp.base.item.PlacedItem;
-import xf.xflp.base.item.Position;
-import xf.xflp.base.item.PositionType;
-import xf.xflp.base.item.Space;
+import xf.xflp.base.item.*;
 import xf.xflp.base.space.SpaceService;
 
 import java.util.*;

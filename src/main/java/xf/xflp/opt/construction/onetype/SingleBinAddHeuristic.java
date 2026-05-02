@@ -1,16 +1,14 @@
 package xf.xflp.opt.construction.onetype;
 
+import xf.xflp.base.XFLPModel;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.PlacedItem;
-import xf.xflp.base.monitor.StatusCode;
-import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.Strategy;
+import xf.xflp.opt.construction.BaseHeuristic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +30,10 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class SingleBinAddHeuristic {
+public class SingleBinAddHeuristic extends BaseHeuristic implements Heuristic{
 
-	private final BaseStrategy strategy;
-	private final StatusManager statusManager;
-	private final XFLPParameter parameter;
-
-	public SingleBinAddHeuristic(Strategy s, StatusManager statusManager, XFLPParameter parameter) {
-		this.strategy = s.getStrategy();
-		this.statusManager = statusManager;
-		this.parameter = parameter;
+	public SingleBinAddHeuristic(XFLPModel model) {
+		super(model);
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
@@ -81,12 +73,5 @@ public class SingleBinAddHeuristic {
 
 	private boolean reachedMaxNbrOfItems(Container container, XFLPParameter parameter) {
 		return container.getItems().size() >= parameter.getMaxNbrOfItems();
-	}
-
-	private void setUnplanned(List<Item> unplannedItems, Item... items) {
-		for (Item item : items) {
-			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
-			unplannedItems.add(item);
-		}
 	}
 }

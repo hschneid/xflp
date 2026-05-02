@@ -4,7 +4,8 @@ import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider

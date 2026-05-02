@@ -5,7 +5,6 @@ import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.XFLPBase;
-import xf.xflp.opt.construction.strategy.Strategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +36,7 @@ public class NContainerOneTypeAddPacker extends XFLPBase {
 	 */
 	@Override
 	public void execute(XFLPModel model) throws XFLPException {
-		Strategy strategy = model.getParameter().getPreferredPackingStrategy();
-		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(strategy, model.getStatusManager(), model.getParameter());
+		SingleBinAddHeuristic heuristic = new SingleBinAddHeuristic(model);
 
 		List<Container> containerList = new ArrayList<>();
 		List<Item> unpackedItems = Arrays.asList(model.getItems());

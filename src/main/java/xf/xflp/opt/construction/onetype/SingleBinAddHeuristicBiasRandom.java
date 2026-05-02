@@ -1,16 +1,14 @@
 package xf.xflp.opt.construction.onetype;
 
+import xf.xflp.base.XFLPModel;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.PlacedItem;
-import xf.xflp.base.monitor.StatusCode;
-import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
-import xf.xflp.opt.construction.strategy.BaseStrategy;
-import xf.xflp.opt.construction.strategy.Strategy;
+import xf.xflp.opt.construction.BaseHeuristic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,26 +31,17 @@ import java.util.Random;
  *
  * @author hschneid
  */
-public class SingleBinAddHeuristicBiasRandom {
+public class SingleBinAddHeuristicBiasRandom extends BaseHeuristic implements Heuristic {
 
 	private static final double DEFAULT_BETA = 0.6;
 
-	private final BaseStrategy strategy;
-	private final StatusManager statusManager;
-	private final XFLPParameter parameter;
 	private final Random random;
 	private final double beta;
 
-	public SingleBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter, Random random) {
-		this(s, statusManager, parameter, random, DEFAULT_BETA);
-	}
-
-	public SingleBinAddHeuristicBiasRandom(Strategy s, StatusManager statusManager, XFLPParameter parameter, Random random, double beta) {
-		this.strategy = s.getStrategy();
-		this.statusManager = statusManager;
-		this.parameter = parameter;
-		this.beta = beta;
-		this.random = random;
+	public SingleBinAddHeuristicBiasRandom(XFLPModel model) {
+		super(model);
+		this.random = model.getRandom();
+		this.beta = DEFAULT_BETA;
 	}
 
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
@@ -123,13 +112,6 @@ public class SingleBinAddHeuristicBiasRandom {
 
 	private boolean reachedMaxNbrOfItems(Container container, XFLPParameter parameter) {
 		return container.getItems().size() >= parameter.getMaxNbrOfItems();
-	}
-
-	private void setUnplanned(List<Item> unplannedItems, Item... items) {
-		for (Item item : items) {
-			statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
-			unplannedItems.add(item);
-		}
 	}
 }
 

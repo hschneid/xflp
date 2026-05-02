@@ -63,15 +63,6 @@ public class Item {
 		return "Item "+this.externalIndex+" "+loadingLoc+" "+unLoadingLoc+" ("+origW+","+origL+","+origH+")  "+stackingGroup;
 	}
 
-	/**
-	 * Resets the item to its initial (unpacked) state.
-	 * All placement data is cleared and dimensions are restored to original values.
-	 */
-	public void reset() {
-		// Restore original dimensions
-		this.isLoading = false;
-	}
-
 	public int getVolume() {
 		return origW * origL * origH;
 	}

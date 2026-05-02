@@ -47,9 +47,6 @@ public class SingleBinAddHeuristic {
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItems = new ArrayList<>();
 
-		// Reset eventual presets
-		resetItems(items);
-
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
 			PlacedItem placedItem = new PlacedItem(item);
@@ -80,12 +77,6 @@ public class SingleBinAddHeuristic {
         }
 
 		return unplannedItems;
-	}
-
-	private void resetItems(List<Item> items) {
-		for (Item item : items) {
-			item.reset();
-		}
 	}
 
 	private boolean reachedMaxNbrOfItems(Container container, XFLPParameter parameter) {

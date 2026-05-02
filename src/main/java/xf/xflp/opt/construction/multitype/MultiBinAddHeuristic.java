@@ -39,9 +39,6 @@ public class MultiBinAddHeuristic {
     public List<Item> createLoadingPlan(List<Item> items, List<Container> containers) throws XFLPException {
         List<Item> unplannedItems = new ArrayList<>();
 
-        // Reset eventual presets
-        resetItems(items);
-
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
             PlacedItem placedItem = new PlacedItem(item);
@@ -109,12 +106,6 @@ public class MultiBinAddHeuristic {
                 containerPosition.getPosition().position(),
                 containerPosition.getPosition().isRotated()
         );
-    }
-
-    private void resetItems(List<Item> items) {
-        for (Item item : items) {
-            item.reset();
-        }
     }
 
 }

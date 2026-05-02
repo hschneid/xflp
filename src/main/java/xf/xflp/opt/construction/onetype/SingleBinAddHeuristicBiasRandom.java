@@ -58,9 +58,6 @@ public class SingleBinAddHeuristicBiasRandom {
 	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItems = new ArrayList<>();
 
-		// Reset eventual presets
-		resetItems(items);
-
 		// Create a mutable copy of the item list so we can remove picked items
 		List<Item> remainingItems = new ArrayList<>(items);
 		while (!remainingItems.isEmpty()) {
@@ -122,12 +119,6 @@ public class SingleBinAddHeuristicBiasRandom {
 		int index = (int) Math.floor(Math.log(u) / Math.log(1.0 - beta));
 		// Clamp to valid range
 		return Math.min(index, size - 1);
-	}
-
-	private void resetItems(List<Item> items) {
-		for (Item item : items) {
-			item.reset();
-		}
 	}
 
 	private boolean reachedMaxNbrOfItems(Container container, XFLPParameter parameter) {

@@ -57,9 +57,6 @@ public class MultiBinAddHeuristicBiasRandom {
         // Create a mutable copy of the item list so we can remove picked items
         List<Item> remainingItems = new ArrayList<>(items);
 
-        // Reset eventual presets
-        resetItems(remainingItems);
-
         while (!remainingItems.isEmpty()) {
             // Pick an item index using geometric distribution (biased towards front)
             int pickedIndex = nextGeometricIndex(remainingItems.size());
@@ -140,12 +137,6 @@ public class MultiBinAddHeuristicBiasRandom {
                 containerPosition.getPosition().position(),
                 containerPosition.getPosition().isRotated()
         );
-    }
-
-    private void resetItems(List<Item> items) {
-        for (Item item : items) {
-            item.reset();
-        }
     }
 }
 

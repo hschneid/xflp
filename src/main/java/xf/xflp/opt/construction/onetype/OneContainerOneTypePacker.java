@@ -45,8 +45,7 @@ public class OneContainerOneTypePacker implements Packer {
 
 		// For all items with respect to given sort order
 		Item[] items = model.getItems();
-		// Reset eventual presets
-		resetItems(items);
+
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 			PlacedItem placedItem = new PlacedItem(item);
@@ -92,12 +91,6 @@ public class OneContainerOneTypePacker implements Packer {
 		// Put result into model
 		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
-	}
-
-	private void resetItems(Item[] items) {
-		for (int i = items.length - 1; i >= 0; i--) {
-			items[i].reset();
-		}
 	}
 
 }

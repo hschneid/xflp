@@ -15,7 +15,7 @@ apply plugin:'application'
 apply plugin:'signing'
 
 group = "com.github.hschneid"
-version = '0.7.6-RELEASE'
+version = '0.7.7-RELEASE'
 
 java {
 	toolchain {

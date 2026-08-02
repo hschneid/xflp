@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 
@@ -20,7 +20,7 @@ import java.util.function.Function;
  **/
 public abstract class BaseStrategy {
 
-	public abstract PositionCandidate choose(Item item, Container container, List<PositionCandidate> posList) throws XFLPException;
+	public abstract PositionCandidate choose(PlacedItem item, Container container, List<PositionCandidate> posList) throws XFLPException;
 
 	protected List<PositionCandidate> getPositionWithMinValue(List<PositionCandidate> candidates,
 															  Function<PositionCandidate, Float> positionValue) {
@@ -32,14 +32,13 @@ public abstract class BaseStrategy {
 			return candidates;
 		}
 
+		float minValue = Float.MAX_VALUE;
 		float[] distances = new float[candidates.size()];
 		for (int i = distances.length - 1; i >= 0; i--) {
 			distances[i] = positionValue.apply(candidates.get(i));
-		}
-
-		float minValue = Float.MAX_VALUE;
-		for (int i = candidates.size() - 1; i >= 0; i--) {
-			minValue = Math.min(minValue, distances[i]);
+			if(distances[i] < minValue) {
+				minValue = distances[i];
+			}
 		}
 
 		// Search all positions with max value

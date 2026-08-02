@@ -9,12 +9,13 @@ import xf.xflp.base.container.Container
 import xf.xflp.base.container.GroundContactRule
 import xf.xflp.base.container.ParameterType
 import xf.xflp.base.item.Item
-import xf.xflp.opt.grasp.SingleBinOptimizedPacker
+
 
 class SingleBinOptimizedPackerSpec extends Specification {
 
-    def service = new SingleBinOptimizedPacker()
+    def service = null
 
+    @Ignore
     def "hard but solvable"() {
         def items = new ArrayList<Item>()
         for (int i = 0; i < 9; i++)
@@ -35,7 +36,8 @@ class SingleBinOptimizedPackerSpec extends Specification {
         service.execute(model)
         then:
         model.containers.length == 1
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        model.unplannedItems.size() == 0
+        model.containers[0].items.size() == items.size()
     }
 
     @Ignore

@@ -1,14 +1,13 @@
 package xf.xflp.base.position;
 
 import util.collection.IndexedArrayList;
-import util.collection.LPListMap;
 import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.container.ParameterType;
 import xf.xflp.base.container.constraints.AxleLoadChecker;
 import xf.xflp.base.container.constraints.StackingChecker;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.RotationType;
 import xf.xflp.base.item.Space;
@@ -30,14 +29,14 @@ public class PositionService {
     /**
      * Returns all possible and valid insert positions for this item.
      */
-    public static List<PositionCandidate> findPositionCandidates(Container container, Item item) {
+    public static List<PositionCandidate> findPositionCandidates(Container container, PlacedItem item) {
         List<PositionCandidate> candidates = new ArrayList<>();
 
         int itemW = item.w, itemL = item.l;
         int nbrOfActivePositions = container.getActivePositions().size();
 
         // Check weight capacity of container
-        if(container.getLoadedWeight() + item.weight > container.getMaxWeight()) {
+        if(container.getLoadedWeight() + item.getItem().weight() > container.getMaxWeight()) {
             return candidates;
         }
 
@@ -57,7 +56,9 @@ public class PositionService {
                     continue;
                 if((pos.y() + itemL) > container.getLength())
                     continue;
+
                 int itemH = retrieveHeight(item, pos, container);
+                // Check height with actual (possibly reduced by immersive depth) height
                 if((pos.z() + itemH) > container.getHeight())
                     continue;
 
@@ -83,7 +84,7 @@ public class PositionService {
         return candidates;
     }
 
-    private static boolean checkOverlapping(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
+    private static boolean checkOverlapping(Container container, PlacedItem item, int itemW, int itemL, Position pos, int itemH) {
         if(container instanceof AddContainer) {
             return checkOverlappingWithSpaces((AddContainer) container, pos, itemW, itemL, itemH);
         } else {
@@ -96,11 +97,11 @@ public class PositionService {
      * true = collision, invalid
      * false = valid
      */
-    private static boolean checkOverlappingWithItems(Container container, Item item, int itemW, int itemL, Position pos, int itemH) {
-        IndexedArrayList<Item> items = (IndexedArrayList<Item>) container.getItems();
+    private static boolean checkOverlappingWithItems(Container container, PlacedItem item, int itemW, int itemL, Position pos, int itemH) {
+        IndexedArrayList<PlacedItem> items = (IndexedArrayList<PlacedItem>) container.getItems();
 
         for (int idx = items.length() - 1; idx >= 0; idx--) {
-            Item otherItem = items.get(idx);
+            PlacedItem otherItem = items.get(idx);
             if(otherItem == null)
                 continue;
 
@@ -126,9 +127,10 @@ public class PositionService {
         List<Space> spaces = container.getSpace(pos);
 
         // If item is fitting into one of the spaces, then it is okay.
-        for (Space space : spaces) {
+        for (int i = spaces.size() - 1; i >= 0; i--) {
+            Space space = spaces.get(i);
             // Is item fitting into space
-            if(space.l() >= itemL &&
+            if (space.l() >= itemL &&
                     space.w() >= itemW &&
                     space.h() >= itemH)
                 return false;
@@ -136,7 +138,7 @@ public class PositionService {
         return true;
     }
 
-    private static boolean checkLIFO(Container container, Item otherItem, Position pos, Item newItem, int itemW) {
+    private static boolean checkLIFO(Container container, PlacedItem otherItem, Position pos, PlacedItem newItem, int itemW) {
         if(!(container instanceof AddRemoveContainer)) {
             return false;
         }
@@ -153,51 +155,37 @@ public class PositionService {
                 // das verstellende neue Item
                 // Das Item muss fr�her entladen werden, als
                 // das neue Item, was laut LIFO nicht sein darf.
-                return newItem.unLoadingLoc > otherItem.unLoadingLoc;
+                return newItem.getItem().unLoadingLoc() > otherItem.getItem().unLoadingLoc();
             }
         }
         return false;
     }
 
-    private static RotationType getRotationType(Item item) {
-        return (item.spinable && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
+    private static RotationType getRotationType(PlacedItem item) {
+        return (item.getItem().spinable() && item.w != item.l) ? RotationType.SPINNABLE : RotationType.FIX;
     }
 
     /**
      * If it is a stacking position (z > 0), then the immersive depth of lower items
      * must be checked. If this is the case, then the height of given item is reduced.
+     *
+     * Uses precomputed minImmersiveDepth cache from Container. The cache value is exact
+     * for every active position because positions are always created on or within the
+     * footprint of lower items (ExtremePoint heuristic), and the cache is updated
+     * incrementally on every add/remove operation.
      */
-    private static int retrieveHeight(Item item, Position pos, Container container) {
+    private static int retrieveHeight(PlacedItem item, Position pos, Container container) {
         if(pos.z() == 0) {
             return item.h;
         }
 
-        int minImmersiveDepth = getMinImmersiveDepthOfBelow(pos, item, container);
+        int minImmersiveDepth = container.getBaseData().getImmersiveDepthAtPosition(pos);
+        if(minImmersiveDepth == 0) {
+            return item.h;
+        }
+
         int newHeight = item.h - minImmersiveDepth;
         return (newHeight <= 0) ? 1 : newHeight;
     }
 
-    private static int getMinImmersiveDepthOfBelow(Position pos, Item newItem, Container container) {
-        LPListMap<Integer, Integer> zMap = container.getBaseData().getZMap();
-
-        if(!zMap.containsKey(pos.z())) {
-            return 0;
-        }
-
-        int minImmersiveDepthOfBelow = Integer.MAX_VALUE;
-
-        List<Integer> zItems = zMap.get(pos.z());
-        for (int i = zItems.size() - 1; i >= 0; i--) {
-            Item lowerItem = container.getItems().get(zItems.get(i));
-            if(lowerItem.zh == pos.z() &&
-                    lowerItem.x < pos.x() + newItem.w &&
-                    lowerItem.xw > pos.x() &&
-                    lowerItem.y < pos.y() + newItem.l &&
-                    lowerItem.yl > pos.y()) {
-                minImmersiveDepthOfBelow = Math.min(minImmersiveDepthOfBelow, lowerItem.getImmersiveDepth());
-            }
-        }
-
-        return minImmersiveDepthOfBelow;
-    }
 }

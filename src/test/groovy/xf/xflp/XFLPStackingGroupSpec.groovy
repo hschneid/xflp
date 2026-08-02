@@ -34,12 +34,12 @@ class XFLPStackingGroupSpec extends Specification {
         service.importer.finishImport()
         def result = service.init()
         then:
-        result.items.find {i -> i.l == 1 && i.stackingGroup == 2} != null
-        result.items.find {i -> i.l == 1 && i.allowedStackingGroups == 2} != null
-        result.items.find {i -> i.l == 2 && i.stackingGroup == 4} != null
-        result.items.find {i -> i.l == 2 && i.allowedStackingGroups == 4} != null
-        result.items.find {i -> i.l == 3 && i.stackingGroup == 2} != null
-        result.items.find {i -> i.l == 3 && i.allowedStackingGroups == 6} != null
+        result.items.find {i -> i.origL == 1 && i.stackingGroup == 2} != null
+        result.items.find {i -> i.origL == 1 && i.allowedStackingGroups == 2} != null
+        result.items.find {i -> i.origL == 2 && i.stackingGroup == 4} != null
+        result.items.find {i -> i.origL == 2 && i.allowedStackingGroups == 4} != null
+        result.items.find {i -> i.origL == 3 && i.stackingGroup == 2} != null
+        result.items.find {i -> i.origL == 3 && i.allowedStackingGroups == 6} != null
     }
 
 }

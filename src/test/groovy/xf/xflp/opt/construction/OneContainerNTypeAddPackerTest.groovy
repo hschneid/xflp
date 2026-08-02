@@ -55,7 +55,9 @@ class OneContainerNTypeAddPackerTest extends Specification {
         model.containers[0].history.size() == 27
         model.containers[1].history.size() == 12
         // all have a position
-        items.find {i -> i.x == -1 || i.y == -1 || i.z == -1} == null
+        items.each {i ->
+            model.containers[0].items.find {f -> f.item.externalIndex == i.externalIndex} != null ||
+            model.containers[1].items.find {f -> f.item.externalIndex == i.externalIndex} != null}
     }
 
     def "test simple adding - one item is not fitting"() {
@@ -79,7 +81,10 @@ class OneContainerNTypeAddPackerTest extends Specification {
         model.containers[0].history.size() == 27
         model.containers[1].history.size() == 12
         // all have a position
-        items.findAll {i -> i.x == -1 || i.y == -1 || i.z == -1}.size() == 1
+        items.count {i ->
+            model.containers[0].items.find {f -> f.item.externalIndex == i.externalIndex} != null ||
+            model.containers[1].items.find {f -> f.item.externalIndex == i.externalIndex} != null}
+        == items.size() - 1
     }
 
 }

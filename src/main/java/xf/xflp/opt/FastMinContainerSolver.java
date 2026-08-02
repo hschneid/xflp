@@ -1,11 +1,9 @@
 package xf.xflp.opt;
 
 import xf.xflp.base.XFLPModel;
-import xf.xflp.base.item.Item;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.opt.construction.multitype.NContainerNTypeAddPacker;
 import xf.xflp.opt.construction.onetype.NContainerOneTypeAddPacker;
-import xf.xflp.report.LoadType;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -43,15 +41,5 @@ public class FastMinContainerSolver extends XFLPBase {
                 throw new UnsupportedOperationException("Currently add/removing and single container types is not supported");
             }
         }
-    }
-
-    private boolean isOnlyAddingItems(XFLPModel model) {
-        for (Item item : model.getItems()) {
-            if(item.loadingType == LoadType.UNLOAD) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

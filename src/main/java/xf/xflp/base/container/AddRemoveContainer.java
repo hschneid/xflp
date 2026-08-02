@@ -1,11 +1,10 @@
 package xf.xflp.base.container;
 
 import util.collection.LPListMap;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.PositionType;
 import xf.xflp.base.item.Space;
-import xf.xflp.base.space.SpaceService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,11 +31,8 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private final Map<Position, Position> posAncestorMap = new HashMap<>();
 
 	/* Position -> Item - Which item is responsible, that this position was created. */
-	private final Map<Position, Item> positionItemMap = new HashMap<>();
+	private final Map<Position, PlacedItem> positionItemMap = new HashMap<>();
 
-	private final Set<String> uniquePositionKeys = new HashSet<>();
-	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
 	public AddRemoveContainer(
@@ -59,7 +55,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	private void init() {
 		// Die root-Position befindet sich nicht im 3D-Raum. Alle
 		// realen Positionen erben von dieser virtuellen.
-		insertTree(activePosList.get(0), rootPos);
+		insertTree(activePosList.getFirst(), rootPos);
 	}
 
 	@Override
@@ -71,7 +67,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	 * Adds item to container and update internal data structure
 	 */
 	@Override
-	public int add(Item item, Position pos, boolean isRotated) {
+	public int add(PlacedItem item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
@@ -100,7 +96,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			uniquePositionKeys.add(newPos.getKey());
 
 			List<Space> newSpaces = createSpaces(newPos);
-			if(newSpaces.size() > 0) {
+			if(!newSpaces.isEmpty()) {
 				// Erzeuge wirklich die neue Position, weil es einen gültigen Space gibt
 				spacePositions.put(newPos, newSpaces);
 
@@ -137,7 +133,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		// OUTPUT
 		System.out.println("ITM\n"+itemList.stream()
 				.filter(Objects::nonNull)
-				.map(i -> "  "+i.toString())
+				.map(i -> "  "+ i)
 				.collect(Collectors.joining("\n")));
 		System.out.println("POS "+activePosList.stream()
 				.map(Position::toString)
@@ -157,46 +153,13 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		System.out.println("---------------");
 	}
 
-	/* Create spaces
-	 * Begin with maximal space and check for each item in max-space
-	 * if smaller spaces are possible.
-	 */
-	private List<Space> createSpaces(Position newPos) {
-		Space maxSpace = Space.of(
-				length - newPos.y(),
-				width - newPos.x(),
-				height - newPos.z()
-		);
-		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-		if(spaceItems.size() == 0) {
-			return List.of(maxSpace);
-		}
-
-		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (Item spaceItem : spaceItems) {
-
-			Set<Space> nextSpaces = new HashSet<>();
-			for (Space space : spaces) {
-				nextSpaces.addAll(
-						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-				);
-			}
-			spaces = nextSpaces;
-		}
-
-		return spaceService.getDominatingSpaces(spaces);
-	}
-
-	private void recreateSpaces(Position pos) {
-		spacePositions.put(pos, createSpaces(pos));
-	}
 
 	/**
 	 * Remove item from container and update internal data structure
 	 */
 	@Override
-	public void remove(Item item) {
-		List<Item> lowerItems = zGraph.getItemsBelow(item);
+	public void remove(PlacedItem item) {
+		List<PlacedItem> lowerItems = zGraph.getItemsBelow(item);
 
 		// Remove item
 		removeItem(item);
@@ -222,19 +185,17 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		// Projeziere alle Positionen auf der Oberfl�che des Objektes (Hori und Verti)
 		List<Position> projectablePosHList = findProjectableHorizontalPositions(item);
 		for (Position pos : projectablePosHList) {
-			Item leftItem = findNextLeftElement(pos);
-			Position newPosition = Position.of(
-					pos.idx(), (leftItem != null) ? leftItem.xw : 0, pos.y(), pos.z(), pos.type()
-			);
+			PlacedItem leftItem = findNextLeftElement(pos);
+			int newX = (leftItem != null) ? leftItem.xw : 0;
+			Position newPosition = createPosition(pos.idx(), newX, pos.y(), pos.z(), pos.type());
 			replacePosition(pos, newPosition);
 			recreateSpaces(newPosition);
 		}
 		List<Position> projectablePosVList = findProjectableVerticalPositions(item);
 		for (Position pos : projectablePosVList) {
-			Item lowerItem = findNextDeeperElement(pos);
-			Position newPosition = Position.of(
-					pos.idx(), pos.x(), ((lowerItem != null) ? lowerItem.yl : 0), pos.z(), pos.type()
-			);
+			PlacedItem lowerItem = findNextDeeperElement(pos);
+			int newY = (lowerItem != null) ? lowerItem.yl : 0;
+			Position newPosition = createPosition(pos.idx(), pos.x(), newY, pos.z(), pos.type());
 			if(!pos.equals(newPosition)) {
 				replacePosition(pos, newPosition);
 				recreateSpaces(newPosition);
@@ -277,7 +238,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		coveredPosList.add(pos);
 	}
 
-	private List<Position> findProjectableHorizontalPositions(Item item) {
+	private List<Position> findProjectableHorizontalPositions(PlacedItem item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_H)
@@ -287,7 +248,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		return list;
 	}
 
-	private List<Position> findProjectableVerticalPositions(Item item) {
+	private List<Position> findProjectableVerticalPositions(PlacedItem item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : activePosList) {
 			if(pos.type() == PositionType.EXTENDED_V)
@@ -300,7 +261,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	/**
 	 * Search inactive positions, which got uncovered through removal of an item.
 	 */
-	private List<Position> findUncoveringPositions(Item item) {
+	private List<Position> findUncoveringPositions(PlacedItem item) {
 		List<Position> list = new ArrayList<>();
 		for (Position pos : coveredPosList) {
 			if(pos.z() == item.z && pos.x() == item.x && pos.y() >= item.y && pos.y() < item.yl)
@@ -335,11 +296,11 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 					return;
 
 				// If follower has more followers, deep into and check them
-				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
+				if(posFollowerMap.containsKey(follower) && !posFollowerMap.get(follower).isEmpty())
 					checkTreeAndRemove2(follower);
 
 				// If follower has still followers after deep check, then ignore
-				if(posFollowerMap.containsKey(follower) && posFollowerMap.get(follower).size() > 0)
+				if(posFollowerMap.containsKey(follower) && !posFollowerMap.get(follower).isEmpty())
 					return;
 			}
 
@@ -353,7 +314,8 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 	/**
 	 * Removes a position if it is not used as possible insert position anymore.
 	 */
-	private void removePosition(Position pos) {
+	@Override
+	protected void removePosition(Position pos) {
 		if(pos.type() != PositionType.ROOT) {
 			posFollowerMap.remove(pos);
 			posFollowerMap.get(posAncestorMap.get(pos)).remove(pos);
@@ -364,6 +326,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
+			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -388,6 +351,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
+			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -413,7 +377,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			}
 
 			positionItemMap.put(newPosition, positionItemMap.get(oldPosition));
-			for (Map.Entry<Item, Position> e : itemPositionMap.entrySet()) {
+			for (Map.Entry<PlacedItem, Position> e : itemPositionMap.entrySet()) {
 				if(e.getValue() == oldPosition)
 					itemPositionMap.put(e.getKey(), newPosition);
 			}
@@ -455,7 +419,7 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 	}
 
-	private void removeItem(Item item) {
+	private void removeItem(PlacedItem item) {
 		Integer index = item.index;
 
 		// Delete from Z-Graph
@@ -470,50 +434,244 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		zMap.get(item.z).remove(index);
 		zMap.get(item.zh).remove(index);
 
-		weight -= item.weight;
-		item.h = item.origH;
+		weight -= item.getItem().weight();
+		item.h = item.getItem().origH();
+
+		// Recompute maxYl if necessary
+		if (item.yl >= maxYl) {
+			maxYl = 0;
+			for (int i = itemList.size() - 1; i >= 0; i--) {
+				PlacedItem it = itemList.get(i);
+				if (it != null && it.yl> maxYl) {
+					maxYl = it.yl;
+				}
+			}
+		}
 
 		item.containerIndex = -1;
+
+		// Recompute immersive depth cache for positions that were sitting on this item
+		recomputeImmersiveDepthCacheForRemovedItem(item);
 	}
 
-	private void checkExistingSpaces(Item newItem) {
-		List<Position> removablePositions = new ArrayList<>();
-		for (Position position : activePosList) {
-			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
-				continue;
+	/**
+	 * When an item is removed, all active/inactive/covered positions that were on its top face
+	 * need their cached immersive depth recomputed, because the removed item no longer contributes.
+	 */
+	private void recomputeImmersiveDepthCacheForRemovedItem(PlacedItem item) {
+		recomputeImmersiveDepthForPositions(item, activePosList);
+		recomputeImmersiveDepthForPositions(item, inactivePosList);
+		recomputeImmersiveDepthForPositions(item, coveredPosList);
+	}
 
-			Set<Space> newSpaces = new HashSet<>();
-			for (Space space : spacePositions.get(position)) {
-				newSpaces.addAll(
-						spaceService.createSpacesAtPosition(
-								position,
-								space,
-								newItem
-						)
-				);
+	private void recomputeImmersiveDepthForPositions(PlacedItem item, Iterable<Position> positions) {
+		int itemZh = item.zh;
+		for (Position pos : positions) {
+			if (pos.z() == itemZh &&
+					pos.x() >= item.x && pos.x() < item.xw &&
+					pos.y() >= item.y && pos.y() < item.yl) {
+				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
 			}
+		}
+	}
 
-			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(spaces.size() > 0) {
-				spacePositions.put(position, spaces);
+
+	/**
+	 * Returns a comprehensive string describing the full internal state of this container.
+	 * Useful for comparing two containers for exact equality during tests.
+	 */
+	public String getStateDescription() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("container:\n");
+		sb.append("  index: ").append(index).append('\n');
+		sb.append("  width: ").append(width).append('\n');
+		sb.append("  length: ").append(length).append('\n');
+		sb.append("  height: ").append(height).append('\n');
+		sb.append("  maxWeight: ").append(maxWeight).append('\n');
+		sb.append("  containerType: ").append(containerType).append('\n');
+		sb.append("  weight: ").append(weight).append('\n');
+		sb.append("  centerOfGravityForY: ").append(centerOfGravityForY).append('\n');
+		sb.append("  maxYl: ").append(maxYl).append('\n');
+
+		// Items
+		sb.append("  items:\n");
+		for (int i = 0; i < itemList.size(); i++) {
+			PlacedItem ip = itemList.get(i);
+			if (ip == null) {
+				sb.append("    - null\n");
 			} else {
-				removablePositions.add(position);
+				appendItemPlacement(sb, "    - ", ip);
 			}
 		}
 
-		for (Position removablePosition : removablePositions) {
-			removePosition(removablePosition);
+		// Active positions
+		sb.append("  activePositions:\n");
+		activePosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Inactive positions
+		sb.append("  inactivePositions:\n");
+		inactivePosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Covered positions
+		sb.append("  coveredPositions:\n");
+		coveredPosList.stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.forEach(p -> appendPosition(sb, "    - ", p));
+
+		// Item-Position mapping
+		sb.append("  itemPositionMap:\n");
+		itemPositionMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().index))
+				.forEach(e -> {
+					sb.append("    - itemIdx: ").append(e.getKey().index).append('\n');
+					sb.append("      position: {idx: ").append(e.getValue().idx())
+							.append(", x: ").append(e.getValue().x())
+							.append(", y: ").append(e.getValue().y())
+							.append(", z: ").append(e.getValue().z())
+							.append(", type: ").append(e.getValue().type())
+							.append("}\n");
+				});
+
+		// Position follower map
+		sb.append("  posFollowerMap:\n");
+		posFollowerMap.keySet().stream()
+				.sorted(Comparator.comparingInt(Position::idx))
+				.filter(k -> posFollowerMap.get(k) != null && !posFollowerMap.get(k).isEmpty())
+				.forEach(k -> {
+					sb.append("    - parent: {idx: ").append(k.idx())
+							.append(", x: ").append(k.x())
+							.append(", y: ").append(k.y())
+							.append(", z: ").append(k.z())
+							.append("}\n");
+					List<Position> followers = posFollowerMap.get(k);
+					sb.append("      followers:\n");
+					followers.stream()
+							.sorted(Comparator.comparingInt(Position::idx))
+							.forEach(f -> sb.append("        - {idx: ").append(f.idx())
+									.append(", x: ").append(f.x())
+									.append(", y: ").append(f.y())
+									.append(", z: ").append(f.z())
+									.append(", type: ").append(f.type())
+									.append("}\n"));
+				});
+
+		// Position ancestor map
+		sb.append("  posAncestorMap:\n");
+		posAncestorMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> sb.append("    - position: {idx: ").append(e.getKey().idx())
+						.append(", x: ").append(e.getKey().x())
+						.append(", y: ").append(e.getKey().y())
+						.append(", z: ").append(e.getKey().z())
+						.append("} -> ancestor: {idx: ").append(e.getValue().idx())
+						.append(", x: ").append(e.getValue().x())
+						.append(", y: ").append(e.getValue().y())
+						.append(", z: ").append(e.getValue().z())
+						.append("}\n"));
+
+		// Position-Item map
+		sb.append("  positionItemMap:\n");
+		positionItemMap.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> {
+					sb.append("    - position: {idx: ").append(e.getKey().idx())
+							.append(", x: ").append(e.getKey().x())
+							.append(", y: ").append(e.getKey().y())
+							.append(", z: ").append(e.getKey().z())
+							.append("}\n");
+					sb.append("      itemIdx: ").append(e.getValue().index).append('\n');
+				});
+
+		// Unique position keys
+		sb.append("  uniquePositionKeys:\n");
+		new TreeSet<>(uniquePositionKeys).forEach(k -> sb.append("    - \"").append(k).append("\"\n"));
+
+		// Space positions
+		sb.append("  spacePositions:\n");
+		spacePositions.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> {
+					sb.append("    - position: {idx: ").append(e.getKey().idx())
+							.append(", x: ").append(e.getKey().x())
+							.append(", y: ").append(e.getKey().y())
+							.append(", z: ").append(e.getKey().z())
+							.append("}\n");
+					sb.append("      spaces:\n");
+					e.getValue().forEach(s -> sb.append("        - {l: ").append(s.l())
+							.append(", w: ").append(s.w())
+							.append(", h: ").append(s.h())
+							.append("}\n"));
+				});
+
+		// X/Y/Z Maps
+		appendIntMap(sb, "xMap", xMap);
+		appendIntMap(sb, "yMap", yMap);
+		appendIntMap(sb, "zMap", zMap);
+
+		// Bearing capacities (only for items currently in container)
+		sb.append("  bearingCapacities:\n");
+		new TreeMap<>(bearingCapacities).forEach((k, v) -> {
+			if (k >= 0 && k < itemList.length() && itemList.get(k) != null) {
+				sb.append("    ").append(k).append(": ").append(v).append('\n');
+			}
+		});
+
+		// Immersive depth cache
+		sb.append("  immersiveDepthCache:\n");
+		immersiveDepthCache.entrySet().stream()
+				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
+				.forEach(e -> sb.append("    - position: {idx: ").append(e.getKey().idx())
+						.append(", x: ").append(e.getKey().x())
+						.append(", y: ").append(e.getKey().y())
+						.append(", z: ").append(e.getKey().z())
+						.append("} -> ").append(e.getValue())
+						.append('\n'));
+
+		// History
+		sb.append("  history:\n");
+		for (int i = 0; i < history.size(); i++) {
+			appendItemPlacement(sb, "    - ", history.get(i));
 		}
+
+		return sb.toString();
 	}
 
-	public List<Space> getSpace(Position pos) {
-		return spacePositions.get(pos);
+	private void appendItemPlacement(StringBuilder sb, String prefix, PlacedItem ip) {
+		if (ip == null) {
+			sb.append(prefix).append("null\n");
+			return;
+		}
+		sb.append(prefix).append("idx: ").append(ip.index)
+				.append(", pos: [").append(ip.x).append(", ").append(ip.y).append(", ").append(ip.z)
+				.append("], end: [").append(ip.xw).append(", ").append(ip.yl).append(", ").append(ip.zh)
+				.append("], dim: [").append(ip.w).append(", ").append(ip.l).append(", ").append(ip.h)
+				.append("], rot: ").append(ip.isRotated)
+				.append(", cIdx: ").append(ip.containerIndex)
+				.append(", item: ").append(ip.getItem() != null ? ip.getItem().externalIndex() : "null")
+				.append('\n');
 	}
 
-	public void checkExistingSpacesForRemovedItem(Item item) {
+	private void appendPosition(StringBuilder sb, String prefix, Position p) {
+		sb.append(prefix).append("{idx: ").append(p.idx())
+				.append(", x: ").append(p.x())
+				.append(", y: ").append(p.y())
+				.append(", z: ").append(p.z())
+				.append(", type: ").append(p.type())
+				.append("}\n");
+	}
+
+	private void appendIntMap(StringBuilder sb, String name, LPListMap<Integer, Integer> map) {
+		sb.append("  ").append(name).append(":\n");
+		map.keySet().stream().sorted().forEach(k ->
+				sb.append("    ").append(k).append(": ").append(map.get(k)).append('\n'));
+	}
+
+	public void checkExistingSpacesForRemovedItem(PlacedItem item) {
 		for (Position pos : activePosList) {
 			if(!spacePositions.containsKey(pos))
 				continue;

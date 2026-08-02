@@ -3,11 +3,12 @@ package xf.xflp.opt.construction.multitype;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
-import xf.xflp.base.monitor.StatusCode;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.monitor.StatusManager;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
 import xf.xflp.exception.XFLPException;
+import xf.xflp.opt.construction.BaseHeuristic;
 import xf.xflp.opt.construction.strategy.BaseStrategy;
 import xf.xflp.opt.construction.strategy.Strategy;
 
@@ -23,27 +24,19 @@ import java.util.List;
  *
  * @author hschneid
  */
-public class MultiBinAddHeuristic {
-
-    private final BaseStrategy strategy;
-    private final StatusManager statusManager;
-    private final XFLPParameter parameter;
+public class MultiBinAddHeuristic extends BaseHeuristic  {
 
     public MultiBinAddHeuristic(Strategy s, StatusManager statusManager, XFLPParameter parameter) {
-        this.strategy = s.getStrategy();
-        this.statusManager = statusManager;
-        this.parameter = parameter;
+        super(s, statusManager, parameter);
     }
 
     public List<Item> createLoadingPlan(List<Item> items, List<Container> containers) throws XFLPException {
         List<Item> unplannedItems = new ArrayList<>();
 
-        // Reset eventual presets
-        resetItems(items);
-
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            List<ContainerPosition> containerPositions = getBestContainerPositions(item, containers, strategy);
+            PlacedItem placedItem = new PlacedItem(item);
+            List<ContainerPosition> containerPositions = getBestContainerPositions(placedItem, containers, strategy);
 
             // Add item to container
             if (!containerPositions.isEmpty()) {
@@ -65,14 +58,7 @@ public class MultiBinAddHeuristic {
         return containers.stream().mapToInt(c -> c.getItems().size()).sum() >= parameter.getMaxNbrOfItems();
     }
 
-    private void setUnplanned(List<Item> unplannedItems, Item... items) {
-        for (Item item : items) {
-            statusManager.fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
-            unplannedItems.add(item);
-        }
-    }
-
-    private List<ContainerPosition> getBestContainerPositions(Item item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
+    private List<ContainerPosition> getBestContainerPositions(PlacedItem item, List<Container> containers, BaseStrategy strategy) throws XFLPException {
         List<ContainerPosition> containerPositions = new ArrayList<>();
         for (Container container : containers) {
             PositionCandidate bestPosition = getBestInsertPosition(item, container, strategy);
@@ -84,9 +70,9 @@ public class MultiBinAddHeuristic {
         return containerPositions;
     }
 
-    private PositionCandidate getBestInsertPosition(Item item, Container container, BaseStrategy strategy) throws XFLPException {
+    private PositionCandidate getBestInsertPosition(PlacedItem item, Container container, BaseStrategy strategy) throws XFLPException {
         // Check if item is allowed to this container type
-        if (container.isItemAllowed(item)) {
+        if (container.isItemAllowed(item.getItem())) {
             // Fetch existing insert positions
             List<PositionCandidate> posList = PositionService.findPositionCandidates(container, item);
 
@@ -101,18 +87,12 @@ public class MultiBinAddHeuristic {
 
     private void insertIntoContainer(List<ContainerPosition> containerPositions) {
         // Simply take first - Could be improved later
-        ContainerPosition containerPosition = containerPositions.get(0);
+        ContainerPosition containerPosition = containerPositions.getFirst();
         containerPosition.getContainer().add(
                 containerPosition.getPosition().item(),
                 containerPosition.getPosition().position(),
                 containerPosition.getPosition().isRotated()
         );
-    }
-
-    private void resetItems(List<Item> items) {
-        for (Item item : items) {
-            item.reset();
-        }
     }
 
 }

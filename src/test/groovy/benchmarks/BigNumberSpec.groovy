@@ -1,6 +1,6 @@
 package benchmarks
 
-import spock.lang.Ignore
+
 import spock.lang.Specification
 import xf.xflp.XFLP
 import xf.xflp.opt.XFLPOptType
@@ -13,8 +13,8 @@ class BigNumberSpec extends Specification {
     XFLP service
     def random = new Random(1234)
 
-    @Ignore
-    def "1000 boxes"() {
+    // @Ignore
+    def "1000 boxes in one single container"() {
         when:
         long time = System.currentTimeMillis()
         def result
@@ -31,6 +31,30 @@ class BigNumberSpec extends Specification {
         // Vol of boxes <16000
         // Vol of container 15000
         assert true
+    }
+
+    def "1000 boxes in multiple container"() {
+        when:
+        long time = System.currentTimeMillis()
+        def result = null
+        for (i in 0..< 50) {
+            fillService()
+            service.setTypeOfOptimization(XFLPOptType.FAST_MIN_CONTAINER_PACKER)
+
+            service.executeLoadPlanning()
+            result = service.getReport()
+
+            println i + " : " +
+                    result.getContainerReports().size() + " : " +
+                    result.getContainerReports().stream()
+                    .mapToDouble {iii -> iii.getSummary().getUtilization().doubleValue()}
+                    .average()
+        }
+        println "Runtime: " + (System.currentTimeMillis() - time) + " ms"
+
+        then:
+        result.getContainerReports().size() < 10
+        (System.currentTimeMillis() - time) < 15000
     }
 
     private void fillService() {
@@ -92,7 +116,7 @@ class BigNumberSpec extends Specification {
     }
 
     String getStackingGroups() {
-        Set<String> groups = new HashSet<>();
+        Set<String> groups = new HashSet<>()
         for (i in 0..<4) {
             groups.add(randInt(1, 11) + "")
         }

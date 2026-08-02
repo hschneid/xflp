@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
 import xf.xflp.exception.XFLPExceptionType;
@@ -29,13 +29,13 @@ public class WidthProportionFactor extends BaseStrategy {
 	private final BaseStrategy fallbackStrategy = new HighestLowerLeft();
 
 	@Override
-	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {
+	public PositionCandidate choose(PlacedItem item, Container container, List<PositionCandidate> candidates) throws XFLPException {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
 
 		if(candidates.size() == 1) {
-			return candidates.get(0);
+			return candidates.getFirst();
 		}
 
 		List<PositionCandidate> filteredPositions = getPositionWithMinValue(
@@ -44,7 +44,7 @@ public class WidthProportionFactor extends BaseStrategy {
 		);
 
 		if(filteredPositions.size() == 1) {
-			return filteredPositions.get(0);
+			return filteredPositions.getFirst();
 		}
 
 		if(filteredPositions.isEmpty()) {

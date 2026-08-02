@@ -1,7 +1,7 @@
 package xf.xflp.opt.construction.strategy;
 
 import xf.xflp.base.container.Container;
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.exception.XFLPException;
@@ -28,7 +28,7 @@ import java.util.List;
 public class HighestLowerLeft extends BaseStrategy {
 
 	@Override
-	public PositionCandidate choose(Item item, Container container, List<PositionCandidate> candidates) throws XFLPException {
+	public PositionCandidate choose(PlacedItem item, Container container, List<PositionCandidate> candidates) throws XFLPException {
 		if(candidates == null || candidates.isEmpty()) {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "List of positions must be not empty or null.");
 		}
@@ -49,7 +49,7 @@ public class HighestLowerLeft extends BaseStrategy {
 			throw new XFLPException(XFLPExceptionType.ILLEGAL_STATE, "There must be at least one position.");
 		}
 
-		return filteredPositions.get(0);
+		return filteredPositions.getFirst();
 	}
 
 	float getDistance(PositionCandidate candidate) {
@@ -58,10 +58,10 @@ public class HighestLowerLeft extends BaseStrategy {
 		}
 
 		Position p = candidate.position();
-		return (float)Math.pow(
+		return (float)Math.sqrt(
 				(p.x() * p.x()) +
 						(p.y() * p.y()) +
-						(p.z() * p.z()), 0.5
+						(p.z() * p.z())
 		);
 	}
 

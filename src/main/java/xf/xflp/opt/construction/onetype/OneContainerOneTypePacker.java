@@ -3,6 +3,7 @@ package xf.xflp.opt.construction.onetype;
 import xf.xflp.base.XFLPModel;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.monitor.StatusCode;
 import xf.xflp.base.position.PositionCandidate;
 import xf.xflp.base.position.PositionService;
@@ -38,28 +39,28 @@ public class OneContainerOneTypePacker implements Packer {
 		Container container = model.getContainerTypes()[0].newInstance();
 		BaseStrategy strategy = model.getParameter().getPreferredPackingStrategy().getStrategy();
 		
-		Map<Integer, Item> loadedItemMap = new HashMap<>();
+		Map<Integer, PlacedItem> loadedItemMap = new HashMap<>();
 
 		List<Item> unplannedItemList = new ArrayList<>();
 
 		// For all items with respect to given sort order
 		Item[] items = model.getItems();
-		// Reset eventual presets
-		resetItems(items);
+
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
+			PlacedItem placedItem = new PlacedItem(item);
 
-			if(item.loadingType == LoadType.LOAD) {
+			if(item.loadingType() == LoadType.LOAD) {
 				PositionCandidate insertPosition = null;
 
 				// Check if item is allowed to this container type
 				if(container.isItemAllowed(item)) {
 					// Fetch existing insert positions
-					List<PositionCandidate> candidates = PositionService.findPositionCandidates(container, item);
+					List<PositionCandidate> candidates = PositionService.findPositionCandidates(container, placedItem);
 
 					if(!candidates.isEmpty()) {
 						// Choose according to select strategy
-						insertPosition = strategy.choose(item, container, candidates);
+						insertPosition = strategy.choose(placedItem, container, candidates);
 					}
 				}
 
@@ -70,9 +71,9 @@ public class OneContainerOneTypePacker implements Packer {
 							insertPosition.position(),
 							insertPosition.isRotated()
 					);
-					loadedItemMap.put(item.externalIndex, item);
+					loadedItemMap.put(item.externalIndex(), placedItem);
 				} else {
-					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.index + " could not be added.");
+					model.getStatusManager().fireMessage(StatusCode.RUNNING, "Item " + item.externalIndex() + " could not be added.");
 					unplannedItemList.add(item);
 				}
 			} else {
@@ -80,7 +81,7 @@ public class OneContainerOneTypePacker implements Packer {
 				// It is not checked if item was really loaded to container.
 				// Before removing the unloading item must be replaced by the loaded item object
 				// for index problems
-				var loadedItem = loadedItemMap.get(item.externalIndex);
+				var loadedItem = loadedItemMap.get(item.externalIndex());
 				if(loadedItem != null) {
 					container.remove(loadedItem);
 				}
@@ -90,12 +91,6 @@ public class OneContainerOneTypePacker implements Packer {
 		// Put result into model
 		model.setContainers(new Container[]{container});
 		model.setUnplannedItems(unplannedItemList.toArray(new Item[0]));
-	}
-
-	private void resetItems(Item[] items) {
-		for (int i = items.length - 1; i >= 0; i--) {
-			items[i].reset();
-		}
 	}
 
 }

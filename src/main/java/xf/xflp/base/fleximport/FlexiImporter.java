@@ -1,11 +1,12 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.XFLPParameter;
 import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
+import xf.xflp.report.LoadType;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,7 +37,8 @@ import java.util.stream.Stream;
  */
 public class FlexiImporter implements Serializable {
 
-	private static final long serialVersionUID = ObjectStreamClass.lookup(FlexiImporter.class).getSerialVersionUID();
+	@Serial
+    private static final long serialVersionUID = ObjectStreamClass.lookup(FlexiImporter.class).getSerialVersionUID();
 
 	private final DataManager dataManager = new DataManager();
 
@@ -151,7 +153,7 @@ public class FlexiImporter implements Serializable {
 		var items = itemList.stream()
 				.flatMap(itemData -> {
 					Item item = itemData.createLoadingItem(dataManager);
-					if(itemData.getUnloadingLocation().length() > 0)
+					if(!itemData.getUnloadingLocation().isEmpty())
 						return Stream.of(item, itemData.createUnLoadingItem(dataManager));
 					return Stream.of(item);
 				})
@@ -159,20 +161,20 @@ public class FlexiImporter implements Serializable {
 				.collect(Collectors.toList());
 
 		var hasLocations = items.stream()
-				.flatMapToInt(item -> IntStream.of(item.loadingLoc, item.unLoadingLoc))
+				.flatMapToInt(item -> IntStream.of(item.loadingLoc(), item.unLoadingLoc()))
 				.distinct()
 				.count() > 1;
 
 		if(hasLocations) {
 			items.sort(
-					Comparator.comparing((Item i) -> (i.isLoading) ? i.loadingLoc : i.unLoadingLoc)
+					Comparator.comparing((Item i) -> (i.isLoading()) ? i.loadingLoc() : i.unLoadingLoc())
 							.thenComparing(Item::isLoading)
 							.thenComparing((Item i, Item j) -> {
-								if(i.isLoading && j.isLoading)
+								if(i.isLoading() && j.isLoading())
 									return j.getUnLoadingLoc() - i.getUnLoadingLoc();
 								return i.getUnLoadingLoc() - j.getUnLoadingLoc();
 							})
-							.thenComparing(Item::getIdx)
+							.thenComparing(Item::getExternalIndex)
 			);
 		}
 
@@ -197,7 +199,7 @@ public class FlexiImporter implements Serializable {
 
 	private boolean checkForAddRemove(List<Item> items) {
 		for (Item item : items) {
-			if(item.getUnLoadingLoc() != -1) {
+			if(item.getLoadingType() == LoadType.UNLOAD) {
 				return true;
 			}
 		}

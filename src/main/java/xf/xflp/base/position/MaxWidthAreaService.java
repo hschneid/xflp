@@ -20,6 +20,9 @@ public class MaxWidthAreaService {
 
     public float getMaxEmptyArea(Container container) {
         List<Position> posList = new ArrayList<>(container.getActivePositions());
+        if (posList.isEmpty()) {
+            return 0;
+        }
         posList.sort(Comparator.comparingInt(Position::x));
 
         // Obere Absch�tzung der Fl�che
@@ -32,8 +35,7 @@ public class MaxWidthAreaService {
 
         // F�ge die Rest-Fl�che bis zur Wand hinzu
         // Annahme dass es immer am unteren Ende einen geben muss.
-        Position lastPos = posList.get(posList.size() - 1);
-        area += (container.getWidth() - lastPos.x()) * container.getLength();
+        area += (container.getWidth() - posList.getLast().x()) * container.getLength();
 
         return area;
     }

@@ -4,6 +4,8 @@ import xf.xflp.base.container.Container;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.monitor.StatusManager;
 
+import java.util.Random;
+
 
 /** 
  * Copyright (c) 2012-2026 Holger Schneider
@@ -28,6 +30,7 @@ public class XFLPModel {
 
 	protected final XFLPParameter parameter;
 	private StatusManager statusManager;
+	private final Random random = new Random(1234);
 
 	/* Result objects */
 	private Container[] containers = new Container[0];
@@ -90,5 +93,9 @@ public class XFLPModel {
 
 	public StatusManager getStatusManager() {
 		return statusManager;
+	}
+
+	public Random getRandom() {
+		return random;
 	}
 }

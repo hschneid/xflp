@@ -1,11 +1,11 @@
 package xf.xflp.base.container;
 
-import xf.xflp.base.item.Item;
+import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
 import xf.xflp.base.item.Space;
-import xf.xflp.base.space.SpaceService;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Copyright (c) 2012-2026 Holger Schneider
@@ -17,10 +17,6 @@ import java.util.*;
  * @author hschneid
  */
 public final class AddContainer extends ContainerBase implements Container {
-
-	private final Set<String> uniquePositionKeys = new HashSet<>();
-	private final Map<Position, List<Space>> spacePositions = new HashMap<>();
-	private final SpaceService spaceService = new SpaceService();
 
 	/* Is called by reflection */
 	public AddContainer(
@@ -41,7 +37,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	}
 
 	private void init() {
-		spacePositions.put(activePosList.get(0), Collections.singletonList(Space.of(length, width, height)));
+		spacePositions.put(activePosList.getFirst(), Collections.singletonList(Space.of(length, width, height)));
 	}
 
 	@Override
@@ -55,7 +51,7 @@ public final class AddContainer extends ContainerBase implements Container {
 	 * - Remove covered positions
 	 */
 	@Override
-	public int add(Item item, Position pos, boolean isRotated) {
+	public int add(PlacedItem item, Position pos, boolean isRotated) {
 		pos = normPosition(item, pos, isRotated);
 
 		addItem(item, pos);
@@ -79,7 +75,7 @@ public final class AddContainer extends ContainerBase implements Container {
 			uniquePositionKeys.add(newPos.getKey());
 
 			List<Space> newSpaces = createSpaces(newPos);
-			if(newSpaces.size() > 0) {
+			if(!newSpaces.isEmpty()) {
 				spacePositions.put(newPos, newSpaces);
 			} else {
 				removePosition(newPos);
@@ -95,87 +91,25 @@ public final class AddContainer extends ContainerBase implements Container {
 		return item.index;
 	}
 
-	/* Create spaces
-	 * Begin with maximal space and check for each item in max-space
-	 * if smaller spaces are possible.
-	 */
-	private List<Space> createSpaces(Position newPos) {
-		Space maxSpace = Space.of(
-				length - newPos.y(),
-				width - newPos.x(),
-				height - newPos.z()
-		);
-		Set<Item> spaceItems = spaceService.getItemsInSpace(newPos, maxSpace, itemList);
-
-		Set<Space> spaces = new HashSet<>(Set.of(maxSpace));
-		for (Item spaceItem : spaceItems) {
-
-			Set<Space> nextSpaces = new HashSet<>();
-			for (Space space : spaces) {
-				nextSpaces.addAll(
-						spaceService.createSpacesAtPosition(newPos, space, spaceItem)
-				);
-			}
-			spaces = nextSpaces;
-		}
-
-		return spaceService.getDominatingSpaces(spaces);
-	}
-
-	private void removePosition(Position position) {
+	@Override
+	protected void removePosition(Position position) {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
 		spacePositions.remove(position);
+		immersiveDepthCache.remove(position);
 	}
 
 	/**
 	 * Remove item from container and update internal data structure
 	 */
 	@Override
-	public void remove(Item item) {
+	public void remove(PlacedItem item) {
 		throw new UnsupportedOperationException("Remove in AddContainer is not supported. Use AddRemoveContainer");
 	}
 
-	private void removeCoveredPositions(Item item) {
+	private void removeCoveredPositions(PlacedItem item) {
 		for (Position position : findCoveredPositions(item)) {
 			removePosition(position);
 		}
-	}
-
-	private void checkExistingSpaces(Item newItem) {
-		List<Position> removablePositions = new ArrayList<>();
-		for (Position position : activePosList) {
-			// Is position out of reach for newItem
-			if(position.x() >= newItem.xw ||
-					position.y() >= newItem.yl ||
-					position.z() >= newItem.zh)
-				continue;
-
-			Set<Space> newSpaces = new HashSet<>();
-			for (Space space : spacePositions.get(position)) {
-				newSpaces.addAll(
-						spaceService.createSpacesAtPosition(
-								position,
-								space,
-								newItem
-						)
-				);
-			}
-
-			List<Space> spaces = spaceService.getDominatingSpaces(newSpaces);
-			if(spaces.size() > 0) {
-				spacePositions.put(position, spaces);
-			} else {
-				removablePositions.add(position);
-			}
-		}
-
-		for (Position removablePosition : removablePositions) {
-			removePosition(removablePosition);
-		}
-	}
-
-	public List<Space> getSpace(Position pos) {
-		return spacePositions.get(pos);
 	}
 }

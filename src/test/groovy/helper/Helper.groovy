@@ -3,6 +3,7 @@ package helper
 import xf.xflp.base.container.*
 import xf.xflp.base.fleximport.ContainerData
 import xf.xflp.base.item.Item
+import xf.xflp.base.item.PlacedItem
 import xf.xflp.base.item.Position
 import xf.xflp.base.monitor.DefaultStatusMonitor
 import xf.xflp.base.monitor.StatusManager
@@ -61,36 +62,54 @@ class Helper {
         Set<Integer> set = new HashSet<>()
         set.add(0)
 
-        Item i = new Item()
-
-        i.setExternalIndex(itemIdx)
-        i.setOrderIndex(itemIdx)
-        i.setLoadingLoc(itemIdx)
-        i.setUnLoadingLoc(itemIdx + 1)
-        i.setW(w)
-        i.setL(l)
-        i.setH(h)
-        i.setWeight(ww)
-        i.setStackingWeightLimit(wC)
-        i.setAllowedContainerSet(set)
-        i.setStackingGroup(Math.max(1,sG))
-        i.setStackingGroup(Math.max(1,sG))
-        i.setAllowedStackingGroups(allowedSG)
-        i.setNbrOfAllowedStackedItems(nbrAllowedStackItems)
-        i.setSpinable(true)
-        i.setLoading(true)
-        i.postInit()
-
+        def idx = itemIdx
         itemIdx++
 
-        return i
+        return new Item(
+                w, l, h,
+                true, true,
+                idx, idx + 1,
+                Math.max(1, sG) as long, set,
+                allowedSG as long, nbrAllowedStackItems,
+                0,
+                ww, wC as float,
+                idx, idx,
+                true
+        )
+    }
+
+    static PlacedItem getPlacedItem(int w, int l, int h, float ww, long wC, int sG) {
+        return getPlacedItem(w, l, h, ww, wC, sG, Math.max(1,sG))
+    }
+
+    static PlacedItem getPlacedItem(int w, int l, int h, float ww, long wC, int sG, int allowedSG) {
+        return getPlacedItem(w, l, h, ww, wC, sG, allowedSG, 9999999)
+    }
+
+    static PlacedItem getPlacedItem(int w, int l, int h, float ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
+        return new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems))
+    }
+
+    static PlacedItem getPlacedItemAtPos(int x, int y, int w, int l) {
+        return getPlacedItemAtPos(x, y, 0, w, l, 1)
+    }
+
+    static PlacedItem getPlacedItemAtPos(int x, int y, int z, int w, int l, int h) {
+        return getPlacedItemAtPos(x, y, z, w, l, h, 1, 1, 1, 1, 9999999)
+    }
+
+    static PlacedItem getPlacedItemAtPos(int x, int y, int z, int w, int l, int h, float ww, long wC, int sG, int allowedSG, int nbrAllowedStackItems) {
+        def ip = new PlacedItem(getItem(w, l, h, ww, wC, sG, allowedSG, nbrAllowedStackItems))
+        ip.setPosition(Position.of(x, y, z))
+
+        return ip
     }
 
     static void add(Container con, PositionCandidate cand) {
         con.add(cand.item, cand.position, cand.isRotated)
     }
 
-    static void add(Container con, Item i, int x, int y, int z) {
+    static void add(Container con, PlacedItem i, int x, int y, int z) {
         add(con, findCand(PositionService.findPositionCandidates(con, i), x, y, z))
     }
 

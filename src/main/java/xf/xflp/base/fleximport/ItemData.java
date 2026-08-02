@@ -1,9 +1,9 @@
 package xf.xflp.base.fleximport;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.item.Item;
 
 import java.io.ObjectStreamClass;
+import java.io.Serial;
 import java.io.Serializable;
 
 /** 
@@ -32,7 +32,8 @@ import java.io.Serializable;
  */
 public class ItemData implements Serializable {
 
-	private static final long serialVersionUID = ObjectStreamClass.lookup(ItemData.class).getSerialVersionUID();
+	@Serial
+    private static final long serialVersionUID = ObjectStreamClass.lookup(ItemData.class).getSerialVersionUID();
 	
 	protected String externID = "";
 	protected String shipmentID = "default_shipment";
@@ -277,42 +278,28 @@ public class ItemData implements Serializable {
 	}
 
 	public Item createLoadingItem(DataManager manager) {
-		Item i = createItem(manager);
-		i.setLoading(true); // is Loading
-
-		i.postInit();
-
-		return i;
+		return createItem(manager, true);
 	}
 
 	public Item createUnLoadingItem(DataManager manager) {
-		Item i = createItem(manager);
-		i.setLoading(false); // is Unloading
-
-		i.postInit();
-
-		return i;
+		return createItem(manager, false);
 	}
 
-	private Item createItem(DataManager manager) {
-		Item i = new Item();
-
-		i.setExternalIndex(manager.getItemIdx(externID));
-		i.setOrderIndex(manager.getShipmentIdx(shipmentID));
-		i.setLoadingLoc(manager.getLocationIdx(loadingLocation));
-		i.setUnLoadingLoc(manager.getLocationIdx(unloadingLocation));
-		i.setW(width);
-		i.setL(length);
-		i.setH(height);
-		i.setWeight(weight);
-		i.setStackingWeightLimit(stackingWeightLimit);
-		i.setAllowedContainerSet(manager.getContainerTypes(allowedContainerSet));
-		i.setStackingGroup(manager.getStackingGroupIdx(stackingGroup));
-		i.setAllowedStackingGroups(manager.getStackingGroups(allowedStackingGroups));
-		i.setNbrOfAllowedStackedItems(nbrOfAllowedStackedItems);
-		i.setImmersiveDepth(immersiveDepth);
-		i.setSpinable(spinnable);
-
-		return i;
+	private Item createItem(DataManager manager, boolean loading) {
+		return new Item(
+				width, length, height,
+				spinnable, true,
+				manager.getLocationIdx(loadingLocation),
+				manager.getLocationIdx(unloadingLocation),
+				manager.getStackingGroupIdx(stackingGroup),
+				manager.getContainerTypes(allowedContainerSet),
+				manager.getStackingGroups(allowedStackingGroups),
+				nbrOfAllowedStackedItems,
+				immersiveDepth,
+				weight, stackingWeightLimit,
+				manager.getItemIdx(externID),
+				manager.getShipmentIdx(shipmentID),
+				loading
+		);
 	}
 }

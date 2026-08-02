@@ -2,7 +2,7 @@ package xf.xflp.opt.construction.strategy
 
 import helper.Helper
 import spock.lang.Specification
-import xf.xflp.base.item.Item
+import xf.xflp.base.item.PlacedItem
 import xf.xflp.base.item.Position
 import xf.xflp.base.position.PositionCandidate
 import xf.xflp.base.position.PositionService
@@ -17,10 +17,10 @@ class StrategySpec extends Specification {
 
     def "HLL chooses higher ground"() {
         def con = Helper.getAddSpaceContainer2(3,4,2)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
-        def i2 = Helper.getItem(1,1,1,1,111,0)
-        def i3 = Helper.getItem(1,1,1,1,111,0)
-        def i4 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i2 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i3 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i4 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 1, 0, 0)
@@ -34,10 +34,10 @@ class StrategySpec extends Specification {
 
     def "HLL chooses next stack"() {
         def con = Helper.getAddSpaceContainer2(3,3,1)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
-        def i2 = Helper.getItem(1,1,1,1,111,0)
-        def i3 = Helper.getItem(1,1,1,1,111,0)
-        def i4 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i2 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i3 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i4 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 0, 1, 0)
@@ -51,7 +51,7 @@ class StrategySpec extends Specification {
 
     def "HLL with positionList = null "() {
         def con = Helper.getAddSpaceContainer2(3,3,1)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         serviceHLL.choose(i1, con, null)
@@ -61,7 +61,7 @@ class StrategySpec extends Specification {
 
     def "HLL with positionList = empty "() {
         def con = Helper.getAddSpaceContainer2(3,3,1)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         serviceHLL.choose(i1, con, [])
@@ -71,10 +71,10 @@ class StrategySpec extends Specification {
 
     def "TP chooses corner"() {
         def con = Helper.getAddSpaceContainer2(3,4,3)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
-        def i2 = Helper.getItem(1,1,1,1,111,0)
-        def i3 = Helper.getItem(1,1,1,1,111,0)
-        def i4 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i2 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i3 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i4 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 1, 0, 0)
@@ -88,11 +88,11 @@ class StrategySpec extends Specification {
 
     def "TP chooses HLL if all equal"() {
         def con = Helper.getAddSpaceContainer2(3,4,3)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
-        def i2 = Helper.getItem(1,1,1,1,111,0)
-        def i3 = Helper.getItem(1,1,1,1,111,0)
-        def i4 = Helper.getItem(1,1,1,1,111,0)
-        def i5 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i2 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i3 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i4 = Helper.getPlacedItem(1,1,1,1,111,0)
+        def i5 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         Helper.add(con, i1, 0, 0, 0)
         Helper.add(con, i2, 1, 0, 0)
@@ -111,7 +111,7 @@ class StrategySpec extends Specification {
         } as Function<PositionCandidate, Float>
         def pos = PositionCandidate.of(
                 Position.of(1,1,1),
-                new Item(),
+                new PlacedItem(0,0,0),
                 true
         )
         def posList = [pos]
@@ -129,7 +129,7 @@ class StrategySpec extends Specification {
 
     def "TP with positionList = null "() {
         def con = Helper.getAddSpaceContainer2(3,3,1)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         serviceTP.choose(i1, con, null)
@@ -139,7 +139,7 @@ class StrategySpec extends Specification {
 
     def "TP with positionList = empty "() {
         def con = Helper.getAddSpaceContainer2(3,3,1)
-        def i1 = Helper.getItem(1,1,1,1,111,0)
+        def i1 = Helper.getPlacedItem(1,1,1,1,111,0)
 
         when:
         serviceTP.choose(i1, con, [])

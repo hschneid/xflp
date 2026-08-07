@@ -41,7 +41,29 @@ jobs:
         with:
           output: sarif-results
 
+      - name: Print SARIF summary
+        if: always()
+        run: |
+          echo "=== SARIF Results ==="
+          cat sarif-results/*.sarif | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          for run in data.get('runs', []):
+              tool = run.get('tool', {}).get('driver', {}).get('name', 'unknown')
+              results = run.get('results', [])
+              rules = run.get('tool', {}).get('driver', {}).get('rules', [])
+              print(f'Tool: {tool}')
+              print(f'Rules checked: {len(rules)}')
+              print(f'Findings: {len(results)}')
+              if results:
+                  for r in results:
+                      print(f\"  - [{r.get('level','?')}] {r.get('ruleId','?')}: {r.get('message',{}).get('text','')[:120]}\")
+              else:
+                  print('  No security issues found!')
+          "
+
       - name: Upload SARIF as artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: codeql-sarif

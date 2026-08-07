@@ -32,6 +32,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
+          queries: security-and-quality
 
       - name: Build with Gradle
         run: ./gradlew build -x test

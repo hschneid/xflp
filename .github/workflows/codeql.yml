@@ -42,31 +42,45 @@ jobs:
         with:
           output: sarif-results
 
-      - name: Print SARIF summary
+      - name: Generate alerts CSV from SARIF
         if: always()
         run: |
-          echo "=== SARIF Results ==="
-          cat sarif-results/*.sarif | python3 -c "
-          import json, sys
-          data = json.load(sys.stdin)
-          for run in data.get('runs', []):
-              tool = run.get('tool', {}).get('driver', {}).get('name', 'unknown')
-              results = run.get('results', [])
-              rules = run.get('tool', {}).get('driver', {}).get('rules', [])
-              print(f'Tool: {tool}')
-              print(f'Rules checked: {len(rules)}')
-              print(f'Findings: {len(results)}')
-              if results:
-                  for r in results:
-                      print(f\"  - [{r.get('level','?')}] {r.get('ruleId','?')}: {r.get('message',{}).get('text','')[:120]}\")
-              else:
-                  print('  No security issues found!')
+          python3 -c "
+          import json, csv, glob
+
+          sarif_files = glob.glob('sarif-results/*.sarif')
+          rows = []
+          for f in sarif_files:
+              data = json.load(open(f))
+              for run in data.get('runs', []):
+                  rules = {r['id']: r for r in run.get('tool',{}).get('driver',{}).get('rules',[])}
+                  for result in run.get('results', []):
+                      rule_id = result.get('ruleId','')
+                      rule = rules.get(rule_id, {})
+                      loc = result.get('locations',[{}])[0].get('physicalLocation',{})
+                      file_path = loc.get('artifactLocation',{}).get('uri','')
+                      line = loc.get('region',{}).get('startLine','')
+                      rows.append({
+                          'Rule ID': rule_id,
+                          'Severity': result.get('level',''),
+                          'Message': result.get('message',{}).get('text',''),
+                          'File': file_path,
+                          'Line': line,
+                          'Rule Name': rule.get('shortDescription',{}).get('text',''),
+                          'Tags': '; '.join(rule.get('properties',{}).get('tags',[]))
+                      })
+
+          with open('codeql-alerts.csv', 'w', newline='') as f:
+              writer = csv.DictWriter(f, fieldnames=['Rule ID','Severity','Message','File','Line','Rule Name','Tags'])
+              writer.writeheader()
+              writer.writerows(rows)
+          print(f'{len(rows)} alerts written to codeql-alerts.csv')
           "
 
-      - name: Upload SARIF as artifact
+      - name: Upload alerts CSV
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: codeql-sarif
-          path: sarif-results
-          retention-days: 7
+          name: codeql-alerts-csv
+          path: codeql-alerts.csv
+          retention-days: 30

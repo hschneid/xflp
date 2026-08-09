@@ -30,13 +30,14 @@ import java.util.List;
  * @author hschneid
  *
  */
-public class SingleBinAddHeuristic extends BaseHeuristic implements Heuristic{
+public class SingleBinAddHeuristic extends BaseHeuristic implements Heuristic {
 
 	public SingleBinAddHeuristic(XFLPModel model) {
 		super(model);
 	}
 
-	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
+	@Override
+    public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItems = new ArrayList<>();
 
         for (int i = 0; i < items.size(); i++) {

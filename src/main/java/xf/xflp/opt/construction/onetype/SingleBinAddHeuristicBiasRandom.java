@@ -44,7 +44,8 @@ public class SingleBinAddHeuristicBiasRandom extends BaseHeuristic implements He
 		this.beta = DEFAULT_BETA;
 	}
 
-	public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
+	@Override
+    public List<Item> createLoadingPlan(List<Item> items, Container container) throws XFLPException {
 		List<Item> unplannedItems = new ArrayList<>();
 
 		// Create a mutable copy of the item list so we can remove picked items

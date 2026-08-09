@@ -1,5 +1,6 @@
 package xf.xflp.base.position;
 
+import util.collection.FastList;
 import util.collection.IndexedArrayList;
 import xf.xflp.base.container.AddContainer;
 import xf.xflp.base.container.AddRemoveContainer;
@@ -98,7 +99,7 @@ public class PositionService {
      * false = valid
      */
     private static boolean checkOverlappingWithItems(Container container, PlacedItem item, int itemW, int itemL, Position pos, int itemH) {
-        IndexedArrayList<PlacedItem> items = (IndexedArrayList<PlacedItem>) container.getItems();
+        FastList<PlacedItem> items = container.getItems();
 
         for (int idx = items.length() - 1; idx >= 0; idx--) {
             PlacedItem otherItem = items.get(idx);

@@ -21,7 +21,7 @@ import java.util.List;
 public class LoadBearingChecker {
 
     public void update(ContainerBase container, List<PlacedItem> initialItems) {
-        float[] bearingWeights = new float[((IndexedArrayList<PlacedItem>)container.getItems()).getLastUsedIndex()];
+        float[] bearingWeights = new float[container.getItems().getLastUsedIndex()];
 
         // Collect the bearing weight per item - top-down
         List<PlacedItem> floorItems = collectBearingWeight(initialItems, bearingWeights, container);
@@ -30,7 +30,7 @@ public class LoadBearingChecker {
     }
 
     private List<PlacedItem> collectBearingWeight(List<PlacedItem> initialItems, float[] bearingWeights, ContainerBase container) {
-        BearingWeightQueue queue = new BearingWeightQueue(((IndexedArrayList<PlacedItem>)container.getItems()).getLastUsedIndex());
+        BearingWeightQueue queue = new BearingWeightQueue(container.getItems().getLastUsedIndex());
 
         // Add all initial items to queue
         for (PlacedItem initialItem : initialItems) {

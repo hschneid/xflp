@@ -21,7 +21,7 @@ import java.util.Collection;
  *
  * @param <E>
  */
-public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
+public class IndexedArrayList<E extends Indexable> extends ArrayList<E> implements FastList<E> {
 
 	private static final long serialVersionUID = ObjectStreamClass.lookup(IndexedArrayList.class).getSerialVersionUID();
 
@@ -173,6 +173,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public int length() {
 		return super.size();
 	}
@@ -190,6 +191,7 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		return cloned;
 	}
 
+	@Override
 	public int getLastUsedIndex() {
 		return lastUsedIndex;
 	}

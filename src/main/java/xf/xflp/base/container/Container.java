@@ -1,5 +1,6 @@
 package xf.xflp.base.container;
 
+import util.collection.FastList;
 import xf.xflp.base.item.Item;
 import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Position;
@@ -41,7 +42,7 @@ public interface Container {
     /**
      * Returns the already inserted items of this container
      */
-    List<PlacedItem> getItems();
+    FastList<PlacedItem> getItems();
 
     /**
      * History when and how a certain item is loaded or unloaded

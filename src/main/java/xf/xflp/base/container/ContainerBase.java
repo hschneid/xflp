@@ -1,6 +1,7 @@
 package xf.xflp.base.container;
 
 import com.google.common.collect.HashBiMap;
+import util.collection.FastList;
 import util.collection.IndexedArrayList;
 import util.collection.LPListMap;
 import xf.xflp.base.container.constraints.LoadBearingChecker;
@@ -29,7 +30,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     protected final int containerType;
     protected float weight = 0;
 
-    protected final IndexedArrayList<PlacedItem> itemList = new IndexedArrayList<>();
+    protected final FastList<PlacedItem> itemList = new IndexedArrayList<>();
 
     protected final List<Position> activePosList = new ArrayList<>();
 
@@ -439,7 +440,7 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     @Override
-    public List<PlacedItem> getItems() {
+    public FastList<PlacedItem> getItems() {
         return itemList;
     }
 

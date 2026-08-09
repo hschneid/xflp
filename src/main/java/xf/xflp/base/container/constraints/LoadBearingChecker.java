@@ -1,6 +1,5 @@
 package xf.xflp.base.container.constraints;
 
-import util.collection.IndexedArrayList;
 import xf.xflp.base.container.ContainerBase;
 import xf.xflp.base.item.PlacedItem;
 import xf.xflp.base.item.Tools;
@@ -30,7 +29,7 @@ public class LoadBearingChecker {
     }
 
     private List<PlacedItem> collectBearingWeight(List<PlacedItem> initialItems, float[] bearingWeights, ContainerBase container) {
-        BearingWeightQueue queue = new BearingWeightQueue(((IndexedArrayList<PlacedItem>)container.getItems()).getLastUsedIndex());
+        BearingWeightQueue queue = new BearingWeightQueue(container.getItems().size());
 
         // Add all initial items to queue
         for (PlacedItem initialItem : initialItems) {

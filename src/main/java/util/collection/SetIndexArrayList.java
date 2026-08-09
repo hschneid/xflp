@@ -118,7 +118,16 @@ public class SetIndexArrayList<E> extends ArrayList<E> {
 	public boolean removeAll(Collection<?> c) {
 		throw new UnsupportedOperationException();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.AbstractCollection#clone(java.util.Collection)
+	 */
+	@Override
+	public Object clone() {
+		return super.clone();
+	}
+
 	public int length() {
 		return length;
 	}

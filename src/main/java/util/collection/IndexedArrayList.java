@@ -182,6 +182,14 @@ public class IndexedArrayList<E extends Indexable> extends ArrayList<E> {
 		return length;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public IndexedArrayList<E> clone() {
+		IndexedArrayList<E> cloned = (IndexedArrayList<E>) super.clone();
+		cloned.freeIndexArr = freeIndexArr != null ? freeIndexArr.clone() : null;
+		return cloned;
+	}
+
 	public int getLastUsedIndex() {
 		return lastUsedIndex;
 	}

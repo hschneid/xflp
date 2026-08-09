@@ -125,6 +125,16 @@ public class SetIndexArrayList<E> extends ArrayList<E> {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see java.util.ArrayList#clone()
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public SetIndexArrayList<E> clone() {
+		return (SetIndexArrayList<E>) super.clone();
+	}
+	
+	/*
+	 * (non-Javadoc)
 	 * @see java.util.ArrayList#clear()
 	 */
 	@Override

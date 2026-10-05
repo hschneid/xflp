@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Java JDK einrichten
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '21'
           distribution: 'temurin'

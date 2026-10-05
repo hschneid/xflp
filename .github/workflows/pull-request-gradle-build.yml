@@ -19,9 +19,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Gradle validieren (Sicherheit)
-        uses: gradle/actions/wrapper-validation@v4
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Build mit Gradle ausführen
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
           arguments: build

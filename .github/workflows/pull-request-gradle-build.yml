@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Code auschecken
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Java JDK einrichten
         uses: actions/setup-java@v4

@@ -1,0 +1,31 @@
+name: Dependabot Auto-Merge
+
+on: pull_request
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    # Der Job läuft nur, wenn der PR von Dependabot erstellt wurde
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      # 1. Metadaten des Dependabot PRs auslesen (wichtig für die Versionsprüfung)
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      # 2. PR automatisch freigeben und Auto-Merge aktivieren (nur bei Patch- & Minor-Updates)
+      - name: Enable auto-merge for Dependabot PRs
+        # Hier wird geprüft, ob es sich um ein "patch" oder "minor" Update handelt
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

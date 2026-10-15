@@ -96,7 +96,6 @@ public final class AddContainer extends ContainerBase implements Container {
 		activePosList.remove(position);
 		uniquePositionKeys.remove(position.getKey());
 		spacePositions.remove(position);
-		immersiveDepthCache.remove(position);
 	}
 
 	/**

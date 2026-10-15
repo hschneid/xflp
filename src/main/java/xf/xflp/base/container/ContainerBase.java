@@ -51,9 +51,6 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     protected final Map<Integer, Float> bearingCapacities = new HashMap<>();
     protected final LoadBearingChecker loadBearingChecker = new LoadBearingChecker();
 
-    /** Position -> precomputed minimum immersive depth of items below this position */
-    protected final Map<Position, Integer> immersiveDepthCache = new HashMap<>();
-
     protected final Set<String> uniquePositionKeys = new HashSet<>();
     protected final Map<Position, List<Space>> spacePositions = new HashMap<>();
     protected final SpaceService spaceService = new SpaceService();
@@ -218,30 +215,8 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
         // Insert into Z-Graph
         zGraph.add(item, itemList, zMap);
 
-        // Update immersive depth cache for positions that sit on top of the new item
-        updateImmersiveDepthCacheForItem(item);
-    }
-
-    /**
-     * Updates the immersive depth cache for all active positions that are affected
-     * by the given item. A position is affected if its z equals item.zh (position sits
-     * on the item's top face) and the position point (x, y) lies within the item's footprint.
-     */
-    protected void updateImmersiveDepthCacheForItem(PlacedItem item) {
+        // Track the maximum y-extent of all placed items
         maxYl = Math.max(maxYl, item.yl);
-        int itemZh = item.zh;
-        int itemDepth = item.getItem().immersiveDepth();
-
-        for (Position activePos : activePosList) {
-            if (activePos.z() == itemZh &&
-                    activePos.x() >= item.x && activePos.x() < item.xw &&
-                    activePos.y() >= item.y && activePos.y() < item.yl) {
-                var cachedImmersiveDepth = immersiveDepthCache.get(activePos);
-                if (cachedImmersiveDepth == null || itemDepth < cachedImmersiveDepth) {
-                    immersiveDepthCache.put(activePos, itemDepth);
-                }
-            }
-        }
     }
 
     protected List<Position> findInsertPositions(PlacedItem item) {
@@ -340,15 +315,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
     }
 
     protected Position createPosition(int x, int y, int z, PositionType type) {
-        Position pos = Position.of(maxPosIdx++, x, y, z, type);
-        immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(x, y, z));
-        return pos;
+        return Position.of(maxPosIdx++, x, y, z, type);
     }
 
     protected Position createPosition(int idx, int x, int y, int z, PositionType type) {
-        Position pos = Position.of(idx, x, y, z, type);
-        immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(x, y, z));
-        return pos;
+        return Position.of(idx, x, y, z, type);
     }
 
     /**
@@ -520,8 +491,11 @@ public abstract sealed class ContainerBase implements Container, ContainerBaseDa
 
     @Override
     public int getImmersiveDepthAtPosition(Position pos) {
-        var immersiveDepth = immersiveDepthCache.get(pos);
-        return (immersiveDepth != null) ? immersiveDepth : 0;
+        // Compute the immersive depth live from the current item state instead of relying on a
+        // position-object-keyed cache. The cache was keyed by Position (which uses identity via idx)
+        // and could hold stale values for positions that were created before the item below them
+        // existed, leading to wrong height calculations during stacking.
+        return computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z());
     }
 
     @Override

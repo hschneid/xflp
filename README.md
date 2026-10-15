@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![alt text](https://img.shields.io/static/v1?label=version&message=0.7.7&color=-)
+![alt text](https://img.shields.io/static/v1?label=version&message=0.7.9&color=-)
 
 # xflp
 xflp is a solver for truck loading problems in 3D with real world constraints

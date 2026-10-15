@@ -326,7 +326,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
-			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -351,7 +350,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			positionItemMap.remove(pos);
 			spacePositions.remove(pos);
 			uniquePositionKeys.remove(pos.getKey());
-			immersiveDepthCache.remove(pos);
 		}
 	}
 
@@ -449,30 +447,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 		}
 
 		item.containerIndex = -1;
-
-		// Recompute immersive depth cache for positions that were sitting on this item
-		recomputeImmersiveDepthCacheForRemovedItem(item);
-	}
-
-	/**
-	 * When an item is removed, all active/inactive/covered positions that were on its top face
-	 * need their cached immersive depth recomputed, because the removed item no longer contributes.
-	 */
-	private void recomputeImmersiveDepthCacheForRemovedItem(PlacedItem item) {
-		recomputeImmersiveDepthForPositions(item, activePosList);
-		recomputeImmersiveDepthForPositions(item, inactivePosList);
-		recomputeImmersiveDepthForPositions(item, coveredPosList);
-	}
-
-	private void recomputeImmersiveDepthForPositions(PlacedItem item, Iterable<Position> positions) {
-		int itemZh = item.zh;
-		for (Position pos : positions) {
-			if (pos.z() == itemZh &&
-					pos.x() >= item.x && pos.x() < item.xw &&
-					pos.y() >= item.y && pos.y() < item.yl) {
-				immersiveDepthCache.put(pos, computeMinImmersiveDepthAtPosition(pos.x(), pos.y(), pos.z()));
-			}
-		}
 	}
 
 
@@ -621,16 +595,6 @@ public final class AddRemoveContainer extends ContainerBase implements Container
 			}
 		});
 
-		// Immersive depth cache
-		sb.append("  immersiveDepthCache:\n");
-		immersiveDepthCache.entrySet().stream()
-				.sorted(Comparator.comparingInt(e -> e.getKey().idx()))
-				.forEach(e -> sb.append("    - position: {idx: ").append(e.getKey().idx())
-						.append(", x: ").append(e.getKey().x())
-						.append(", y: ").append(e.getKey().y())
-						.append(", z: ").append(e.getKey().z())
-						.append("} -> ").append(e.getValue())
-						.append('\n'));
 
 		// History
 		sb.append("  history:\n");
